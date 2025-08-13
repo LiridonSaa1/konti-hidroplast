@@ -80,7 +80,7 @@ export function AboutSection() {
             >
               <div className="relative w-full max-w-lg lg:max-w-none">
                 {/* Blue asymmetrical frame - matching the reference design */}
-                <div className="absolute inset-0 bg-cyan-400" style={{
+                <div className="absolute inset-0 bg-[#1c2d56]" style={{
                   clipPath: 'polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%)'
                 }}></div>
                 
