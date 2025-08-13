@@ -35,7 +35,7 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto animate-fade-in">
         <h1
-          className="text-responsive-4xl hero-title mb-4 sm:mb-6 uppercase"
+          className="text-5xl md:text-7xl hero-title mb-6 uppercase"
           data-testid="hero-title"
         >
           <span style={{ color: '#eb2127' }}>{t("hero.title.line1")}</span>
@@ -45,8 +45,10 @@ export function HeroSection() {
           <span className="font-black" style={{ color: '#1c2d56' }}>{t("hero.title.line3")}</span>
         </h1>
 
+
+
         {/* Social Media Links */}
-        <div className="flex justify-center space-x-4 sm:space-x-6 mb-6 sm:mb-8" data-testid="social-links">
+        <div className="flex justify-center space-x-6 mb-8" data-testid="social-links">
           <a
             href="https://www.linkedin.com/company/konti-hidroplast/about/"
             target="_blank"
@@ -56,7 +58,7 @@ export function HeroSection() {
             onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
             data-testid="social-linkedin"
           >
-            <FaLinkedin className="text-2xl sm:text-3xl" />
+            <FaLinkedin className="text-3xl" />
           </a>
           <a
             href="https://www.facebook.com/kontihidroplastofficial"
@@ -67,7 +69,7 @@ export function HeroSection() {
             onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
             data-testid="social-facebook"
           >
-            <FaFacebook className="text-2xl sm:text-3xl" />
+            <FaFacebook className="text-3xl" />
           </a>
           <a
             href="https://www.instagram.com/kontihidroplast/"
@@ -78,7 +80,7 @@ export function HeroSection() {
             onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
             data-testid="social-instagram"
           >
-            <FaInstagram className="text-2xl sm:text-3xl" />
+            <FaInstagram className="text-3xl" />
           </a>
         </div>
 

@@ -56,7 +56,7 @@ export function AboutSection() {
       </div>
       <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-center">
         <div className="max-w-6xl w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-screen py-16 sm:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-screen">
             {/* Content */}
             <div
               className={`text-center lg:text-left ${
@@ -64,58 +64,49 @@ export function AboutSection() {
               }`}
             >
               <h2
-                className="text-responsive-3xl font-bold text-konti-gray mb-4 sm:mb-6"
+                className="text-4xl font-bold text-konti-gray mb-6"
                 data-testid="about-title"
               >
                 {t("about.title")}
               </h2>
-              <p className="text-base sm:text-lg text-gray-600 mb-4 sm:mb-6 leading-relaxed" data-testid="about-text-1">
+              <p className="text-lg text-gray-600 mb-6" data-testid="about-text-1">
                 {t("about.text1")}
               </p>
-              <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed" data-testid="about-text-2">
+              <p className="text-lg text-gray-600 mb-6" data-testid="about-text-2">
                 {t("about.text2")}
               </p>
-              <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8 leading-relaxed" data-testid="about-text-3">
+              <p className="text-lg text-gray-600 mb-8" data-testid="about-text-3">
                 {t("about.text3")}
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <div className="flex justify-center lg:justify-start">
                 <Button
                   onClick={scrollToContact}
-                  className="konti-gradient text-white hover:scale-105 transition-all mobile-button"
-                  data-testid="contact-button"
+                  className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
+                  data-testid="about-cta"
                 >
-                  {t("about.contact")}
+                  Learn More
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-                <Button
-                  onClick={openVideo}
-                  variant="outline"
-                  className="border-konti-blue text-konti-blue hover:bg-konti-blue hover:text-white transition-colors mobile-button"
-                  data-testid="video-button"
-                >
-                  <Play className="mr-2 h-4 w-4" />
-                  {t("about.video")}
                 </Button>
               </div>
             </div>
 
             {/* YouTube Video */}
             <div
-              className={`relative flex justify-center mt-8 lg:mt-0 ${
+              className={`relative flex justify-center ${
                 hasIntersected ? "animate-fade-in" : "opacity-0"
               }`}
             >
-              <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-none">
+              <div className="relative w-full max-w-lg lg:max-w-none">
                 {/* Blue asymmetrical frame - matching the reference design */}
                 <div className="absolute inset-0 bg-[#1c2d56]" style={{
                   clipPath: 'polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%)'
                 }}></div>
                 
                 {/* White inner frame */}
-                <div className="absolute inset-3 sm:inset-4 bg-white"></div>
+                <div className="absolute inset-4 bg-white"></div>
                 
                 {/* Video container */}
-                <div className="relative m-4 sm:m-6 aspect-video rounded-lg sm:rounded-xl overflow-hidden shadow-2xl">
+                <div className="relative m-6 aspect-video rounded-xl overflow-hidden shadow-2xl">
                   <iframe
                     src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=0"
                     title="Konti Hidroplast Corporate Video"

@@ -131,24 +131,6 @@ export function Navigation() {
   const renderNavigationItem = (item: NavigationItem, isMobile: boolean = false) => {
     if (item.type === "link") {
       const sectionId = item.href.startsWith("#") ? item.href.slice(1) : "";
-      
-      if (isMobile) {
-        return (
-          <button
-            key={item.href}
-            onClick={() => scrollToSection(item.href)}
-            className={`w-full text-left px-4 py-4 font-medium transition-all duration-300 text-lg mobile-button ${
-              activeSection === sectionId
-                ? "font-bold text-konti-blue bg-gray-50"
-                : "text-gray-600 hover:text-konti-blue hover:bg-gray-50"
-            }`}
-            data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
-          >
-            {item.label}
-          </button>
-        );
-      }
-      
       return (
         <button
           key={item.href}
@@ -168,15 +150,15 @@ export function Navigation() {
 
     if (isMobile) {
       return (
-        <div key={item.label} className="space-y-1">
-          <div className="px-4 py-3 text-lg font-semibold text-konti-gray border-b border-gray-100">
+        <div key={item.label} className="space-y-2">
+          <div className="px-4 py-3 text-base font-medium text-konti-gray border-b border-gray-200">
             {item.label}
           </div>
           {item.items.map((subItem, index) => (
             <button
               key={index}
               onClick={() => handleDropdownClick(subItem.href, subItem.external)}
-              className="w-full text-left px-6 py-4 text-base text-gray-600 hover:text-konti-blue hover:bg-gray-50 transition-all duration-200 flex items-center justify-between mobile-button"
+              className="w-full text-left px-6 py-3 text-base text-gray-600 hover:text-konti-blue transition-colors flex items-center justify-between"
               data-testid={`mobile-nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
             >
               {subItem.label}
@@ -234,22 +216,22 @@ export function Navigation() {
       data-testid="navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-20 lg:h-24">
+        <div className="flex justify-between items-center h-24">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <img
               src={logoPath}
               alt="Konti Hidroplast"
-              className="h-12 sm:h-16 lg:h-20 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
+              className="h-20 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
               onClick={() => scrollToSection("#home")}
               data-testid="logo"
             />
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:block">
-            <div className="ml-8 xl:ml-12 flex items-center space-x-6 xl:space-x-8">
-              <div className="flex items-baseline space-x-6 xl:space-x-8">
+          <div className="hidden md:block">
+            <div className="ml-12 flex items-center space-x-8">
+              <div className="flex items-baseline space-x-8">
                 {navigationItems.map(item => renderNavigationItem(item))}
               </div>
               <LanguageSwitcher />
@@ -257,7 +239,7 @@ export function Navigation() {
           </div>
 
           {/* Mobile menu */}
-          <div className="lg:hidden flex items-center space-x-4">
+          <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
                 <Button 
@@ -271,13 +253,13 @@ export function Navigation() {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80 sm:w-96">
-                <div className="flex flex-col space-y-4 mt-6">
-                  <div className="flex items-center justify-between mb-8 pb-6 border-b border-gray-200">
+              <SheetContent side="right" className="w-80">
+                <div className="flex flex-col space-y-6 mt-8">
+                  <div className="flex items-center justify-between mb-6">
                     <img
                       src={logoPath}
                       alt="Konti Hidroplast"
-                      className="h-12 w-auto"
+                      className="h-14 w-auto"
                     />
                     <LanguageSwitcher />
                   </div>
