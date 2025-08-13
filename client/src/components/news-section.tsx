@@ -1,0 +1,118 @@
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+
+const newsArticles = [
+  {
+    image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/HDPE-plastic-pipes-installed-in-Dutch-flood-protection-systems-as-a-climate-resilience-solution.-min.png",
+    category: "News",
+    title: "Innovations in Pipe Inspection and Maintenance Technologies",
+    excerpt: "Latest advancements in pipeline maintenance and inspection technologies...",
+    link: "https://konti-hidroplast.com.mk/innovations-in-pipe-inspection-and-maintenance-technologies/",
+  },
+  {
+    image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/07/konti-novost.jpg",
+    category: "News",
+    title: "Konti Hidroplast Donated €100,000 to Hospital in Gevgelija",
+    excerpt: "Supporting our community with significant healthcare investment...",
+    link: "https://konti-hidroplast.com.mk/konti-hidroplast-donated-e100000-to-the-public-general-hospital-in-gevgelija/",
+  },
+  {
+    image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/EPD-%E2%80%93-Environmental-Product-Declaration.jpg",
+    category: "News",
+    title: "EPD – Environmental Product Declaration",
+    excerpt: "Our commitment to environmental transparency and sustainability...",
+    link: "https://konti-hidroplast.com.mk/epd-environmental-product-declaration/",
+  },
+];
+
+export function NewsSection() {
+  const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.1 });
+
+  return (
+    <section
+      id="news"
+      ref={ref}
+      className="py-20 bg-white"
+      data-testid="news-section"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          className={`text-center mb-16 ${
+            hasIntersected ? "animate-fade-in" : "opacity-0"
+          }`}
+        >
+          <h2
+            className="text-4xl font-bold text-konti-gray mb-4"
+            data-testid="news-title"
+          >
+            Latest News
+          </h2>
+          <p
+            className="text-xl text-gray-600"
+            data-testid="news-subtitle"
+          >
+            Stay updated with our latest developments and industry insights
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {newsArticles.map((article, index) => (
+            <Card
+              key={index}
+              className={`overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 ${
+                hasIntersected ? "animate-slide-up" : "opacity-0"
+              }`}
+              style={{ animationDelay: `${index * 150}ms` }}
+              data-testid={`news-card-${index}`}
+            >
+              <div className="aspect-video overflow-hidden">
+                <img
+                  src={article.image}
+                  alt={article.title}
+                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  loading="lazy"
+                />
+              </div>
+              <CardContent className="p-6">
+                <div className="text-sm text-konti-blue font-medium mb-2">
+                  {article.category}
+                </div>
+                <h3 className="text-xl font-semibold text-konti-gray mb-3 line-clamp-2">
+                  {article.title}
+                </h3>
+                <p className="text-gray-600 mb-4 line-clamp-3">
+                  {article.excerpt}
+                </p>
+                <Button
+                  variant="link"
+                  asChild
+                  className="text-konti-blue font-semibold hover:text-blue-700 transition-colors p-0"
+                  data-testid={`news-read-more-${index}`}
+                >
+                  <a href={article.link} target="_blank" rel="noopener noreferrer">
+                    Read More <ArrowRight className="ml-1 h-4 w-4" />
+                  </a>
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <Button
+            asChild
+            className="konti-gradient text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+            data-testid="view-all-news"
+          >
+            <a href="https://konti-hidroplast.com.mk/news/" target="_blank" rel="noopener noreferrer">
+              View All News
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </a>
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
