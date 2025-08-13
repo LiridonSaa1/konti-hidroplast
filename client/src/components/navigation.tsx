@@ -137,9 +137,10 @@ export function Navigation() {
           onClick={() => scrollToSection(item.href)}
           className={`px-4 py-3 font-medium transition-all duration-300 text-[15px] ${
             activeSection === sectionId
-              ? (isScrolled ? "text-konti-blue" : "text-white font-bold nav-text-shadow")
+              ? (isScrolled ? "font-bold" : "text-white font-bold nav-text-shadow")
               : (isScrolled ? "text-black hover:text-konti-blue" : "text-white/90 hover:text-white nav-text-shadow")
           }`}
+          style={activeSection === sectionId && isScrolled ? { color: 'rgb(235, 33, 39)' } : {}}
           data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
         >
           {item.label}
