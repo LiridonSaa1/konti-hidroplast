@@ -52,7 +52,7 @@ export function AboutSection() {
               <div className="flex justify-center lg:justify-start">
                 <Button
                   onClick={scrollToContact}
-                  className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-primary/90 h-10 konti-gradient text-white px-6 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity bg-[#1c2d56]"
+                  className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
                   data-testid="about-cta"
                 >
                   Learn More
