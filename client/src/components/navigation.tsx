@@ -135,9 +135,9 @@ export function Navigation() {
         <button
           key={item.href}
           onClick={() => scrollToSection(item.href)}
-          className={`${isMobile ? "w-full text-left" : ""} px-3 py-2 text-sm font-medium transition-all duration-300 ${
+          className={`${isMobile ? "w-full text-left" : ""} px-4 py-3 text-lg font-semibold transition-all duration-300 ${
             activeSection === sectionId
-              ? (isScrolled ? "text-konti-blue" : "text-white font-semibold nav-text-shadow")
+              ? (isScrolled ? "text-konti-blue" : "text-white font-bold nav-text-shadow")
               : (isScrolled ? "text-konti-gray hover:text-konti-blue" : "text-white/90 hover:text-white nav-text-shadow")
           }`}
           data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
@@ -150,18 +150,18 @@ export function Navigation() {
     if (isMobile) {
       return (
         <div key={item.label} className="space-y-2">
-          <div className="px-3 py-2 text-sm font-medium text-konti-gray border-b border-gray-200">
+          <div className="px-4 py-3 text-lg font-semibold text-konti-gray border-b border-gray-200">
             {item.label}
           </div>
           {item.items.map((subItem, index) => (
             <button
               key={index}
               onClick={() => handleDropdownClick(subItem.href, subItem.external)}
-              className="w-full text-left px-6 py-2 text-sm text-gray-600 hover:text-konti-blue transition-colors flex items-center justify-between"
+              className="w-full text-left px-6 py-3 text-base text-gray-600 hover:text-konti-blue transition-colors flex items-center justify-between"
               data-testid={`mobile-nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
             >
               {subItem.label}
-              {subItem.external && <ExternalLink className="h-3 w-3" />}
+              {subItem.external && <ExternalLink className="h-4 w-4" />}
             </button>
           ))}
         </div>
@@ -172,7 +172,7 @@ export function Navigation() {
       <DropdownMenu key={item.label}>
         <DropdownMenuTrigger asChild>
           <button
-            className={`px-3 py-2 text-sm font-medium transition-all duration-300 flex items-center gap-1 ${
+            className={`px-4 py-3 text-lg font-semibold transition-all duration-300 flex items-center gap-1 ${
               isScrolled 
                 ? "text-konti-gray hover:text-konti-blue" 
                 : "text-white/90 hover:text-white nav-text-shadow"
@@ -180,7 +180,7 @@ export function Navigation() {
             data-testid={`nav-${item.label.toLowerCase()}`}
           >
             {item.label}
-            <ChevronDown className="h-4 w-4" />
+            <ChevronDown className="h-5 w-5" />
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="nav-dropdown w-56 bg-white shadow-lg border-0">
@@ -210,13 +210,13 @@ export function Navigation() {
       data-testid="navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <img
               src={logoPath}
               alt="Konti Hidroplast"
-              className="h-12 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
+              className="h-16 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
               onClick={() => scrollToSection("#home")}
               data-testid="logo"
             />
@@ -224,8 +224,8 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-center space-x-6">
-              <div className="flex items-baseline space-x-6">
+            <div className="ml-12 flex items-center space-x-8">
+              <div className="flex items-baseline space-x-8">
                 {navigationItems.map(item => renderNavigationItem(item))}
               </div>
               <LanguageSwitcher />
@@ -248,12 +248,12 @@ export function Navigation() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-80">
-                <div className="flex flex-col space-y-4 mt-8">
-                  <div className="flex items-center justify-between mb-4">
+                <div className="flex flex-col space-y-6 mt-8">
+                  <div className="flex items-center justify-between mb-6">
                     <img
                       src={logoPath}
                       alt="Konti Hidroplast"
-                      className="h-12 w-auto"
+                      className="h-14 w-auto"
                     />
                     <LanguageSwitcher />
                   </div>

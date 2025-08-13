@@ -116,16 +116,17 @@
 
   .nav-logo-enhanced {
     transition: all 0.3s ease-in-out;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
   }
 
   .nav-logo-enhanced:hover {
-    transform: scale(1.05);
+    transform: scale(1.08);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
   }
 
   /* Transparent navbar text shadow for better visibility */
   .nav-text-shadow {
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
   }
 
   /* Smooth backdrop blur transition */
