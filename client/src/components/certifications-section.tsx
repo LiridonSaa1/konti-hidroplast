@@ -83,7 +83,7 @@ export function CertificationsSection() {
       className="py-16 bg-konti-gray-light overflow-hidden"
       data-testid="certifications-section"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
         <div
           className={`text-center mb-12 ${
             hasIntersected ? "animate-fade-in" : "opacity-0"
