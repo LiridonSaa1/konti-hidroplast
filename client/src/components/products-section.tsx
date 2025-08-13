@@ -98,9 +98,6 @@ export function ProductsSection() {
                   <h3 className="text-xl font-bold text-konti-gray mb-3 uppercase tracking-wide">
                     {product.title}
                   </h3>
-                  <p className="text-gray-600 mb-4 leading-relaxed">
-                    {product.description}
-                  </p>
                   <Button
                     onClick={scrollToContact}
                     variant="outline"
