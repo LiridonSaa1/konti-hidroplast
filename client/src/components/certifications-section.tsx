@@ -121,7 +121,7 @@ export function CertificationsSection() {
                   style={{ animationDelay: `${index * 150}ms` }}
                   data-testid={`certification-${index}`}
                 >
-                  <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-konti-blue/20">
+                  <div className="rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-konti-blue/20" style={{backgroundColor: '#1c2d56', color: '#ffffff'}}>
                     <div className="flex flex-col items-center">
                       <div className="h-16 w-full flex items-center justify-center mb-2">
                         <img
@@ -131,7 +131,7 @@ export function CertificationsSection() {
                           loading="lazy"
                         />
                       </div>
-                      <span className="text-xs text-gray-600 font-medium text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <span className="text-xs text-white font-medium text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         {cert.name}
                       </span>
                     </div>
