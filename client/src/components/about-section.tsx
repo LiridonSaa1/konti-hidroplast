@@ -79,12 +79,16 @@ export function AboutSection() {
               }`}
             >
               <div className="relative w-full max-w-lg lg:max-w-none">
-                {/* Blue decorative frame */}
-                <div className="absolute -inset-6 bg-blue-500 rounded-2xl"></div>
-                <div className="absolute -inset-3 bg-white rounded-xl"></div>
+                {/* Blue asymmetrical frame - matching the reference design */}
+                <div className="absolute inset-0 bg-cyan-400" style={{
+                  clipPath: 'polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%)'
+                }}></div>
+                
+                {/* White inner frame */}
+                <div className="absolute inset-4 bg-white"></div>
                 
                 {/* Video container */}
-                <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl">
+                <div className="relative m-6 aspect-video rounded-xl overflow-hidden shadow-2xl">
                   <iframe
                     src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=0"
                     title="Konti Hidroplast Corporate Video"
