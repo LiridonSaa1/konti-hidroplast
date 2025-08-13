@@ -1,7 +1,10 @@
 import { ChevronDown } from "lucide-react";
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function HeroSection() {
+  const { t } = useLanguage();
+  
   const scrollToAbout = () => {
     const aboutSection = document.getElementById("about");
     if (aboutSection) {
@@ -35,17 +38,17 @@ export function HeroSection() {
           className="text-5xl md:text-7xl hero-title mb-6 uppercase"
           data-testid="hero-title"
         >
-          Unmatched European
+          {t("hero.title.line1")}
           <br />
-          <span className="font-light text-white/90">Standards</span>
+          <span className="font-light text-white/90">{t("hero.title.line2")}</span>
           <br />
-          <span className="text-blue-200 font-black">for Pipeline Precision</span>
+          <span className="text-blue-200 font-black">{t("hero.title.line3")}</span>
         </h1>
 
         {/* Additional Hero Banner */}
         <div className="hero-banner text-white px-8 py-4 rounded-lg mb-8 inline-block">
-          <div className="text-2xl md:text-3xl font-bold tracking-wide">HIGH-QUALITY PIPES</div>
-          <div className="text-lg md:text-xl font-medium">DRIVING PROGRESS WITH INNOVATION</div>
+          <div className="text-2xl md:text-3xl font-bold tracking-wide">{t("hero.banner.title")}</div>
+          <div className="text-lg md:text-xl font-medium">{t("hero.banner.subtitle")}</div>
         </div>
 
         {/* Social Media Links */}

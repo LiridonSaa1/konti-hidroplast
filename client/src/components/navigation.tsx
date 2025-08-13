@@ -8,6 +8,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Menu, ChevronDown, ExternalLink } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import logoPath from "@assets/Logo-konti_1755091117511.png";
 
 interface NavigationLink {
@@ -30,11 +32,11 @@ interface NavigationDropdown {
 
 type NavigationItem = NavigationLink | NavigationDropdown;
 
-const navigationItems: NavigationItem[] = [
-  { href: "#home", label: "Home", type: "link" },
-  { href: "#about", label: "About Us", type: "link" },
+const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
+  { href: "#home", label: t("nav.home"), type: "link" },
+  { href: "#about", label: t("nav.about"), type: "link" },
   { 
-    label: "Products", 
+    label: t("nav.products"), 
     type: "dropdown",
     items: [
       { label: "Water Supply Systems", href: "#products" },
@@ -45,18 +47,18 @@ const navigationItems: NavigationItem[] = [
     ]
   },
   {
-    label: "Downloads",
+    label: t("nav.downloads"),
     type: "dropdown", 
     items: [
-      { label: "Product Catalogs", href: "https://konti-hidroplast.com.mk/products/", external: true },
-      { label: "Technical Specifications", href: "https://konti-hidroplast.com.mk/products/", external: true },
+      { label: t("nav.brochures"), href: "https://konti-hidroplast.com.mk/products/", external: true },
+      { label: t("nav.technical"), href: "https://konti-hidroplast.com.mk/products/", external: true },
       { label: "Installation Guides", href: "https://konti-hidroplast.com.mk/products/", external: true },
-      { label: "Certificates", href: "https://konti-hidroplast.com.mk/products/", external: true },
+      { label: t("nav.certifications"), href: "https://konti-hidroplast.com.mk/products/", external: true },
     ]
   },
-  { href: "#news", label: "News", type: "link" },
+  { href: "#news", label: t("nav.news"), type: "link" },
   {
-    label: "Contact",
+    label: t("nav.contact"),
     type: "dropdown",
     items: [
       { label: "Contact Form", href: "#contact" },
@@ -70,6 +72,8 @@ const navigationItems: NavigationItem[] = [
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const { t } = useLanguage();
+  const navigationItems = useNavigationItems(t);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -220,8 +224,11 @@ export function Navigation() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-6">
-              {navigationItems.map(item => renderNavigationItem(item))}
+            <div className="ml-10 flex items-center space-x-6">
+              <div className="flex items-baseline space-x-6">
+                {navigationItems.map(item => renderNavigationItem(item))}
+              </div>
+              <LanguageSwitcher />
             </div>
           </div>
 
@@ -242,11 +249,14 @@ export function Navigation() {
               </SheetTrigger>
               <SheetContent side="right" className="w-80">
                 <div className="flex flex-col space-y-4 mt-8">
-                  <img
-                    src={logoPath}
-                    alt="Konti Hidroplast"
-                    className="h-12 w-auto mb-4"
-                  />
+                  <div className="flex items-center justify-between mb-4">
+                    <img
+                      src={logoPath}
+                      alt="Konti Hidroplast"
+                      className="h-12 w-auto"
+                    />
+                    <LanguageSwitcher />
+                  </div>
                   {navigationItems.map(item => renderNavigationItem(item, true))}
                 </div>
               </SheetContent>

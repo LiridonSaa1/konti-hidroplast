@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function AboutSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.2 });
+  const { t } = useLanguage();
 
   const scrollToContact = () => {
     const contactSection = document.getElementById("contact");
@@ -35,16 +37,16 @@ export function AboutSection() {
               className="text-4xl font-bold text-konti-gray mb-6"
               data-testid="about-title"
             >
-              About Us
+              {t("about.title")}
             </h2>
             <p className="text-lg text-gray-600 mb-6" data-testid="about-text-1">
-              Konti Hidroplast is export oriented macedonian company for production of PE (polyethylene) and PP (polypropylene) pipes.
+              {t("about.text1")}
             </p>
             <p className="text-lg text-gray-600 mb-6" data-testid="about-text-2">
-              Situated in Southern Macedonia, municipality of Gevgelija Konti Hidroplast was founded in 1975 as a small plant for production of tools and elements of injection molded plastic.
+              {t("about.text2")}
             </p>
             <p className="text-lg text-gray-600 mb-8" data-testid="about-text-3">
-              Following the successful start aided by the experience gained by successfully realized projects in Republic of Macedonia, today our company is export-oriented, and 95% of its products are exported in international markets.
+              {t("about.text3")}
             </p>
             <Button
               onClick={scrollToContact}
