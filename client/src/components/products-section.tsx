@@ -53,7 +53,7 @@ export function ProductsSection() {
           </h2>
         </div>
 
-        {/* Products Grid - Premium Card Design */}
+        {/* Products Grid - Vertical Card Design */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
           {products.map((product, index) => (
             <div
@@ -64,37 +64,35 @@ export function ProductsSection() {
               style={{ animationDelay: `${index * 200}ms` }}
               data-testid={`product-card-${index}`}
             >
-              <div className="flex h-56">
-                {/* Product Image - Left Side */}
-                <div className="w-2/5 relative overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent to-white/10 group-hover:to-white/5 transition-all duration-500" />
-                </div>
+              {/* Product Image - Top */}
+              <div className="h-64 relative overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
+              </div>
+              
+              {/* Product Content - Bottom */}
+              <div className="p-8 relative">
+                {/* Decorative accent */}
+                <div className="absolute top-6 left-8 w-12 h-1 bg-konti-blue rounded-full group-hover:w-16 transition-all duration-300" />
                 
-                {/* Product Content - Right Side */}
-                <div className="w-3/5 p-8 flex flex-col justify-center relative">
-                  {/* Decorative accent */}
-                  <div className="absolute top-6 left-8 w-12 h-1 bg-konti-blue rounded-full group-hover:w-16 transition-all duration-300" />
+                <div className="mt-4">
+                  <h3 className="text-xl font-bold text-konti-gray mb-3 uppercase tracking-wide leading-tight group-hover:text-konti-blue transition-colors duration-300">
+                    {product.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 leading-relaxed mb-6 group-hover:text-gray-700 transition-colors duration-300">
+                    {product.description}
+                  </p>
                   
-                  <div className="mt-4">
-                    <h3 className="text-xl font-bold text-konti-gray mb-3 uppercase tracking-wide leading-tight group-hover:text-konti-blue transition-colors duration-300">
-                      {product.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 leading-relaxed mb-4 group-hover:text-gray-700 transition-colors duration-300">
-                      {product.description}
-                    </p>
-                    
-                    {/* Learn More Button */}
-                    <div className="flex items-center text-konti-blue font-semibold text-sm group-hover:translate-x-1 transition-transform duration-300">
-                      <span>Learn More</span>
-                      <svg className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </div>
+                  {/* Learn More Button */}
+                  <div className="flex items-center text-konti-blue font-semibold text-sm group-hover:translate-x-1 transition-transform duration-300">
+                    <span>Learn More</span>
+                    <svg className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </div>
                 </div>
               </div>
