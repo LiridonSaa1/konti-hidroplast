@@ -67,7 +67,7 @@ function StatisticCard({ value, label, suffix, isActive, delay }: StatisticCardP
       <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
         {formatNumber(count)}{suffix}
       </div>
-      <div className="text-blue-200 font-medium">{label}</div>
+      <div className="text-blue-200 text-[20px] font-medium">{label}</div>
     </div>
   );
 }
