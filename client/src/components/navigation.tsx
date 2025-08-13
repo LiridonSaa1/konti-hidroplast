@@ -135,7 +135,7 @@ export function Navigation() {
         <button
           key={item.href}
           onClick={() => scrollToSection(item.href)}
-          className={`${isMobile ? "w-full text-left" : ""} px-4 py-3 text-lg font-semibold transition-all duration-300 ${
+          className={`${isMobile ? "w-full text-left" : ""} px-4 py-3 text-sm font-medium transition-all duration-300 ${
             activeSection === sectionId
               ? (isScrolled ? "text-konti-blue" : "text-white font-bold nav-text-shadow")
               : (isScrolled ? "text-konti-gray hover:text-konti-blue" : "text-white/90 hover:text-white nav-text-shadow")
@@ -150,7 +150,7 @@ export function Navigation() {
     if (isMobile) {
       return (
         <div key={item.label} className="space-y-2">
-          <div className="px-4 py-3 text-lg font-semibold text-konti-gray border-b border-gray-200">
+          <div className="px-4 py-3 text-base font-medium text-konti-gray border-b border-gray-200">
             {item.label}
           </div>
           {item.items.map((subItem, index) => (
@@ -172,7 +172,7 @@ export function Navigation() {
       <DropdownMenu key={item.label}>
         <DropdownMenuTrigger asChild>
           <button
-            className={`px-4 py-3 text-lg font-semibold transition-all duration-300 flex items-center gap-1 ${
+            className={`px-4 py-3 text-sm font-medium transition-all duration-300 flex items-center gap-1 ${
               isScrolled 
                 ? "text-konti-gray hover:text-konti-blue" 
                 : "text-white/90 hover:text-white nav-text-shadow"
@@ -210,13 +210,13 @@ export function Navigation() {
       data-testid="navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex justify-between items-center h-24">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <img
               src={logoPath}
               alt="Konti Hidroplast"
-              className="h-16 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
+              className="h-20 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
               onClick={() => scrollToSection("#home")}
               data-testid="logo"
             />
@@ -225,7 +225,7 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-12 flex items-center space-x-8">
-              <div className="flex items-baseline space-x-8 text-[13px]">
+              <div className="flex items-baseline space-x-8">
                 {navigationItems.map(item => renderNavigationItem(item))}
               </div>
               <LanguageSwitcher />
