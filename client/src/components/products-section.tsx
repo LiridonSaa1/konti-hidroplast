@@ -25,6 +25,21 @@ const products = [
     description: "Protective conduits for electrical and telecommunications cables.",
     image: "/attached_assets/CABLE-PROTECTION-min-1_1755115210995.jpg",
   },
+  {
+    title: "INDUSTRIAL PIPES",
+    description: "Heavy-duty pipes for industrial applications and chemical resistance.",
+    image: "/attached_assets/image_1755091805124.png",
+  },
+  {
+    title: "PIPE FITTINGS",
+    description: "Complete range of fittings and accessories for all pipe systems.",
+    image: "/attached_assets/image_1755091852060.png",
+  },
+  {
+    title: "DRAINAGE SYSTEMS",
+    description: "Efficient drainage solutions for construction and infrastructure.",
+    image: "/attached_assets/image_1755091984074.png",
+  },
 ];
 
 export function ProductsSection() {
@@ -40,14 +55,14 @@ export function ProductsSection() {
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % Math.ceil(products.length / 2));
+    setCurrentSlide((prev) => (prev + 1) % Math.ceil(products.length / 3));
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + Math.ceil(products.length / 2)) % Math.ceil(products.length / 2));
+    setCurrentSlide((prev) => (prev - 1 + Math.ceil(products.length / 3)) % Math.ceil(products.length / 3));
   };
 
-  const visibleProducts = products.slice(currentSlide * 2, currentSlide * 2 + 2);
+  const visibleProducts = products.slice(currentSlide * 3, currentSlide * 3 + 3);
 
   return (
     <section
@@ -74,7 +89,7 @@ export function ProductsSection() {
         {/* Slider Container */}
         <div className="relative">
           {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 transition-all duration-500">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-500">
             {visibleProducts.map((product, index) => (
               <div
                 key={`${currentSlide}-${index}`}
@@ -126,14 +141,14 @@ export function ProductsSection() {
             variant="outline"
             size="icon"
             className="absolute right-4 top-1/2 -translate-y-1/2 bg-white shadow-lg border-gray-200 hover:bg-gray-50 z-10"
-            disabled={currentSlide === Math.ceil(products.length / 2) - 1}
+            disabled={currentSlide === Math.ceil(products.length / 3) - 1}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
 
           {/* Slide Indicators */}
           <div className="flex justify-center mt-8 space-x-2">
-            {Array.from({ length: Math.ceil(products.length / 2) }).map((_, index) => (
+            {Array.from({ length: Math.ceil(products.length / 3) }).map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentSlide(index)}
