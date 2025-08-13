@@ -42,7 +42,7 @@ export function HeroSection() {
           <br />
           <span className="font-light text-white/90">{t("hero.title.line2")}</span>
           <br />
-          <span className="text-blue-200 font-black">{t("hero.title.line3")}</span>
+          <span className="font-black" style={{ color: '#1c2d56' }}>{t("hero.title.line3")}</span>
         </h1>
 
 
@@ -53,7 +53,9 @@ export function HeroSection() {
             href="https://www.linkedin.com/company/konti-hidroplast/about/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white hover:text-blue-200 transition-colors"
+            className="text-white transition-colors"
+            onMouseEnter={(e) => e.currentTarget.style.color = '#1c2d56'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
             data-testid="social-linkedin"
           >
             <FaLinkedin className="text-3xl" />
@@ -62,7 +64,9 @@ export function HeroSection() {
             href="https://www.facebook.com/kontihidroplastofficial"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white hover:text-blue-200 transition-colors"
+            className="text-white transition-colors"
+            onMouseEnter={(e) => e.currentTarget.style.color = '#1c2d56'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
             data-testid="social-facebook"
           >
             <FaFacebook className="text-3xl" />
@@ -71,7 +75,9 @@ export function HeroSection() {
             href="https://www.instagram.com/kontihidroplast/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-white hover:text-blue-200 transition-colors"
+            className="text-white transition-colors"
+            onMouseEnter={(e) => e.currentTarget.style.color = '#1c2d56'}
+            onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
             data-testid="social-instagram"
           >
             <FaInstagram className="text-3xl" />
