@@ -21,7 +21,13 @@ export function HeroSection() {
         <iframe
           src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=1&playlist=R7b9-m_EM2s&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
           title="Konti Hidroplast Corporate Video"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full"
+          style={{ 
+            width: '100vw',
+            height: '100vh',
+            objectFit: 'cover',
+            border: 'none'
+          }}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           data-testid="hero-video"
@@ -31,21 +37,29 @@ export function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto animate-fade-in">
+      <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto animate-fade-in">
         <h1
-          className="text-4xl md:text-6xl font-bold mb-6 leading-tight"
+          className="text-5xl md:text-7xl hero-title mb-6"
           data-testid="hero-title"
         >
-          Unmatched European Standards
+          Unmatched European
           <br />
-          <span className="text-blue-200">for Pipeline Precision</span>
+          <span className="font-light text-white/90">Standards</span>
+          <br />
+          <span className="text-blue-200 font-black">for Pipeline Precision</span>
         </h1>
         <p
-          className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto"
+          className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto font-medium"
           data-testid="hero-subtitle"
         >
           Export-oriented Macedonian company for production of PE and PP pipes since 1975
         </p>
+
+        {/* Additional Hero Banner */}
+        <div className="hero-banner text-white px-8 py-4 rounded-lg mb-8 inline-block">
+          <div className="text-2xl md:text-3xl font-bold tracking-wide">HIGH-QUALITY PIPES</div>
+          <div className="text-lg md:text-xl font-medium">DRIVING PROGRESS WITH INNOVATION</div>
+        </div>
 
         {/* Social Media Links */}
         <div className="flex justify-center space-x-6 mb-8" data-testid="social-links">
