@@ -58,30 +58,21 @@ export function AboutSection() {
             </Button>
           </div>
 
-          {/* Video Placeholder */}
+          {/* YouTube Video */}
           <div
             className={`relative ${
               hasIntersected ? "animate-fade-in" : "opacity-0"
             }`}
           >
             <div className="aspect-video rounded-xl overflow-hidden shadow-2xl">
-              <img
-                src="https://images.unsplash.com/photo-1581094271901-8022df4466f9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600"
-                alt="Konti Hidroplast Manufacturing Facility"
-                className="w-full h-full object-cover"
-                data-testid="about-image"
+              <iframe
+                src="https://www.youtube.com/embed/R7b9-m_EM2s"
+                title="Konti Hidroplast Corporate Video"
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                data-testid="about-video"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <Button
-                  onClick={openVideo}
-                  variant="secondary"
-                  size="lg"
-                  className="bg-white bg-opacity-90 rounded-full w-16 h-16 p-0 hover:bg-opacity-100 transition-all shadow-lg"
-                  data-testid="video-play-button"
-                >
-                  <Play className="text-konti-blue text-xl ml-1" />
-                </Button>
-              </div>
             </div>
           </div>
         </div>

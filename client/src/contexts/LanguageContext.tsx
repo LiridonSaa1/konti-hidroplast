@@ -32,7 +32,7 @@ const translations = {
     'hero.banner.subtitle': 'DRIVING PROGRESS WITH INNOVATION',
     
     // About Section
-    'about.title': 'About Konti Hidroplast',
+    'about.title': 'About Us',
     'about.description': 'Export-oriented Macedonian company for production of PE and PP pipes since 1975. We are committed to delivering the highest quality pipeline solutions with European standards.',
     'about.text1': 'Konti Hidroplast is export oriented macedonian company for production of PE (polyethylene) and PP (polypropylene) pipes.',
     'about.text2': 'Situated in Southern Macedonia, municipality of Gevgelija Konti Hidroplast was founded in 1975 as a small plant for production of tools and elements of injection molded plastic.',
@@ -106,7 +106,7 @@ const translations = {
     'hero.banner.subtitle': 'ДВИЖЕЈЌИ НАПРЕДОК СО ИНОВАЦИИ',
     
     // About Section
-    'about.title': 'За Конти Хидропласт',
+    'about.title': 'За нас',
     'about.description': 'Извозно-ориентирана македонска компанија за производство на ПЕ и ПП цевки од 1975 година. Посветени сме на испорака на најквалитетни решенија за цевководи со европски стандарди.',
     'about.text1': 'Конти Хидропласт е извозно-ориентирана македонска компанија за производство на ПЕ (полиетилен) и ПП (полипропилен) цевки.',
     'about.text2': 'Лоцирана во Јужна Македонија, општина Гевгелија, Конти Хидропласт беше основана во 1975 година како мала фабрика за производство на алати и елементи од инјекциски обликувана пластика.',
