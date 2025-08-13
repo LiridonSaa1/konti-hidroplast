@@ -1,37 +1,43 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Droplets, Waves, Flame, Zap } from "lucide-react";
+import { ProductCard } from "@/components/product-card";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const products = [
   {
-    icon: Droplets,
     title: "Water Supply Systems",
-    description: "High-quality PE pipes for reliable water distribution networks.",
-    color: "text-blue-600",
+    description: "High-quality PE pipes for reliable water distribution networks with superior durability and performance.",
+    image: "/attached_assets/Logo-konti_1755091117511.png",
   },
   {
-    icon: Waves,
-    title: "Sewerage Systems",
-    description: "Durable PP pipes designed for efficient wastewater management.",
-    color: "text-cyan-600",
+    title: "Sewerage Systems", 
+    description: "Durable PP pipes designed for efficient wastewater management and environmental protection.",
+    image: "/attached_assets/image_1755091345883.png",
   },
   {
-    icon: Flame,
     title: "Gas Pipeline System",
-    description: "Safe and reliable PE pipes for natural gas distribution.",
-    color: "text-orange-600",
+    description: "Safe and reliable PE pipes for natural gas distribution with exceptional safety standards.",
+    image: "/attached_assets/image_1755091404488.png",
   },
   {
-    icon: Zap,
     title: "Cable Protection",
-    description: "Protective conduits for electrical and telecommunications cables.",
-    color: "text-yellow-600",
+    description: "Protective conduits for electrical and telecommunications cables ensuring long-term reliability.",
+    image: "/attached_assets/image_1755091449275.png",
+  },
+  {
+    title: "Industrial Applications",
+    description: "Specialized pipe solutions for industrial processes and heavy-duty applications.",
+    image: "/attached_assets/image_1755091805124.png",
+  },
+  {
+    title: "Fittings & Accessories",
+    description: "Complete range of fittings and accessories for all pipe system installations.",
+    image: "/attached_assets/image_1755091852060.png",
   },
 ];
 
 export function ProductsSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.1 });
+  const { t } = useLanguage();
 
   const scrollToContact = () => {
     const contactSection = document.getElementById("contact");
@@ -44,10 +50,19 @@ export function ProductsSection() {
     <section
       id="products"
       ref={ref}
-      className="py-20 bg-white"
+      className="py-20 bg-konti-gray-light relative overflow-hidden"
       data-testid="products-section"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `radial-gradient(circle at 25% 25%, #1c2d56 2px, transparent 2px),
+                           radial-gradient(circle at 75% 75%, #1c2d56 2px, transparent 2px)`,
+          backgroundSize: '100px 100px'
+        }}></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div
           className={`text-center mb-16 ${
             hasIntersected ? "animate-fade-in" : "opacity-0"
@@ -57,7 +72,7 @@ export function ProductsSection() {
             className="text-4xl font-bold text-konti-gray mb-4"
             data-testid="products-title"
           >
-            Our Products
+            Products
           </h2>
           <p
             className="text-xl text-gray-600 max-w-3xl mx-auto"
@@ -67,34 +82,17 @@ export function ProductsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
           {products.map((product, index) => (
-            <Card
+            <ProductCard
               key={product.title}
-              className={`hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 ${
-                hasIntersected ? "animate-slide-up" : "opacity-0"
-              }`}
-              style={{ animationDelay: `${index * 100}ms` }}
-              data-testid={`product-card-${index}`}
-            >
-              <CardContent className="p-8">
-                <div className={`w-16 h-16 konti-gradient rounded-lg flex items-center justify-center mb-6`}>
-                  <product.icon className="text-white text-2xl" />
-                </div>
-                <h3 className="text-xl font-semibold text-konti-gray mb-4">
-                  {product.title}
-                </h3>
-                <p className="text-gray-600 mb-6">{product.description}</p>
-                <Button
-                  variant="link"
-                  onClick={scrollToContact}
-                  className="text-konti-blue font-semibold hover:text-blue-700 transition-colors p-0"
-                  data-testid={`product-learn-more-${index}`}
-                >
-                  Learn More <ArrowRight className="ml-1 h-4 w-4" />
-                </Button>
-              </CardContent>
-            </Card>
+              title={product.title}
+              description={product.description}
+              image={product.image}
+              index={index}
+              hasIntersected={hasIntersected}
+              onLearnMore={scrollToContact}
+            />
           ))}
         </div>
       </div>

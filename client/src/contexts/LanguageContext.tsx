@@ -121,7 +121,7 @@ const translations = {
     'stats.capacity': 'Годишен производствен капацитет',
     
     // Products
-    'products.title': 'Наши производи',
+    'products.title': 'Производи',
     'products.subtitle': 'Високо-квалитетни ПЕ и ПП решенија за цевки за различни примени',
     'products.pe.title': 'ПЕ цевки',
     'products.pe.description': 'Полиетиленски цевки за водоснабдување, дистрибуција на гас и индустриски примени.',
