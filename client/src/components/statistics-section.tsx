@@ -2,11 +2,11 @@ import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useCounterAnimation } from "@/hooks/use-counter-animation";
 
 const statistics = [
-  { value: 49, label: "Years", suffix: "" },
-  { value: 500, label: "Products", suffix: "+" },
-  { value: 1000, label: "Projects", suffix: "+" },
-  { value: 200, label: "Employees", suffix: "+" },
-  { value: 50, label: "Turnover", suffix: "M+" },
+  { value: 35, label: "Years", suffix: "" },
+  { value: 9682, label: "Products", suffix: "+" },
+  { value: 3150, label: "Projects", suffix: "+" },
+  { value: 210, label: "Employees", suffix: "+" },
+  { value: 52000000, label: "Turnover", suffix: "+" },
 ];
 
 export function StatisticsSection() {
@@ -15,7 +15,7 @@ export function StatisticsSection() {
   return (
     <section
       ref={ref}
-      className="py-20 konti-gradient"
+      className="py-20 bg-[#1c2d56]"
       data-testid="statistics-section"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
