@@ -8,22 +8,22 @@ const products = [
   {
     title: "WATER SUPPLY SYSTEMS",
     description: "High-quality PE pipes for reliable water distribution networks.",
-    image: "/attached_assets/image_1755091117511.png",
+    image: "/attached_assets/Water-supply-min-1_1755115058874.jpg",
   },
   {
     title: "SEWERAGE SYSTEMS", 
     description: "Durable PP pipes designed for efficient wastewater management.",
-    image: "/attached_assets/image_1755091345883.png",
+    image: "/attached_assets/Konti-Hidroplast-Proizvodstvo-27-1_1755115099243.jpg",
   },
   {
     title: "GAS PIPELINE SYSTEM",
     description: "Safe and reliable PE pipes for natural gas distribution.",
-    image: "/attached_assets/image_1755091404488.png",
+    image: "/attached_assets/GAS-PIPELINE-SYSTEM-min-1_1755115129403.jpg",
   },
   {
     title: "CABLE PROTECTION",
     description: "Protective conduits for electrical and telecommunications cables.",
-    image: "/attached_assets/image_1755091449275.png",
+    image: "/attached_assets/CABLE-PROTECTION-min-1_1755115210995.jpg",
   },
 ];
 
