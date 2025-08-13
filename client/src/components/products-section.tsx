@@ -100,7 +100,7 @@ export function ProductsSection() {
                 data-testid={`product-card-${index}`}
               >
                 {/* Product Image */}
-                <div className="h-64 overflow-hidden">
+                <div className="h-72 overflow-hidden">
                   <img
                     src={product.image}
                     alt={product.title}
