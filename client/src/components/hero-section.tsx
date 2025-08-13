@@ -45,11 +45,7 @@ export function HeroSection() {
           <span className="text-blue-200 font-black">{t("hero.title.line3")}</span>
         </h1>
 
-        {/* Additional Hero Banner */}
-        <div className="hero-banner text-white px-8 py-4 rounded-lg mb-8 inline-block">
-          <div className="text-2xl md:text-3xl font-bold tracking-wide">{t("hero.banner.title")}</div>
-          <div className="text-lg md:text-xl font-medium">{t("hero.banner.subtitle")}</div>
-        </div>
+
 
         {/* Social Media Links */}
         <div className="flex justify-center space-x-6 mb-8" data-testid="social-links">
