@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 
@@ -33,7 +32,7 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto animate-fade-in">
         <h1
-          className="text-5xl md:text-7xl hero-title mb-6"
+          className="text-5xl md:text-7xl hero-title mb-6 uppercase"
           data-testid="hero-title"
         >
           Unmatched European
@@ -42,12 +41,6 @@ export function HeroSection() {
           <br />
           <span className="text-blue-200 font-black">for Pipeline Precision</span>
         </h1>
-        <p
-          className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto font-medium"
-          data-testid="hero-subtitle"
-        >
-          Export-oriented Macedonian company for production of PE and PP pipes since 1975
-        </p>
 
         {/* Additional Hero Banner */}
         <div className="hero-banner text-white px-8 py-4 rounded-lg mb-8 inline-block">
@@ -86,13 +79,7 @@ export function HeroSection() {
           </a>
         </div>
 
-        <Button
-          onClick={scrollToAbout}
-          className="bg-white text-konti-blue px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors shadow-lg"
-          data-testid="hero-cta"
-        >
-          Learn More About Us
-        </Button>
+
       </div>
 
       {/* Scroll Indicator */}
