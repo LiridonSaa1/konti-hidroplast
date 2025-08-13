@@ -135,7 +135,11 @@ export function Navigation() {
         <button
           key={item.href}
           onClick={() => scrollToSection(item.href)}
-          className="px-4 py-3 font-medium transition-all duration-300 text-white/90 hover:text-white nav-text-shadow text-[15px]"
+          className={`px-4 py-3 font-medium transition-all duration-300 text-[15px] ${
+            activeSection === sectionId
+              ? (isScrolled ? "text-konti-blue" : "text-white font-bold nav-text-shadow")
+              : (isScrolled ? "text-black hover:text-konti-blue" : "text-white/90 hover:text-white nav-text-shadow")
+          }`}
           data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
         >
           {item.label}
@@ -168,7 +172,11 @@ export function Navigation() {
       <DropdownMenu key={item.label} modal={false}>
         <DropdownMenuTrigger asChild>
           <button
-            className="px-4 py-3 font-medium transition-all duration-300 flex items-center gap-1 focus:outline-none focus-visible:outline-none text-white/90 hover:text-white nav-text-shadow data-[state=open]:text-white text-[15px]"
+            className={`px-4 py-3 font-medium transition-all duration-300 flex items-center gap-1 focus:outline-none focus-visible:outline-none text-[15px] ${
+              isScrolled 
+                ? "text-black hover:text-konti-blue data-[state=open]:text-konti-blue" 
+                : "text-white/90 hover:text-white nav-text-shadow data-[state=open]:text-white"
+            }`}
             data-testid={`nav-${item.label.toLowerCase()}`}
           >
             {item.label}
@@ -237,7 +245,7 @@ export function Navigation() {
                   variant="ghost" 
                   size="icon" 
                   className={`transition-colors duration-300 ${
-                    isScrolled ? "text-konti-gray hover:text-konti-blue" : "text-white hover:text-white/80"
+                    isScrolled ? "text-black hover:text-konti-blue" : "text-white hover:text-white/80"
                   }`}
                   data-testid="mobile-menu-trigger"
                 >
