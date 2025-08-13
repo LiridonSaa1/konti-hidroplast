@@ -131,10 +131,10 @@ export function Navigation() {
         <button
           key={item.href}
           onClick={() => scrollToSection(item.href)}
-          className={`${isMobile ? "w-full text-left" : ""} px-3 py-2 text-sm font-medium transition-colors ${
+          className={`${isMobile ? "w-full text-left" : ""} px-3 py-2 text-sm font-medium transition-all duration-300 ${
             activeSection === sectionId
-              ? "text-konti-blue"
-              : "text-konti-gray hover:text-konti-blue"
+              ? (isScrolled ? "text-konti-blue" : "text-white font-semibold nav-text-shadow")
+              : (isScrolled ? "text-konti-gray hover:text-konti-blue" : "text-white/90 hover:text-white nav-text-shadow")
           }`}
           data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
         >
@@ -168,7 +168,11 @@ export function Navigation() {
       <DropdownMenu key={item.label}>
         <DropdownMenuTrigger asChild>
           <button
-            className="px-3 py-2 text-sm font-medium transition-colors text-konti-gray hover:text-konti-blue flex items-center gap-1"
+            className={`px-3 py-2 text-sm font-medium transition-all duration-300 flex items-center gap-1 ${
+              isScrolled 
+                ? "text-konti-gray hover:text-konti-blue" 
+                : "text-white/90 hover:text-white nav-text-shadow"
+            }`}
             data-testid={`nav-${item.label.toLowerCase()}`}
           >
             {item.label}
@@ -194,21 +198,21 @@ export function Navigation() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 navbar-enhanced ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out ${
         isScrolled
-          ? "bg-white/95 backdrop-blur-md shadow-lg"
-          : "bg-white shadow-lg"
+          ? "bg-white/90 backdrop-blur-lg shadow-lg border-b border-gray-200/20"
+          : "bg-transparent"
       }`}
       data-testid="navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-18">
+        <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <img
               src={logoPath}
               alt="Konti Hidroplast"
-              className="h-14 w-auto nav-logo-enhanced cursor-pointer"
+              className="h-12 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
               onClick={() => scrollToSection("#home")}
               data-testid="logo"
             />
@@ -225,7 +229,14 @@ export function Navigation() {
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" data-testid="mobile-menu-trigger">
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className={`transition-colors duration-300 ${
+                    isScrolled ? "text-konti-gray hover:text-konti-blue" : "text-white hover:text-white/80"
+                  }`}
+                  data-testid="mobile-menu-trigger"
+                >
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>

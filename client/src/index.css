@@ -114,15 +114,25 @@
   .navbar-enhanced {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(229, 231, 235, 0.2);
   }
 
   .nav-logo-enhanced {
-    transition: transform 0.2s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
   }
 
   .nav-logo-enhanced:hover {
     transform: scale(1.05);
+  }
+
+  /* Transparent navbar text shadow for better visibility */
+  .nav-text-shadow {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Smooth backdrop blur transition */
+  .navbar-transition {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 

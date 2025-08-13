@@ -13,7 +13,7 @@ export function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-18"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
       data-testid="hero-section"
     >
       {/* Video Background - YouTube iframe */}
