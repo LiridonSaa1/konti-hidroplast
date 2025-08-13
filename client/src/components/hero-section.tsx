@@ -38,7 +38,7 @@ export function HeroSection() {
           className="text-5xl md:text-7xl hero-title mb-6 uppercase"
           data-testid="hero-title"
         >
-          {t("hero.title.line1")}
+          <span style={{ color: '#eb2127' }}>{t("hero.title.line1")}</span>
           <br />
           <span className="font-light text-white/90">{t("hero.title.line2")}</span>
           <br />

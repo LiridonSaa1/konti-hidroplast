@@ -100,7 +100,7 @@ const translations = {
     
     // Hero Section
     'hero.title.line1': 'Непревзойдени европски',
-    'hero.title.line2': 'Стандарди',
+    'hero.title.line2': 'стандарди',
     'hero.title.line3': 'за прецизност на цевководи',
     'hero.banner.title': 'ВИСОКО-КВАЛИТЕТНИ ЦЕВКИ',
     'hero.banner.subtitle': 'ДВИЖЕЈЌИ НАПРЕДОК СО ИНОВАЦИИ',
