@@ -7,13 +7,16 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const products = [
   {
     title: "WATER SUPPLY SYSTEMS",
-    description: "High-quality PE pipes for reliable water distribution networks.",
+    description:
+      "High-quality PE pipes for reliable water distribution networks.",
     image: "/attached_assets/Water-supply-min-1_1755115058874.jpg",
   },
   {
-    title: "SEWERAGE SYSTEMS", 
-    description: "Durable PP pipes designed for efficient wastewater management.",
-    image: "/attached_assets/Konti-Hidroplast-Proizvodstvo-27-1_1755115099243.jpg",
+    title: "SEWERAGE SYSTEMS",
+    description:
+      "Durable PP pipes designed for efficient wastewater management.",
+    image:
+      "/attached_assets/Konti-Hidroplast-Proizvodstvo-27-1_1755115099243.jpg",
   },
   {
     title: "GAS PIPELINE SYSTEM",
@@ -22,24 +25,10 @@ const products = [
   },
   {
     title: "CABLE PROTECTION",
-    description: "Protective conduits for electrical and telecommunications cables.",
+    description:
+      "Protective conduits for electrical and telecommunications cables.",
     image: "/attached_assets/CABLE-PROTECTION-min-1_1755115210995.jpg",
   },
-  // {
-  //   title: "INDUSTRIAL PIPES",
-  //   description: "Heavy-duty pipes for industrial applications and chemical resistance.",
-  //   image: "/attached_assets/image_1755091805124.png",
-  // },
-  // {
-  //   title: "PIPE FITTINGS",
-  //   description: "Complete range of fittings and accessories for all pipe systems.",
-  //   image: "/attached_assets/image_1755091852060.png",
-  // },
-  // {
-  //   title: "DRAINAGE SYSTEMS",
-  //   description: "Efficient drainage solutions for construction and infrastructure.",
-  //   image: "/attached_assets/image_1755091984074.png",
-  // },
 ];
 
 export function ProductsSection() {
@@ -59,10 +48,17 @@ export function ProductsSection() {
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + Math.ceil(products.length / 3)) % Math.ceil(products.length / 3));
+    setCurrentSlide(
+      (prev) =>
+        (prev - 1 + Math.ceil(products.length / 3)) %
+        Math.ceil(products.length / 3),
+    );
   };
 
-  const visibleProducts = products.slice(currentSlide * 3, currentSlide * 3 + 3);
+  const visibleProducts = products.slice(
+    currentSlide * 3,
+    currentSlide * 3 + 3,
+  );
 
   return (
     <section
@@ -83,7 +79,6 @@ export function ProductsSection() {
           >
             Products
           </h2>
-          
         </div>
 
         {/* Slider Container */}
@@ -107,7 +102,7 @@ export function ProductsSection() {
                     className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                   />
                 </div>
-                
+
                 {/* Product Content */}
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-konti-gray mb-3 uppercase tracking-wide">
@@ -135,7 +130,7 @@ export function ProductsSection() {
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          
+
           <Button
             onClick={nextSlide}
             variant="outline"
@@ -148,15 +143,17 @@ export function ProductsSection() {
 
           {/* Slide Indicators */}
           <div className="flex justify-center mt-8 space-x-2">
-            {Array.from({ length: Math.ceil(products.length / 3) }).map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-3 h-3 rounded-full transition-colors ${
-                  index === currentSlide ? 'bg-konti-blue' : 'bg-gray-300'
-                }`}
-              />
-            ))}
+            {Array.from({ length: Math.ceil(products.length / 3) }).map(
+              (_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-colors ${
+                    index === currentSlide ? "bg-konti-blue" : "bg-gray-300"
+                  }`}
+                />
+              ),
+            )}
           </div>
         </div>
       </div>
