@@ -68,12 +68,7 @@ export function ProductsSection() {
           >
             Products
           </h2>
-          <p
-            className="text-xl text-gray-600 max-w-3xl mx-auto"
-            data-testid="products-subtitle"
-          >
-            High-quality PE and PP pipes for various applications, meeting European standards
-          </p>
+          
         </div>
 
         {/* Slider Container */}
