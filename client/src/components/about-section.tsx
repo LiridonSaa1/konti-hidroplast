@@ -27,15 +27,7 @@ export function AboutSection() {
     >
       {/* Background Design with Red Lines */}
       <div className="absolute inset-0">
-        {/* Subtle gray grid */}
-        <div className="absolute inset-0 opacity-3">
-          <div className="absolute top-1/4 left-0 w-full h-px bg-gray-400"></div>
-          <div className="absolute top-1/2 left-0 w-full h-px bg-gray-400"></div>
-          <div className="absolute top-3/4 left-0 w-full h-px bg-gray-400"></div>
-          <div className="absolute left-1/4 top-0 w-px h-full bg-gray-400"></div>
-          <div className="absolute left-1/2 top-0 w-px h-full bg-gray-400"></div>
-          <div className="absolute left-3/4 top-0 w-px h-full bg-gray-400"></div>
-        </div>
+
         
         {/* Red accent lines */}
         <div className="absolute inset-0 opacity-20">
