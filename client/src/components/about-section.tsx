@@ -78,15 +78,22 @@ export function AboutSection() {
                 hasIntersected ? "animate-fade-in" : "opacity-0"
               }`}
             >
-              <div className="aspect-video rounded-xl overflow-hidden shadow-2xl w-full max-w-lg lg:max-w-none">
-                <iframe
-                  src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=0"
-                  title="Konti Hidroplast Corporate Video"
-                  className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  data-testid="about-video"
-                />
+              <div className="relative w-full max-w-lg lg:max-w-none">
+                {/* Blue decorative frame */}
+                <div className="absolute -inset-6 bg-blue-500 rounded-2xl"></div>
+                <div className="absolute -inset-3 bg-white rounded-xl"></div>
+                
+                {/* Video container */}
+                <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl">
+                  <iframe
+                    src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=0"
+                    title="Konti Hidroplast Corporate Video"
+                    className="w-full h-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    data-testid="about-video"
+                  />
+                </div>
               </div>
             </div>
           </div>
