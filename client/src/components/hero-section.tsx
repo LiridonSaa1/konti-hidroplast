@@ -17,17 +17,11 @@ export function HeroSection() {
       data-testid="hero-section"
     >
       {/* Video Background - YouTube iframe */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
         <iframe
           src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=1&playlist=R7b9-m_EM2s&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
           title="Konti Hidroplast Corporate Video"
-          className="absolute inset-0 w-full h-full"
-          style={{ 
-            width: '100vw',
-            height: '100vh',
-            objectFit: 'cover',
-            border: 'none'
-          }}
+          className="video-fullscreen"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           data-testid="hero-video"
