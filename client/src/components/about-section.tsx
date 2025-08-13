@@ -22,11 +22,11 @@ export function AboutSection() {
     <section
       id="about"
       ref={ref}
-      className="py-20 bg-konti-gray-light"
+      className="min-h-screen bg-konti-gray-light flex items-center"
       data-testid="about-section"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-screen">
           {/* Content */}
           <div
             className={`${
@@ -66,7 +66,7 @@ export function AboutSection() {
           >
             <div className="aspect-video rounded-xl overflow-hidden shadow-2xl">
               <iframe
-                src="https://www.youtube.com/embed/R7b9-m_EM2s"
+                src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=0"
                 title="Konti Hidroplast Corporate Video"
                 className="w-full h-full"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
