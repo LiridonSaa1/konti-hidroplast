@@ -84,19 +84,6 @@ export function CertificationsSection() {
       data-testid="certifications-section"
     >
       <div className="w-full px-4 sm:px-6 lg:px-8">
-        <div
-          className={`text-center mb-12 ${
-            hasIntersected ? "animate-fade-in" : "opacity-0"
-          }`}
-        >
-          <p
-            className="text-lg text-gray-600"
-            data-testid="certifications-subtitle"
-          >
-            Trusted by leading organizations worldwide
-          </p>
-        </div>
-
         {/* Enhanced certification grid */}
         <div className="relative">
           <div
