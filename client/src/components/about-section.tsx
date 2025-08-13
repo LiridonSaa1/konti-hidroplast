@@ -22,9 +22,20 @@ export function AboutSection() {
     <section
       id="about"
       ref={ref}
-      className="min-h-screen bg-konti-gray-light flex items-center"
+      className="min-h-screen bg-konti-gray-light flex items-center relative overflow-hidden"
       data-testid="about-section"
     >
+      {/* Background Lines */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-1/4 left-0 w-full h-px bg-gray-400"></div>
+        <div className="absolute top-1/2 left-0 w-full h-px bg-gray-400"></div>
+        <div className="absolute top-3/4 left-0 w-full h-px bg-gray-400"></div>
+        <div className="absolute left-1/4 top-0 w-px h-full bg-gray-400"></div>
+        <div className="absolute left-1/2 top-0 w-px h-full bg-gray-400"></div>
+        <div className="absolute left-3/4 top-0 w-px h-full bg-gray-400"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 border border-gray-400 rounded-full"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 border border-gray-400 rounded-full"></div>
+      </div>
       <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-center">
         <div className="max-w-6xl w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-screen">
