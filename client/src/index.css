@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -31,7 +31,7 @@
   --konti-gray: hsl(215, 25%, 27%);
   --konti-gray-light: hsl(210, 20%, 98%);
   
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 .dark {

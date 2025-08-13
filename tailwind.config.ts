@@ -71,6 +71,7 @@ export default {
         serif: ["var(--font-serif)"],
         mono: ["var(--font-mono)"],
         inter: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        'space-grotesk': ['Space Grotesk', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
       },
       keyframes: {
         "accordion-down": {
