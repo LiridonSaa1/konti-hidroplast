@@ -51,6 +51,11 @@ function StatisticCard({ value, label, suffix, isActive, delay }: StatisticCardP
     duration: 2000,
   });
 
+  // Format numbers with periods as thousand separators
+  const formatNumber = (num: number) => {
+    return num.toLocaleString('de-DE'); // German locale uses periods as thousand separators
+  };
+
   return (
     <div
       className={`text-center ${
@@ -60,7 +65,7 @@ function StatisticCard({ value, label, suffix, isActive, delay }: StatisticCardP
       data-testid={`stat-${label.toLowerCase()}`}
     >
       <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
-        {count}{suffix}
+        {formatNumber(count)}{suffix}
       </div>
       <div className="text-blue-200 font-medium">{label}</div>
     </div>
