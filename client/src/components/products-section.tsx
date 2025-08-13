@@ -25,21 +25,21 @@ const products = [
     description: "Protective conduits for electrical and telecommunications cables.",
     image: "/attached_assets/CABLE-PROTECTION-min-1_1755115210995.jpg",
   },
-  {
-    title: "INDUSTRIAL PIPES",
-    description: "Heavy-duty pipes for industrial applications and chemical resistance.",
-    image: "/attached_assets/image_1755091805124.png",
-  },
-  {
-    title: "PIPE FITTINGS",
-    description: "Complete range of fittings and accessories for all pipe systems.",
-    image: "/attached_assets/image_1755091852060.png",
-  },
-  {
-    title: "DRAINAGE SYSTEMS",
-    description: "Efficient drainage solutions for construction and infrastructure.",
-    image: "/attached_assets/image_1755091984074.png",
-  },
+  // {
+  //   title: "INDUSTRIAL PIPES",
+  //   description: "Heavy-duty pipes for industrial applications and chemical resistance.",
+  //   image: "/attached_assets/image_1755091805124.png",
+  // },
+  // {
+  //   title: "PIPE FITTINGS",
+  //   description: "Complete range of fittings and accessories for all pipe systems.",
+  //   image: "/attached_assets/image_1755091852060.png",
+  // },
+  // {
+  //   title: "DRAINAGE SYSTEMS",
+  //   description: "Efficient drainage solutions for construction and infrastructure.",
+  //   image: "/attached_assets/image_1755091984074.png",
+  // },
 ];
 
 export function ProductsSection() {
