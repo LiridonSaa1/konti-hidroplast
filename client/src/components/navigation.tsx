@@ -135,11 +135,7 @@ export function Navigation() {
         <button
           key={item.href}
           onClick={() => scrollToSection(item.href)}
-          className={`${isMobile ? "w-full text-left" : ""} px-4 py-3 text-sm font-medium transition-all duration-300 ${
-            activeSection === sectionId
-              ? (isScrolled ? "text-konti-blue" : "text-white font-bold nav-text-shadow")
-              : (isScrolled ? "text-konti-gray hover:text-konti-blue" : "text-white/90 hover:text-white nav-text-shadow")
-          }`}
+          className="px-4 py-3 font-medium transition-all duration-300 text-white/90 hover:text-white nav-text-shadow text-[15px]"
           data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
         >
           {item.label}
@@ -172,11 +168,7 @@ export function Navigation() {
       <DropdownMenu key={item.label} modal={false}>
         <DropdownMenuTrigger asChild>
           <button
-            className={`px-4 py-3 text-sm font-medium transition-all duration-300 flex items-center gap-1 focus:outline-none focus-visible:outline-none data-[state=open]:text-konti-blue ${
-              isScrolled 
-                ? "text-konti-gray hover:text-konti-blue data-[state=open]:text-konti-blue" 
-                : "text-white/90 hover:text-white nav-text-shadow data-[state=open]:text-white"
-            }`}
+            className="px-4 py-3 font-medium transition-all duration-300 flex items-center gap-1 focus:outline-none focus-visible:outline-none text-white/90 hover:text-white nav-text-shadow data-[state=open]:text-white text-[15px]"
             data-testid={`nav-${item.label.toLowerCase()}`}
           >
             {item.label}
