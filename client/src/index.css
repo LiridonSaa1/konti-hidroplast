@@ -91,6 +91,39 @@
   .animate-counter {
     animation: counter 2s ease-out;
   }
+
+  /* Navigation Dropdown Styles */
+  .nav-dropdown {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    min-width: 200px;
+  }
+
+  .nav-dropdown-item {
+    padding: 12px 16px;
+    transition: background-color 0.15s ease-in-out;
+  }
+
+  .nav-dropdown-item:hover {
+    background-color: #f9fafb;
+  }
+
+  /* Enhanced Navigation Styles */
+  .navbar-enhanced {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.2);
+  }
+
+  .nav-logo-enhanced {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .nav-logo-enhanced:hover {
+    transform: scale(1.05);
+  }
 }
 
 @keyframes fadeIn {
