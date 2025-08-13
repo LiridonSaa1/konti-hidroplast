@@ -89,12 +89,6 @@ export function CertificationsSection() {
             hasIntersected ? "animate-fade-in" : "opacity-0"
           }`}
         >
-          <h2
-            className="text-3xl font-bold text-konti-gray mb-4"
-            data-testid="certifications-title"
-          >
-            Certifications & Partners
-          </h2>
           <p
             className="text-lg text-gray-600"
             data-testid="certifications-subtitle"
