@@ -169,26 +169,31 @@ export function Navigation() {
     }
 
     return (
-      <DropdownMenu key={item.label}>
+      <DropdownMenu key={item.label} modal={false}>
         <DropdownMenuTrigger asChild>
           <button
-            className={`px-4 py-3 text-sm font-medium transition-all duration-300 flex items-center gap-1 ${
+            className={`px-4 py-3 text-sm font-medium transition-all duration-300 flex items-center gap-1 focus:outline-none focus-visible:outline-none data-[state=open]:text-konti-blue ${
               isScrolled 
-                ? "text-konti-gray hover:text-konti-blue" 
-                : "text-white/90 hover:text-white nav-text-shadow"
+                ? "text-konti-gray hover:text-konti-blue data-[state=open]:text-konti-blue" 
+                : "text-white/90 hover:text-white nav-text-shadow data-[state=open]:text-white"
             }`}
             data-testid={`nav-${item.label.toLowerCase()}`}
           >
             {item.label}
-            <ChevronDown className="h-5 w-5" />
+            <ChevronDown className="h-5 w-5 transition-transform duration-200 data-[state=open]:rotate-180" />
           </button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="nav-dropdown w-56 bg-white shadow-lg border-0">
+        <DropdownMenuContent 
+          align="start" 
+          className="nav-dropdown w-56 bg-white shadow-lg border-0 z-50"
+          sideOffset={8}
+          onCloseAutoFocus={(event) => event.preventDefault()}
+        >
           {item.items.map((subItem, index) => (
             <DropdownMenuItem
               key={index}
               onClick={() => handleDropdownClick(subItem.href, subItem.external)}
-              className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue"
+              className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
               data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
             >
               <span>{subItem.label}</span>
