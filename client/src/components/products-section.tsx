@@ -1,4 +1,6 @@
-import { ProductCard } from "@/components/product-card";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -28,6 +30,7 @@ const products = [
 export function ProductsSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.1 });
   const { t } = useLanguage();
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const scrollToContact = () => {
     const contactSection = document.getElementById("contact");
@@ -36,23 +39,24 @@ export function ProductsSection() {
     }
   };
 
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % Math.ceil(products.length / 2));
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + Math.ceil(products.length / 2)) % Math.ceil(products.length / 2));
+  };
+
+  const visibleProducts = products.slice(currentSlide * 2, currentSlide * 2 + 2);
+
   return (
     <section
       id="products"
       ref={ref}
-      className="py-20 bg-konti-gray-light relative overflow-hidden"
+      className="py-20 bg-white relative overflow-hidden"
       data-testid="products-section"
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `radial-gradient(circle at 25% 25%, #1c2d56 2px, transparent 2px),
-                           radial-gradient(circle at 75% 75%, #1c2d56 2px, transparent 2px)`,
-          backgroundSize: '100px 100px'
-        }}></div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div
           className={`text-center mb-16 ${
             hasIntersected ? "animate-fade-in" : "opacity-0"
@@ -72,18 +76,81 @@ export function ProductsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {products.map((product, index) => (
-            <ProductCard
-              key={product.title}
-              title={product.title}
-              description={product.description}
-              image={product.image}
-              index={index}
-              hasIntersected={hasIntersected}
-              onLearnMore={scrollToContact}
-            />
-          ))}
+        {/* Slider Container */}
+        <div className="relative">
+          {/* Products Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 transition-all duration-500">
+            {visibleProducts.map((product, index) => (
+              <div
+                key={`${currentSlide}-${index}`}
+                className={`bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 ${
+                  hasIntersected ? "animate-slide-up" : "opacity-0"
+                }`}
+                style={{ animationDelay: `${index * 200}ms` }}
+                data-testid={`product-card-${index}`}
+              >
+                {/* Product Image */}
+                <div className="h-64 overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                  />
+                </div>
+                
+                {/* Product Content */}
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-konti-gray mb-3 uppercase tracking-wide">
+                    {product.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4 leading-relaxed">
+                    {product.description}
+                  </p>
+                  <Button
+                    onClick={scrollToContact}
+                    variant="outline"
+                    className="border-konti-blue text-konti-blue hover:bg-konti-blue hover:text-white transition-colors"
+                  >
+                    Learn More
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Navigation Arrows */}
+          <Button
+            onClick={prevSlide}
+            variant="outline"
+            size="icon"
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white shadow-lg border-gray-200 hover:bg-gray-50 z-10"
+            disabled={currentSlide === 0}
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
+          
+          <Button
+            onClick={nextSlide}
+            variant="outline"
+            size="icon"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white shadow-lg border-gray-200 hover:bg-gray-50 z-10"
+            disabled={currentSlide === Math.ceil(products.length / 2) - 1}
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+
+          {/* Slide Indicators */}
+          <div className="flex justify-center mt-8 space-x-2">
+            {Array.from({ length: Math.ceil(products.length / 2) }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-3 h-3 rounded-full transition-colors ${
+                  index === currentSlide ? 'bg-konti-blue' : 'bg-gray-300'
+                }`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
