@@ -3,48 +3,59 @@ import { useEffect, useState } from "react";
 
 const certifications = [
   {
-    src: "/attached_assets/DVGW_1755117121149.png",
+    src: "/attached_assets/DVGW_1755117824782.png",
     alt: "DVGW Certification",
+    name: "DVGW",
   },
   {
-    src: "/attached_assets/fondedil-1_1755117121150.png",
+    src: "/attached_assets/fondedil-1_1755117824782.png",
     alt: "Fondedil Partnership",
+    name: "Fondedil",
   },
   {
-    src: "/attached_assets/Guvernul_Romaniei-2_1755117121150.png",
+    src: "/attached_assets/Guvernul_Romaniei-2_1755117824783.png",
     alt: "Romanian Government Partnership",
+    name: "Romanian Government",
   },
   {
-    src: "/attached_assets/Igh_1755117121150.png",
+    src: "/attached_assets/Igh_1755117824783.png",
     alt: "IGH Certification",
+    name: "IGH",
   },
   {
-    src: "/attached_assets/MpaifW_1755117121150.png",
+    src: "/attached_assets/MpaifW_1755117824783.png",
     alt: "MpaifW Certification",
+    name: "MpaifW",
   },
   {
-    src: "/attached_assets/Exact_1755117121151.png",
+    src: "/attached_assets/Exact_1755117824783.png",
     alt: "Exact Certification",
+    name: "Exact",
   },
   {
-    src: "/attached_assets/bsk_1755117121151.png",
+    src: "/attached_assets/bsk_1755117824784.png",
     alt: "BSK Certification",
+    name: "BSK",
   },
   {
-    src: "/attached_assets/Qualityaustria_1755117121151.png",
+    src: "/attached_assets/Qualityaustria_1755117824784.png",
     alt: "Quality Austria Certification",
+    name: "Quality Austria",
   },
   {
-    src: "/attached_assets/certifikat_45001_2-2_1755117121152.png",
+    src: "/attached_assets/certifikat_45001_2-2_1755117824784.png",
     alt: "ISO 45001 Certification",
+    name: "ISO 45001",
   },
   {
-    src: "/attached_assets/49335-2_1755117121152.png",
+    src: "/attached_assets/49335-2_1755117824785.png",
     alt: "ISO 49335 Certification",
+    name: "ISO 49335",
   },
   {
-    src: "/attached_assets/IQ-net_1755117121152.png",
+    src: "/attached_assets/IQ-net_1755117824785.png",
     alt: "IQ Net Certification",
+    name: "IQ-Net",
   },
 ];
 
@@ -92,7 +103,7 @@ export function CertificationsSection() {
           </p>
         </div>
 
-        {/* Auto-sliding carousel */}
+        {/* Enhanced certification grid */}
         <div className="relative">
           <div
             className={`transition-opacity duration-1000 ${
@@ -100,22 +111,31 @@ export function CertificationsSection() {
             }`}
             data-testid="certifications-carousel"
           >
-            <div className="flex justify-center items-center gap-8 md:gap-12">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8 lg:gap-12">
               {visibleCertifications.map((cert, index) => (
                 <div
                   key={`${currentSlide}-${index}`}
-                  className={`flex-shrink-0 transform transition-all duration-700 ${
+                  className={`group transform transition-all duration-700 ${
                     hasIntersected ? "animate-slide-up" : "opacity-0"
                   }`}
                   style={{ animationDelay: `${index * 150}ms` }}
                   data-testid={`certification-${index}`}
                 >
-                  <img
-                    src={cert.src}
-                    alt={cert.alt}
-                    className="h-16 w-auto filter grayscale hover:grayscale-0 transition-all duration-500 hover:scale-110"
-                    loading="lazy"
-                  />
+                  <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-konti-blue/20">
+                    <div className="flex flex-col items-center">
+                      <div className="h-16 w-full flex items-center justify-center mb-2">
+                        <img
+                          src={cert.src}
+                          alt={cert.alt}
+                          className="max-h-full max-w-full w-auto object-contain filter brightness-90 group-hover:brightness-100 transition-all duration-300 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      </div>
+                      <span className="text-xs text-gray-600 font-medium text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        {cert.name}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
