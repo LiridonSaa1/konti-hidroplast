@@ -225,7 +225,7 @@ export function Navigation() {
           {/* Desktop Navigation */}
           <div className="hidden md:block">
             <div className="ml-12 flex items-center space-x-8">
-              <div className="flex items-baseline space-x-8">
+              <div className="flex items-baseline space-x-8 text-[13px]">
                 {navigationItems.map(item => renderNavigationItem(item))}
               </div>
               <LanguageSwitcher />
