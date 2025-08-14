@@ -82,6 +82,13 @@
     background-color: rgb(28, 45, 86);
   }
   
+  /* Contact form input focus styles */
+  input:focus,
+  textarea:focus {
+    border-color: rgb(28, 45, 86) !important;
+    box-shadow: 0 0 0 3px rgba(28, 45, 86, 0.1) !important;
+  }
+  
   .hero-overlay {
     background: linear-gradient(135deg, hsl(221, 83%, 53%, 0.4) 0%, hsl(217, 91%, 60%, 0.4) 100%);
   }

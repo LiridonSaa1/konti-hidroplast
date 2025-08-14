@@ -136,8 +136,8 @@ export function ContactSection() {
             <div className="absolute inset-0 bg-gradient-to-tr from-gray-50 via-white to-blue-50 rounded-2xl transform -rotate-1"></div>
             
             <Card className="relative bg-white shadow-2xl border-0 rounded-2xl overflow-hidden">
-              {/* Card Header with gradient */}
-              <div className="bg-gradient-to-r from-konti-gray via-slate-700 to-konti-gray p-8 text-center relative overflow-hidden">
+              {/* Card Header with solid color */}
+              <div className="p-8 text-center relative overflow-hidden" style={{backgroundColor: 'rgb(28, 45, 86)'}}>
                 {/* Decorative elements */}
                 <div className="absolute top-0 left-0 w-20 h-20 bg-white/10 rounded-full -translate-x-10 -translate-y-10"></div>
                 <div className="absolute bottom-0 right-0 w-16 h-16 bg-white/10 rounded-full translate-x-8 translate-y-8"></div>
@@ -169,7 +169,8 @@ export function ContactSection() {
                           type="text"
                           value={formData.name}
                           onChange={(e) => handleInputChange("name", e.target.value)}
-                          className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-konti-blue focus:ring-4 focus:ring-konti-blue/20 transition-all duration-300 bg-gray-50 hover:bg-white"
+                          className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
+                          style={{'--focus-border-color': 'rgb(28, 45, 86)'}}
                           placeholder="Enter your full name"
                           required
                           data-testid="input-name"
@@ -187,7 +188,8 @@ export function ContactSection() {
                           type="email"
                           value={formData.email}
                           onChange={(e) => handleInputChange("email", e.target.value)}
-                          className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-konti-blue focus:ring-4 focus:ring-konti-blue/20 transition-all duration-300 bg-gray-50 hover:bg-white"
+                          className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
+                          style={{'--focus-border-color': 'rgb(28, 45, 86)'}}
                           placeholder="your.email@company.com"
                           required
                           data-testid="input-email"
@@ -208,7 +210,8 @@ export function ContactSection() {
                         type="text"
                         value={formData.company}
                         onChange={(e) => handleInputChange("company", e.target.value)}
-                        className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-konti-blue focus:ring-4 focus:ring-konti-blue/20 transition-all duration-300 bg-gray-50 hover:bg-white"
+                        className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
+                        style={{'--focus-border-color': 'rgb(28, 45, 86)'}}
                         placeholder="Your company name"
                         data-testid="input-company"
                       />
@@ -227,7 +230,8 @@ export function ContactSection() {
                         value={formData.message}
                         onChange={(e) => handleInputChange("message", e.target.value)}
                         rows={5}
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-konti-blue focus:ring-4 focus:ring-konti-blue/20 transition-all duration-300 bg-gray-50 hover:bg-white resize-none"
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white resize-none"
+                        style={{'--focus-border-color': 'rgb(28, 45, 86)'}}
                         placeholder="Tell us about your pipeline needs..."
                         required
                         data-testid="input-message"
