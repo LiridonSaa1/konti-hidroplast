@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -75,8 +75,10 @@ export function Navigation() {
   const [location, setLocation] = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { t } = useLanguage();
   const navigationItems = useNavigationItems(t);
+  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -132,6 +134,19 @@ export function Navigation() {
     } else {
       scrollToSection(href);
     }
+  };
+
+  const handleDropdownMouseEnter = (label: string) => {
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current);
+    }
+    setOpenDropdown(label);
+  };
+
+  const handleDropdownMouseLeave = () => {
+    dropdownTimeoutRef.current = setTimeout(() => {
+      setOpenDropdown(null);
+    }, 200); // Small delay to allow moving to the dropdown content
   };
 
   const renderNavigationItem = (item: NavigationItem, isMobile: boolean = false) => {
@@ -197,39 +212,48 @@ export function Navigation() {
       );
     }
 
+    const isOpen = openDropdown === item.label;
+    
     return (
-      <DropdownMenu key={item.label} modal={false}>
-        <DropdownMenuTrigger asChild>
-          <button
-            className={`px-4 py-3 font-medium transition-all duration-300 flex items-center gap-1 focus:outline-none focus-visible:outline-none text-[15px] ${
-              isScrolled 
-                ? "text-black hover:text-konti-blue data-[state=open]:text-konti-blue" 
-                : "text-white/90 hover:text-white nav-text-shadow data-[state=open]:text-white"
-            }`}
-            data-testid={`nav-${item.label.toLowerCase()}`}
-          >
-            {item.label}
-            <ChevronDown className="h-5 w-5 transition-transform duration-200 data-[state=open]:rotate-180" />
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent 
-          align="start" 
-          className="nav-dropdown w-56 bg-white shadow-lg border-0 z-50"
-          sideOffset={8}
-          onCloseAutoFocus={(event) => event.preventDefault()}
+      <DropdownMenu key={item.label} modal={false} open={isOpen} onOpenChange={() => {}}>
+        <div
+          onMouseEnter={() => handleDropdownMouseEnter(item.label)}
+          onMouseLeave={handleDropdownMouseLeave}
         >
-          {item.items.map((subItem, index) => (
-            <DropdownMenuItem
-              key={index}
-              onClick={() => handleDropdownClick(subItem.href, subItem.external)}
-              className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
-              data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+          <DropdownMenuTrigger asChild>
+            <button
+              className={`px-4 py-3 font-medium transition-all duration-300 flex items-center gap-1 focus:outline-none focus-visible:outline-none text-[15px] ${
+                isScrolled 
+                  ? `text-black hover:text-konti-blue ${isOpen ? 'text-konti-blue' : ''}` 
+                  : `text-white/90 hover:text-white nav-text-shadow ${isOpen ? 'text-white' : ''}`
+              }`}
+              data-testid={`nav-${item.label.toLowerCase()}`}
             >
-              <span>{subItem.label}</span>
-              {subItem.external && <ExternalLink className="h-3 w-3 text-gray-400" />}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
+              {item.label}
+              <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent 
+            align="start" 
+            className="nav-dropdown w-56 bg-white shadow-lg border-0 z-50"
+            sideOffset={8}
+            onCloseAutoFocus={(event) => event.preventDefault()}
+            onMouseEnter={() => handleDropdownMouseEnter(item.label)}
+            onMouseLeave={handleDropdownMouseLeave}
+          >
+            {item.items.map((subItem, index) => (
+              <DropdownMenuItem
+                key={index}
+                onClick={() => handleDropdownClick(subItem.href, subItem.external)}
+                className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
+                data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+              >
+                <span>{subItem.label}</span>
+                {subItem.external && <ExternalLink className="h-3 w-3 text-gray-400" />}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </div>
       </DropdownMenu>
     );
   };
