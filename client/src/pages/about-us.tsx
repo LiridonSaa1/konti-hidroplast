@@ -21,7 +21,7 @@ const timelineData = [
   { year: "2003", title: "New International Offices", description: "In 2003 were opened new company representations in Albania, Bosnia & Herzegovina and Croatia." },
   { year: "2004", title: "New Product", description: "In 2004 began the production of a new product, the spiral sewage pipes with a diameter up to F1200mm." },
   { year: "2006", title: "New Production Line", description: "In 2006 was installed a new production line for ribbed double-layer pipes with a diameter of up to F1200mm" },
-  { year: "2008", title: "Technology Upgrade", description: "In 2008, the company invested in advanced manufacturing technology and quality control systems to enhance production efficiency and product reliability." },
+  { year: "2008", title: "New Capacity Increase", description: "In 2008, we increased the production capacity of ribbed pipes with an additional production line, as well as a line for pressure pipes." },
   { year: "2009", title: "PP HM", description: "In 2009, Konti Hidroplast expanded its production lines and product range with a new product, the PP HM pipes." },
   { year: "2011", title: "New Line and Machines", description: "Two new injection molding machines for the production of sewer fittings and a new production line for spiral pipes in the dimensional range of 1300-2000 mm." },
   { year: "2013", title: "Expansion and Renovation", description: "Expansion of the factory's storage space with new areas. A new production line for pressure pipes up to 110 mm in diameter. Two new machines for perforating pressure pipes. Complete renovation of the area surrounding the factory." },
