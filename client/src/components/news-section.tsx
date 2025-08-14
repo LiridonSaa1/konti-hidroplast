@@ -96,16 +96,17 @@ export function NewsSection() {
         </div>
 
         <div className="text-center mt-12">
-          <Button
-            asChild
-            className="konti-gradient text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+          <a 
+            href="https://konti-hidroplast.com.mk/news/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-flex items-center px-8 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:shadow-lg"
+            style={{backgroundColor: '#1c2d56'}}
             data-testid="view-all-news"
           >
-            <a href="https://konti-hidroplast.com.mk/news/" target="_blank" rel="noopener noreferrer">
-              View All News
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </a>
-          </Button>
+            <span>View All News</span>
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </a>
         </div>
       </div>
     </section>
