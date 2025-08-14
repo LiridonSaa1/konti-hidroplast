@@ -710,9 +710,7 @@ export default function AboutUs() {
               </div>
               <CardContent className="p-6 bg-white">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">European Infrastructure Projects</h3>
-                <p className="text-gray-600 mb-4 text-sm">
-                  Large-scale pipeline installation and infrastructure development projects across the European Union
-                </p>
+                
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -743,9 +741,7 @@ export default function AboutUs() {
               </div>
               <CardContent className="p-6 bg-white">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Advanced Piping Systems</h3>
-                <p className="text-gray-600 mb-4 text-sm">
-                  Innovative PE and PP piping systems designed for complex industrial and municipal applications
-                </p>
+                
                 <Button 
                   variant="outline" 
                   size="sm" 
