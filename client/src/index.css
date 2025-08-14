@@ -123,6 +123,11 @@
     filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
   }
 
+  /* News Read More Button Hover */
+  .news-read-more:hover {
+    color: #1c2d56 !important;
+  }
+
   .nav-logo-enhanced:hover {
     transform: scale(1.08);
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));

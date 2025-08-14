@@ -82,7 +82,7 @@ export function NewsSection() {
                 <Button
                   variant="link"
                   asChild
-                  className="text-konti-blue font-semibold hover:text-blue-700 transition-colors p-0"
+                  className="text-konti-blue font-semibold transition-colors p-0 news-read-more"
                   data-testid={`news-read-more-${index}`}
                 >
                   <a href={article.link} target="_blank" rel="noopener noreferrer">
