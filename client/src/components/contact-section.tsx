@@ -245,7 +245,8 @@ export function ContactSection() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full h-14 bg-primary text-white text-lg font-semibold rounded-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden group"
+                      className="w-full h-12 text-white text-base font-medium rounded-lg hover:opacity-90 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
+                      style={{backgroundColor: 'rgb(28, 45, 86)'}}
                       data-testid="submit-form"
                     >
                       <span className="relative z-10">
