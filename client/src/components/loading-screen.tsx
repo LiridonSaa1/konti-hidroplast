@@ -1,76 +1,58 @@
-import { useEffect, useState } from "react";
-import logoPath from "@assets/Logo-konti_1755091117511.png";
+import { useState, useEffect } from "react";
+import logoPath from "@assets/urban-rohr-logo.svg";
 
 interface LoadingScreenProps {
   onLoadingComplete: () => void;
 }
 
 export function LoadingScreen({ onLoadingComplete }: LoadingScreenProps) {
-  const [isVisible, setIsVisible] = useState(true);
-  const [logoLoaded, setLogoLoaded] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [fadeOut, setFadeOut] = useState(false);
 
   useEffect(() => {
-    // Simulate minimum loading time
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-      // Wait for fade out animation to complete before calling onLoadingComplete
-      setTimeout(onLoadingComplete, 800);
-    }, 2000);
+    // Simulate loading progress
+    const interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          // Start fade out animation
+          setTimeout(() => {
+            setFadeOut(true);
+            // Complete loading after fade animation
+            setTimeout(() => {
+              onLoadingComplete();
+            }, 500);
+          }, 300);
+          return 100;
+        }
+        return prev + Math.random() * 15 + 5;
+      });
+    }, 100);
 
-    return () => clearTimeout(timer);
+    return () => clearInterval(interval);
   }, [onLoadingComplete]);
 
-  if (!isVisible) {
-    return (
-      <div className="fixed inset-0 bg-white z-50 flex items-center justify-center animate-fade-out">
-        <div className="text-center">
-          <div className="relative">
-            <img
-              src={logoPath}
-              alt="Konti Hidroplast"
-              className="h-24 w-auto mx-auto animate-fade-out"
-              onLoad={() => setLogoLoaded(true)}
-              data-testid="loading-logo"
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="fixed inset-0 bg-white z-50 flex items-center justify-center">
-      <div className="text-center">
-        <div className="relative">
-          {/* Logo with reveal animation */}
+    <div
+      className={`fixed inset-0 z-[9999] bg-gray-100 flex items-center justify-center transition-opacity duration-500 ${
+        fadeOut ? "opacity-0" : "opacity-100"
+      }`}
+    >
+      <div className="flex flex-col items-center space-y-6">
+        {/* Logo with subtle animation */}
+        <div className="animate-pulse">
           <img
             src={logoPath}
-            alt="Konti Hidroplast"
-            className={`h-24 w-auto mx-auto transition-all duration-1000 ${
-              logoLoaded ? "opacity-100 scale-100" : "opacity-0 scale-95"
-            }`}
-            onLoad={() => setLogoLoaded(true)}
-            data-testid="loading-logo"
+            alt="Urban Rohr"
+            className="h-20 w-auto"
           />
-          
-          {/* Subtle pulse animation */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-pulse"></div>
         </div>
-        
-        {/* Loading text */}
-        <div className={`mt-6 transition-all duration-1000 delay-500 ${
-          logoLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-        }`}>
-          <p className="text-[#1c2d56] font-semibold text-lg tracking-wide">
-            KONTI HIDROPLAST
-          </p>
-          <div className="mt-3 flex justify-center">
-            <div className="flex space-x-1">
-              <div className="w-2 h-2 bg-[#1c2d56] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-              <div className="w-2 h-2 bg-[#1c2d56] rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-              <div className="w-2 h-2 bg-[#1c2d56] rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
-            </div>
-          </div>
+
+        {/* Simple loading indicator */}
+        <div className="flex space-x-2">
+          <div className="w-2 h-2 bg-konti-blue rounded-full animate-bounce" style={{animationDelay: '0ms'}}></div>
+          <div className="w-2 h-2 bg-konti-blue rounded-full animate-bounce" style={{animationDelay: '150ms'}}></div>
+          <div className="w-2 h-2 bg-konti-blue rounded-full animate-bounce" style={{animationDelay: '300ms'}}></div>
         </div>
       </div>
     </div>
