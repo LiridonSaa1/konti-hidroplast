@@ -60,7 +60,6 @@ export default function AboutUs() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white pt-32 pb-20">
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
@@ -114,7 +113,6 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
       {/* Company Story Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -133,7 +131,7 @@ export default function AboutUs() {
               
               <p className="text-lg leading-relaxed text-gray-700 mb-6">
                 Following the successful start aided by the experience gained by successfully realized projects in the Republic of North Macedonia, 
-                today our company is export-oriented, and <strong className="text-blue-700">95% of its products are exported</strong> in international markets.
+                today our company is export-oriented, and <strong className="text-[#1c2d56]">95% of its products are exported</strong> in international markets.
               </p>
               
               <p className="text-lg leading-relaxed text-gray-700">
@@ -146,7 +144,6 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
       {/* Mission, Vision, Values */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -192,7 +189,6 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
       {/* Leadership Quote */}
       <section className="py-20 bg-gradient-to-r from-slate-900 to-blue-900 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -214,7 +210,6 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
       {/* Company Timeline */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -278,7 +273,6 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
       {/* Team Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -359,10 +353,8 @@ export default function AboutUs() {
           </Tabs>
         </div>
       </section>
-
       {/* Certifications */}
       <CertificationsSection />
-
       <Footer />
     </div>
   );
