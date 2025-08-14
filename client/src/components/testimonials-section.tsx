@@ -30,12 +30,6 @@ export function TestimonialsSection() {
             hasIntersected ? "animate-fade-in" : "opacity-0"
           }`}
         >
-          <h2
-            className="text-4xl font-bold text-konti-gray mb-4"
-            data-testid="testimonials-title"
-          >
-            What Our Partners Say
-          </h2>
           <p
             className="text-xl text-gray-600"
             data-testid="testimonials-subtitle"
