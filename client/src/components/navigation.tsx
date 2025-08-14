@@ -35,7 +35,7 @@ interface NavigationDropdown {
 type NavigationItem = NavigationLink | NavigationDropdown;
 
 const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
-  { href: "#home", label: t("nav.home"), type: "link" },
+  { href: "/", label: t("nav.home"), type: "link" },
   { href: "/about-us", label: t("nav.about"), type: "link" },
   { 
     label: t("nav.products"), 
@@ -229,7 +229,7 @@ export function Navigation() {
               src={isScrolled ? logoScrolled : logoDefault}
               alt="Urban Rohr"
               className="h-16 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
-              onClick={() => scrollToSection("#home")}
+              onClick={() => scrollToSection("/")}
               data-testid="logo"
             />
           </div>
