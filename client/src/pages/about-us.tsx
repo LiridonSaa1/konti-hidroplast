@@ -662,20 +662,12 @@ export default function AboutUs() {
             {/* Project 1 - Testing Equipment */}
             <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="relative h-80 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1c2d56] to-blue-900 opacity-90"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-80 h-60 bg-white rounded-lg shadow-2xl overflow-hidden">
-                    <div className="h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                      <div className="text-center p-8">
-                        <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
-                          <Cog className="h-8 w-8 text-white" />
-                        </div>
-                        <h4 className="text-lg font-semibold text-gray-800">Testing Equipment</h4>
-                        <p className="text-sm text-gray-600 mt-2">Advanced quality control systems</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <img 
+                  src="@assets/Projects-1-min-800x407_1755198231060.jpg" 
+                  alt="Quality Control Systems - Testing Equipment" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
               </div>
               <CardContent className="p-6 bg-white">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Quality Control Systems</h3>
@@ -693,20 +685,12 @@ export default function AboutUs() {
             {/* Project 2 - European Infrastructure */}
             <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="relative h-80 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1c2d56] to-blue-900 opacity-90"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-80 h-60 bg-white rounded-lg shadow-2xl overflow-hidden">
-                    <div className="h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
-                      <div className="text-center p-8">
-                        <div className="w-16 h-16 bg-orange-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                          <MapPin className="h-8 w-8 text-white" />
-                        </div>
-                        <h4 className="text-lg font-semibold text-gray-800">EU Projects</h4>
-                        <p className="text-sm text-gray-600 mt-2">Infrastructure development across Europe</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <img 
+                  src="@assets/Projects-2-min-800x407_1755198239171.jpg" 
+                  alt="European Infrastructure Projects - Pipeline Installation" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
               </div>
               <CardContent className="p-6 bg-white">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">European Infrastructure Projects</h3>
@@ -724,20 +708,12 @@ export default function AboutUs() {
             {/* Project 3 - Advanced Piping Systems */}
             <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="relative h-80 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1c2d56] to-blue-900 opacity-90"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-80 h-60 bg-white rounded-lg shadow-2xl overflow-hidden">
-                    <div className="h-full bg-gradient-to-br from-gray-100 to-gray-300 flex items-center justify-center">
-                      <div className="text-center p-8">
-                        <div className="w-16 h-16 bg-gray-700 rounded-full mx-auto mb-4 flex items-center justify-center">
-                          <Settings className="h-8 w-8 text-white" />
-                        </div>
-                        <h4 className="text-lg font-semibold text-gray-800">Advanced Systems</h4>
-                        <p className="text-sm text-gray-600 mt-2">Innovative piping solutions</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <img 
+                  src="@assets/Projects-3-min-800x407_1755198241265.jpg" 
+                  alt="Advanced Piping Systems - Large Diameter Pipes" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
               </div>
               <CardContent className="p-6 bg-white">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Advanced Piping Systems</h3>
@@ -755,20 +731,12 @@ export default function AboutUs() {
             {/* Project 4 - Installation Services */}
             <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="relative h-80 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1c2d56] to-blue-900 opacity-90"></div>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-80 h-60 bg-white rounded-lg shadow-2xl overflow-hidden">
-                    <div className="h-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
-                      <div className="text-center p-8">
-                        <div className="w-16 h-16 bg-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                          <Wrench className="h-8 w-8 text-white" />
-                        </div>
-                        <h4 className="text-lg font-semibold text-gray-800">Installation</h4>
-                        <p className="text-sm text-gray-600 mt-2">Professional installation services</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <img 
+                  src="@assets/Projects-4-min-800x407_1755198243537.jpg" 
+                  alt="Professional Installation Services - Field Operations" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
               </div>
               <CardContent className="p-6 bg-white">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Professional Installation Services</h3>
