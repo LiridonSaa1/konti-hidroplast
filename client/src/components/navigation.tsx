@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -35,7 +36,7 @@ type NavigationItem = NavigationLink | NavigationDropdown;
 
 const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
   { href: "#home", label: t("nav.home"), type: "link" },
-  { href: "#about", label: t("nav.about"), type: "link" },
+  { href: "/about-us", label: t("nav.about"), type: "link" },
   { 
     label: t("nav.products"), 
     type: "dropdown",
@@ -71,6 +72,7 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
 ];
 
 export function Navigation() {
+  const [location, setLocation] = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const { t } = useLanguage();
@@ -116,6 +118,9 @@ export function Navigation() {
       if (element) {
         element.scrollIntoView({ behavior: "smooth", block: "start" });
       }
+    } else if (href.startsWith("/")) {
+      // Internal navigation
+      setLocation(href);
     } else {
       window.open(href, "_blank", "noopener,noreferrer");
     }
