@@ -903,8 +903,7 @@ export default function AboutUs() {
 
       {/* Gallery Section */}
       <section className="py-20 bg-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
@@ -913,141 +912,138 @@ export default function AboutUs() {
             </div>
           </div>
 
-          {/* Gallery Grid - Masonry Style */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {/* Production - Large Card */}
-            <div className="md:col-span-2 group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-1">
-              <div className="h-96 relative overflow-hidden">
+          {/* Gallery Grid - Same Style as Products */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+            {/* Production Gallery Item */}
+            <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
+              {/* Gallery Image - Top */}
+              <div className="h-64 relative overflow-hidden">
                 <img
                   src="/attached_assets/Konti-Hidroplast-Proizvodstvo-27-1_1755115099243.jpg"
                   alt="Production Facility"
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1c2d56]/60 via-transparent to-black/40 group-hover:from-[#1c2d56]/40 transition-all duration-700"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
+              </div>
+              
+              {/* Gallery Content - Bottom */}
+              <div className="p-8 relative">
+                {/* Decorative accent */}
+                <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
                 
-                {/* Floating Content Card */}
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="bg-white/95 backdrop-blur-md rounded-2xl p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 shadow-xl">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-[#1c2d56] rounded-xl flex items-center justify-center shrink-0 shadow-lg">
-                        <Factory className="h-6 w-6 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">Production</h3>
-                        <p className="text-gray-600 text-sm leading-relaxed">
-                          State-of-the-art manufacturing facilities with advanced extrusion lines producing high-quality PE and PP pipes
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                <div className="mt-4">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                    PRODUCTION
+                  </h3>
+                  
+                  {/* Learn More Button */}
+                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                    <span>View Gallery</span>
+                    <svg className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Quality Control - Vertical Card */}
-            <div className="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-1">
-              <div className="h-96 relative overflow-hidden">
+            {/* Quality Control Gallery Item */}
+            <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
+              {/* Gallery Image - Top */}
+              <div className="h-64 relative overflow-hidden">
                 <img
                   src="/attached_assets/image_1755201104056.png"
                   alt="Quality Control Laboratory"
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
+              </div>
+              
+              {/* Gallery Content - Bottom */}
+              <div className="p-8 relative">
+                {/* Decorative accent */}
+                <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
                 
-                {/* Bottom Content */}
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="text-center text-white">
-                    <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                      <Settings className="h-7 w-7 text-white" />
-                    </div>
-                    <h3 className="text-lg font-bold mb-2">Quality Control</h3>
-                    <p className="text-white/90 text-sm">Advanced testing laboratories ensuring European standards</p>
-                  </div>
+                <div className="mt-4">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                    QUALITY CONTROL
+                  </h3>
+                  
+                  {/* Learn More Button */}
+                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                    <span>View Gallery</span>
+                    <svg className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Storage - Square Card */}
-            <div className="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-1">
+            {/* Storage Gallery Item */}
+            <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
+              {/* Gallery Image - Top */}
               <div className="h-64 relative overflow-hidden">
                 <img
                   src="/attached_assets/image_1755091852060.png"
                   alt="Storage Facilities"
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
+              </div>
+              
+              {/* Gallery Content - Bottom */}
+              <div className="p-8 relative">
+                {/* Decorative accent */}
+                <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
                 
-                {/* Content Overlay */}
-                <div className="absolute inset-6 flex flex-col justify-end">
-                  <div className="text-white">
-                    <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center mb-3 shadow-lg">
-                      <FileText className="h-6 w-6 text-white" />
-                    </div>
-                    <h3 className="text-lg font-bold mb-1">Storage</h3>
-                    <p className="text-white/90 text-sm">Modern warehouse facilities</p>
-                  </div>
+                <div className="mt-4">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                    STORAGE
+                  </h3>
+                  
+                  {/* Learn More Button */}
+                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                    <span>View Gallery</span>
+                    <svg className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </div>
 
-            {/* Projects - Wide Card */}
-            <div className="md:col-span-2 group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-1">
+            {/* Projects Gallery Item */}
+            <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
+              {/* Gallery Image - Top */}
               <div className="h-64 relative overflow-hidden">
                 <img
                   src="/attached_assets/Projects-1-min-800x407_1755198231060.jpg"
                   alt="Infrastructure Projects"
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/20"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
+              </div>
+              
+              {/* Gallery Content - Bottom */}
+              <div className="p-8 relative">
+                {/* Decorative accent */}
+                <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
                 
-                {/* Side Content */}
-                <div className="absolute inset-6 flex items-center">
-                  <div className="text-white max-w-sm">
-                    <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mb-4 shadow-lg">
-                      <Wrench className="h-8 w-8 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-3">Projects</h3>
-                    <p className="text-white/90 leading-relaxed">
-                      Major infrastructure implementations across Europe and the Balkans, delivering reliable piping solutions
-                    </p>
-                  </div>
+                <div className="mt-4">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                    PROJECTS
+                  </h3>
+                  
+                  {/* Learn More Button */}
+                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                    <span>View Gallery</span>
+                    <svg className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Gallery Stats */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-[#1c2d56] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <Factory className="h-8 w-8 text-white" />
-              </div>
-              <div className="text-2xl font-bold text-gray-900 mb-1">15+</div>
-              <div className="text-gray-600 text-sm">Production Lines</div>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-[#1c2d56] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <Settings className="h-8 w-8 text-white" />
-              </div>
-              <div className="text-2xl font-bold text-gray-900 mb-1">ISO</div>
-              <div className="text-gray-600 text-sm">Certifications</div>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-[#1c2d56] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <FileText className="h-8 w-8 text-white" />
-              </div>
-              <div className="text-2xl font-bold text-gray-900 mb-1">10,000m²</div>
-              <div className="text-gray-600 text-sm">Storage Space</div>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-[#1c2d56] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <Wrench className="h-8 w-8 text-white" />
-              </div>
-              <div className="text-2xl font-bold text-gray-900 mb-1">500+</div>
-              <div className="text-gray-600 text-sm">Projects Completed</div>
             </div>
           </div>
         </div>
