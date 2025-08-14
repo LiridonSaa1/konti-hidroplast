@@ -10,7 +10,7 @@ import {
 import { Menu, ChevronDown, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/language-switcher";
-import logoPath from "@assets/Logo-konti_1755091117511.png";
+import logoPath from "@assets/urban-rohr-logo.svg";
 
 interface NavigationLink {
   href: string;
@@ -221,7 +221,7 @@ export function Navigation() {
           <div className="flex-shrink-0 flex items-center">
             <img
               src={logoPath}
-              alt="Konti Hidroplast"
+              alt="Urban Rohr"
               className="h-20 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
               onClick={() => scrollToSection("#home")}
               data-testid="logo"
