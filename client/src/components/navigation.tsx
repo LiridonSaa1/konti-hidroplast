@@ -136,17 +136,19 @@ export function Navigation() {
 
   const renderNavigationItem = (item: NavigationItem, isMobile: boolean = false) => {
     if (item.type === "link") {
-      const sectionId = item.href.startsWith("#") ? item.href.slice(1) : "";
+      // Check if this navigation item is active based on current URL
+      const isActive = location === item.href;
+      
       return (
         <button
           key={item.href}
           onClick={() => scrollToSection(item.href)}
           className={`px-4 py-3 font-medium transition-all duration-300 text-[15px] ${
-            activeSection === sectionId
+            isActive
               ? (isScrolled ? "font-bold" : "text-white font-bold nav-text-shadow")
               : (isScrolled ? "text-black hover:text-konti-blue" : "text-white/90 hover:text-white nav-text-shadow")
           }`}
-          style={activeSection === sectionId && isScrolled ? { color: 'rgb(235, 33, 39)' } : {}}
+          style={isActive && isScrolled ? { color: 'rgb(235, 33, 39)' } : {}}
           data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
         >
           {item.label}
@@ -155,6 +157,26 @@ export function Navigation() {
     }
 
     if (isMobile) {
+      // Handle single link items in mobile
+      if (item.type === "link") {
+        const isActive = location === item.href;
+        return (
+          <button
+            key={item.href}
+            onClick={() => scrollToSection(item.href)}
+            className={`w-full text-left px-4 py-3 text-base font-medium transition-colors ${
+              isActive 
+                ? "text-konti-blue bg-blue-50" 
+                : "text-konti-gray hover:text-konti-blue"
+            }`}
+            data-testid={`mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+          >
+            {item.label}
+          </button>
+        );
+      }
+      
+      // For mobile dropdown items
       return (
         <div key={item.label} className="space-y-2">
           <div className="px-4 py-3 text-base font-medium text-konti-gray border-b border-gray-200">
