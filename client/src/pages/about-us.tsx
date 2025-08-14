@@ -36,22 +36,39 @@ const timelineData = [
 
 const teamData = {
   commerce: [
-    { name: "Lazar Vacev", email: "lazev@konti-hidroplast.com.mk" },
-    { name: "Angel Stojanov", email: "astojanov@konti-hidroplast.com.mk" },
-    { name: "Dijana Chochkova", email: "dijanac@konti-hidroplast.com.mk" },
-    { name: "Zafir Brzilov", email: "zbrzilov@konti-hidroplast.com.mk" },
-    { name: "Dusko Dojranliev", email: "duled@konti-hidroplast.com.mk" },
-    { name: "Vasko Sepetovski", email: "vaskos@konti-hidroplast.com.mk" },
-    { name: "David Rizov", email: "rizovd@konti-hidroplast.com.mk" },
-    { name: "Dimitar Madzunkov", email: "dimitar.madzunkov@gmail.com" },
+    { name: "Lazar Vacev", email: "lazev@konti-hidroplast.com.mk", photo: "image_1755184862581.png" },
+    { name: "Angel Stojanov", email: "astojanov@konti-hidroplast.com.mk", photo: "image_1755184862581.png" },
+    { name: "Dijana Chochkova", email: "dijanac@konti-hidroplast.com.mk", photo: "image_1755184862581.png" },
+    { name: "Zafir Brzilov", email: "zbrzilov@konti-hidroplast.com.mk", photo: "image_1755184862581.png" },
+    { name: "Dusko Dojranliev", email: "duled@konti-hidroplast.com.mk", photo: "image_1755184862581.png" },
+    { name: "Vasko Sepetovski", email: "vaskos@konti-hidroplast.com.mk", photo: "image_1755184862581.png" },
+    { name: "David Rizov", email: "rizovd@konti-hidroplast.com.mk", photo: "image_1755184862581.png" },
+    { name: "Dimitar Madzunkov", email: "dimitar.madzunkov@gmail.com", photo: "image_1755184862581.png" },
   ],
   legal: [
-    { name: "Zorica Lozanovska", email: "zorical@konti-hidroplast.com.mk" },
+    { name: "Zorica Lozanovska", email: "zorical@konti-hidroplast.com.mk", photo: "image_1755184884122.png" },
   ],
   technical: [
-    { name: "Gordana Manoleva", email: "gordanam@konti-hidroplast.com.mk" },
-    { name: "Kostadin Linkov", email: "dinel@konti-hidroplast.com.mk" },
-    { name: "Bojan Georgiev", email: "" },
+    { name: "Gordana Manoleva", email: "gordanam@konti-hidroplast.com.mk", photo: "image_1755184899407.png" },
+    { name: "Kostadin Linkov", email: "dinel@konti-hidroplast.com.mk", photo: "image_1755184899407.png" },
+    { name: "Bojan Georgiev", email: "bojang@konti-hidroplast.com.mk", photo: "image_1755184899407.png" },
+  ],
+  laboratory: [
+    { name: "Zafir Stardelov", email: "lab@konti-hidroplast.com.mk", photo: "image_1755184912785.png" },
+    { name: "Dimitar Tanov", email: "dimitart@konti-hidroplast.com.mk", photo: "image_1755184912785.png" },
+  ],
+  accounting: [
+    { name: "Risto Varela", email: "icev@konti-hidroplast.com.mk", photo: "image_1755184926804.png" },
+    { name: "Ana Varela", email: "avarela@konti-hidroplast.com.mk", photo: "image_1755184926804.png" },
+    { name: "Pepica Kostova", email: "pepicak@konti-hidroplast.com.mk", photo: "image_1755184926804.png" },
+    { name: "Sanja Vaceva", email: "sanjam@konti-hidroplast.com.mk", photo: "image_1755184926804.png" },
+    { name: "Mimi Stojanova", email: "mimis@konti-hidroplast.com.mk", photo: "image_1755184926804.png" },
+  ],
+  publicRelations: [
+    { name: "Marija Spanakova", email: "marijas@konti-hidroplast.com.mk", photo: "image_1755184936830.png" },
+  ],
+  humanResources: [
+    { name: "Aleksandar Stojchev", email: "hr@konti-hidroplast.com.mk", photo: "image_1755184954816.png" },
   ],
 };
 
@@ -433,15 +450,15 @@ export default function AboutUs() {
                 {teamData.commerce.map((member, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <Users className="h-8 w-8 text-white" />
+                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                        <img 
+                          src={`/attached_assets/${member.photo}`} 
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">Commerce Department</p>
-                      <Button variant="outline" size="sm" className="w-full">
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact
-                      </Button>
+                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -453,15 +470,15 @@ export default function AboutUs() {
                 {teamData.legal.map((member, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <Users className="h-8 w-8 text-white" />
+                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                        <img 
+                          src={`/attached_assets/${member.photo}`} 
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">Legal Department</p>
-                      <Button variant="outline" size="sm" className="w-full">
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact
-                      </Button>
+                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -473,15 +490,15 @@ export default function AboutUs() {
                 {teamData.technical.map((member, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <Users className="h-8 w-8 text-white" />
+                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                        <img 
+                          src={`/attached_assets/${member.photo}`} 
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">Technical Service</p>
-                      <Button variant="outline" size="sm" className="w-full">
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact
-                      </Button>
+                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -489,26 +506,82 @@ export default function AboutUs() {
             </TabsContent>
             
             <TabsContent value="laboratory" className="mt-0">
-              <div className="text-center py-12">
-                <p className="text-gray-500">Laboratory team content will be added.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {teamData.laboratory.map((member, index) => (
+                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                        <img 
+                          src={`/attached_assets/${member.photo}`} 
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </TabsContent>
             
             <TabsContent value="accounting" className="mt-0">
-              <div className="text-center py-12">
-                <p className="text-gray-500">Accounting team content will be added.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {teamData.accounting.map((member, index) => (
+                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                        <img 
+                          src={`/attached_assets/${member.photo}`} 
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </TabsContent>
             
             <TabsContent value="public-relations" className="mt-0">
-              <div className="text-center py-12">
-                <p className="text-gray-500">Public Relations team content will be added.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {teamData.publicRelations.map((member, index) => (
+                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                        <img 
+                          src={`/attached_assets/${member.photo}`} 
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </TabsContent>
             
             <TabsContent value="human-resources" className="mt-0">
-              <div className="text-center py-12">
-                <p className="text-gray-500">Human Resources team content will be added.</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {teamData.humanResources.map((member, index) => (
+                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                        <img 
+                          src={`/attached_assets/${member.photo}`} 
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </TabsContent>
           </Tabs>
