@@ -85,7 +85,7 @@ export function ProductsSection() {
                   </h3>
                   
                   {/* Learn More Button */}
-                  <button className="inline-flex items-center px-6 py-3 rounded-full font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg" style={{backgroundColor: '#1c2d56'}}>
+                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg" style={{backgroundColor: '#1c2d56'}}>
                     <span>Learn More</span>
                     <svg className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
