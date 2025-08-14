@@ -45,12 +45,16 @@ export function ProductsSection() {
             hasIntersected ? "animate-fade-in" : "opacity-0"
           }`}
         >
-          <h2
-            className="text-4xl font-bold text-konti-gray mb-4"
-            data-testid="products-title"
-          >
-            Products
-          </h2>
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-12 h-0.5 bg-red-500 mr-4"></div>
+            <h2
+              className="text-4xl font-bold text-konti-gray"
+              data-testid="products-title"
+            >
+              Products
+            </h2>
+            <div className="w-12 h-0.5 bg-red-500 ml-4"></div>
+          </div>
         </div>
 
         {/* Products Grid - Vertical Card Design */}

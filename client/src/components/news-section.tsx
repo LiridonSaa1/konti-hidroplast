@@ -43,12 +43,16 @@ export function NewsSection() {
             hasIntersected ? "animate-fade-in" : "opacity-0"
           }`}
         >
-          <h2
-            className="text-4xl font-bold text-konti-gray mb-4"
-            data-testid="news-title"
-          >
-            News
-          </h2>
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-12 h-0.5 bg-red-500 mr-4"></div>
+            <h2
+              className="text-4xl font-bold text-konti-gray"
+              data-testid="news-title"
+            >
+              News
+            </h2>
+            <div className="w-12 h-0.5 bg-red-500 ml-4"></div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
