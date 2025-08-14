@@ -258,8 +258,8 @@ export function Navigation() {
                 <div className="flex flex-col space-y-6 mt-8">
                   <div className="flex items-center justify-between mb-6">
                     <img
-                      src={logoPath}
-                      alt="Konti Hidroplast"
+                      src={logoScrolled}
+                      alt="Urban Rohr"
                       className="h-14 w-auto"
                     />
                     <LanguageSwitcher />
