@@ -204,11 +204,7 @@ export default function AboutUs() {
       {/* Company Timeline */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From humble beginnings in 1990 to becoming a regional leader in pipe manufacturing
-            </p>
-          </div>
+          
 
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
             <div className="lg:col-span-1">
