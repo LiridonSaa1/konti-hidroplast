@@ -86,11 +86,11 @@ export function Footer() {
             </h4>
             <div className="space-y-4 text-gray-300">
               <div className="flex items-start" data-testid="footer-address">
-                <MapPin className="text-konti-blue-light mr-3 mt-1 flex-shrink-0" />
+                <MapPin className="text-gray-300 mr-3 mt-1 flex-shrink-0" />
                 <span>Industriska 5, 1480 Gevgelija, North Macedonia</span>
               </div>
               <div className="flex items-start" data-testid="footer-phone">
-                <Phone className="text-konti-blue-light mr-3 mt-1 flex-shrink-0" />
+                <Phone className="text-gray-300 mr-3 mt-1 flex-shrink-0" />
                 <div>
                   <div>+389 34 215 225</div>
                   <div>+389 34 212 064</div>
