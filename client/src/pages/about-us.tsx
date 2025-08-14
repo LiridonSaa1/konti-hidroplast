@@ -328,6 +328,91 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
+      
+      {/* Leadership Message Section */}
+      <section className="py-20 bg-gradient-to-r from-[#1c2d56] via-[#2a3f6b] to-[#1c2d56] relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-white/5 rounded-full -translate-x-48 -translate-y-48"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full translate-x-48 translate-y-48"></div>
+          <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-white/3 rounded-full"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Photo Section */}
+            <div className="flex justify-center lg:justify-start">
+              <div className="relative">
+                {/* Main photo container */}
+                <div className="w-80 h-80 bg-white rounded-2xl p-4 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                  <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
+                    {/* Placeholder for photo - you can replace this with actual image */}
+                    <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 rounded-xl flex items-center justify-center">
+                      <div className="text-center text-gray-600">
+                        <div className="w-20 h-20 bg-gray-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                          <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                          </svg>
+                        </div>
+                        <p className="text-sm font-medium">Boris Madjunkov</p>
+                        <p className="text-xs">Photo Placeholder</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Decorative elements */}
+                <div className="absolute -top-4 -right-4 w-8 h-8 bg-white/20 rounded-full"></div>
+                <div className="absolute -bottom-6 -left-6 w-12 h-12 bg-white/10 rounded-full"></div>
+                <div className="absolute top-1/2 -right-8 w-4 h-4 bg-white/30 rounded-full"></div>
+              </div>
+            </div>
+            
+            {/* Content Section */}
+            <div className="text-white space-y-6">
+              <div className="space-y-4">
+                <div className="inline-block px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
+                  <span className="text-sm font-medium text-white/90">Leadership Message</span>
+                </div>
+                
+                <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
+                  Building the Future of 
+                  <span className="block text-blue-200">Infrastructure</span>
+                </h2>
+              </div>
+              
+              <div className="space-y-6 text-lg leading-relaxed text-white/90">
+                <p>
+                  At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver 
+                  quality by European standards, and stay ahead of the curve in our industry. We are 
+                  committed to creating sustainable solutions, expanding into new markets, and sharing 
+                  knowledge with all who seek to grow.
+                </p>
+                
+                <p>
+                  Together, we build not just for today, but for a future our next generations will be proud of.
+                </p>
+              </div>
+              
+              <div className="pt-4">
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-bold text-white">Boris Madjunkov</h3>
+                  <p className="text-blue-200 font-semibold text-lg">General Director</p>
+                </div>
+                
+                {/* Signature line */}
+                <div className="mt-6 pt-4 border-t border-white/20">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-12 h-0.5 bg-blue-200"></div>
+                    <span className="text-sm text-white/70 font-medium tracking-wider">KONTI HIDROPLAST</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Team Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
