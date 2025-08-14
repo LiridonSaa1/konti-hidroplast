@@ -902,7 +902,8 @@ export default function AboutUs() {
       </section>
 
       {/* Gallery Section */}
-      <section className="py-20 bg-gray-50 relative overflow-hidden">
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
@@ -912,150 +913,141 @@ export default function AboutUs() {
             </div>
           </div>
 
-          {/* Gallery Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {/* Production Gallery Item */}
-            <div className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-              <div className="h-80 relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+          {/* Gallery Grid - Masonry Style */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {/* Production - Large Card */}
+            <div className="md:col-span-2 group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-1">
+              <div className="h-96 relative overflow-hidden">
                 <img
                   src="/attached_assets/Konti-Hidroplast-Proizvodstvo-27-1_1755115099243.jpg"
                   alt="Production Facility"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1c2d56]/60 via-transparent to-black/40 group-hover:from-[#1c2d56]/40 transition-all duration-700"></div>
                 
-                {/* Content Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center text-white transform group-hover:scale-105 transition-transform duration-500">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <Factory className="h-8 w-8 text-white" />
+                {/* Floating Content Card */}
+                <div className="absolute bottom-6 left-6 right-6">
+                  <div className="bg-white/95 backdrop-blur-md rounded-2xl p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500 shadow-xl">
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 bg-[#1c2d56] rounded-xl flex items-center justify-center shrink-0 shadow-lg">
+                        <Factory className="h-6 w-6 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">Production</h3>
+                        <p className="text-gray-600 text-sm leading-relaxed">
+                          State-of-the-art manufacturing facilities with advanced extrusion lines producing high-quality PE and PP pipes
+                        </p>
+                      </div>
                     </div>
-                    <h3 className="text-2xl font-bold mb-2 tracking-wide">Production</h3>
-                    <p className="text-white/90 text-sm font-medium">Manufacturing Excellence</p>
-                  </div>
-                </div>
-                
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-[#1c2d56]/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-                  <div className="text-center text-white">
-                    <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <Factory className="h-10 w-10 text-white" />
-                    </div>
-                    <h3 className="text-3xl font-bold mb-4">Production</h3>
-                    <p className="text-white/90 text-lg leading-relaxed max-w-xs mx-auto">
-                      State-of-the-art manufacturing facilities producing high-quality PE and PP pipes
-                    </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Quality Control Gallery Item */}
-            <div className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-              <div className="h-80 relative overflow-hidden bg-gradient-to-br from-blue-800 via-cyan-800 to-blue-900">
+            {/* Quality Control - Vertical Card */}
+            <div className="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-1">
+              <div className="h-96 relative overflow-hidden">
                 <img
                   src="/attached_assets/image_1755201104056.png"
                   alt="Quality Control Laboratory"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70"></div>
                 
-                {/* Content Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center text-white transform group-hover:scale-105 transition-transform duration-500">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <Settings className="h-8 w-8 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold mb-2 tracking-wide">Quality Control</h3>
-                    <p className="text-white/90 text-sm font-medium">Testing & Standards</p>
-                  </div>
-                </div>
-                
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-[#1c2d56]/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                {/* Bottom Content */}
+                <div className="absolute bottom-6 left-6 right-6">
                   <div className="text-center text-white">
-                    <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <Settings className="h-10 w-10 text-white" />
+                    <div className="w-14 h-14 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                      <Settings className="h-7 w-7 text-white" />
                     </div>
-                    <h3 className="text-3xl font-bold mb-4">Quality Control</h3>
-                    <p className="text-white/90 text-lg leading-relaxed max-w-xs mx-auto">
-                      Advanced testing laboratories ensuring European quality standards
-                    </p>
+                    <h3 className="text-lg font-bold mb-2">Quality Control</h3>
+                    <p className="text-white/90 text-sm">Advanced testing laboratories ensuring European standards</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Storage Gallery Item */}
-            <div className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-              <div className="h-80 relative overflow-hidden bg-gradient-to-br from-gray-800 via-slate-800 to-gray-900">
+            {/* Storage - Square Card */}
+            <div className="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-1">
+              <div className="h-64 relative overflow-hidden">
                 <img
                   src="/attached_assets/image_1755091852060.png"
                   alt="Storage Facilities"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                 
                 {/* Content Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center text-white transform group-hover:scale-105 transition-transform duration-500">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <FileText className="h-8 w-8 text-white" />
+                <div className="absolute inset-6 flex flex-col justify-end">
+                  <div className="text-white">
+                    <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center mb-3 shadow-lg">
+                      <FileText className="h-6 w-6 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold mb-2 tracking-wide">Storage</h3>
-                    <p className="text-white/90 text-sm font-medium">Warehouse Management</p>
-                  </div>
-                </div>
-                
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-[#1c2d56]/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-                  <div className="text-center text-white">
-                    <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <FileText className="h-10 w-10 text-white" />
-                    </div>
-                    <h3 className="text-3xl font-bold mb-4">Storage</h3>
-                    <p className="text-white/90 text-lg leading-relaxed max-w-xs mx-auto">
-                      Modern storage facilities with efficient inventory management systems
-                    </p>
+                    <h3 className="text-lg font-bold mb-1">Storage</h3>
+                    <p className="text-white/90 text-sm">Modern warehouse facilities</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Projects Gallery Item */}
-            <div className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
-              <div className="h-80 relative overflow-hidden bg-gradient-to-br from-green-800 via-emerald-800 to-green-900">
+            {/* Projects - Wide Card */}
+            <div className="md:col-span-2 group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 transform hover:-translate-y-1">
+              <div className="h-64 relative overflow-hidden">
                 <img
                   src="/attached_assets/Projects-1-min-800x407_1755198231060.jpg"
                   alt="Infrastructure Projects"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/20"></div>
                 
-                {/* Content Overlay */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center text-white transform group-hover:scale-105 transition-transform duration-500">
-                    <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                {/* Side Content */}
+                <div className="absolute inset-6 flex items-center">
+                  <div className="text-white max-w-sm">
+                    <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mb-4 shadow-lg">
                       <Wrench className="h-8 w-8 text-white" />
                     </div>
-                    <h3 className="text-2xl font-bold mb-2 tracking-wide">Projects</h3>
-                    <p className="text-white/90 text-sm font-medium">Infrastructure Solutions</p>
-                  </div>
-                </div>
-                
-                {/* Hover Overlay */}
-                <div className="absolute inset-0 bg-[#1c2d56]/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-                  <div className="text-center text-white">
-                    <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                      <Wrench className="h-10 w-10 text-white" />
-                    </div>
-                    <h3 className="text-3xl font-bold mb-4">Projects</h3>
-                    <p className="text-white/90 text-lg leading-relaxed max-w-xs mx-auto">
-                      Major infrastructure projects across Europe and the Balkans
+                    <h3 className="text-2xl font-bold mb-3">Projects</h3>
+                    <p className="text-white/90 leading-relaxed">
+                      Major infrastructure implementations across Europe and the Balkans, delivering reliable piping solutions
                     </p>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Gallery Stats */}
+          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-[#1c2d56] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <Factory className="h-8 w-8 text-white" />
+              </div>
+              <div className="text-2xl font-bold text-gray-900 mb-1">15+</div>
+              <div className="text-gray-600 text-sm">Production Lines</div>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-[#1c2d56] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <Settings className="h-8 w-8 text-white" />
+              </div>
+              <div className="text-2xl font-bold text-gray-900 mb-1">ISO</div>
+              <div className="text-gray-600 text-sm">Certifications</div>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-[#1c2d56] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <FileText className="h-8 w-8 text-white" />
+              </div>
+              <div className="text-2xl font-bold text-gray-900 mb-1">10,000m²</div>
+              <div className="text-gray-600 text-sm">Storage Space</div>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 bg-[#1c2d56] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <Wrench className="h-8 w-8 text-white" />
+              </div>
+              <div className="text-2xl font-bold text-gray-900 mb-1">500+</div>
+              <div className="text-gray-600 text-sm">Projects Completed</div>
             </div>
           </div>
         </div>
