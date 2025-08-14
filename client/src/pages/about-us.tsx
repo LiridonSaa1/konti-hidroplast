@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Slider } from "@/components/ui/slider";
 import { useEffect, useState } from "react";
 import { ChevronRight, Factory, Users, Target, Eye, Heart, Calendar, Award, Mail } from "lucide-react";
 
@@ -44,6 +45,14 @@ const teamData = {
 
 export default function AboutUs() {
   const [activeYear, setActiveYear] = useState("1990");
+  const [sliderValue, setSliderValue] = useState([0]);
+
+  // Handle slider change
+  const handleSliderChange = (value: number[]) => {
+    const yearIndex = value[0];
+    setSliderValue(value);
+    setActiveYear(timelineData[yearIndex].year);
+  };
 
   useEffect(() => {
     document.title = "About Konti Hidroplast - Leading PE & PP Pipe Manufacturer Since 1975";
@@ -206,45 +215,50 @@ export default function AboutUs() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-            <div className="lg:col-span-1">
-              <div className="sticky top-24">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Timeline</h3>
-                <div className="space-y-2">
-                  {timelineData.map((item) => (
-                    <button
-                      key={item.year}
-                      onClick={() => setActiveYear(item.year)}
-                      className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${
-                        activeYear === item.year
-                          ? "bg-blue-600 text-white"
-                          : "text-gray-600 hover:bg-gray-100"
-                      }`}
-                    >
-                      {item.year}
-                    </button>
-                  ))}
+          <div className="space-y-8">
+            {/* Timeline Slider */}
+            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-bold text-gray-900">Timeline</h3>
+                <div className="bg-blue-600 text-white px-4 py-2 rounded-full font-semibold">
+                  {activeYear}
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                <Slider
+                  value={sliderValue}
+                  onValueChange={handleSliderChange}
+                  max={timelineData.length - 1}
+                  step={1}
+                  className="w-full"
+                />
+                
+                <div className="flex justify-between text-sm text-gray-600 px-2">
+                  <span>1990</span>
+                  <span>2022</span>
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-3">
+            {/* Timeline Content */}
+            <div>
               {timelineData.map((item) => (
                 <div
                   key={item.year}
-                  className={`transition-all duration-300 ${
+                  className={`transition-all duration-500 ${
                     activeYear === item.year ? "block" : "hidden"
                   }`}
                 >
-                  <Card className="border-0 shadow-lg">
+                  <Card className="border-0 shadow-xl hover:shadow-2xl transition-shadow">
                     <CardContent className="p-8">
-                      <div className="flex items-center gap-4 mb-6">
-                        <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full flex items-center justify-center">
-                          <Calendar className="h-8 w-8 text-white" />
+                      <div className="flex items-center gap-6 mb-6">
+                        <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full flex items-center justify-center shadow-lg">
+                          <Calendar className="h-10 w-10 text-white" />
                         </div>
                         <div>
-                          <h3 className="text-2xl font-bold text-gray-900">{item.year}</h3>
-                          <h4 className="text-lg font-semibold text-blue-600">{item.title}</h4>
+                          <h3 className="text-3xl font-bold text-gray-900 mb-2">{item.year}</h3>
+                          <h4 className="text-xl font-semibold text-blue-600">{item.title}</h4>
                         </div>
                       </div>
                       <p className="text-gray-600 leading-relaxed text-lg">
