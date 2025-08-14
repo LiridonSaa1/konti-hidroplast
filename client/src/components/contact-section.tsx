@@ -170,7 +170,6 @@ export function ContactSection() {
                           value={formData.name}
                           onChange={(e) => handleInputChange("name", e.target.value)}
                           className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
-                          style={{'--focus-border-color': 'rgb(28, 45, 86)'}}
                           placeholder="Enter your full name"
                           required
                           data-testid="input-name"
@@ -189,7 +188,6 @@ export function ContactSection() {
                           value={formData.email}
                           onChange={(e) => handleInputChange("email", e.target.value)}
                           className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
-                          style={{'--focus-border-color': 'rgb(28, 45, 86)'}}
                           placeholder="your.email@company.com"
                           required
                           data-testid="input-email"
@@ -211,7 +209,6 @@ export function ContactSection() {
                         value={formData.company}
                         onChange={(e) => handleInputChange("company", e.target.value)}
                         className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
-                        style={{'--focus-border-color': 'rgb(28, 45, 86)'}}
                         placeholder="Your company name"
                         data-testid="input-company"
                       />
@@ -231,7 +228,6 @@ export function ContactSection() {
                         onChange={(e) => handleInputChange("message", e.target.value)}
                         rows={5}
                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white resize-none"
-                        style={{'--focus-border-color': 'rgb(28, 45, 86)'}}
                         placeholder="Tell us about your pipeline needs..."
                         required
                         data-testid="input-message"
