@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { useEffect, useState } from "react";
-import { ChevronRight, ChevronLeft, Factory, Users, Target, Eye, Heart, Calendar, Award, Mail } from "lucide-react";
+import { ChevronRight, ChevronLeft, Factory, Users, Target, Eye, Heart, Calendar, Award, Mail, Cog, MapPin, Settings, Wrench, FileText } from "lucide-react";
 
 
 
@@ -643,6 +643,170 @@ export default function AboutUs() {
           </Tabs>
         </div>
       </section>
+
+      {/* Projects Section */}
+      <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              <span className="border-b-4 border-[#1c2d56] pb-2">Projects</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Showcasing our expertise in infrastructure development and pipe installation projects across Europe
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* Project 1 - Testing Equipment */}
+            <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="relative h-80 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1c2d56] to-blue-900 opacity-90"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-80 h-60 bg-white rounded-lg shadow-2xl overflow-hidden">
+                    <div className="h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                      <div className="text-center p-8">
+                        <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
+                          <Cog className="h-8 w-8 text-white" />
+                        </div>
+                        <h4 className="text-lg font-semibold text-gray-800">Testing Equipment</h4>
+                        <p className="text-sm text-gray-600 mt-2">Advanced quality control systems</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <CardContent className="p-6 bg-white">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Quality Control Systems</h3>
+                <p className="text-gray-600 mb-4 text-sm">
+                  State-of-the-art testing equipment ensuring the highest quality standards for our PE and PP pipe production
+                </p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
+                >
+                  View Details
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Project 2 - European Infrastructure */}
+            <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="relative h-80 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1c2d56] to-blue-900 opacity-90"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-80 h-60 bg-white rounded-lg shadow-2xl overflow-hidden">
+                    <div className="h-full bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
+                      <div className="text-center p-8">
+                        <div className="w-16 h-16 bg-orange-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                          <MapPin className="h-8 w-8 text-white" />
+                        </div>
+                        <h4 className="text-lg font-semibold text-gray-800">EU Projects</h4>
+                        <p className="text-sm text-gray-600 mt-2">Infrastructure development across Europe</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <CardContent className="p-6 bg-white">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">European Infrastructure Projects</h3>
+                <p className="text-gray-600 mb-4 text-sm">
+                  Large-scale pipeline installation and infrastructure development projects across the European Union
+                </p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
+                >
+                  View Details
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Project 3 - Advanced Piping Systems */}
+            <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="relative h-80 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1c2d56] to-blue-900 opacity-90"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-80 h-60 bg-white rounded-lg shadow-2xl overflow-hidden">
+                    <div className="h-full bg-gradient-to-br from-gray-100 to-gray-300 flex items-center justify-center">
+                      <div className="text-center p-8">
+                        <div className="w-16 h-16 bg-gray-700 rounded-full mx-auto mb-4 flex items-center justify-center">
+                          <Settings className="h-8 w-8 text-white" />
+                        </div>
+                        <h4 className="text-lg font-semibold text-gray-800">Advanced Systems</h4>
+                        <p className="text-sm text-gray-600 mt-2">Innovative piping solutions</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <CardContent className="p-6 bg-white">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Advanced Piping Systems</h3>
+                <p className="text-gray-600 mb-4 text-sm">
+                  Innovative PE and PP piping systems designed for complex industrial and municipal applications
+                </p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
+                >
+                  View Details
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Project 4 - Installation Services */}
+            <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="relative h-80 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1c2d56] to-blue-900 opacity-90"></div>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-80 h-60 bg-white rounded-lg shadow-2xl overflow-hidden">
+                    <div className="h-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+                      <div className="text-center p-8">
+                        <div className="w-16 h-16 bg-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                          <Wrench className="h-8 w-8 text-white" />
+                        </div>
+                        <h4 className="text-lg font-semibold text-gray-800">Installation</h4>
+                        <p className="text-sm text-gray-600 mt-2">Professional installation services</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <CardContent className="p-6 bg-white">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Professional Installation Services</h3>
+                <p className="text-gray-600 mb-4 text-sm">
+                  Expert installation and maintenance services for water supply, gas, and telecommunications systems
+                </p>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
+                >
+                  View Details
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Reference Section */}
+          <div className="text-center mt-16">
+            <div className="inline-flex items-center gap-4 bg-white px-8 py-4 rounded-full shadow-lg">
+              <FileText className="h-6 w-6 text-[#1c2d56]" />
+              <span className="text-lg font-semibold text-gray-900">Reference List 2011-2013</span>
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
+              >
+                Download PDF
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Certifications */}
       <CertificationsSection />
       <Footer />
