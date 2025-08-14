@@ -20,7 +20,7 @@ export function Footer() {
             <img
               src={logoWhite}
               alt="Konti Hidroplast"
-              className="h-10 w-auto mb-6"
+              className="h-10 w-32 mb-6"
               data-testid="footer-logo"
             />
             <p className="text-gray-300 mb-6 max-w-md" data-testid="footer-description">
