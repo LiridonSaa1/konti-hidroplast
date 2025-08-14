@@ -9,17 +9,44 @@ import { Slider } from "@/components/ui/slider";
 import { useEffect, useState } from "react";
 import { ChevronRight, Factory, Users, Target, Eye, Heart, Calendar, Award, Mail } from "lucide-react";
 
+import timelineImage1990 from "@assets/image_1755181791458.png";
+import timelineImage1994 from "@assets/image_1755181800138.png";
+import timelineImage1996 from "@assets/image_1755181808007.png";
+import timelineImage1998 from "@assets/image_1755181815302.png";
+import timelineImage1999 from "@assets/image_1755181821869.png";
+import timelineImage2002 from "@assets/image_1755181829549.png";
+import timelineImage2003 from "@assets/image_1755181836040.png";
+import timelineImage2004 from "@assets/image_1755181842315.png";
+import timelineImage2009 from "@assets/image_1755181863580.png";
+import timelineImage2011 from "@assets/image_1755181869835.png";
+import timelineImage2013 from "@assets/image_1755181876321.png";
+import timelineImage2014 from "@assets/image_1755181883250.png";
+import timelineImage2015 from "@assets/image_1755181894232.png";
+import timelineImage2016 from "@assets/image_1755181903445.png";
+import timelineImage2018 from "@assets/image_1755181909983.png";
+import timelineImage2019 from "@assets/image_1755181917814.png";
+import timelineImage2020 from "@assets/image_1755181925500.png";
+import timelineImage2022 from "@assets/image_1755181933782.png";
+
 const timelineData = [
-  { year: "1990", title: "Beginnings", description: "Konti Hidroplast has started its manufacturing production in 1990 with one single production line of polyethylene pipes, with a total number of 10 employees." },
-  { year: "1994", title: "New products and production lines", description: "By 1994, the production program expanded with an additional 5 production lines. In addition to polyethylene hoses and LDPE pipes, Konti Hidroplast began to expand its production program with new types of products and the development of a wider range of dimensions." },
-  { year: "1996", title: "Third Generation", description: "In 1996 were manufactured the first pipes of a third generation polyethylene material, specifically PE 100. This allowed the pipes to be used in installations with a working pressure of 32 bars." },
-  { year: "1998", title: "ISO 9001", description: "In 1998 the dimensional range is increased once again. Now, the largest dimension being F250mm. That year, Konti Hidroplast obtained the ISO 9001 certificate for its management quality system." },
-  { year: "1999-2000", title: "International Offices", description: "In 1999-2000 Konti Hidroplast began expanding its representations with opening its first offices abroad in Serbia and Bulgaria." },
-  { year: "2002", title: "New capacities", description: "In 2002, the company expanded its capacities and product range with an additional production line for household installations, as well as sewage pipes with dimensions up to F630mm." },
-  { year: "2003", title: "New International Offices", description: "In 2003 were opened new company representations in Albania, Bosnia & Herzegovina and Croatia." },
-  { year: "2004", title: "New Product", description: "In 2004 began the production of a new product, the spiral sewage pipes with a diameter up to F1200mm." },
-  { year: "2018", title: "New Hall with Three Production Lines", description: "Construction of a new hall to expand production capacities. Installation of three new production lines for pressure pipes." },
-  { year: "2022", title: "New Corrugated Pipe Line", description: "A new high-productivity, energy-efficient production line for corrugated pipes in the 160-315 mm dimensional range." },
+  { year: "1990", title: "Beginnings", description: "Konti Hidroplast has started its manufacturing production in 1990 with one single production line of polyethylene pipes, with a total number of 10 employees.", image: timelineImage1990 },
+  { year: "1994", title: "New products and production lines", description: "By 1994, the production program expanded with an additional 5 production lines. In addition to polyethylene hoses and LDPE pipes, Konti Hidroplast began to expand its production program with new types of products and the development of a wider range of dimensions.", image: timelineImage1994 },
+  { year: "1996", title: "Third Generation", description: "In 1996 were manufactured the first pipes of a third generation polyethylene material, specifically PE 100. This allowed the pipes to be used in installations with a working pressure of 32 bars.", image: timelineImage1996 },
+  { year: "1998", title: "ISO 9001", description: "In 1998 the dimensional range is increased once again. Now, the largest dimension being F250mm. That year, Konti Hidroplast obtained the ISO 9001 certificate for its management quality system.", image: timelineImage1998 },
+  { year: "1999-2000", title: "International Offices", description: "In 1999-2000 Konti Hidroplast began expanding its representations with opening its first offices abroad in Serbia and Bulgaria.", image: timelineImage1999 },
+  { year: "2002", title: "New capacities", description: "In 2002, the company expanded its capacities and product range with an additional production line for household installations, as well as sewage pipes with dimensions up to F630mm.", image: timelineImage2002 },
+  { year: "2003", title: "New International Offices", description: "In 2003 were opened new company representations in Albania, Bosnia & Herzegovina and Croatia.", image: timelineImage2003 },
+  { year: "2004", title: "New Product", description: "In 2004 began the production of a new product, the spiral sewage pipes with a diameter up to F1200mm.", image: timelineImage2004 },
+  { year: "2009", title: "PP HM", description: "In 2009, Konti Hidroplast expanded its production lines and product range with a new product, the PP HM pipes.", image: timelineImage2009 },
+  { year: "2011", title: "New Line and Machines", description: "Two new injection molding machines for the production of sewer fittings and a new production line for spiral pipes in the dimensional range of 1300-2000 mm.", image: timelineImage2011 },
+  { year: "2013", title: "Expansion and Renovation", description: "Expansion of the factory's storage space with new areas. A new production line for pressure pipes up to 110 mm in diameter. Two new machines for perforating pressure pipes. Complete renovation of the area surrounding the factory.", image: timelineImage2013 },
+  { year: "2014", title: "New Production Line", description: "A new production line for pressure pipes up to F 500 mm and reorganization of production capacities and separation of fitting production from extrusion.", image: timelineImage2014 },
+  { year: "2015", title: "OD 1000", description: "Replacement of the OD 1000 line with a new European-made line for pipes up to F 630 mm. Expansion of the ID 1000 production line to include the OD 1000 dimension.", image: timelineImage2015 },
+  { year: "2016-2017", title: "New Acquisitions", description: "Procurement of a 'cross head' extrusion die for the production of PE 100 RC Type 3 with an external protective layer (PE or PP) in dimensions ranging from 75 to 400 mm. Procurement of an injection molding machine with a capacity of up to 20 kg per shot. Acquisition of two new scanners, eccentricity indicators from the beginning of the process.", image: timelineImage2016 },
+  { year: "2018", title: "OD 315", description: "Replacement of the base of the oldest corrugator (OD 315) with a new one.", image: timelineImage2018 },
+  { year: "2019", title: "Two New Halls", description: "Construction of two new halls for storing raw materials.", image: timelineImage2019 },
+  { year: "2020-2021", title: "New Hall with Three Production Lines", description: "Construction of a new hall to expand production capacities. Installation of three new production lines for pressure pipes: 20-63 mm with a capacity of 300 kg/h, 63-250 mm with a capacity of 600 kg/h, 250-630 mm with a capacity of 1000 kg/h.", image: timelineImage2020 },
+  { year: "2022", title: "New Corrugated Pipe Line and New Machines", description: "A new high-productivity, energy-efficient production line for corrugated pipes in the 160-315 mm dimensional range. Improvement of the corrugated pipe production process by enhancing the welding of fittings, including the acquisition of three automatic inline welding machines for fitting attachment to pipes.", image: timelineImage2022 },
 ];
 
 const teamData = {
@@ -252,18 +279,37 @@ export default function AboutUs() {
                 >
                   <Card className="border-0 shadow-xl hover:shadow-2xl transition-shadow">
                     <CardContent className="p-8">
-                      <div className="flex items-center gap-6 mb-6">
-                        <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full flex items-center justify-center shadow-lg">
-                          <Calendar className="h-10 w-10 text-white" />
-                        </div>
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                         <div>
-                          <h3 className="text-3xl font-bold text-gray-900 mb-2">{item.year}</h3>
-                          <h4 className="text-xl font-semibold text-blue-600">{item.title}</h4>
+                          <div className="flex items-center gap-6 mb-6">
+                            <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full flex items-center justify-center shadow-lg">
+                              <Calendar className="h-10 w-10 text-white" />
+                            </div>
+                            <div>
+                              <h3 className="text-3xl font-bold text-gray-900 mb-2">{item.year}</h3>
+                              <h4 className="text-xl font-semibold text-blue-600">{item.title}</h4>
+                            </div>
+                          </div>
+                          <p className="text-gray-600 leading-relaxed text-lg">
+                            {item.description}
+                          </p>
+                        </div>
+                        
+                        {/* Timeline Image */}
+                        <div className="relative">
+                          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 shadow-inner">
+                            <img 
+                              src={item.image} 
+                              alt={`Timeline ${item.year} - ${item.title}`}
+                              className="w-full h-auto rounded-lg shadow-lg"
+                              data-testid={`timeline-image-${item.year}`}
+                            />
+                          </div>
+                          <div className="absolute -top-3 -right-3 bg-red-600 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
+                            {item.year}
+                          </div>
                         </div>
                       </div>
-                      <p className="text-gray-600 leading-relaxed text-lg">
-                        {item.description}
-                      </p>
                     </CardContent>
                   </Card>
                 </div>
