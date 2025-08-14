@@ -80,12 +80,9 @@ export function ProductsSection() {
                 <div className="absolute top-6 left-8 w-12 h-1 bg-konti-blue rounded-full group-hover:w-16 transition-all duration-300" />
                 
                 <div className="mt-4">
-                  <h3 className="text-xl font-bold text-konti-gray mb-3 uppercase tracking-wide leading-tight group-hover:text-konti-blue transition-colors duration-300">
+                  <h3 className="text-xl font-bold text-konti-gray mb-6 uppercase tracking-wide leading-tight group-hover:text-konti-blue transition-colors duration-300">
                     {product.title}
                   </h3>
-                  <p className="text-sm text-gray-600 leading-relaxed mb-6 group-hover:text-gray-700 transition-colors duration-300">
-                    {product.description}
-                  </p>
                   
                   {/* Learn More Button */}
                   <div className="flex items-center text-konti-blue font-semibold text-sm group-hover:translate-x-1 transition-transform duration-300">
