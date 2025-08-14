@@ -200,27 +200,7 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-      {/* Leadership Quote */}
-      <section className="py-20 bg-gradient-to-r from-slate-900 to-blue-900 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="mb-8">
-            <div className="w-24 h-24 bg-white/20 rounded-full mx-auto mb-6 flex items-center justify-center">
-              <Users className="h-12 w-12 text-white" />
-            </div>
-          </div>
-          <blockquote className="text-2xl md:text-3xl font-light leading-relaxed mb-8 italic">
-            "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, 
-            and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, 
-            and sharing knowledge with all who seek to grow."
-          </blockquote>
-          <div className="text-xl font-semibold">
-            Boris Madjunkov
-          </div>
-          <div className="text-blue-300">
-            General Director
-          </div>
-        </div>
-      </section>
+
       {/* Company Timeline */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
