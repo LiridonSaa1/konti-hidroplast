@@ -83,14 +83,20 @@ export function Footer() {
             <h4 className="text-lg font-semibold mb-6" data-testid="footer-contact-title">
               Contact Info
             </h4>
-            <div className="space-y-3 text-gray-300">
+            <div className="space-y-4 text-gray-300">
               <div className="flex items-start" data-testid="footer-address">
                 <MapPin className="text-konti-blue-light mr-3 mt-1 flex-shrink-0" />
                 <span>Industriska 5, 1480 Gevgelija, North Macedonia</span>
               </div>
-              <div className="flex items-center" data-testid="footer-phone">
-                <Phone className="text-konti-blue-light mr-3 flex-shrink-0" />
-                <span>+389 34 215 225</span>
+              <div className="flex items-start" data-testid="footer-phone">
+                <Phone className="text-konti-blue-light mr-3 mt-1 flex-shrink-0" />
+                <div>
+                  <div>+389 34 215 225</div>
+                  <div>+389 34 212 064</div>
+                  <div>+389 34 212 226</div>
+                  <div>+389 34 211 964</div>
+                  <div>+389 34 211 757</div>
+                </div>
               </div>
             </div>
           </div>

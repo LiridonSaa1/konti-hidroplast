@@ -123,7 +123,7 @@ export function ContactSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="max-w-2xl mx-auto">
           {/* Contact Form */}
           <Card
             className={`${
@@ -205,110 +205,6 @@ export function ContactSection() {
               </form>
             </CardContent>
           </Card>
-
-          {/* Contact Information */}
-          <div
-            className={`${
-              hasIntersected ? "animate-slide-up" : "opacity-0"
-            }`}
-            style={{ animationDelay: "400ms" }}
-          >
-            <h3
-              className="text-2xl font-semibold text-konti-gray mb-8"
-              data-testid="contact-info-title"
-            >
-              Contact Information
-            </h3>
-
-            <div className="space-y-6">
-              {/* Address */}
-              <div className="flex items-start" data-testid="contact-address">
-                <div className="w-12 h-12 konti-gradient rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                  <MapPin className="text-white" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-konti-gray mb-1">Address</h4>
-                  <p className="text-gray-600">
-                    Industriska 5, 1480 Gevgelija,
-                    <br />
-                    North Macedonia
-                  </p>
-                </div>
-              </div>
-
-              {/* Phone Numbers */}
-              <div className="flex items-start" data-testid="contact-phones">
-                <div className="w-12 h-12 konti-gradient rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                  <Phone className="text-white" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-konti-gray mb-1">Phone Numbers</h4>
-                  <div className="space-y-1 text-gray-600">
-                    {phoneNumbers.map((phone, index) => (
-                      <p key={index}>{phone}</p>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Social Media */}
-              <div className="flex items-start" data-testid="contact-social">
-                <div className="w-12 h-12 konti-gradient rounded-lg flex items-center justify-center mr-4 flex-shrink-0">
-                  <Share2 className="text-white" />
-                </div>
-                <div>
-                  <h4 className="font-semibold text-konti-gray mb-3">Follow Us</h4>
-                  <div className="flex space-x-4">
-                    <a
-                      href="https://www.linkedin.com/company/konti-hidroplast/about/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-konti-blue hover:text-blue-700 transition-colors"
-                      data-testid="contact-linkedin"
-                    >
-                      <FaLinkedin className="text-2xl" />
-                    </a>
-                    <a
-                      href="https://www.facebook.com/kontihidroplastofficial"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-konti-blue hover:text-blue-700 transition-colors"
-                      data-testid="contact-facebook"
-                    >
-                      <FaFacebook className="text-2xl" />
-                    </a>
-                    <a
-                      href="https://www.instagram.com/kontihidroplast/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-konti-blue hover:text-blue-700 transition-colors"
-                      data-testid="contact-instagram"
-                    >
-                      <FaInstagram className="text-2xl" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="mt-8">
-              <Button
-                asChild
-                className="konti-gradient text-white px-8 py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity"
-                data-testid="visit-contact-page"
-              >
-                <a
-                  href="https://konti-hidroplast.com.mk/contacts/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Visit Full Contact Page
-                  <ExternalLink className="ml-2 h-4 w-4" />
-                </a>
-              </Button>
-            </div>
-          </div>
         </div>
       </div>
     </section>
