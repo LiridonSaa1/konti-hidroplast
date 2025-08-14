@@ -223,7 +223,7 @@ export function Navigation() {
             <img
               src={isScrolled ? logoScrolled : logoDefault}
               alt="Urban Rohr"
-              className="h-12 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
+              className="h-16 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
               onClick={() => scrollToSection("#home")}
               data-testid="logo"
             />
