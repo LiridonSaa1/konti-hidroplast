@@ -79,16 +79,17 @@ export function NewsSection() {
                 <p className="text-gray-600 mb-4 line-clamp-3">
                   {article.excerpt}
                 </p>
-                <Button
-                  variant="link"
-                  asChild
-                  className="text-konti-blue font-semibold transition-colors p-0 news-read-more"
+                <a 
+                  href={article.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:shadow-lg"
+                  style={{backgroundColor: '#1c2d56'}}
                   data-testid={`news-read-more-${index}`}
                 >
-                  <a href={article.link} target="_blank" rel="noopener noreferrer">
-                    Read More <ArrowRight className="ml-1 h-4 w-4" />
-                  </a>
-                </Button>
+                  <span>Read More</span>
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </a>
               </CardContent>
             </Card>
           ))}
