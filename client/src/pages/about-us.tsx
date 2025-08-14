@@ -427,11 +427,11 @@ export default function AboutUs() {
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">Our Team</h2>
-            <div className="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Meet the professionals who drive our success and innovation
-            </p>
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold text-gray-900 mx-8">Our Team</h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
           </div>
 
           <Tabs defaultValue="commerce" className="w-full">
