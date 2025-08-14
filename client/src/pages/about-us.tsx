@@ -99,7 +99,7 @@ export default function AboutUs() {
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <iframe
-                  src="https://www.youtube.com/embed/R7b9-m_EM2s"
+                  src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&loop=1&playlist=R7b9-m_EM2s&mute=1&controls=0"
                   title="Konti Hidroplast - Corporate 2024"
                   className="w-full h-full"
                   frameBorder="0"
