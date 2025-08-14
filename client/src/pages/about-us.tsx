@@ -644,6 +644,9 @@ export default function AboutUs() {
         </div>
       </section>
 
+      {/* Certifications */}
+      <CertificationsSection />
+
       {/* Projects Section */}
       <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="container mx-auto px-4">
@@ -806,9 +809,6 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
-      {/* Certifications */}
-      <CertificationsSection />
       <Footer />
     </div>
   );

@@ -21,6 +21,7 @@ Preferred communication style: Simple, everyday language.
   - Company mission statement and leadership message
   - Modern gradient background design with brand colors
   - Responsive layout with elegant hover effects
+- **Layout Improvement**: Moved certifications/sponsors slider above projects section on About Us page for better content flow
 
 # System Architecture
 
