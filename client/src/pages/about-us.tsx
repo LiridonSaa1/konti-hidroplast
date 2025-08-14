@@ -663,7 +663,7 @@ export default function AboutUs() {
             <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="relative h-80 overflow-hidden">
                 <img 
-                  src="@assets/Projects-1-min-800x407_1755198231060.jpg" 
+                  src="/src/assets/Projects-1-min-800x407_1755198231060.jpg" 
                   alt="Quality Control Systems - Testing Equipment" 
                   className="w-full h-full object-cover"
                 />
@@ -686,7 +686,7 @@ export default function AboutUs() {
             <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="relative h-80 overflow-hidden">
                 <img 
-                  src="@assets/Projects-2-min-800x407_1755198239171.jpg" 
+                  src="/src/assets/Projects-2-min-800x407_1755198239171.jpg" 
                   alt="European Infrastructure Projects - Pipeline Installation" 
                   className="w-full h-full object-cover"
                 />
@@ -709,7 +709,7 @@ export default function AboutUs() {
             <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="relative h-80 overflow-hidden">
                 <img 
-                  src="@assets/Projects-3-min-800x407_1755198241265.jpg" 
+                  src="/src/assets/Projects-3-min-800x407_1755198241265.jpg" 
                   alt="Advanced Piping Systems - Large Diameter Pipes" 
                   className="w-full h-full object-cover"
                 />
@@ -732,7 +732,7 @@ export default function AboutUs() {
             <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="relative h-80 overflow-hidden">
                 <img 
-                  src="@assets/Projects-4-min-800x407_1755198243537.jpg" 
+                  src="/src/assets/Projects-4-min-800x407_1755198243537.jpg" 
                   alt="Professional Installation Services - Field Operations" 
                   className="w-full h-full object-cover"
                 />
