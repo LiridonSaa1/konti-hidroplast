@@ -772,9 +772,6 @@ export default function AboutUs() {
               </div>
               <CardContent className="p-6 bg-white">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Professional Installation Services</h3>
-                <p className="text-gray-600 mb-4 text-sm">
-                  Expert installation and maintenance services for water supply, gas, and telecommunications systems
-                </p>
                 <Button 
                   variant="outline" 
                   size="sm" 
