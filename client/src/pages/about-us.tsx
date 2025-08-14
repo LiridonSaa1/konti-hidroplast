@@ -783,20 +783,7 @@ export default function AboutUs() {
             </Card>
           </div>
 
-          {/* Reference Section */}
-          <div className="text-center mt-16">
-            <div className="inline-flex items-center gap-4 bg-white px-8 py-4 rounded-full shadow-lg">
-              <FileText className="h-6 w-6 text-[#1c2d56]" />
-              <span className="text-lg font-semibold text-gray-900">Reference List 2011-2013</span>
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
-              >
-                Download PDF
-              </Button>
-            </div>
-          </div>
+          
         </div>
       </section>
       <Footer />
