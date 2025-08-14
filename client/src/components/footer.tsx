@@ -20,9 +20,12 @@ export function Footer() {
             <img
               src={logoWhite}
               alt="Konti Hidroplast"
-              className="h-16 w-auto mb-6"
+              className="h-12 w-auto mb-6"
               data-testid="footer-logo"
             />
+            <p className="text-gray-300 mb-6 max-w-md" data-testid="footer-description">
+              Export-oriented Macedonian company for production of PE and PP pipes. Founded in 1975, we are committed to delivering unmatched European standards for pipeline precision.
+            </p>
             <div className="flex space-x-4" data-testid="footer-social">
               <a
                 href="https://www.linkedin.com/company/konti-hidroplast/about/"
