@@ -134,11 +134,19 @@ export default function AboutUs() {
                 today our company is export-oriented, and <strong className="text-[#1c2d56]">95% of its products are exported</strong> in international markets.
               </p>
               
-              <p className="text-lg leading-relaxed text-gray-700">
+              <p className="text-lg leading-relaxed text-gray-700 mb-6">
                 Besides the experience, our large range of products and top quality, by all internationally recognized standards, enabled us to get access 
                 to international markets. Our current production program covers all fields of application: pipes and hoses for water supply systems, 
                 sewage systems, PE and PP manholes, pipes for transporting gas and oil products, pipes and hoses for protection of telecommunication cables, 
                 drainage systems and fittings for all dimensions, which also range from a minimum diameter of 12mm up to 2000mm.
+              </p>
+              
+              <p className="text-lg leading-relaxed text-gray-700 mb-6">
+                Konti Hidroplast became known to the market through quality supply and constant application of flexibility in operation, which is very important in an industry where the complexity of managing all processes is quite high.
+              </p>
+              
+              <p className="text-lg leading-relaxed text-gray-700">
+                One of the key factors for sustainability despite tough competition is constant reinvestment in innovative technologies and pursuing general technological progress. The combination of all these key factors are contributing for Konti Hidroplast to play an important role in the domestic and foreign markets with the constant presence of all major and minor infrastructure projects.
               </p>
             </div>
           </div>
