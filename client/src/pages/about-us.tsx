@@ -656,9 +656,6 @@ export default function AboutUs() {
               <h2 className="text-4xl font-bold text-gray-900 mx-8">Projects</h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Showcasing our expertise in infrastructure development and pipe installation projects across Europe
-            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
