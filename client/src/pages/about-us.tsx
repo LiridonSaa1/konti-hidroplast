@@ -418,10 +418,14 @@ export default function AboutUs() {
           </div>
 
           <Tabs defaultValue="commerce" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-12">
-              <TabsTrigger value="commerce" className="text-lg">Commerce</TabsTrigger>
-              <TabsTrigger value="legal" className="text-lg">Legal & Technical</TabsTrigger>
-              <TabsTrigger value="leadership" className="text-lg">Leadership</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-7 mb-12 h-auto">
+              <TabsTrigger value="commerce" className="text-sm bg-red-600 text-white data-[state=active]:bg-red-700">Commerce</TabsTrigger>
+              <TabsTrigger value="legal" className="text-sm bg-[#1c2d56] text-white data-[state=active]:bg-[#0f1936]">Legal Department</TabsTrigger>
+              <TabsTrigger value="technical" className="text-sm bg-[#1c2d56] text-white data-[state=active]:bg-[#0f1936]">Technical Service</TabsTrigger>
+              <TabsTrigger value="laboratory" className="text-sm bg-[#1c2d56] text-white data-[state=active]:bg-[#0f1936]">Laboratory</TabsTrigger>
+              <TabsTrigger value="accounting" className="text-sm bg-[#1c2d56] text-white data-[state=active]:bg-[#0f1936]">Accounting</TabsTrigger>
+              <TabsTrigger value="public-relations" className="text-sm bg-[#1c2d56] text-white data-[state=active]:bg-[#0f1936]">Public Relations</TabsTrigger>
+              <TabsTrigger value="human-resources" className="text-sm bg-[#1c2d56] text-white data-[state=active]:bg-[#0f1936]">Human Resources</TabsTrigger>
             </TabsList>
             
             <TabsContent value="commerce" className="mt-0">
@@ -446,16 +450,14 @@ export default function AboutUs() {
             
             <TabsContent value="legal" className="mt-0">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...teamData.legal, ...teamData.technical].map((member, index) => (
+                {teamData.legal.map((member, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-16 h-16 bg-gradient-to-r from-red-600 to-pink-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
                         <Users className="h-8 w-8 text-white" />
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">
-                        {teamData.legal.includes(member) ? 'Legal Department' : 'Technical Department'}
-                      </p>
+                      <p className="text-sm text-gray-600 mb-4">Legal Department</p>
                       <Button variant="outline" size="sm" className="w-full">
                         <Mail className="h-4 w-4 mr-2" />
                         Contact
@@ -466,21 +468,119 @@ export default function AboutUs() {
               </div>
             </TabsContent>
             
-            <TabsContent value="leadership" className="mt-0">
-              <div className="max-w-2xl mx-auto">
-                <Card className="border-0 shadow-xl">
-                  <CardContent className="p-8 text-center">
-                    <div className="w-24 h-24 bg-gradient-to-r from-purple-600 to-indigo-600 rounded-full mx-auto mb-6 flex items-center justify-center">
-                      <Users className="h-12 w-12 text-white" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Boris Madjunkov</h3>
-                    <p className="text-lg text-[#1c2d56] font-semibold mb-6">General Director</p>
-                    <p className="text-gray-600 leading-relaxed">
-                      Leading Konti Hidroplast with a vision for innovation, European quality standards, 
-                      and sustainable growth in international markets.
-                    </p>
-                  </CardContent>
-                </Card>
+            <TabsContent value="technical" className="mt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {teamData.technical.map((member, index) => (
+                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <Users className="h-8 w-8 text-white" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-4">Technical Service</p>
+                      <Button variant="outline" size="sm" className="w-full">
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="laboratory" className="mt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {teamData.laboratory?.map((member, index) => (
+                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <Users className="h-8 w-8 text-white" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-4">Laboratory</p>
+                      <Button variant="outline" size="sm" className="w-full">
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )) || (
+                  <div className="col-span-full text-center py-12">
+                    <p className="text-gray-500">Team members will be added soon.</p>
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="accounting" className="mt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {teamData.accounting?.map((member, index) => (
+                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <Users className="h-8 w-8 text-white" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-4">Accounting</p>
+                      <Button variant="outline" size="sm" className="w-full">
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )) || (
+                  <div className="col-span-full text-center py-12">
+                    <p className="text-gray-500">Team members will be added soon.</p>
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="public-relations" className="mt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {teamData.publicRelations?.map((member, index) => (
+                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <Users className="h-8 w-8 text-white" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-4">Public Relations</p>
+                      <Button variant="outline" size="sm" className="w-full">
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )) || (
+                  <div className="col-span-full text-center py-12">
+                    <p className="text-gray-500">Team members will be added soon.</p>
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="human-resources" className="mt-0">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {teamData.humanResources?.map((member, index) => (
+                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <Users className="h-8 w-8 text-white" />
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
+                      <p className="text-sm text-gray-600 mb-4">Human Resources</p>
+                      <Button variant="outline" size="sm" className="w-full">
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact
+                      </Button>
+                    </CardContent>
+                  </Card>
+                )) || (
+                  <div className="col-span-full text-center py-12">
+                    <p className="text-gray-500">Team members will be added soon.</p>
+                  </div>
+                )}
               </div>
             </TabsContent>
           </Tabs>
