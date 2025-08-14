@@ -418,14 +418,14 @@ export default function AboutUs() {
           </div>
 
           <Tabs defaultValue="commerce" className="w-full">
-            <TabsList className="grid w-full grid-cols-7 mb-12 h-auto">
-              <TabsTrigger value="commerce" className="text-sm bg-red-600 text-white data-[state=active]:bg-red-700">Commerce</TabsTrigger>
-              <TabsTrigger value="legal" className="text-sm bg-[#1c2d56] text-white data-[state=active]:bg-[#0f1936]">Legal Department</TabsTrigger>
-              <TabsTrigger value="technical" className="text-sm bg-[#1c2d56] text-white data-[state=active]:bg-[#0f1936]">Technical Service</TabsTrigger>
-              <TabsTrigger value="laboratory" className="text-sm bg-[#1c2d56] text-white data-[state=active]:bg-[#0f1936]">Laboratory</TabsTrigger>
-              <TabsTrigger value="accounting" className="text-sm bg-[#1c2d56] text-white data-[state=active]:bg-[#0f1936]">Accounting</TabsTrigger>
-              <TabsTrigger value="public-relations" className="text-sm bg-[#1c2d56] text-white data-[state=active]:bg-[#0f1936]">Public Relations</TabsTrigger>
-              <TabsTrigger value="human-resources" className="text-sm bg-[#1c2d56] text-white data-[state=active]:bg-[#0f1936]">Human Resources</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-7 mb-12">
+              <TabsTrigger value="commerce" className="text-lg">Commerce</TabsTrigger>
+              <TabsTrigger value="legal" className="text-lg">Legal Department</TabsTrigger>
+              <TabsTrigger value="technical" className="text-lg">Technical Service</TabsTrigger>
+              <TabsTrigger value="laboratory" className="text-lg">Laboratory</TabsTrigger>
+              <TabsTrigger value="accounting" className="text-lg">Accounting</TabsTrigger>
+              <TabsTrigger value="public-relations" className="text-lg">Public Relations</TabsTrigger>
+              <TabsTrigger value="human-resources" className="text-lg">Human Resources</TabsTrigger>
             </TabsList>
             
             <TabsContent value="commerce" className="mt-0">
@@ -489,98 +489,26 @@ export default function AboutUs() {
             </TabsContent>
             
             <TabsContent value="laboratory" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {teamData.laboratory?.map((member, index) => (
-                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                    <CardContent className="p-6 text-center">
-                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <Users className="h-8 w-8 text-white" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">Laboratory</p>
-                      <Button variant="outline" size="sm" className="w-full">
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )) || (
-                  <div className="col-span-full text-center py-12">
-                    <p className="text-gray-500">Team members will be added soon.</p>
-                  </div>
-                )}
+              <div className="text-center py-12">
+                <p className="text-gray-500">Laboratory team content will be added.</p>
               </div>
             </TabsContent>
             
             <TabsContent value="accounting" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {teamData.accounting?.map((member, index) => (
-                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                    <CardContent className="p-6 text-center">
-                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <Users className="h-8 w-8 text-white" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">Accounting</p>
-                      <Button variant="outline" size="sm" className="w-full">
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )) || (
-                  <div className="col-span-full text-center py-12">
-                    <p className="text-gray-500">Team members will be added soon.</p>
-                  </div>
-                )}
+              <div className="text-center py-12">
+                <p className="text-gray-500">Accounting team content will be added.</p>
               </div>
             </TabsContent>
             
             <TabsContent value="public-relations" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {teamData.publicRelations?.map((member, index) => (
-                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                    <CardContent className="p-6 text-center">
-                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <Users className="h-8 w-8 text-white" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">Public Relations</p>
-                      <Button variant="outline" size="sm" className="w-full">
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )) || (
-                  <div className="col-span-full text-center py-12">
-                    <p className="text-gray-500">Team members will be added soon.</p>
-                  </div>
-                )}
+              <div className="text-center py-12">
+                <p className="text-gray-500">Public Relations team content will be added.</p>
               </div>
             </TabsContent>
             
             <TabsContent value="human-resources" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {teamData.humanResources?.map((member, index) => (
-                  <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
-                    <CardContent className="p-6 text-center">
-                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <Users className="h-8 w-8 text-white" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">Human Resources</p>
-                      <Button variant="outline" size="sm" className="w-full">
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact
-                      </Button>
-                    </CardContent>
-                  </Card>
-                )) || (
-                  <div className="col-span-full text-center py-12">
-                    <p className="text-gray-500">Team members will be added soon.</p>
-                  </div>
-                )}
+              <div className="text-center py-12">
+                <p className="text-gray-500">Human Resources team content will be added.</p>
               </div>
             </TabsContent>
           </Tabs>
