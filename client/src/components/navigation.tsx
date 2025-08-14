@@ -41,11 +41,12 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
     label: t("nav.products"),
     type: "dropdown",
     items: [
-      { label: "Products", href: "/products", external: true },
-      { label: "Water Supply Systems", href: "#products" },
-      { label: "Sewerage Systems", href: "#products" },
-      { label: "Gas Pipeline System", href: "#products" },
-      { label: "Cable Protection", href: "#products" },
+      { label: "All Products", href: "/products" },
+      { label: "Water Supply Systems", href: "/products#water-supply" },
+      { label: "Sewerage Systems", href: "/products#sewerage" },
+      { label: "Gas Pipeline System", href: "/products#gas-pipeline" },
+      { label: "Cable Protection", href: "/products#cable-protection" },
+      { label: "Full Catalog", href: "https://konti-hidroplast.com.mk/products/", external: true },
     ],
   },
   {
@@ -179,6 +180,23 @@ export function Navigation() {
       // Check if this navigation item is active based on current URL
       const isActive = location === item.href;
 
+      if (isMobile) {
+        return (
+          <button
+            key={item.href}
+            onClick={() => scrollToSection(item.href)}
+            className={`w-full text-left px-4 py-3 text-base font-medium transition-colors ${
+              isActive
+                ? "text-konti-blue bg-blue-50"
+                : "text-konti-gray hover:text-konti-blue"
+            }`}
+            data-testid={`mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
+          >
+            {item.label}
+          </button>
+        );
+      }
+
       return (
         <button
           key={item.href}
@@ -201,25 +219,6 @@ export function Navigation() {
     }
 
     if (isMobile) {
-      // Handle single link items in mobile
-      if (item.type === "link") {
-        const isActive = location === item.href;
-        return (
-          <button
-            key={item.href}
-            onClick={() => scrollToSection(item.href)}
-            className={`w-full text-left px-4 py-3 text-base font-medium transition-colors ${
-              isActive
-                ? "text-konti-blue bg-blue-50"
-                : "text-konti-gray hover:text-konti-blue"
-            }`}
-            data-testid={`mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
-          >
-            {item.label}
-          </button>
-        );
-      }
-
       // For mobile dropdown items
       return (
         <div key={item.label} className="space-y-2">
