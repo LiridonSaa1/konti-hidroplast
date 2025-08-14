@@ -345,7 +345,6 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-      
       {/* Leadership Message Section */}
       <section className="py-20 bg-gradient-to-r from-[#1c2d56] via-[#2a3f6b] to-[#1c2d56] relative overflow-hidden">
         {/* Background Pattern */}
@@ -422,7 +421,6 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
       {/* Team Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -643,10 +641,8 @@ export default function AboutUs() {
           </Tabs>
         </div>
       </section>
-
       {/* Certifications */}
       <CertificationsSection />
-
       {/* Projects Section */}
       <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="container mx-auto px-4">
@@ -752,9 +748,8 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
       {/* Products Section */}
-      <section className="py-20 bg-white relative overflow-hidden">
+      <section className="py-20 relative overflow-hidden bg-[#1c2d56] text-[#ffffff]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
@@ -900,7 +895,6 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
       {/* Gallery Section */}
       <section className="py-20 bg-white relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
@@ -1048,7 +1042,6 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   );
