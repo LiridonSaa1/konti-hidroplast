@@ -8,6 +8,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { LoadingScreen } from "@/components/loading-screen";
 import Home from "@/pages/home";
 import AboutUs from "@/pages/about-us";
+import { Products } from "@/pages/products";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -15,6 +16,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/about-us" component={AboutUs} />
+      <Route path="/products" component={Products} />
       <Route component={NotFound} />
     </Switch>
   );
