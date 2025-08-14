@@ -123,88 +123,156 @@ export function ContactSection() {
           </p>
         </div>
 
-        <div className="max-w-2xl mx-auto">
-          {/* Contact Form */}
-          <Card
-            className={`${
+        <div className="max-w-3xl mx-auto">
+          {/* Enhanced Contact Form */}
+          <div
+            className={`relative ${
               hasIntersected ? "animate-slide-up" : "opacity-0"
             }`}
             style={{ animationDelay: "200ms" }}
           >
-            <CardContent className="p-8 bg-konti-gray-light rounded-xl">
-              <h3
-                className="text-2xl font-semibold text-konti-gray mb-6"
-                data-testid="contact-form-title"
-              >
-                Send us a Message
-              </h3>
-              <form onSubmit={handleSubmit} className="space-y-6" data-testid="contact-form">
-                <div>
-                  <Label htmlFor="name" className="text-sm font-medium text-gray-700 mb-2">
-                    Full Name *
-                  </Label>
-                  <Input
-                    id="name"
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange("name", e.target.value)}
-                    className="w-full"
-                    required
-                    data-testid="input-name"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="email" className="text-sm font-medium text-gray-700 mb-2">
-                    Email Address *
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleInputChange("email", e.target.value)}
-                    className="w-full"
-                    required
-                    data-testid="input-email"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="company" className="text-sm font-medium text-gray-700 mb-2">
-                    Company
-                  </Label>
-                  <Input
-                    id="company"
-                    type="text"
-                    value={formData.company}
-                    onChange={(e) => handleInputChange("company", e.target.value)}
-                    className="w-full"
-                    data-testid="input-company"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="message" className="text-sm font-medium text-gray-700 mb-2">
-                    Message *
-                  </Label>
-                  <Textarea
-                    id="message"
-                    value={formData.message}
-                    onChange={(e) => handleInputChange("message", e.target.value)}
-                    rows={4}
-                    className="w-full resize-none"
-                    required
-                    data-testid="input-message"
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full konti-gradient text-white py-3 px-6 rounded-lg font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
-                  data-testid="submit-form"
+            {/* Background gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-gray-50 rounded-2xl transform rotate-1"></div>
+            <div className="absolute inset-0 bg-gradient-to-tr from-gray-50 via-white to-blue-50 rounded-2xl transform -rotate-1"></div>
+            
+            <Card className="relative bg-white shadow-2xl border-0 rounded-2xl overflow-hidden">
+              {/* Card Header with gradient */}
+              <div className="bg-gradient-to-r from-konti-gray via-slate-700 to-konti-gray p-8 text-center relative overflow-hidden">
+                {/* Decorative elements */}
+                <div className="absolute top-0 left-0 w-20 h-20 bg-white/10 rounded-full -translate-x-10 -translate-y-10"></div>
+                <div className="absolute bottom-0 right-0 w-16 h-16 bg-white/10 rounded-full translate-x-8 translate-y-8"></div>
+                <div className="absolute top-1/2 right-4 w-2 h-2 bg-white/30 rounded-full"></div>
+                <div className="absolute top-4 left-1/3 w-1 h-1 bg-white/20 rounded-full"></div>
+                
+                <h3
+                  className="text-3xl font-bold text-white mb-2 relative z-10"
+                  data-testid="contact-form-title"
                 >
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
+                  Send us a Message
+                </h3>
+                <p className="text-blue-100 relative z-10">
+                  We'll get back to you within 24 hours
+                </p>
+              </div>
+
+              <CardContent className="p-10">
+                <form onSubmit={handleSubmit} className="space-y-8" data-testid="contact-form">
+                  {/* Name and Email Row */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="group">
+                      <Label htmlFor="name" className="text-sm font-semibold text-gray-700 mb-3 block">
+                        Full Name *
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          id="name"
+                          type="text"
+                          value={formData.name}
+                          onChange={(e) => handleInputChange("name", e.target.value)}
+                          className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-konti-blue focus:ring-4 focus:ring-konti-blue/20 transition-all duration-300 bg-gray-50 hover:bg-white"
+                          placeholder="Enter your full name"
+                          required
+                          data-testid="input-name"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-konti-blue/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                      </div>
+                    </div>
+                    <div className="group">
+                      <Label htmlFor="email" className="text-sm font-semibold text-gray-700 mb-3 block">
+                        Email Address *
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          id="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={(e) => handleInputChange("email", e.target.value)}
+                          className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-konti-blue focus:ring-4 focus:ring-konti-blue/20 transition-all duration-300 bg-gray-50 hover:bg-white"
+                          placeholder="your.email@company.com"
+                          required
+                          data-testid="input-email"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-konti-blue/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Company Field */}
+                  <div className="group">
+                    <Label htmlFor="company" className="text-sm font-semibold text-gray-700 mb-3 block">
+                      Company
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id="company"
+                        type="text"
+                        value={formData.company}
+                        onChange={(e) => handleInputChange("company", e.target.value)}
+                        className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl focus:border-konti-blue focus:ring-4 focus:ring-konti-blue/20 transition-all duration-300 bg-gray-50 hover:bg-white"
+                        placeholder="Your company name"
+                        data-testid="input-company"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-konti-blue/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                    </div>
+                  </div>
+
+                  {/* Message Field */}
+                  <div className="group">
+                    <Label htmlFor="message" className="text-sm font-semibold text-gray-700 mb-3 block">
+                      Message *
+                    </Label>
+                    <div className="relative">
+                      <Textarea
+                        id="message"
+                        value={formData.message}
+                        onChange={(e) => handleInputChange("message", e.target.value)}
+                        rows={5}
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-konti-blue focus:ring-4 focus:ring-konti-blue/20 transition-all duration-300 bg-gray-50 hover:bg-white resize-none"
+                        placeholder="Tell us about your pipeline needs..."
+                        required
+                        data-testid="input-message"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-konti-blue/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                    </div>
+                  </div>
+
+                  {/* Submit Button */}
+                  <div className="pt-4">
+                    <Button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full h-14 konti-gradient text-white text-lg font-semibold rounded-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none relative overflow-hidden group"
+                      data-testid="submit-form"
+                    >
+                      <span className="relative z-10">
+                        {isSubmitting ? "Sending..." : "Send Message"}
+                      </span>
+                      {/* Button hover effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    </Button>
+                  </div>
+                </form>
+
+                {/* Trust indicators */}
+                <div className="mt-8 pt-6 border-t border-gray-100 text-center">
+                  <div className="flex items-center justify-center space-x-6 text-sm text-gray-500">
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
+                      Secure & Private
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
+                      24h Response
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-purple-400 rounded-full mr-2"></div>
+                      Expert Support
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </section>
