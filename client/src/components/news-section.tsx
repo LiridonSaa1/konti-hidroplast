@@ -44,14 +44,14 @@ export function NewsSection() {
           }`}
         >
           <div className="flex items-center justify-center mb-4">
-            <div className="w-12 h-0.5 bg-red-500 mr-4"></div>
+            <div className="w-20 h-0.5 bg-red-500 mr-4"></div>
             <h2
               className="text-4xl font-bold text-konti-gray"
               data-testid="news-title"
             >
               News
             </h2>
-            <div className="w-12 h-0.5 bg-red-500 ml-4"></div>
+            <div className="w-20 h-0.5 bg-red-500 ml-4"></div>
           </div>
         </div>
 
