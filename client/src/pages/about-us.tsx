@@ -240,7 +240,6 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
-
       {/* Company Timeline */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -251,7 +250,7 @@ export default function AboutUs() {
             <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-bold text-gray-900">Timeline</h3>
-                <div className="bg-blue-600 text-white px-4 py-2 rounded-full font-semibold">
+                <div className="text-white px-4 py-2 rounded-full font-semibold bg-[#1c2d56]">
                   {activeYear}
                 </div>
               </div>
