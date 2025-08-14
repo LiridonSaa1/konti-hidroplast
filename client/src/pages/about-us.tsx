@@ -651,9 +651,11 @@ export default function AboutUs() {
       <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              <span className="border-b-4 border-[#1c2d56] pb-2">Projects</span>
-            </h2>
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold text-gray-900 mx-8">Projects</h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Showcasing our expertise in infrastructure development and pipe installation projects across Europe
             </p>

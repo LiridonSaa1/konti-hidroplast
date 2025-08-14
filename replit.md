@@ -22,6 +22,7 @@ Preferred communication style: Simple, everyday language.
   - Modern gradient background design with brand colors
   - Responsive layout with elegant hover effects
 - **Layout Improvement**: Moved certifications/sponsors slider above projects section on About Us page for better content flow
+- **Projects Section Design**: Updated Projects title to match brand design with decorative red lines on both sides
 
 # System Architecture
 
