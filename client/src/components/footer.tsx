@@ -1,5 +1,6 @@
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 import { MapPin, Phone } from "lucide-react";
+import logoWhite from "@assets/urban-rohr-logo-white.svg";
 
 export function Footer() {
   const quickLinks = [
@@ -17,7 +18,7 @@ export function Footer() {
           {/* Company Info */}
           <div className="md:col-span-2">
             <img
-              src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Konti-Hirdpolast-white.png"
+              src={logoWhite}
               alt="Konti Hidroplast"
               className="h-12 w-auto mb-6"
               data-testid="footer-logo"
