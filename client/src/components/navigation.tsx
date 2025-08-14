@@ -37,26 +37,42 @@ type NavigationItem = NavigationLink | NavigationDropdown;
 const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
   { href: "/", label: t("nav.home"), type: "link" },
   { href: "/about-us", label: t("nav.about"), type: "link" },
-  { 
-    label: t("nav.products"), 
+  {
+    label: t("nav.products"),
     type: "dropdown",
     items: [
+      { label: "Products", href: "/products", external: true },
       { label: "Water Supply Systems", href: "#products" },
       { label: "Sewerage Systems", href: "#products" },
       { label: "Gas Pipeline System", href: "#products" },
       { label: "Cable Protection", href: "#products" },
-      { label: "All Products", href: "https://konti-hidroplast.com.mk/products/", external: true },
-    ]
+    ],
   },
   {
     label: t("nav.downloads"),
-    type: "dropdown", 
+    type: "dropdown",
     items: [
-      { label: t("nav.brochures"), href: "https://konti-hidroplast.com.mk/products/", external: true },
-      { label: t("nav.technical"), href: "https://konti-hidroplast.com.mk/products/", external: true },
-      { label: "Installation Guides", href: "https://konti-hidroplast.com.mk/products/", external: true },
-      { label: t("nav.certifications"), href: "https://konti-hidroplast.com.mk/products/", external: true },
-    ]
+      {
+        label: t("nav.brochures"),
+        href: "https://konti-hidroplast.com.mk/products/",
+        external: true,
+      },
+      {
+        label: t("nav.technical"),
+        href: "https://konti-hidroplast.com.mk/products/",
+        external: true,
+      },
+      {
+        label: "Installation Guides",
+        href: "https://konti-hidroplast.com.mk/products/",
+        external: true,
+      },
+      {
+        label: t("nav.certifications"),
+        href: "https://konti-hidroplast.com.mk/products/",
+        external: true,
+      },
+    ],
   },
   { href: "#news", label: t("nav.news"), type: "link" },
   {
@@ -66,8 +82,12 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
       { label: "Contact Form", href: "#contact" },
       { label: "Office Locations", href: "#contact" },
       { label: "Phone Numbers", href: "#contact" },
-      { label: "Full Contact Page", href: "https://konti-hidroplast.com.mk/contacts/", external: true },
-    ]
+      {
+        label: "Full Contact Page",
+        href: "https://konti-hidroplast.com.mk/contacts/",
+        external: true,
+      },
+    ],
   },
 ];
 
@@ -91,12 +111,14 @@ export function Navigation() {
 
   useEffect(() => {
     const handleSectionChange = () => {
-      const linkItems = navigationItems.filter((item): item is NavigationLink => item.type === "link");
+      const linkItems = navigationItems.filter(
+        (item): item is NavigationLink => item.type === "link",
+      );
       const sections = linkItems
-        .filter(item => item.href.startsWith("#"))
-        .map(item => item.href.slice(1));
-      
-      const currentSection = sections.find(section => {
+        .filter((item) => item.href.startsWith("#"))
+        .map((item) => item.href.slice(1));
+
+      const currentSection = sections.find((section) => {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
@@ -104,7 +126,7 @@ export function Navigation() {
         }
         return false;
       });
-      
+
       if (currentSection) {
         setActiveSection(currentSection);
       }
@@ -149,21 +171,28 @@ export function Navigation() {
     }, 200); // Small delay to allow moving to the dropdown content
   };
 
-  const renderNavigationItem = (item: NavigationItem, isMobile: boolean = false) => {
+  const renderNavigationItem = (
+    item: NavigationItem,
+    isMobile: boolean = false,
+  ) => {
     if (item.type === "link") {
       // Check if this navigation item is active based on current URL
       const isActive = location === item.href;
-      
+
       return (
         <button
           key={item.href}
           onClick={() => scrollToSection(item.href)}
           className={`px-4 py-3 font-medium transition-all duration-300 text-[15px] ${
             isActive
-              ? (isScrolled ? "font-bold" : "text-white font-bold nav-text-shadow")
-              : (isScrolled ? "text-black hover:text-konti-blue" : "text-white/90 hover:text-white nav-text-shadow")
+              ? isScrolled
+                ? "font-bold"
+                : "text-white font-bold nav-text-shadow"
+              : isScrolled
+                ? "text-black hover:text-konti-blue"
+                : "text-white/90 hover:text-white nav-text-shadow"
           }`}
-          style={isActive && isScrolled ? { color: 'rgb(235, 33, 39)' } : {}}
+          style={isActive && isScrolled ? { color: "rgb(235, 33, 39)" } : {}}
           data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
         >
           {item.label}
@@ -180,8 +209,8 @@ export function Navigation() {
             key={item.href}
             onClick={() => scrollToSection(item.href)}
             className={`w-full text-left px-4 py-3 text-base font-medium transition-colors ${
-              isActive 
-                ? "text-konti-blue bg-blue-50" 
+              isActive
+                ? "text-konti-blue bg-blue-50"
                 : "text-konti-gray hover:text-konti-blue"
             }`}
             data-testid={`mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
@@ -190,7 +219,7 @@ export function Navigation() {
           </button>
         );
       }
-      
+
       // For mobile dropdown items
       return (
         <div key={item.label} className="space-y-2">
@@ -200,7 +229,9 @@ export function Navigation() {
           {item.items.map((subItem, index) => (
             <button
               key={index}
-              onClick={() => handleDropdownClick(subItem.href, subItem.external)}
+              onClick={() =>
+                handleDropdownClick(subItem.href, subItem.external)
+              }
               className="w-full text-left px-6 py-3 text-base text-gray-600 hover:text-konti-blue transition-colors flex items-center justify-between"
               data-testid={`mobile-nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
             >
@@ -213,9 +244,14 @@ export function Navigation() {
     }
 
     const isOpen = openDropdown === item.label;
-    
+
     return (
-      <DropdownMenu key={item.label} modal={false} open={isOpen} onOpenChange={() => {}}>
+      <DropdownMenu
+        key={item.label}
+        modal={false}
+        open={isOpen}
+        onOpenChange={() => {}}
+      >
         <div
           onMouseEnter={() => handleDropdownMouseEnter(item.label)}
           onMouseLeave={handleDropdownMouseLeave}
@@ -223,18 +259,20 @@ export function Navigation() {
           <DropdownMenuTrigger asChild>
             <button
               className={`px-4 py-3 font-medium transition-all duration-300 flex items-center gap-1 focus:outline-none focus-visible:outline-none text-[15px] ${
-                isScrolled 
-                  ? `text-black hover:text-konti-blue ${isOpen ? 'text-konti-blue' : ''}` 
-                  : `text-white/90 hover:text-white nav-text-shadow ${isOpen ? 'text-white' : ''}`
+                isScrolled
+                  ? `text-black hover:text-konti-blue ${isOpen ? "text-konti-blue" : ""}`
+                  : `text-white/90 hover:text-white nav-text-shadow ${isOpen ? "text-white" : ""}`
               }`}
               data-testid={`nav-${item.label.toLowerCase()}`}
             >
               {item.label}
-              <ChevronDown className={`h-5 w-5 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown
+                className={`h-5 w-5 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+              />
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent 
-            align="start" 
+          <DropdownMenuContent
+            align="start"
             className="nav-dropdown w-56 bg-white shadow-lg border-0 z-50"
             sideOffset={8}
             onCloseAutoFocus={(event) => event.preventDefault()}
@@ -244,12 +282,16 @@ export function Navigation() {
             {item.items.map((subItem, index) => (
               <DropdownMenuItem
                 key={index}
-                onClick={() => handleDropdownClick(subItem.href, subItem.external)}
+                onClick={() =>
+                  handleDropdownClick(subItem.href, subItem.external)
+                }
                 className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
                 data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
               >
                 <span>{subItem.label}</span>
-                {subItem.external && <ExternalLink className="h-3 w-3 text-gray-400" />}
+                {subItem.external && (
+                  <ExternalLink className="h-3 w-3 text-gray-400" />
+                )}
               </DropdownMenuItem>
             ))}
           </DropdownMenuContent>
@@ -284,7 +326,7 @@ export function Navigation() {
           <div className="hidden md:block">
             <div className="ml-12 flex items-center space-x-8">
               <div className="flex items-baseline space-x-8">
-                {navigationItems.map(item => renderNavigationItem(item))}
+                {navigationItems.map((item) => renderNavigationItem(item))}
               </div>
               <LanguageSwitcher />
             </div>
@@ -294,11 +336,13 @@ export function Navigation() {
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
+                <Button
+                  variant="ghost"
+                  size="icon"
                   className={`transition-colors duration-300 ${
-                    isScrolled ? "text-black hover:text-konti-blue" : "text-white hover:text-white/80"
+                    isScrolled
+                      ? "text-black hover:text-konti-blue"
+                      : "text-white hover:text-white/80"
                   }`}
                   data-testid="mobile-menu-trigger"
                 >
@@ -315,7 +359,9 @@ export function Navigation() {
                     />
                     <LanguageSwitcher />
                   </div>
-                  {navigationItems.map(item => renderNavigationItem(item, true))}
+                  {navigationItems.map((item) =>
+                    renderNavigationItem(item, true),
+                  )}
                 </div>
               </SheetContent>
             </Sheet>
