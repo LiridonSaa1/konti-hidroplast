@@ -679,15 +679,13 @@ export default function AboutUs() {
               </div>
               <CardContent className="p-6 bg-white">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">Quality Control Systems</h3>
-                <p className="text-gray-600 mb-4 text-sm">
-                  State-of-the-art testing equipment ensuring the highest quality standards for our PE and PP pipe production
-                </p>
+                
                 <Button 
                   variant="outline" 
                   size="sm" 
                   className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
                 >
-                  View Details
+                  Download PDF
                 </Button>
               </CardContent>
             </Card>
@@ -720,7 +718,7 @@ export default function AboutUs() {
                   size="sm" 
                   className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
                 >
-                  View Details
+                  Download PDF
                 </Button>
               </CardContent>
             </Card>
@@ -753,7 +751,7 @@ export default function AboutUs() {
                   size="sm" 
                   className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
                 >
-                  View Details
+                  Download PDF
                 </Button>
               </CardContent>
             </Card>
@@ -786,7 +784,7 @@ export default function AboutUs() {
                   size="sm" 
                   className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
                 >
-                  View Details
+                  Download PDF
                 </Button>
               </CardContent>
             </Card>
