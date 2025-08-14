@@ -346,18 +346,11 @@ export default function AboutUs() {
                 {/* Main photo container */}
                 <div className="w-80 h-80 bg-white rounded-2xl p-4 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
                   <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
-                    {/* Placeholder for photo - you can replace this with actual image */}
-                    <div className="w-full h-full bg-gradient-to-br from-gray-300 to-gray-400 rounded-xl flex items-center justify-center">
-                      <div className="text-center text-gray-600">
-                        <div className="w-20 h-20 bg-gray-500 rounded-full mx-auto mb-4 flex items-center justify-center">
-                          <svg className="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                          </svg>
-                        </div>
-                        <p className="text-sm font-medium">Boris Madjunkov</p>
-                        <p className="text-xs">Photo Placeholder</p>
-                      </div>
-                    </div>
+                    <img 
+                      src="/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg"
+                      alt="Boris Madjunkov - General Director"
+                      className="w-full h-full object-cover rounded-xl"
+                    />
                   </div>
                 </div>
                 
