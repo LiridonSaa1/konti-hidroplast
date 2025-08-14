@@ -754,7 +754,7 @@ export default function AboutUs() {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold text-gray-900 mx-8">Products</h2>
+              <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">Products</h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
           </div>
