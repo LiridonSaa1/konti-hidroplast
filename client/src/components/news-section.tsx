@@ -8,7 +8,7 @@ const newsArticles = [
     image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/HDPE-plastic-pipes-installed-in-Dutch-flood-protection-systems-as-a-climate-resilience-solution.-min.png",
     category: "News",
     title: "Innovations in Pipe Inspection and Maintenance Technologies",
-    excerpt: "Latest advancements in pipeline maintenance and inspection technologies...",
+    excerpt: "Latest advancements in pipeline maintenance and inspection technologies for improved infrastructure reliability.",
     link: "https://konti-hidroplast.com.mk/innovations-in-pipe-inspection-and-maintenance-technologies/",
   },
   {
@@ -22,7 +22,7 @@ const newsArticles = [
     image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/EPD-%E2%80%93-Environmental-Product-Declaration.jpg",
     category: "News",
     title: "EPD – Environmental Product Declaration",
-    excerpt: "Our commitment to environmental transparency and sustainability...",
+    excerpt: "Our commitment to environmental transparency and sustainability through comprehensive product declarations.",
     link: "https://konti-hidroplast.com.mk/epd-environmental-product-declaration/",
   },
 ];
@@ -47,14 +47,8 @@ export function NewsSection() {
             className="text-4xl font-bold text-konti-gray mb-4"
             data-testid="news-title"
           >
-            Latest News
+            News
           </h2>
-          <p
-            className="text-xl text-gray-600"
-            data-testid="news-subtitle"
-          >
-            Stay updated with our latest developments and industry insights
-          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
