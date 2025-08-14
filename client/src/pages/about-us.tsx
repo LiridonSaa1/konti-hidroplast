@@ -309,12 +309,12 @@ export default function AboutUs() {
                   <Card className="border-0 shadow-xl hover:shadow-2xl transition-shadow">
                     <CardContent className="p-8">
                       <div className="flex items-center gap-6 mb-6">
-                        <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full flex items-center justify-center shadow-lg">
+                        <div className="w-20 h-20 bg-[#1c2d56] rounded-full flex items-center justify-center shadow-lg">
                           <Calendar className="h-10 w-10 text-white" />
                         </div>
                         <div>
                           <h3 className="text-3xl font-bold text-gray-900 mb-2">{item.year}</h3>
-                          <h4 className="text-xl font-semibold text-blue-600">{item.title}</h4>
+                          <h4 className="text-xl font-semibold text-[#1c2d56]">{item.title}</h4>
                         </div>
                       </div>
                       <p className="text-gray-600 leading-relaxed text-lg">
@@ -351,7 +351,7 @@ export default function AboutUs() {
                 {teamData.commerce.map((member, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                      <div className="w-16 h-16 bg-[#1c2d56] rounded-full mx-auto mb-4 flex items-center justify-center">
                         <Users className="h-8 w-8 text-white" />
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
@@ -396,7 +396,7 @@ export default function AboutUs() {
                       <Users className="h-12 w-12 text-white" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">Boris Madjunkov</h3>
-                    <p className="text-lg text-blue-600 font-semibold mb-6">General Director</p>
+                    <p className="text-lg text-[#1c2d56] font-semibold mb-6">General Director</p>
                     <p className="text-gray-600 leading-relaxed">
                       Leading Konti Hidroplast with a vision for innovation, European quality standards, 
                       and sustainable growth in international markets.
