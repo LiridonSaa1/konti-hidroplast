@@ -10,7 +10,8 @@ import {
 import { Menu, ChevronDown, ExternalLink } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/language-switcher";
-import logoPath from "@assets/urban-rohr-logo.svg";
+import logoScrolled from "@assets/urban-rohr-logo.svg";
+import logoDefault from "@assets/urban-rohr-logo-white.svg";
 
 interface NavigationLink {
   href: string;
@@ -220,7 +221,7 @@ export function Navigation() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <img
-              src={logoPath}
+              src={isScrolled ? logoScrolled : logoDefault}
               alt="Urban Rohr"
               className="h-12 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
               onClick={() => scrollToSection("#home")}
