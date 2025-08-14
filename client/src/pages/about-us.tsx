@@ -450,7 +450,7 @@ export default function AboutUs() {
                 {teamData.commerce.map((member, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
                         <img 
                           src={`/attached_assets/${member.photo}`} 
                           alt={member.name}
@@ -470,7 +470,7 @@ export default function AboutUs() {
                 {teamData.legal.map((member, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
                         <img 
                           src={`/attached_assets/${member.photo}`} 
                           alt={member.name}
@@ -490,7 +490,7 @@ export default function AboutUs() {
                 {teamData.technical.map((member, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
                         <img 
                           src={`/attached_assets/${member.photo}`} 
                           alt={member.name}
@@ -510,7 +510,7 @@ export default function AboutUs() {
                 {teamData.laboratory.map((member, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
                         <img 
                           src={`/attached_assets/${member.photo}`} 
                           alt={member.name}
@@ -530,7 +530,7 @@ export default function AboutUs() {
                 {teamData.accounting.map((member, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
                         <img 
                           src={`/attached_assets/${member.photo}`} 
                           alt={member.name}
@@ -550,7 +550,7 @@ export default function AboutUs() {
                 {teamData.publicRelations.map((member, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
                         <img 
                           src={`/attached_assets/${member.photo}`} 
                           alt={member.name}
@@ -570,7 +570,7 @@ export default function AboutUs() {
                 {teamData.humanResources.map((member, index) => (
                   <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-shadow">
                     <CardContent className="p-6 text-center">
-                      <div className="w-24 h-24 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
                         <img 
                           src={`/attached_assets/${member.photo}`} 
                           alt={member.name}
