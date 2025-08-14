@@ -117,8 +117,11 @@ export default function AboutUs() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">Our Story</h2>
-            <div className="w-24 h-1 bg-red-600 mx-auto mb-8"></div>
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold text-gray-700 mx-8">Our Story</h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
           </div>
           
           <div className="prose prose-lg max-w-none">
