@@ -900,6 +900,167 @@ export default function AboutUs() {
           </div>
         </div>
       </section>
+
+      {/* Gallery Section */}
+      <section className="py-20 bg-gray-50 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold text-gray-900 mx-8">Gallery</h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+          </div>
+
+          {/* Gallery Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* Production Gallery Item */}
+            <div className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+              <div className="h-80 relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800">
+                <img
+                  src="/attached_assets/Konti-Hidroplast-Proizvodstvo-27-1_1755115099243.jpg"
+                  alt="Production Facility"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                
+                {/* Content Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center text-white transform group-hover:scale-105 transition-transform duration-500">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                      <Factory className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2 tracking-wide">Production</h3>
+                    <p className="text-white/90 text-sm font-medium">Manufacturing Excellence</p>
+                  </div>
+                </div>
+                
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-[#1c2d56]/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                      <Factory className="h-10 w-10 text-white" />
+                    </div>
+                    <h3 className="text-3xl font-bold mb-4">Production</h3>
+                    <p className="text-white/90 text-lg leading-relaxed max-w-xs mx-auto">
+                      State-of-the-art manufacturing facilities producing high-quality PE and PP pipes
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quality Control Gallery Item */}
+            <div className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+              <div className="h-80 relative overflow-hidden bg-gradient-to-br from-blue-800 via-cyan-800 to-blue-900">
+                <img
+                  src="/attached_assets/image_1755201104056.png"
+                  alt="Quality Control Laboratory"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                
+                {/* Content Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center text-white transform group-hover:scale-105 transition-transform duration-500">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                      <Settings className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2 tracking-wide">Quality Control</h3>
+                    <p className="text-white/90 text-sm font-medium">Testing & Standards</p>
+                  </div>
+                </div>
+                
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-[#1c2d56]/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                      <Settings className="h-10 w-10 text-white" />
+                    </div>
+                    <h3 className="text-3xl font-bold mb-4">Quality Control</h3>
+                    <p className="text-white/90 text-lg leading-relaxed max-w-xs mx-auto">
+                      Advanced testing laboratories ensuring European quality standards
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Storage Gallery Item */}
+            <div className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+              <div className="h-80 relative overflow-hidden bg-gradient-to-br from-gray-800 via-slate-800 to-gray-900">
+                <img
+                  src="/attached_assets/image_1755091852060.png"
+                  alt="Storage Facilities"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                
+                {/* Content Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center text-white transform group-hover:scale-105 transition-transform duration-500">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                      <FileText className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2 tracking-wide">Storage</h3>
+                    <p className="text-white/90 text-sm font-medium">Warehouse Management</p>
+                  </div>
+                </div>
+                
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-[#1c2d56]/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                      <FileText className="h-10 w-10 text-white" />
+                    </div>
+                    <h3 className="text-3xl font-bold mb-4">Storage</h3>
+                    <p className="text-white/90 text-lg leading-relaxed max-w-xs mx-auto">
+                      Modern storage facilities with efficient inventory management systems
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Projects Gallery Item */}
+            <div className="group relative overflow-hidden rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
+              <div className="h-80 relative overflow-hidden bg-gradient-to-br from-green-800 via-emerald-800 to-green-900">
+                <img
+                  src="/attached_assets/Projects-1-min-800x407_1755198231060.jpg"
+                  alt="Infrastructure Projects"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                
+                {/* Content Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center text-white transform group-hover:scale-105 transition-transform duration-500">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                      <Wrench className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-2 tracking-wide">Projects</h3>
+                    <p className="text-white/90 text-sm font-medium">Infrastructure Solutions</p>
+                  </div>
+                </div>
+                
+                {/* Hover Overlay */}
+                <div className="absolute inset-0 bg-[#1c2d56]/80 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <div className="w-20 h-20 mx-auto mb-6 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm">
+                      <Wrench className="h-10 w-10 text-white" />
+                    </div>
+                    <h3 className="text-3xl font-bold mb-4">Projects</h3>
+                    <p className="text-white/90 text-lg leading-relaxed max-w-xs mx-auto">
+                      Major infrastructure projects across Europe and the Balkans
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   );
