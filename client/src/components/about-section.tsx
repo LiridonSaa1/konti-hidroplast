@@ -64,14 +64,14 @@ export function AboutSection() {
               }`}
             >
               <div className="flex items-center justify-center lg:justify-start mb-6">
-                <div className="w-20 h-0.5 bg-red-500 mr-4"></div>
+                <div className="w-20 h-0.5 mr-4" style={{backgroundColor: '#eb2127'}}></div>
                 <h2
                   className="text-4xl font-bold text-konti-gray"
                   data-testid="about-title"
                 >
                   {t("about.title")}
                 </h2>
-                <div className="w-20 h-0.5 bg-red-500 ml-4"></div>
+                <div className="w-20 h-0.5 ml-4" style={{backgroundColor: '#eb2127'}}></div>
               </div>
               <p className="text-lg text-gray-600 mb-6" data-testid="about-text-1">
                 {t("about.text1")}

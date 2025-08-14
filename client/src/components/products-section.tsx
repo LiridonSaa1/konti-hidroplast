@@ -46,14 +46,14 @@ export function ProductsSection() {
           }`}
         >
           <div className="flex items-center justify-center mb-4">
-            <div className="w-20 h-0.5 bg-red-500 mr-4"></div>
+            <div className="w-20 h-0.5 mr-4" style={{backgroundColor: '#eb2127'}}></div>
             <h2
               className="text-4xl font-bold text-konti-gray"
               data-testid="products-title"
             >
               Products
             </h2>
-            <div className="w-20 h-0.5 bg-red-500 ml-4"></div>
+            <div className="w-20 h-0.5 ml-4" style={{backgroundColor: '#eb2127'}}></div>
           </div>
         </div>
 
