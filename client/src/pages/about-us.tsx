@@ -457,8 +457,16 @@ export default function AboutUs() {
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">{member.name}</h3>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full"
+                        onClick={() => window.open(`mailto:${member.email}`, '_blank')}
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact Us
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
@@ -477,8 +485,16 @@ export default function AboutUs() {
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">{member.name}</h3>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full"
+                        onClick={() => window.open(`mailto:${member.email}`, '_blank')}
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact Us
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
@@ -497,8 +513,16 @@ export default function AboutUs() {
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">{member.name}</h3>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full"
+                        onClick={() => window.open(`mailto:${member.email}`, '_blank')}
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact Us
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
@@ -517,8 +541,16 @@ export default function AboutUs() {
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">{member.name}</h3>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full"
+                        onClick={() => window.open(`mailto:${member.email}`, '_blank')}
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact Us
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
@@ -537,8 +569,16 @@ export default function AboutUs() {
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">{member.name}</h3>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full"
+                        onClick={() => window.open(`mailto:${member.email}`, '_blank')}
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact Us
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
@@ -557,8 +597,16 @@ export default function AboutUs() {
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">{member.name}</h3>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full"
+                        onClick={() => window.open(`mailto:${member.email}`, '_blank')}
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact Us
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
@@ -577,8 +625,16 @@ export default function AboutUs() {
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-2">{member.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">{member.email}</p>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">{member.name}</h3>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="w-full"
+                        onClick={() => window.open(`mailto:${member.email}`, '_blank')}
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact Us
+                      </Button>
                     </CardContent>
                   </Card>
                 ))}
