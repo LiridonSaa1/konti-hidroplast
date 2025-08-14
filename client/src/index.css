@@ -74,6 +74,14 @@
     background: rgb(28, 45, 86);
   }
   
+  .to-konti-gray {
+    --tw-gradient-to: rgb(28, 45, 86) var(--tw-gradient-to-position);
+  }
+  
+  .bg-primary {
+    background-color: rgb(28, 45, 86);
+  }
+  
   .hero-overlay {
     background: linear-gradient(135deg, hsl(221, 83%, 53%, 0.4) 0%, hsl(217, 91%, 60%, 0.4) 100%);
   }
