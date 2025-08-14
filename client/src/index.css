@@ -71,7 +71,7 @@
 
 @layer components {
   .konti-gradient {
-    background: linear-gradient(135deg, var(--konti-blue) 0%, var(--konti-blue-light) 100%);
+    background: rgb(28, 45, 86);
   }
   
   .hero-overlay {
