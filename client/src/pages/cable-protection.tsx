@@ -155,7 +155,7 @@ function CableProtectionPage() {
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <video
-                  src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/Konti-Hidroplast_1-1.mp4"
+                  src="https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/Cable-Protection.mp4"
                   autoPlay
                   muted
                   loop
