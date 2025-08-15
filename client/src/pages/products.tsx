@@ -162,7 +162,7 @@ function ProductsPage() {
         </div>
       </section>
       {/* Our Products Section */}
-      <section className="py-20 bg-white">
+      <section className="pt-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
@@ -172,7 +172,7 @@ function ProductsPage() {
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
-            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 mb-12">
+            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 text-[18px] mt-[30px] mb-[30px]">
               <p>
                 Konti Hidroplast products find a broad range of applications in
                 the industrial and utilities market on a worldwide scale. The
@@ -192,7 +192,7 @@ function ProductsPage() {
         </div>
       </section>
       {/* Technical Specifications Flow Diagram */}
-      <section className="py-20 bg-white relative overflow-hidden">
+      <section className="py-10 bg-white relative overflow-hidden">
         {/* Background pipe image integration */}
         <div className="absolute inset-0">
           <img
@@ -204,10 +204,7 @@ function ProductsPage() {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            
-            
-          </div>
+          <div className="text-center mb-16"></div>
 
           {/* Technical PE Specifications Diagram - Using the new PE flow diagram */}
           <div className="relative py-12 md:py-20 bg-white rounded-3xl border border-gray-200 shadow-lg">
@@ -226,8 +223,6 @@ function ProductsPage() {
                 </div>
               </div>
             </div>
-
-            
           </div>
         </div>
       </section>
