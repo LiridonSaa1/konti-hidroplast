@@ -42,7 +42,7 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
     type: "dropdown",
     items: [
       { label: "All Products", href: "/products" },
-      { label: "Water Supply Systems", href: "/products#water-supply" },
+      { label: "Water Supply Systems", href: "/products/water-supply-systems" },
       { label: "Sewerage Systems", href: "/products#sewerage" },
       { label: "Gas Pipeline System", href: "/products#gas-pipeline" },
       { label: "Cable Protection", href: "/products#cable-protection" },
