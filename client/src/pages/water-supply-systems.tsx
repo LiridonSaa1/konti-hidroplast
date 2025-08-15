@@ -241,7 +241,6 @@ function WaterSupplySystemsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white pt-32 pb-20">
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
@@ -252,7 +251,7 @@ function WaterSupplySystemsPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="mb-6 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full inline-block">
+              <div className="mb-6 hover:bg-blue-700 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
                 <span className="text-sm font-medium">
                   ENGINEERED FOR EXCELLENCE
                 </span>
@@ -305,7 +304,6 @@ function WaterSupplySystemsPage() {
           </div>
         </div>
       </section>
-
       {/* Overview Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -358,7 +356,6 @@ function WaterSupplySystemsPage() {
           </div>
         </div>
       </section>
-
       {/* PE Water-Supply Pipes Section */}
       <section className="py-20 bg-[#1c2d56]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -449,7 +446,6 @@ function WaterSupplySystemsPage() {
           ))}
         </div>
       </section>
-
       {/* PE Fittings Section */}
       <section className="py-20 bg-gradient-to-r from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -544,7 +540,6 @@ function WaterSupplySystemsPage() {
           ))}
         </div>
       </section>
-
       <Footer />
     </div>
   );
