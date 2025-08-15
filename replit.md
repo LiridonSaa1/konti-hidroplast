@@ -8,6 +8,12 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes (August 2025)
 
+## August 15, 2025
+- **Brochures Fix**: Updated all sewerage systems brochure PDF download links with authentic URLs from konti-hidroplast.com.mk
+  - Fixed 8 sewerage system brochures with correct PDF download links
+  - All brochure downloads now link to the actual company PDF files
+  - Improved user experience with working download functionality
+
 ## August 14, 2025
 - **Migration Completed**: Successfully migrated project from Replit Agent to standard Replit environment
 - **Gallery Section Added**: Created professional gallery section on About Us page with four interactive categories:

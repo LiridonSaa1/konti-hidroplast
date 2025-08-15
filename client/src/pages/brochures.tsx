@@ -69,12 +69,12 @@ const brochureCategories = [
       {
         title: "DRAINAGE PIPES",
         image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-drenaza-en-1.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Sewerage-Pipes_EN_2021_compressed.pdf"
+        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-drenaza-en.pdf"
       },
       {
         title: "POLYPROPYLENE MANHOLES",
         image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/polipropilenski-sahti-en-1.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Sewerage-Pipes_EN_2021_compressed.pdf"
+        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/polipropilenski-sahti-en.pdf"
       }
     ]
   },
