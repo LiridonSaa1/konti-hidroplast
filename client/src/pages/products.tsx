@@ -310,9 +310,42 @@ function ProductsPage() {
         </div>
       </section>
 
-      
-
-      
+      {/* Products Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
+                Products
+              </h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+          </div>
+          
+          {/* Products Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {productCategories.map((product) => (
+              <div key={product.id} className="bg-[#1c2d56] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                <div className="aspect-video overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.title}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                  />
+                </div>
+                <div className="p-8">
+                  <h3 className="text-2xl font-bold text-white mb-4">{product.title}</h3>
+                  <p className="text-gray-300 mb-6 leading-relaxed">{product.description}</p>
+                  <button className="bg-[#1c2d56] text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors duration-300 font-medium border border-gray-400 hover:border-red-600">
+                    Learn More →
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <Footer />
     </div>
