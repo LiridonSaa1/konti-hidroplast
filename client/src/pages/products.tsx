@@ -172,8 +172,8 @@ function ProductsPage() {
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
-            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 text-[18px] mt-[30px] mb-[30px]">
-              <p>
+            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 mb-12">
+              <p className="text-lg">
                 Konti Hidroplast products find a broad range of applications in
                 the industrial and utilities market on a worldwide scale. The
                 water and gas distribution enterprises are important sectors for
@@ -181,7 +181,8 @@ function ProductsPage() {
                 and the safe transport of gaseous fuels are of paramount
                 importance.
               </p>
-              <p>
+              <p></p>
+              <p className="text-lg">
                 Industrial applications include alternative energy installations
                 in landfill gas systems to effluent transportation and mineral
                 slurry. Products are widely used in pipeline installation,
