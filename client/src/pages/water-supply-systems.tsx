@@ -19,7 +19,7 @@ const pipeSpecifications = [
       "Operating Temperature: -20°C to +60°C",
       "Service life of 50+ years under normal operating conditions",
     ],
-    image: "/attached_assets/Water-supply-min-1_1755115058874.jpg",
+    image: "/attached_assets/PE80-2-min-400x300 (1)_1755267337767.jpg",
     specifications:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/pe-80-tabela-dimenzii-en-1.pdf",
     brochure:
@@ -38,7 +38,7 @@ const pipeSpecifications = [
       "Operating temperature: -40°C to +60°C",
       "Pressure ratings up to PN 32",
     ],
-    image: "/attached_assets/GAS-PIPELINE-SYSTEM-min-1_1755115129403.jpg",
+    image: "/attached_assets/Gogo_20240703_8990-Edit_1-400x400 (1)_1755267345589.jpg",
     specifications:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/pe-100-tabela-za-dimenzii-i-pritisoci-en.pdf",
     brochure:
@@ -57,7 +57,7 @@ const pipeSpecifications = [
       "Color: Black with yellow or orange lines, or entirely orange",
       "Service life of 100+ years under normal operating conditions",
     ],
-    image: "/attached_assets/CABLE-PROTECTION-min-1_1755115210995.jpg",
+    image: "/attached_assets/Gogo_20240703_9065-Edit_1-min-400x400_1755267373881.jpg",
     specifications:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/tabela_100_RC-en.pdf",
     brochure:
