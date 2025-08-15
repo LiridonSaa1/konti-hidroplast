@@ -98,17 +98,46 @@ function ProductsPage() {
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 bg-gradient-to-r from-[#1c2d56] to-[#2a4086] text-white overflow-hidden">
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6" data-testid="products-hero-title">
-            Our Products
-          </h1>
-          <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-8" data-testid="products-hero-description">
-            Comprehensive range of high-quality PE and PP pipe systems for infrastructure projects
-          </p>
-          <div className="flex justify-center">
-            <div className="w-24 h-1 bg-red-500 rounded-full"></div>
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white pt-32 pb-20">
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
+        <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
+          <div className="h-full w-full bg-gradient-to-l from-white/20 to-transparent transform skew-x-12"></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="mb-6 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full inline-block">
+                <span className="text-sm font-medium">HIGH-QUALITY PIPES</span>
+              </div>
+              <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight" data-testid="products-hero-title">
+                OUR <span className="text-red-500">PRODUCTS</span>
+              </h1>
+              <p className="text-xl text-gray-300 mb-8 leading-relaxed" data-testid="products-hero-description">
+                Comprehensive range of high-quality PE and PP pipe systems for infrastructure projects
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <div className="flex items-center gap-2 text-blue-300">
+                  <span className="text-sm font-medium">Manufacturing Excellence</span>
+                </div>
+                <div className="flex items-center gap-2 text-green-300">
+                  <span className="text-sm font-medium">ISO Certified</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="relative">
+              <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
+                <img 
+                  src="/attached_assets/Water-supply-min-1_1755115058874.jpg"
+                  alt="High-quality PE and PP pipe systems"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-4 -right-4 bg-red-600 text-white px-4 py-2 rounded-full shadow-lg">
+                <span className="text-sm font-medium">Driving Progress With Innovation</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
