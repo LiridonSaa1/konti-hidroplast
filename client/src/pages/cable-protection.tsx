@@ -39,8 +39,7 @@ const cableProtectionProducts = [
       "Performs well in a wide temperature range (-40°C to +60°C for general applications)",
       "Resists deformation under soil and traffic loads, ensuring long-term stability in underground applications",
     ],
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/duct-close-up-min.jpg",
+    image: "/attached_assets/duct-close-up-min-400x400_1755282820012.jpg",
     specifications:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/PTTcevki_so_mal_dijametar-tabela.pdf",
     brochure:
@@ -75,8 +74,7 @@ const cableProtectionProducts = [
       "Long service life (50+ years), reducing maintenance and replacement needs",
       "In compliance with international standards, such as EN 50086, EN 61386, EN 13476-3",
     ],
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/image-50.jpg",
+    image: "/attached_assets/KONTI-KAN-DUCT-Double-layered-corrugated-pipes-min-400x400_1755282822315.jpg",
     specifications:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/konti-kan-duct-dimenzii.pdf",
     brochure:
