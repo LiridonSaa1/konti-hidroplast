@@ -14,6 +14,7 @@ import GasPipelineSystemsPage from "@/pages/gas-pipeline-systems";
 import CableProtectionPage from "@/pages/cable-protection";
 import BrochuresPage from "@/pages/brochures";
 import CertificatesPage from "@/pages/certificates";
+import NewsPage from "@/pages/news";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/products/cable-protection" component={CableProtectionPage} />
       <Route path="/brochures" component={BrochuresPage} />
       <Route path="/certificates" component={CertificatesPage} />
+      <Route path="/news" component={NewsPage} />
       <Route component={NotFound} />
     </Switch>
   );
