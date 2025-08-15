@@ -38,7 +38,8 @@ const pipeSpecifications = [
       "Operating temperature: -40°C to +60°C",
       "Pressure ratings up to PN 32",
     ],
-    image: "/attached_assets/Gogo_20240703_8990-Edit_1-400x400 (1)_1755267345589.jpg",
+    image:
+      "/attached_assets/Gogo_20240703_8990-Edit_1-400x400 (1)_1755267345589.jpg",
     specifications:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/pe-100-tabela-za-dimenzii-i-pritisoci-en.pdf",
     brochure:
@@ -57,7 +58,8 @@ const pipeSpecifications = [
       "Color: Black with yellow or orange lines, or entirely orange",
       "Service life of 100+ years under normal operating conditions",
     ],
-    image: "/attached_assets/Gogo_20240703_9065-Edit_1-min-400x400_1755267373881.jpg",
+    image:
+      "/attached_assets/Gogo_20240703_9065-Edit_1-min-400x400_1755267373881.jpg",
     specifications:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/tabela_100_RC-en.pdf",
     brochure:
@@ -261,15 +263,13 @@ function WaterSupplySystemsPage() {
         </div>
       </section>
 
-      
-
       {/* PE Water-Supply Pipes Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-[#1c2d56]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
+              <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
                 PE Water-Supply Pipes
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
@@ -303,16 +303,16 @@ function WaterSupplySystemsPage() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
-                  <h3 className="text-3xl font-bold text-[#1c2d56] mb-4">
+                  <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
                     {spec.title}
                   </h3>
-                  <p className="text-gray-700 mb-6">{spec.description}</p>
+                  <p className="text-[#ffffff] mb-6">{spec.description}</p>
 
                   <div className="space-y-3 mb-8">
                     {spec.features.map((feature, index) => (
                       <div key={index} className="flex items-start gap-3">
                         <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">{feature}</span>
+                        <span className="text-[#ffffff]">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -322,7 +322,7 @@ function WaterSupplySystemsPage() {
                       href={spec.specifications}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-[#ffffff] rounded-lg transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
                       Download Specs
@@ -339,8 +339,8 @@ function WaterSupplySystemsPage() {
                   </div>
                 </div>
 
-                <div className="relative">
-                  <div className="aspect-square bg-black rounded-2xl shadow-2xl overflow-hidden">
+                <div className="relative max-w-md mx-auto lg:mx-0">
+                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
                     <img
                       src={spec.image}
                       alt={spec.title}
