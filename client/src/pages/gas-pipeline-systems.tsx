@@ -239,7 +239,7 @@ function GasPipelineSystemsPage() {
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <img
-                  src="/attached_assets/Gas-gore_1755274574519.jpg"
+                  src="/attached_assets/GAS-PIPELINE-SYSTEM-min-1_1755115129403.jpg"
                   alt="Gas Pipeline Systems"
                   className="w-full h-full object-cover"
                 />
@@ -255,51 +255,31 @@ function GasPipelineSystemsPage() {
       {/* Overview Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
                 Gas Distribution Excellence
               </h2>
-              <div className="space-y-4 text-gray-700">
-                <p>
-                  Polyethylene gas pipes are made of PE 80 and PE 100 materials,
-                  and are intended for distribution of gas through a network, up
-                  to working pressure of 10 bar.
-                </p>
-                <p>
-                  PE 80 (Medium Density Polyethylene) are designed for
-                  medium-pressure applications and offer good flexibility and
-                  durability. PE 100 (High-Density Polyethylene) have higher
-                  density and strength compared to PE 80 and are designed for
-                  high-pressure systems.
-                </p>
-                <p>
-                  Our gas pipes meet EN 1555-2 and ISO 4437 standards, ensuring
-                  maximum safety and reliability for gas distribution networks.
-                </p>
-              </div>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
+          </div>
 
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl">
-              <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-                Key Advantages
-              </h3>
-              <div className="space-y-3">
-                {[
-                  "Medium to high-pressure applications",
-                  "Excellent flexibility and durability",
-                  "Chemical resistance to gas compounds",
-                  "Long service life (50+ years)",
-                  "Cost-effective installation",
-                  "Leak-proof welded connections",
-                  "Environmentally friendly",
-                  "Complies with international standards",
-                ].map((property, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-gray-700">{property}</span>
-                  </div>
-                ))}
+          <div className="bg-gradient-to-br from-blue-50 via-cyan-50 to-gray-50 rounded-2xl p-12 shadow-sm">
+            <div className="max-w-5xl mx-auto">
+              <div className="space-y-6 text-gray-700 text-lg leading-relaxed">
+                <p>
+                  Polyethylene gas pipes are made of PE 80 and PE 100 materials, and are intended for distribution of gas through a network, up to working pressure of 10 bar. These advanced materials represent the pinnacle of modern gas distribution technology, ensuring safe and reliable gas delivery to communities and industries.
+                </p>
+                <p>
+                  PE 80 (Medium Density Polyethylene) are designed for medium-pressure applications and offer good flexibility and durability, making them ideal for smaller diameter and lower pressure systems. PE 100 (High-Density Polyethylene) have higher density and strength compared to PE 80 and are designed for high-pressure systems, enabling thinner wall thickness for the same pressure class.
+                </p>
+                <p>
+                  Our gas pipes meet EN 1555-2 and ISO 4437 standards, ensuring maximum safety and reliability for gas distribution networks. The combination of advanced material properties, rigorous quality control, and adherence to international standards makes our gas pipeline systems the preferred choice for municipal gas distribution, industrial applications, and commercial installations.
+                </p>
+                <p>
+                  One of the key factors for sustainability despite tough competition is constant reinvestment in innovative technologies and pursuing general technological progress. The combination of all these key factors are contributing for Konti Hidroplast to play an important role in the domestic and foreign markets with the constant presence of all major and minor gas infrastructure projects.
+                </p>
               </div>
             </div>
           </div>
