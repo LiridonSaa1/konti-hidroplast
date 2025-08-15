@@ -12,6 +12,7 @@ import ProductsPage from "@/pages/products";
 import WaterSupplySystemsPage from "@/pages/water-supply-systems";
 import GasPipelineSystemsPage from "@/pages/gas-pipeline-systems";
 import CableProtectionPage from "@/pages/cable-protection";
+import BrochuresPage from "@/pages/brochures";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -23,6 +24,7 @@ function Router() {
       <Route path="/products/water-supply-systems" component={WaterSupplySystemsPage} />
       <Route path="/products/gas-pipeline-systems" component={GasPipelineSystemsPage} />
       <Route path="/products/cable-protection" component={CableProtectionPage} />
+      <Route path="/brochures" component={BrochuresPage} />
       <Route component={NotFound} />
     </Switch>
   );
