@@ -23,7 +23,7 @@ const gasSpecifications = [
       "PE 100: Longer service life due to improved resistance to stress cracking and environmental stress",
       "PE 80 is preferred for low to medium-pressure systems with smaller diameters, while PE 100 is ideal for high-pressure systems, larger diameters, and long-term, demanding applications",
     ],
-    image: "/attached_assets/GAS-PIPELINE-SYSTEM-min-1_1755115129403.jpg",
+    image: "/attached_assets/Gas-gore_1755276687866.jpg",
     specifications:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/fizicki_karakteristiki_na_materijalot_za_cevki-gas-en.pdf",
     brochure:
