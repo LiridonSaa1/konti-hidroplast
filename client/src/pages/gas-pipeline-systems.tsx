@@ -47,7 +47,7 @@ const gasSpecifications = [
       "Application: Geothermal and city heating",
       "Dimensions: PE100-PE100-X pipes are produced in dimensions from 20mm to 250mm",
     ],
-    image: "/attached_assets/Water-supply-min-1_1755115058874.jpg",
+    image: "/attached_assets/Gogo_20240703_9145-Edit_1-min_1755276718413.jpg",
     specifications:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/Konti-Petrol-Gas-Dimenzii.pdf",
     brochure:
