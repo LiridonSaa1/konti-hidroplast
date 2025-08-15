@@ -185,7 +185,7 @@ const fittingTypes = [
     id: "electrofusion-fittings",
     title: "Electrofusion Fittings",
     description: "Electric welded fittings for automated and precise pipe joining",
-    image: "/attached_assets/CABLE-PROTECTION-min-1_1755115210995.jpg",
+    image: "/attached_assets/Electrofusion-fittings-min_1755268811656.png",
     items: [
       {
         name: "Electrofusion Socket",
