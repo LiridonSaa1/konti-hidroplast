@@ -54,7 +54,7 @@ const brochureCategories = [
       {
         title: "KONTI KAN PPHM FITTINGS",
         image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-pp-hm-2023-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Sewerage-Pipes_EN_2021_compressed.pdf"
+        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-fitinzi.pdf"
       },
       {
         title: "KONTI KAN PPHM",
