@@ -85,12 +85,12 @@ const brochureCategories = [
       {
         title: "GAS PIPES",
         image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/priroden-gas-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Gas-Pipes_EN_2021_compressed.pdf"
+        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/priroden-gas-en.pdf"
       },
       {
         title: "PETROL GAS",
         image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/petrol-gas-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Gas-Pipes_EN_2021_compressed.pdf"
+        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/petrol-gas-en.pdf"
       }
     ]
   },
