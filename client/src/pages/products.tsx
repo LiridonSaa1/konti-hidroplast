@@ -165,34 +165,25 @@ function ProductsPage() {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">Our Products</h2>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
+                Product Range
+              </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
-            <div className="max-w-4xl mx-auto text-gray-700 leading-relaxed space-y-4">
+            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 mb-12">
               <p>
-                Konti Hidroplast is an export-oriented Macedonian company for production of PE (polyethylene) and PP (polypropylene) pipes. 
-                Situated in the southern area of North Macedonia, municipality of Gevgelija, Konti Hidroplast was founded in 1975 as a small plant for 
-                production of tools and elements of injection molded plastic.
+                Konti Hidroplast products find a broad range of applications in
+                the industrial and utilities market on a worldwide scale. The
+                water and gas distribution enterprises are important sectors for
+                high integrity products where the maintenance of water quality
+                and the safe transport of gaseous fuels are of paramount
+                importance.
               </p>
               <p>
-                Following the successful start aided by the experience gained by successfully realized projects in the Republic of North Macedonia, 
-                today our company is export-oriented, and <strong>95% of its products are exported</strong> in international markets.
-              </p>
-              <p>
-                Besides the experience, our large range of products and top quality, by all internationally recognized standards, enabled us to get 
-                access to international markets. Our current production program covers all fields of application: pipes and hoses for water supply 
-                systems, sewage systems, PE and PP manholes, pipes for transporting gas and oil products, pipes and hoses for protection of 
-                telecommunication cables, drainage systems and fittings for all dimensions, which also range from a minimum diameter of 16mm up 
-                to 2000mm.
-              </p>
-              <p>
-                Konti Hidroplast became known to the market through quality supply and constant application of flexibility in operation, which is 
-                very important in an industry where the complexity of managing all processes is quite high.
-              </p>
-              <p>
-                One of the key factors for sustainability despite tough competition is constant reinvestment in innovative technologies and 
-                pursuing general technological progress. The combination of all these key factors are contributing for Konti Hidroplast to play an 
-                important role in the domestic and foreign markets with the constant presence of all major and minor infrastructure projects.
+                Industrial applications include alternative energy installations
+                in landfill gas systems to effluent transportation and mineral
+                slurry. Products are widely used in pipeline installation,
+                repair and maintenance.
               </p>
             </div>
           </div>
@@ -298,6 +289,184 @@ function ProductsPage() {
                     >
                       View Catalog
                     </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Product Range Technical Overview */}
+      <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full -translate-x-48 -translate-y-48"></div>
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-400/10 rounded-full translate-x-48 translate-y-48"></div>
+          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-white/5 rounded-full -translate-x-32 -translate-y-32"></div>
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6" data-testid="product-range-title">
+              Product Range <span className="text-red-500">Specifications</span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto" data-testid="product-range-description">
+              Comprehensive technical overview of our polyethylene and polypropylene pipe systems
+            </p>
+          </div>
+
+          {/* Technical Specifications Diagram */}
+          <div className="relative">
+            {/* Background Image Integration */}
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/40 to-slate-900/40 rounded-3xl"></div>
+            <div className="relative bg-black/20 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-white/10">
+              
+              {/* Main Diagram Container */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+                
+                {/* Left Column - Low Density */}
+                <div className="space-y-8">
+                  <div className="text-center mb-8">
+                    <div className="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full shadow-lg">
+                      <span className="text-white font-bold text-lg">Low Density</span>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {['PE 23', 'PE 32', 'PE 40'].map((spec, index) => (
+                      <div key={spec} className="group">
+                        <div className="bg-gradient-to-r from-slate-700 to-slate-600 border border-blue-400/30 rounded-xl p-4 hover:from-blue-700 hover:to-blue-600 transition-all duration-300 cursor-pointer transform hover:scale-105 shadow-lg">
+                          <div className="flex items-center justify-between">
+                            <span className="text-white font-semibold text-lg">{spec}</span>
+                            <div className="w-3 h-3 bg-blue-400 rounded-full group-hover:bg-white transition-colors"></div>
+                          </div>
+                          <div className="mt-2 text-blue-200 text-sm opacity-75">
+                            {spec === 'PE 23' && 'Minimum density applications'}
+                            {spec === 'PE 32' && 'Light pressure systems'}
+                            {spec === 'PE 40' && 'Standard applications'}
+                          </div>
+                        </div>
+                        
+                        {/* Connecting Lines */}
+                        <div className="hidden lg:block absolute top-1/2 right-0 w-8 h-px bg-gradient-to-r from-blue-400 to-transparent transform -translate-y-1/2"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Center Column - Medium Density */}
+                <div className="space-y-8 lg:scale-110">
+                  <div className="text-center mb-8">
+                    <div className="inline-block px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full shadow-lg">
+                      <span className="text-white font-bold text-lg">Linear Low & Medium</span>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {['PE 63', 'PE 80'].map((spec, index) => (
+                      <div key={spec} className="group relative">
+                        <div className="bg-gradient-to-r from-purple-700 to-purple-600 border border-purple-400/30 rounded-xl p-6 hover:from-pink-700 hover:to-pink-600 transition-all duration-300 cursor-pointer transform hover:scale-110 shadow-xl">
+                          <div className="flex items-center justify-between">
+                            <span className="text-white font-bold text-xl">{spec}</span>
+                            <div className="w-4 h-4 bg-purple-400 rounded-full group-hover:bg-white transition-colors"></div>
+                          </div>
+                          <div className="mt-3 text-purple-200 text-sm opacity-90">
+                            {spec === 'PE 63' && 'Medium pressure systems'}
+                            {spec === 'PE 80' && 'High performance applications'}
+                          </div>
+                        </div>
+                        
+                        {/* Enhanced Connecting Lines */}
+                        <div className="hidden lg:block absolute top-1/2 -left-8 w-8 h-px bg-gradient-to-r from-transparent to-purple-400 transform -translate-y-1/2"></div>
+                        <div className="hidden lg:block absolute top-1/2 -right-8 w-8 h-px bg-gradient-to-r from-purple-400 to-transparent transform -translate-y-1/2"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right Column - High Density */}
+                <div className="space-y-8">
+                  <div className="text-center mb-8">
+                    <div className="inline-block px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-500 rounded-full shadow-lg">
+                      <span className="text-white font-bold text-lg">Medium & High Density</span>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {['PE 100', 'PE 100RC'].map((spec, index) => (
+                      <div key={spec} className="group">
+                        <div className="bg-gradient-to-r from-green-700 to-green-600 border border-green-400/30 rounded-xl p-4 hover:from-emerald-700 hover:to-emerald-600 transition-all duration-300 cursor-pointer transform hover:scale-105 shadow-lg">
+                          <div className="flex items-center justify-between">
+                            <span className="text-white font-semibold text-lg">{spec}</span>
+                            <div className="w-3 h-3 bg-green-400 rounded-full group-hover:bg-white transition-colors"></div>
+                          </div>
+                          <div className="mt-2 text-green-200 text-sm opacity-75">
+                            {spec === 'PE 100' && 'Maximum pressure capability'}
+                            {spec === 'PE 100RC' && 'Crack-resistant technology'}
+                          </div>
+                        </div>
+                        
+                        {/* Connecting Lines */}
+                        <div className="hidden lg:block absolute top-1/2 left-0 w-8 h-px bg-gradient-to-r from-transparent to-green-400 transform -translate-y-1/2"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Technical Stats */}
+              <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
+                  <div className="text-3xl font-bold text-blue-400 mb-2">20-630mm</div>
+                  <div className="text-gray-300 text-sm">Diameter Range</div>
+                </div>
+                <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
+                  <div className="text-3xl font-bold text-purple-400 mb-2">PN 4-32</div>
+                  <div className="text-gray-300 text-sm">Pressure Ratings</div>
+                </div>
+                <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
+                  <div className="text-3xl font-bold text-green-400 mb-2">ISO/EN</div>
+                  <div className="text-gray-300 text-sm">Certified Standards</div>
+                </div>
+                <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
+                  <div className="text-3xl font-bold text-red-400 mb-2">50+</div>
+                  <div className="text-gray-300 text-sm">Years Lifespan</div>
+                </div>
+              </div>
+
+              {/* Interactive Elements */}
+              <div className="mt-12 text-center">
+                <div className="inline-flex items-center gap-4 p-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm rounded-full border border-white/10">
+                  <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+                  <span className="text-white font-medium">Interactive Specifications Available</span>
+                  <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Animated Background Elements */}
+            <div className="absolute top-10 right-10 w-32 h-32 border border-blue-400/20 rounded-full animate-ping"></div>
+            <div className="absolute bottom-10 left-10 w-24 h-24 border border-purple-400/20 rounded-full animate-pulse"></div>
+          </div>
+
+          {/* Additional Product Categories */}
+          <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { name: "Water Supply", icon: "💧", color: "from-blue-600 to-cyan-500", specs: "PE 80, PE 100" },
+              { name: "Gas Systems", icon: "⚡", color: "from-yellow-600 to-orange-500", specs: "PE 80, PE 100-RC" },
+              { name: "Sewerage", icon: "🔄", color: "from-green-600 to-emerald-500", specs: "PP, PE 100" },
+              { name: "Cable Protection", icon: "🛡️", color: "from-purple-600 to-pink-500", specs: "HDPE, PP" }
+            ].map((category, index) => (
+              <div key={category.name} className="group cursor-pointer">
+                <div className={`bg-gradient-to-br ${category.color} rounded-2xl p-6 hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl`}>
+                  <div className="text-center">
+                    <div className="text-4xl mb-4">{category.icon}</div>
+                    <h3 className="text-white font-bold text-lg mb-2">{category.name}</h3>
+                    <p className="text-white/80 text-sm">{category.specs}</p>
+                  </div>
+                  <div className="mt-4 w-full h-1 bg-white/20 rounded-full overflow-hidden">
+                    <div className="h-full bg-white/40 rounded-full transform -translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
                   </div>
                 </div>
               </div>
