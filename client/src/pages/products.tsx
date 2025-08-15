@@ -144,7 +144,7 @@ function ProductsPage() {
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <img
-                  src="/attached_assets/Konti-Hidroplast-Proizvodstvo-27-1_1755115099243.jpg"
+                  src="/attached_assets/Discovering-min_1755249567212.png"
                   alt="High-quality PE and PP pipe systems in manufacturing facility"
                   className="w-full h-full object-cover"
                 />
