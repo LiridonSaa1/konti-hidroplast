@@ -312,41 +312,7 @@ function ProductsPage() {
 
       
 
-      {/* CTA Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2
-            className="text-3xl md:text-4xl font-bold text-[#1c2d56] mb-6"
-            data-testid="cta-title"
-          >
-            Need Technical Support?
-          </h2>
-          <p
-            className="text-xl text-gray-600 mb-8"
-            data-testid="cta-description"
-          >
-            Our technical team is ready to help you choose the right products
-            for your project.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              className="bg-[#1c2d56] text-white px-8 py-4 rounded-xl hover:bg-red-500 transition-colors duration-300 font-medium"
-              data-testid="cta-contact-button"
-            >
-              Contact Our Team
-            </button>
-            <a
-              href="https://konti-hidroplast.com.mk/products/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="border-2 border-[#1c2d56] text-[#1c2d56] px-8 py-4 rounded-xl hover:bg-[#1c2d56] hover:text-white transition-colors duration-300 font-medium"
-              data-testid="cta-catalog-button"
-            >
-              Download Full Catalog
-            </a>
-          </div>
-        </div>
-      </section>
+      
 
       <Footer />
     </div>
