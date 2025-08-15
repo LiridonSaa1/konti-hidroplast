@@ -6,6 +6,8 @@ import { ChevronDown, Download, Play, Check } from "lucide-react";
 
 import Duct_min_400x400 from "@assets/Duct-min-400x400.jpg";
 
+import duct_close_up_min_400x400 from "@assets/duct-close-up-min-400x400.jpg";
+
 // Cable Protection specifications data
 const cableProtectionProducts = [
   {
@@ -364,7 +366,7 @@ function CableProtectionPage() {
                 <div className="relative max-w-md mx-auto lg:mx-0">
                   <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
                     <img
-                      src={Duct_min_400x400}
+                      src={duct_close_up_min_400x400}
                       alt={product.title}
                       className="w-full h-full object-cover"
                     />
