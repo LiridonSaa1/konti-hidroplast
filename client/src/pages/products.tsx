@@ -221,162 +221,100 @@ function ProductsPage() {
             </p>
           </div>
 
-          {/* Technical PE Specifications Diagram */}
-          <div
-            className="relative py-20"
-            style={{
-              backgroundImage: `url('/attached_assets/image_1755251723335.png')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          >
-            {/* Dark overlay to match the original */}
-            <div className="absolute inset-0 bg-slate-900/80"></div>
-
-            <div className="relative max-w-6xl mx-auto px-4">
-              {/* Top Row - PE Specifications */}
-              <div className="flex justify-center items-center gap-8 mb-12">
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+          {/* Technical PE Specifications Diagram - Recreating the exact flow from the image */}
+          <div className="relative py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 rounded-3xl">
+            {/* Dark overlay with pipe texture */}
+            <div className="absolute inset-0 bg-slate-900/90 rounded-3xl"></div>
+            
+            <div className="relative max-w-6xl mx-auto px-8">
+              {/* Top Row - Main PE Specifications (as shown in image) */}
+              <div className="grid grid-cols-7 gap-6 justify-items-center mb-16">
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
                   PE 23
                 </div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
                   PE 63
                 </div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
                   PE 80
                 </div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
                   PE 63
                 </div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
                   PE 80
                 </div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
                   PE 100
                 </div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[90px]">
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[100px] hover:bg-slate-700 transition-colors cursor-pointer">
                   PE 100RC
                 </div>
               </div>
 
-              {/* Middle Row - Intermediate Specifications */}
-              <div className="flex justify-center items-center gap-64 mb-12">
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+              {/* Middle Row - Intermediate Specifications (PE 40, PE 32, PE 63) */}
+              <div className="flex justify-between items-center mb-16 px-8">
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
                   PE 40
                 </div>
-                <div className="bg-slate-800/90 border border-slate-500 px-8 py-4 text-white font-medium text-center min-w-[80px] text-lg">
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-6 py-4 text-white font-semibold text-center min-w-[90px] text-lg hover:bg-slate-700 transition-colors cursor-pointer">
                   PE 32
+                </div>
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
+                  PE 63
                 </div>
               </div>
 
               {/* Bottom Row - Density Categories */}
-              <div className="grid grid-cols-3 gap-8 mt-16">
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-8 text-white text-center">
-                  <div className="font-medium text-lg mb-2">Low density</div>
+              <div className="grid grid-cols-3 gap-8 mt-12">
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-6 py-6 text-white text-center hover:bg-slate-700 transition-colors cursor-pointer">
+                  <div className="font-semibold text-lg">Low density</div>
                 </div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-8 text-white text-center">
-                  <div className="font-medium text-lg mb-1">Linear low &</div>
-                  <div className="font-medium text-lg">medium density</div>
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-6 py-6 text-white text-center hover:bg-slate-700 transition-colors cursor-pointer">
+                  <div className="font-semibold text-lg mb-1">Linear low &</div>
+                  <div className="font-semibold text-lg">medium density</div>
                 </div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-8 text-white text-center">
-                  <div className="font-medium text-lg mb-1">Medium &</div>
-                  <div className="font-medium text-lg">high density</div>
+                <div className="bg-slate-800/90 border-2 border-slate-400 px-6 py-6 text-white text-center hover:bg-slate-700 transition-colors cursor-pointer">
+                  <div className="font-semibold text-lg mb-1">Medium &</div>
+                  <div className="font-semibold text-lg">high density</div>
                 </div>
               </div>
 
-              {/* Connection Lines - Simple SVG */}
+              {/* Connection Lines - More accurate SVG based on image */}
               <svg
                 className="absolute inset-0 w-full h-full pointer-events-none"
                 style={{ zIndex: 1 }}
               >
                 <defs>
                   <marker
-                    id="simpleArrow"
-                    markerWidth="8"
-                    markerHeight="6"
-                    refX="7"
-                    refY="3"
+                    id="flowArrow"
+                    markerWidth="10"
+                    markerHeight="8"
+                    refX="9"
+                    refY="4"
                     orient="auto"
+                    markerUnits="strokeWidth"
                   >
-                    <path d="M0,0 L0,6 L8,3 z" fill="white" opacity="0.8" />
+                    <path d="M0,0 L0,8 L10,4 z" fill="rgba(255,255,255,0.8)" />
                   </marker>
                 </defs>
 
-                {/* Lines from PE 23 to PE 40 */}
-                <line
-                  x1="12%"
-                  y1="35%"
-                  x2="25%"
-                  y2="55%"
-                  stroke="white"
-                  strokeWidth="2"
-                  opacity="0.6"
-                />
+                {/* Lines from top row to middle row - Left side */}
+                <line x1="14%" y1="25%" x2="20%" y2="45%" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
+                <line x1="28%" y1="25%" x2="20%" y2="45%" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
+                
+                {/* Lines from top row to middle row - Center */}
+                <line x1="42%" y1="25%" x2="50%" y2="45%" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
+                <line x1="57%" y1="25%" x2="50%" y2="45%" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
+                
+                {/* Lines from top row to middle row - Right side */}
+                <line x1="71%" y1="25%" x2="80%" y2="45%" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
+                <line x1="85%" y1="25%" x2="80%" y2="45%" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
 
-                {/* Lines from PE 63 to PE 40 */}
-                <line
-                  x1="25%"
-                  y1="35%"
-                  x2="25%"
-                  y2="55%"
-                  stroke="white"
-                  strokeWidth="2"
-                  opacity="0.6"
-                />
-
-                {/* Lines from PE 80 to PE 63 (middle) */}
-                <line
-                  x1="38%"
-                  y1="35%"
-                  x2="75%"
-                  y2="55%"
-                  stroke="white"
-                  strokeWidth="2"
-                  opacity="0.6"
-                />
-
-                {/* Lines from PE 63 (right) to PE 32 */}
-                <line
-                  x1="62%"
-                  y1="35%"
-                  x2="75%"
-                  y2="55%"
-                  stroke="white"
-                  strokeWidth="2"
-                  opacity="0.6"
-                />
-
-                {/* Lines from PE 32 to all three density categories */}
-                <line
-                  x1="75%"
-                  y1="65%"
-                  x2="16.67%"
-                  y2="85%"
-                  stroke="white"
-                  strokeWidth="2"
-                  opacity="0.6"
-                  markerEnd="url(#simpleArrow)"
-                />
-                <line
-                  x1="75%"
-                  y1="65%"
-                  x2="50%"
-                  y2="85%"
-                  stroke="white"
-                  strokeWidth="2"
-                  opacity="0.6"
-                  markerEnd="url(#simpleArrow)"
-                />
-                <line
-                  x1="75%"
-                  y1="65%"
-                  x2="83.33%"
-                  y2="85%"
-                  stroke="white"
-                  strokeWidth="2"
-                  opacity="0.6"
-                  markerEnd="url(#simpleArrow)"
-                />
+                {/* Lines from middle row to density categories */}
+                <line x1="20%" y1="55%" x2="16.5%" y2="75%" stroke="rgba(255,255,255,0.8)" strokeWidth="2" markerEnd="url(#flowArrow)" />
+                <line x1="50%" y1="55%" x2="50%" y2="75%" stroke="rgba(255,255,255,0.8)" strokeWidth="2" markerEnd="url(#flowArrow)" />
+                <line x1="80%" y1="55%" x2="83.5%" y2="75%" stroke="rgba(255,255,255,0.8)" strokeWidth="2" markerEnd="url(#flowArrow)" />
               </svg>
             </div>
 
@@ -417,7 +355,7 @@ function ProductsPage() {
         </div>
       </section>
       {/* Products Section */}
-      <section className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 mb-12">
+      <section className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">

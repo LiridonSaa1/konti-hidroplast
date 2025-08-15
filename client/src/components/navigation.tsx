@@ -46,7 +46,7 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
       { label: "Sewerage Systems", href: "/products#sewerage" },
       { label: "Gas Pipeline System", href: "/products#gas-pipeline" },
       { label: "Cable Protection", href: "/products#cable-protection" },
-      { label: "Full Catalog", href: "https://konti-hidroplast.com.mk/products/", external: true },
+      // { label: "Full Catalog", href: "https://konti-hidroplast.com.mk/products/", external: true },
     ],
   },
   {
