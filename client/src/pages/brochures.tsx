@@ -64,7 +64,7 @@ const brochureCategories = [
       {
         title: "PPHM HIGH PERFORMANCE",
         image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-visoki-performansi-en-1.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Sewerage-Pipes_EN_2021_compressed.pdf"
+        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-visoki-performansi-en.pdf"
       },
       {
         title: "DRAINAGE PIPES",
