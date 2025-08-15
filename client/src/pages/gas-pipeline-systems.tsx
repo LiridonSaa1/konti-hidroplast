@@ -255,25 +255,44 @@ function GasPipelineSystemsPage() {
       {/* Overview Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center mb-8">
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Gas Distribution Excellence
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
+                Technical Specifications
               </h2>
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <div className="space-y-4 text-gray-700">
+                <p>
+                  Polyethylene gas pipes are made of PE 80 and PE 100 materials, and are intended for distribution of gas through a network, up to working pressure of 10 bar.
+                </p>
+                <p>
+                  PE 80 (Medium Density Polyethylene) are designed for medium-pressure applications and offer good flexibility and durability.
+                </p>
+                <p>
+                  PE 100 (High-Density Polyethylene) have higher density and strength compared to PE 80 and are designed for high-pressure systems with enhanced safety features.
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className="bg-gradient-to-br from-blue-50 via-cyan-50 to-gray-50 rounded-2xl p-12 shadow-sm">
-            <div className="max-w-5xl mx-auto">
-              <div className="space-y-6 text-gray-700 text-lg leading-relaxed">
-                <p>
-                  Polyethylene gas pipes are made of PE 80 and PE 100 materials, and are intended for distribution of gas through a network, up to working pressure of 10 bar. The main performance characteristics of PE 80 and PE 100 gas pipes are determined by their material properties and applications.
-                </p>
-                <p>
-                  PE 80 (Medium Density Polyethylene) are designed for medium-pressure applications and offer good flexibility and durability. PE 100 (High-Density Polyethylene) have higher density and strength compared to PE 80 and are designed for high-pressure systems.
-                </p>
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
+              <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
+                General Properties
+              </h3>
+              <div className="space-y-3">
+                {[
+                  "Working pressure up to 10 bar",
+                  "Excellent chemical resistance",
+                  "Superior welding capabilities",
+                  "Smooth internal surface",
+                  "Suitable for gas distribution",
+                  "Long lifespan (more than 50 years)",
+                  "100% recycling possibility",
+                  "Complies with EN 1555-2 and ISO 4437",
+                ].map((property, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    <span className="text-gray-700">{property}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
