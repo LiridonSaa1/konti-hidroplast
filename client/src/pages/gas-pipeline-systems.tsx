@@ -269,13 +269,19 @@ function GasPipelineSystemsPage() {
               </h2>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  Polyethylene gas pipes are made of PE 80 and PE 100 materials, and are intended for distribution of gas through a network, up to working pressure of 10 bar.
+                  Polyethylene gas pipes are made of PE 80 and PE 100 materials,
+                  and are intended for distribution of gas through a network, up
+                  to working pressure of 10 bar.
                 </p>
                 <p>
-                  PE 80 (Medium Density Polyethylene) are designed for medium-pressure applications and offer good flexibility and durability.
+                  PE 80 (Medium Density Polyethylene) are designed for
+                  medium-pressure applications and offer good flexibility and
+                  durability.
                 </p>
                 <p>
-                  PE 100 (High-Density Polyethylene) have higher density and strength compared to PE 80 and are designed for high-pressure systems with enhanced safety features.
+                  PE 100 (High-Density Polyethylene) have higher density and
+                  strength compared to PE 80 and are designed for high-pressure
+                  systems with enhanced safety features.
                 </p>
               </div>
             </div>
@@ -396,7 +402,7 @@ function GasPipelineSystemsPage() {
         </div>
       </section>
       {/* PE Fittings Section */}
-      <section className="py-20 bg-gradient-to-r from-gray-50 to-yellow-50">
+      <section className="py-20 bg-gradient-to-r from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
@@ -455,7 +461,7 @@ function GasPipelineSystemsPage() {
                               rel="noopener noreferrer"
                               className="flex items-center gap-3 w-full text-[#1c2d56] hover:text-blue-700"
                             >
-                              <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center flex-shrink-0">
+                              <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 bg-[#1c2d56]">
                                 <Download className="w-3 h-3 text-white" />
                               </div>
                               <span className="text-sm font-medium">
