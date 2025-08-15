@@ -35,12 +35,17 @@ const gasSpecifications = [
     description:
       "Konti Petrol gas pipe is a double-layered pipe with outer black surface made of PE100 standards, the same that apply for the classic PE i.e. EN 1555 or ISO 4437.",
     features: [
-      "Color: Black with orange longitudinal lines on the outer layer",
-      "Orange inner layer",
-      "Excellent resistance to volatile organic compounds",
-      "Protecting groundwater from impurities from oil derivatives",
+      "Color: Black with orange longitudinal lines on the outer layer, and orange inner layer",
+      "Excellent resistance to volatile organic compounds from petroleum derivatives and prevents their crossing in the environment",
+      "Protecting groundwater from impurities from the oil derivatives",
       "Resistance to extreme temperatures 35°C to 85°C",
-      "Dimensions: 20mm to 250mm",
+      "Higher chemical resistance of the pipe",
+      "Excellent resistance to abrasion",
+      "Application: Transport of petrol diesel and other fuels in stations and refinery",
+      "Application: Gas distribution",
+      "Application: Special industrial application",
+      "Application: Geothermal and city heating",
+      "Dimensions: PE100-PE100-X pipes are produced in dimensions from 20mm to 250mm",
     ],
     image: "/attached_assets/Water-supply-min-1_1755115058874.jpg",
     specifications:
