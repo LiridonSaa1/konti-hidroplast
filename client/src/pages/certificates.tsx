@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Download, Shield, Award, CheckCircle } from "lucide-react";
+import { Download, Shield, Award, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Certificates data organized by category
 const certificateCategories = [
@@ -501,7 +501,19 @@ const certificateCategories = [
 
 function CertificatesPage() {
   const { t } = useLanguage();
-  const [activeTab, setActiveTab] = useState("epd");
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
+
+  const nextTab = () => {
+    setActiveTabIndex((prev) => 
+      prev === certificateCategories.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevTab = () => {
+    setActiveTabIndex((prev) => 
+      prev === 0 ? certificateCategories.length - 1 : prev - 1
+    );
+  };
 
   useEffect(() => {
     // Set page title
@@ -617,31 +629,50 @@ function CertificatesPage() {
             </div>
           </div>
 
-          {/* Tabs */}
-          <div className="flex justify-center mb-12">
-            <div className="flex flex-wrap bg-gray-100 rounded-xl p-1 max-w-4xl">
-              {certificateCategories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => setActiveTab(category.id)}
-                  className={`px-4 py-3 rounded-lg font-semibold transition-all text-sm ${
-                    activeTab === category.id
-                      ? "bg-[#1c2d56] text-white shadow-lg"
-                      : "text-gray-600 hover:text-[#1c2d56]"
-                  }`}
-                  data-testid={`tab-${category.id}`}
-                >
-                  {category.title}
-                </button>
-              ))}
+          {/* Tab Slider */}
+          <div className="flex items-center justify-center mb-12">
+            <button 
+              onClick={prevTab}
+              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors mr-4"
+              data-testid="tab-prev"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
+              <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
+                {certificateCategories[activeTabIndex].title}
+              </h3>
+              <div className="flex justify-center space-x-1 mt-3">
+                {certificateCategories.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveTabIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === activeTabIndex 
+                        ? "bg-[#1c2d56]" 
+                        : "bg-gray-300 hover:bg-gray-400"
+                    }`}
+                    data-testid={`tab-dot-${index}`}
+                  />
+                ))}
+              </div>
             </div>
+
+            <button 
+              onClick={nextTab}
+              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors ml-4"
+              data-testid="tab-next"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
 
           {/* Tab Content */}
-          {certificateCategories.map((category) => (
+          {certificateCategories.map((category, index) => (
             <div
               key={category.id}
-              className={`${activeTab === category.id ? "block" : "hidden"} transition-all duration-500`}
+              className={`${activeTabIndex === index ? "block animate-fadeIn" : "hidden"} transition-all duration-500`}
             >
               {/* Simple certificate grid for categories without subsections */}
               {category.certificates && (
