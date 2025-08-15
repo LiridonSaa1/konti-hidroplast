@@ -205,13 +205,7 @@ function ProductsPage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2
-              className="text-4xl md:text-5xl font-bold text-[#1c2d56] mb-6"
-              data-testid="technical-flow-title"
-            >
-              Technical <span className="text-red-500">Specifications</span>{" "}
-              Flow
-            </h2>
+            
             <p
               className="text-xl text-gray-600 max-w-3xl mx-auto"
               data-testid="technical-flow-description"
