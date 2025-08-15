@@ -363,7 +363,7 @@ function CableProtectionPage() {
                 <div className="relative max-w-md mx-auto lg:mx-0">
                   <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
                     <img
-                      src={KONTI_KAN_DUCT_Double_layered_corrugated_pipes_min_400x400}
+                      src={product.image}
                       alt={product.title}
                       className="w-full h-full object-cover"
                     />
