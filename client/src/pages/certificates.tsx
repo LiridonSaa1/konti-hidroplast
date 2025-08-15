@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -501,6 +501,7 @@ const certificateCategories = [
 
 function CertificatesPage() {
   const { t } = useLanguage();
+  const [activeTab, setActiveTab] = useState("epd");
 
   useEffect(() => {
     // Set page title
@@ -603,22 +604,45 @@ function CertificatesPage() {
         </div>
       </section>
 
-      {/* Certificates Sections */}
+      {/* Certificates Section with Tabs */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
-          
-          {certificateCategories.map((category) => (
-            <div key={category.id} className="space-y-8">
-              <div className="text-center">
-                <div className="flex items-center justify-center mb-8">
-                  <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-                  <h2 className="text-3xl font-bold mx-8 text-[#1c2d56]">
-                    {category.title}
-                  </h2>
-                  <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-                </div>
-              </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
+                Certificates & Standards
+              </h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+          </div>
 
+          {/* Tabs */}
+          <div className="flex justify-center mb-12">
+            <div className="flex flex-wrap bg-gray-100 rounded-xl p-1 max-w-4xl">
+              {certificateCategories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setActiveTab(category.id)}
+                  className={`px-4 py-3 rounded-lg font-semibold transition-all text-sm ${
+                    activeTab === category.id
+                      ? "bg-[#1c2d56] text-white shadow-lg"
+                      : "text-gray-600 hover:text-[#1c2d56]"
+                  }`}
+                  data-testid={`tab-${category.id}`}
+                >
+                  {category.title}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Tab Content */}
+          {certificateCategories.map((category) => (
+            <div
+              key={category.id}
+              className={`${activeTab === category.id ? "block" : "hidden"} transition-all duration-500`}
+            >
               {/* Simple certificate grid for categories without subsections */}
               {category.certificates && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
