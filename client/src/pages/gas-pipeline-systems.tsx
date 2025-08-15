@@ -269,16 +269,10 @@ function GasPipelineSystemsPage() {
             <div className="max-w-5xl mx-auto">
               <div className="space-y-6 text-gray-700 text-lg leading-relaxed">
                 <p>
-                  Polyethylene gas pipes are made of PE 80 and PE 100 materials, and are intended for distribution of gas through a network, up to working pressure of 10 bar. These advanced materials represent the pinnacle of modern gas distribution technology, ensuring safe and reliable gas delivery to communities and industries.
+                  Polyethylene gas pipes are made of PE 80 and PE 100 materials, and are intended for distribution of gas through a network, up to working pressure of 10 bar. The main performance characteristics of PE 80 and PE 100 gas pipes are determined by their material properties and applications.
                 </p>
                 <p>
-                  PE 80 (Medium Density Polyethylene) are designed for medium-pressure applications and offer good flexibility and durability, making them ideal for smaller diameter and lower pressure systems. PE 100 (High-Density Polyethylene) have higher density and strength compared to PE 80 and are designed for high-pressure systems, enabling thinner wall thickness for the same pressure class.
-                </p>
-                <p>
-                  Our gas pipes meet EN 1555-2 and ISO 4437 standards, ensuring maximum safety and reliability for gas distribution networks. The combination of advanced material properties, rigorous quality control, and adherence to international standards makes our gas pipeline systems the preferred choice for municipal gas distribution, industrial applications, and commercial installations.
-                </p>
-                <p>
-                  One of the key factors for sustainability despite tough competition is constant reinvestment in innovative technologies and pursuing general technological progress. The combination of all these key factors are contributing for Konti Hidroplast to play an important role in the domestic and foreign markets with the constant presence of all major and minor gas infrastructure projects.
+                  PE 80 (Medium Density Polyethylene) are designed for medium-pressure applications and offer good flexibility and durability. PE 100 (High-Density Polyethylene) have higher density and strength compared to PE 80 and are designed for high-pressure systems.
                 </p>
               </div>
             </div>
