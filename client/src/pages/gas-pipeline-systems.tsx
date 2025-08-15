@@ -4,6 +4,8 @@ import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ChevronDown, Download, Play, Check } from "lucide-react";
 
+import Gas_gore from "@assets/Gas-gore.jpg";
+
 // PE Gas Pipe specifications data
 const gasSpecifications = [
   {
@@ -191,7 +193,6 @@ function GasPipelineSystemsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white pt-32 pb-20">
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
@@ -239,7 +240,7 @@ function GasPipelineSystemsPage() {
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <img
-                  src="/attached_assets/GAS-PIPELINE-SYSTEM-min-1_1755115129403.jpg"
+                  src={Gas_gore}
                   alt="Gas Pipeline Systems"
                   className="w-full h-full object-cover"
                 />
@@ -251,7 +252,6 @@ function GasPipelineSystemsPage() {
           </div>
         </div>
       </section>
-
       {/* Overview Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -279,7 +279,6 @@ function GasPipelineSystemsPage() {
           </div>
         </div>
       </section>
-
       {/* Gas Pipeline Pipes Section */}
       <section className="py-20 bg-[#1c2d56]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -370,7 +369,6 @@ function GasPipelineSystemsPage() {
           ))}
         </div>
       </section>
-
       {/* PE Fittings Section */}
       <section className="py-20 bg-gradient-to-r from-gray-50 to-yellow-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -467,7 +465,6 @@ function GasPipelineSystemsPage() {
           ))}
         </div>
       </section>
-
       <Footer />
     </div>
   );
