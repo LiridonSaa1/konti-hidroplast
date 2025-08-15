@@ -51,116 +51,119 @@ const gasFittingTypes = [
   {
     id: "butt-welding",
     title: "Butt Welding",
-    description: "High-strength welded fittings for permanent gas pipe connections",
-    image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Butt-Wealding-min.png",
+    description:
+      "High-strength welded fittings for permanent gas pipe connections",
+    image:
+      "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Butt-Wealding-min.png",
     items: [
       {
         name: "Fitting Stub Ends (Welding Collars)",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/1.PE_Fitinzi_-_Adapter_flansa-1.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/1.PE_Fitinzi_-_Adapter_flansa-1.pdf",
       },
       {
         name: "Fitting – FF Piece",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/2.PE_Fitinzi_-_FF_Parce-1.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/2.PE_Fitinzi_-_FF_Parce-1.pdf",
       },
       {
         name: "Fitting – Metal Flange",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/3.PE_Fitinzi_-_Flansa-1.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/3.PE_Fitinzi_-_Flansa-1.pdf",
       },
       {
         name: "Fitting – Elbow 11°-12°-30°",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/4.PE_Fitinzi_-_Koleno_11-22-30-1.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/4.PE_Fitinzi_-_Koleno_11-22-30-1.pdf",
       },
       {
         name: "Fitting – Elbow 45°",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/5.PE_Fitinzi_-_Koleno_45-1.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/5.PE_Fitinzi_-_Koleno_45-1.pdf",
       },
       {
         name: "Fitting – Elbow 60°",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/6.PE_Fitinzi_-_Koleno_60-1.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/6.PE_Fitinzi_-_Koleno_60-1.pdf",
       },
       {
         name: "Fitting – Elbow 90°",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/7.PE_Fitinzi_-_Koleno_90-1.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/7.PE_Fitinzi_-_Koleno_90-1.pdf",
       },
       {
         name: "Fitting – Concentric Reducer",
-        pdf: null
+        pdf: null,
       },
       {
         name: "Fitting – End Cup",
-        pdf: null
+        pdf: null,
       },
       {
         name: "Fitting – Tee Outlet Without Reinforcement",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/8.PE_Fitinzi_-_Te_stek_nepojacan-1.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/8.PE_Fitinzi_-_Te_stek_nepojacan-1.pdf",
       },
       {
         name: "Fitting – Tee Outlet Reducer",
-        pdf: null
+        pdf: null,
       },
       {
         name: "Fitting – Tee Outlet",
-        pdf: null
+        pdf: null,
       },
     ],
   },
   {
     id: "electrofusion-fittings",
     title: "Electrofusion Fittings",
-    description: "Electric welded fittings for automated and precise gas pipe joining",
+    description:
+      "Electric welded fittings for automated and precise gas pipe joining",
     image: "/attached_assets/Electrofusion-fittings-min_1755268811656.png",
     items: [
       {
         name: "Electrofusion Socket",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/1_str_Elektrofuzioni_fitinzi-elektrofuzionen_muf.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/1_str_Elektrofuzioni_fitinzi-elektrofuzionen_muf.pdf",
       },
       {
         name: "Electrofusion Tee Outlet",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/2_str_Elektrofuzioni_fitinzi-elektrofuzionen_te_stek.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/2_str_Elektrofuzioni_fitinzi-elektrofuzionen_te_stek.pdf",
       },
       {
         name: "Electrofusion Tee Reducer",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/3_str_Elektrofuzioni_fitinzi-elektrofuzionen_te_stek_reducir.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/3_str_Elektrofuzioni_fitinzi-elektrofuzionen_te_stek_reducir.pdf",
       },
       {
         name: "Electrofusion Elbow 45°",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/4_str_Elektrofuzioni_fitinzi-elektrofuziono_koleno_45.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/4_str_Elektrofuzioni_fitinzi-elektrofuziono_koleno_45.pdf",
       },
       {
         name: "Electrofusion Elbow 90°",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/5_str_Elektrofuzioni_fitinzi-elektrofuziono_koleno_90.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/5_str_Elektrofuzioni_fitinzi-elektrofuziono_koleno_90.pdf",
       },
       {
         name: "Electrofusion Reducer",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/6_str_Elektrofuzioni_fitinzi-elektrofuzionen_reducir.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/6_str_Elektrofuzioni_fitinzi-elektrofuzionen_reducir.pdf",
       },
       {
         name: "Electrofusion End Cap",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/7_str_Elektrofuzioni_fitinzi-elektrofuziona_stopna.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/7_str_Elektrofuzioni_fitinzi-elektrofuziona_stopna.pdf",
       },
       {
         name: "Electrofusion Adapter Socket Integrated Welding Module Male Thread",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/8_str_Elektrofuzioni_fitinzi-elektrofuzionen_adapter_muf_so_maski_navoj_od_mesing.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/8_str_Elektrofuzioni_fitinzi-elektrofuzionen_adapter_muf_so_maski_navoj_od_mesing.pdf",
       },
       {
         name: "Electrofusion Adapter Elbow 45° Integrated Welding Module Male Thread",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/9_str_Elektrofuzioni_fitinzi-elektrofuzionen_adapter_koleno_45_so_maski_navoj_od_mesing.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/9_str_Elektrofuzioni_fitinzi-elektrofuzionen_adapter_koleno_45_so_maski_navoj_od_mesing.pdf",
       },
       {
         name: "Electrofusion Adapter Elbow 90° Integrated Welding Module Male Thread",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/10_str_Elektrofuzioni_fitinzi-elektrofuzionen_adapter_koleno_90_so_maski_navoj_od_mesing.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/10_str_Elektrofuzioni_fitinzi-elektrofuzionen_adapter_koleno_90_so_maski_navoj_od_mesing.pdf",
       },
       {
         name: "Tapping Saddle With Electrofusion Sealing Cap",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/11_str_Elektrofuzioni_fitinzi-ogrlica_za_busenje_so_vgradena_elektrofuziona_kapa.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/11_str_Elektrofuzioni_fitinzi-ogrlica_za_busenje_so_vgradena_elektrofuziona_kapa.pdf",
       },
       {
         name: "Universal Tapping Valve With Thread Insert",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/12_str_Elektrofuzioni_fitinzi-ogrlica_so_vgraden_navoj_od_mesing.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/12_str_Elektrofuzioni_fitinzi-ogrlica_so_vgraden_navoj_od_mesing.pdf",
       },
       {
         name: "Plastic Tapping Valve With Integrated Cutter",
-        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/13_str_Elektrofuzioni_fitinzi-plasticen_ventil_za_busenje_so_vgraden_sekac_od_mesing.pdf"
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/13_str_Elektrofuzioni_fitinzi-plasticen_ventil_za_busenje_so_vgraden_sekac_od_mesing.pdf",
       },
     ],
   },
@@ -199,16 +202,16 @@ function GasPipelineSystemsPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <div className="mb-6 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-full inline-block">
+              <div className="mb-6 bg-[#ef4444]  text-white px-4 py-2 rounded-full inline-block">
                 <span className="text-sm font-medium">
                   ENGINEERED FOR EXCELLENCE
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                GAS<span className="text-yellow-500">PIPELINE</span>
+                GAS<span className="text-red-500">PIPELINE</span>
                 <br />
-                <span className="bg-gradient-to-r from-orange-400 to-red-300 bg-clip-text text-transparent">
-                  SYSTEMS
+                <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+                  SYSTEM
                 </span>
               </h1>
               <p
@@ -220,13 +223,15 @@ function GasPipelineSystemsPage() {
                 10 bar working pressure.
               </p>
               <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 text-yellow-300">
+                <div className="flex items-center gap-2 text-blue-300">
                   <Check className="w-5 h-5" />
                   <span className="text-sm font-medium">Up to 10 Bar</span>
                 </div>
-                <div className="flex items-center gap-2 text-orange-300">
+                <div className="flex items-center gap-2 text-green-300">
                   <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">EN 1555-2 & ISO 4437</span>
+                  <span className="text-sm font-medium">
+                    EN 1555-2 & ISO 4437
+                  </span>
                 </div>
               </div>
             </div>
@@ -234,12 +239,12 @@ function GasPipelineSystemsPage() {
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <img
-                  src="/attached_assets/GAS-PIPELINE-SYSTEM-min-1_1755115129403.jpg"
+                  src="/attached_assets/Gas-gore_1755274574519.jpg"
                   alt="Gas Pipeline Systems"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-4 -right-4 bg-yellow-600 text-white px-4 py-2 rounded-full shadow-lg">
+              <div className="absolute -bottom-4 -right-4 bg-[#ef4444] text-white px-4 py-2 rounded-full shadow-lg">
                 <span className="text-sm font-medium">Premium Quality</span>
               </div>
             </div>
@@ -257,24 +262,25 @@ function GasPipelineSystemsPage() {
               </h2>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  Polyethylene gas pipes are made of PE 80 and PE 100 materials, 
-                  and are intended for distribution of gas through a network, up 
+                  Polyethylene gas pipes are made of PE 80 and PE 100 materials,
+                  and are intended for distribution of gas through a network, up
                   to working pressure of 10 bar.
                 </p>
                 <p>
-                  PE 80 (Medium Density Polyethylene) are designed for medium-pressure 
-                  applications and offer good flexibility and durability. PE 100 
-                  (High-Density Polyethylene) have higher density and strength compared 
-                  to PE 80 and are designed for high-pressure systems.
+                  PE 80 (Medium Density Polyethylene) are designed for
+                  medium-pressure applications and offer good flexibility and
+                  durability. PE 100 (High-Density Polyethylene) have higher
+                  density and strength compared to PE 80 and are designed for
+                  high-pressure systems.
                 </p>
                 <p>
-                  Our gas pipes meet EN 1555-2 and ISO 4437 standards, ensuring 
+                  Our gas pipes meet EN 1555-2 and ISO 4437 standards, ensuring
                   maximum safety and reliability for gas distribution networks.
                 </p>
               </div>
             </div>
 
-            <div className="bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl p-8">
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl">
               <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
                 Key Advantages
               </h3>
@@ -301,12 +307,12 @@ function GasPipelineSystemsPage() {
       </section>
 
       {/* Gas Pipeline Pipes Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-[#1c2d56]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
+              <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
                 Gas Pipeline Pipes
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
@@ -340,16 +346,16 @@ function GasPipelineSystemsPage() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
-                  <h3 className="text-3xl font-bold text-[#1c2d56] mb-4">
+                  <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
                     {spec.title}
                   </h3>
-                  <p className="text-gray-700 mb-6">{spec.description}</p>
+                  <p className="text-[#ffffff] mb-6">{spec.description}</p>
 
                   <div className="space-y-3 mb-8">
                     {spec.features.map((feature, index) => (
                       <div key={index} className="flex items-start gap-3">
                         <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">{feature}</span>
+                        <span className="text-[#ffffff]">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -359,7 +365,7 @@ function GasPipelineSystemsPage() {
                       href={spec.specifications}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      className="inline-flex items-center px-6 py-3 bg-[#ffffff] text-[#1c2d56] rounded-lg transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
                       Download Specs
@@ -454,7 +460,9 @@ function GasPipelineSystemsPage() {
                               <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center flex-shrink-0">
                                 <Download className="w-3 h-3 text-white" />
                               </div>
-                              <span className="text-sm font-medium">{item.name}</span>
+                              <span className="text-sm font-medium">
+                                {item.name}
+                              </span>
                             </a>
                           ) : (
                             <div className="flex items-center gap-3 w-full text-gray-600">
