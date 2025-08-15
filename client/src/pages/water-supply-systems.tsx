@@ -494,7 +494,6 @@ function WaterSupplySystemsPage() {
                     <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
                       {fitting.title}
                     </h3>
-                    <p className="text-gray-700 mb-8">{fitting.description}</p>
 
                     <div className="space-y-3">
                       {fitting.items.map((item, index) => (
