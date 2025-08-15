@@ -221,101 +221,22 @@ function ProductsPage() {
             </p>
           </div>
 
-          {/* Technical PE Specifications Diagram - Recreating the exact flow from the image */}
-          <div className="relative py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 rounded-3xl">
-            {/* Dark overlay with pipe texture */}
-            <div className="absolute inset-0 bg-slate-900/90 rounded-3xl"></div>
-            
-            <div className="relative max-w-6xl mx-auto px-8">
-              {/* Top Row - Main PE Specifications (as shown in image) */}
-              <div className="grid grid-cols-7 gap-6 justify-items-center mb-16">
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
-                  PE 23
-                </div>
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
-                  PE 63
-                </div>
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
-                  PE 80
-                </div>
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
-                  PE 63
-                </div>
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
-                  PE 80
-                </div>
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
-                  PE 100
-                </div>
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[100px] hover:bg-slate-700 transition-colors cursor-pointer">
-                  PE 100RC
+          {/* Technical PE Specifications Diagram - Using the new PE flow diagram */}
+          <div className="relative py-12 md:py-20 bg-white rounded-3xl border border-gray-200 shadow-lg">
+            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              {/* Responsive PE Flow Diagram */}
+              <div className="flex justify-center">
+                <div className="relative w-full max-w-5xl">
+                  <img
+                    src="/attached_assets/PE_1755262086355.png"
+                    alt="PE Technical Specifications Flow Diagram"
+                    className="w-full h-auto object-contain"
+                    data-testid="pe-flow-diagram"
+                  />
+                  {/* Optional overlay for better contrast on mobile */}
+                  <div className="absolute inset-0 bg-transparent hover:bg-blue-900/5 transition-colors duration-300 rounded-lg"></div>
                 </div>
               </div>
-
-              {/* Middle Row - Intermediate Specifications (PE 40, PE 32, PE 63) */}
-              <div className="flex justify-between items-center mb-16 px-8">
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
-                  PE 40
-                </div>
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-6 py-4 text-white font-semibold text-center min-w-[90px] text-lg hover:bg-slate-700 transition-colors cursor-pointer">
-                  PE 32
-                </div>
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-4 py-3 text-white font-semibold text-center min-w-[90px] hover:bg-slate-700 transition-colors cursor-pointer">
-                  PE 63
-                </div>
-              </div>
-
-              {/* Bottom Row - Density Categories */}
-              <div className="grid grid-cols-3 gap-8 mt-12">
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-6 py-6 text-white text-center hover:bg-slate-700 transition-colors cursor-pointer">
-                  <div className="font-semibold text-lg">Low density</div>
-                </div>
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-6 py-6 text-white text-center hover:bg-slate-700 transition-colors cursor-pointer">
-                  <div className="font-semibold text-lg mb-1">Linear low &</div>
-                  <div className="font-semibold text-lg">medium density</div>
-                </div>
-                <div className="bg-slate-800/90 border-2 border-slate-400 px-6 py-6 text-white text-center hover:bg-slate-700 transition-colors cursor-pointer">
-                  <div className="font-semibold text-lg mb-1">Medium &</div>
-                  <div className="font-semibold text-lg">high density</div>
-                </div>
-              </div>
-
-              {/* Connection Lines - More accurate SVG based on image */}
-              <svg
-                className="absolute inset-0 w-full h-full pointer-events-none"
-                style={{ zIndex: 1 }}
-              >
-                <defs>
-                  <marker
-                    id="flowArrow"
-                    markerWidth="10"
-                    markerHeight="8"
-                    refX="9"
-                    refY="4"
-                    orient="auto"
-                    markerUnits="strokeWidth"
-                  >
-                    <path d="M0,0 L0,8 L10,4 z" fill="rgba(255,255,255,0.8)" />
-                  </marker>
-                </defs>
-
-                {/* Lines from top row to middle row - Left side */}
-                <line x1="14%" y1="25%" x2="20%" y2="45%" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
-                <line x1="28%" y1="25%" x2="20%" y2="45%" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
-                
-                {/* Lines from top row to middle row - Center */}
-                <line x1="42%" y1="25%" x2="50%" y2="45%" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
-                <line x1="57%" y1="25%" x2="50%" y2="45%" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
-                
-                {/* Lines from top row to middle row - Right side */}
-                <line x1="71%" y1="25%" x2="80%" y2="45%" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
-                <line x1="85%" y1="25%" x2="80%" y2="45%" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
-
-                {/* Lines from middle row to density categories */}
-                <line x1="20%" y1="55%" x2="16.5%" y2="75%" stroke="rgba(255,255,255,0.8)" strokeWidth="2" markerEnd="url(#flowArrow)" />
-                <line x1="50%" y1="55%" x2="50%" y2="75%" stroke="rgba(255,255,255,0.8)" strokeWidth="2" markerEnd="url(#flowArrow)" />
-                <line x1="80%" y1="55%" x2="83.5%" y2="75%" stroke="rgba(255,255,255,0.8)" strokeWidth="2" markerEnd="url(#flowArrow)" />
-              </svg>
             </div>
 
             {/* Interactive Legend */}
