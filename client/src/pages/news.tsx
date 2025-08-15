@@ -146,44 +146,34 @@ function NewsPage() {
 
   const NewsCard = ({ article }: { article: typeof newsArticles[0] }) => (
     <article
-      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group border border-gray-100"
+      className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
       data-testid={`news-card-${article.id}`}
     >
-      <div className="aspect-[16/9] overflow-hidden bg-gray-100">
+      <div className="aspect-[4/3] overflow-hidden bg-gray-100">
         <img
           src={article.image}
           alt={article.title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover"
           loading="lazy"
         />
       </div>
       <div className="p-6">
-        <div className="flex items-center space-x-4 text-sm text-gray-500 mb-3">
-          <div className="flex items-center">
-            <Calendar className="w-4 h-4 mr-1" />
-            {formatDate(article.date)}
-          </div>
-          <div className="flex items-center">
-            <User className="w-4 h-4 mr-1" />
-            {article.author}
-          </div>
-        </div>
         <div className="mb-3">
-          <span className="inline-block px-3 py-1 bg-red-100 text-red-800 text-xs font-semibold rounded-full">
-            {article.category}
+          <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+            News
           </span>
         </div>
-        <h3 className="text-xl font-bold text-[#1c2d56] mb-3 line-clamp-2 group-hover:text-blue-700 transition-colors">
+        <h3 className="text-xl font-bold text-[#1c2d56] mb-3 leading-tight">
           {article.title}
         </h3>
-        <p className="text-gray-600 mb-4 line-clamp-3">
+        <p className="text-gray-600 mb-6 leading-relaxed">
           {article.excerpt}
         </p>
         <a
           href={article.url}
           target={article.url.startsWith('http') ? "_blank" : "_self"}
           rel={article.url.startsWith('http') ? "noopener noreferrer" : ""}
-          className="inline-flex items-center text-[#1c2d56] font-semibold hover:text-blue-700 transition-colors group-hover:translate-x-1 transform duration-200"
+          className="inline-flex items-center px-4 py-2 bg-[#1c2d56] text-white text-sm font-medium rounded hover:bg-blue-900 transition-colors"
           data-testid={`read-more-${article.id}`}
         >
           Read More
