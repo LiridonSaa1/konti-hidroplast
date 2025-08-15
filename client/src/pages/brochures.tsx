@@ -39,17 +39,17 @@ const brochureCategories = [
       {
         title: "KONTI KAN",
         image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-cevki-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Sewerage-Pipes_EN_2021_compressed.pdf"
+        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-cevki-en.pdf"
       },
       {
         title: "KONTI KAN SPIRAL",
         image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral-cevki-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Sewerage-Pipes_EN_2021_compressed.pdf"
+        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral-cevki-en.pdf"
       },
       {
         title: "KONTI KAN FITTINGS",
         image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-fitinzi.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Sewerage-Pipes_EN_2021_compressed.pdf"
+        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-fitinzi.pdf"
       },
       {
         title: "KONTI KAN PPHM FITTINGS",
