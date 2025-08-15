@@ -9,6 +9,7 @@ import { LoadingScreen } from "@/components/loading-screen";
 import Home from "@/pages/home";
 import AboutUs from "@/pages/about-us";
 import ProductsPage from "@/pages/products";
+import WaterSupplySystemsPage from "@/pages/water-supply-systems";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -17,6 +18,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/about-us" component={AboutUs} />
       <Route path="/products" component={ProductsPage} />
+      <Route path="/products/water-supply-systems" component={WaterSupplySystemsPage} />
       <Route component={NotFound} />
     </Switch>
   );
