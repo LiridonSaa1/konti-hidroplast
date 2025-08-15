@@ -144,8 +144,8 @@ function ProductsPage() {
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <img
-                  src="/attached_assets/Water-supply-min-1_1755115058874.jpg"
-                  alt="High-quality PE and PP pipe systems"
+                  src="/attached_assets/industrial-pipes-manufacturing.jpg"
+                  alt="High-quality PE and PP pipe systems in manufacturing facility"
                   className="w-full h-full object-cover"
                 />
               </div>
