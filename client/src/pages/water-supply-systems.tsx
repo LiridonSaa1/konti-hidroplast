@@ -72,7 +72,7 @@ const fittingTypes = [
   {
     id: "butt-welding",
     title: "Butt Welding",
-    description: "High-strength welded fittings for permanent pipe connections",
+    description: "",
     image:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Butt-Wealding-min.png",
     items: [
