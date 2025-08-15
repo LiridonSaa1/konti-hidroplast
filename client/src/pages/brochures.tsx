@@ -128,7 +128,6 @@ function BrochuresPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white pt-32 pb-20">
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
@@ -159,7 +158,6 @@ function BrochuresPage() {
           </div>
         </div>
       </section>
-
       {/* Brochures Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -214,7 +212,7 @@ function BrochuresPage() {
                       />
                     </div>
                     <div className="p-6">
-                      <h3 className="text-lg font-semibold text-[#1c2d56] mb-4 line-clamp-2">
+                      <h3 className="font-semibold text-[#1c2d56] mb-4 line-clamp-2 text-[16px]">
                         {brochure.title}
                       </h3>
                       <a
@@ -235,7 +233,6 @@ function BrochuresPage() {
           ))}
         </div>
       </section>
-
       {/* Contact Section */}
       <section className="py-20 bg-gradient-to-r from-gray-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -260,7 +257,6 @@ function BrochuresPage() {
           </div>
         </div>
       </section>
-
       <Footer />
     </div>
   );
