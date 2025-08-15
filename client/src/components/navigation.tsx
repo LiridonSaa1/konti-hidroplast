@@ -308,7 +308,7 @@ export function Navigation() {
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="start"
-            className="nav-dropdown w-56 bg-white shadow-lg border-0 z-50"
+            className="nav-dropdown w-56 bg-white shadow-lg border border-gray-100 rounded-lg z-50"
             sideOffset={8}
             onCloseAutoFocus={(event) => event.preventDefault()}
             onMouseEnter={() => handleDropdownMouseEnter(item.label)}
@@ -319,26 +319,28 @@ export function Navigation() {
                 // Handle nested dropdown for desktop
                 return (
                   <div key={index} className="relative group">
-                    <div className="nav-dropdown-item px-4 py-2 text-sm font-medium text-konti-gray hover:text-konti-blue cursor-default flex items-center justify-between">
+                    <div className="nav-dropdown-item px-4 py-2 text-sm font-medium text-konti-gray hover:text-konti-blue cursor-default flex items-center justify-between hover:bg-gray-50">
                       <span>{subItem.label}</span>
-                      <ChevronDown className="h-3 w-3 -rotate-90" />
+                      <ChevronDown className="h-4 w-4 -rotate-90" />
                     </div>
-                    <div className="absolute left-full top-0 ml-1 w-56 bg-white shadow-lg border-0 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                      {subItem.subItems.map((nestedItem, nestedIndex) => (
-                        <DropdownMenuItem
-                          key={nestedIndex}
-                          onClick={() =>
-                            handleDropdownClick(nestedItem.href!, nestedItem.external)
-                          }
-                          className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
-                          data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase()}-${nestedItem.label.toLowerCase().replace(/\s+/g, "-")}`}
-                        >
-                          <span>{nestedItem.label}</span>
-                          {nestedItem.external && (
-                            <ExternalLink className="h-3 w-3 text-gray-400" />
-                          )}
-                        </DropdownMenuItem>
-                      ))}
+                    <div className="absolute left-full top-0 w-56 bg-white shadow-lg border border-gray-100 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 ml-2">
+                      <div className="py-2">
+                        {subItem.subItems.map((nestedItem, nestedIndex) => (
+                          <div
+                            key={nestedIndex}
+                            onClick={() =>
+                              handleDropdownClick(nestedItem.href!, nestedItem.external)
+                            }
+                            className="px-4 py-2 text-sm font-medium text-konti-gray hover:text-konti-blue hover:bg-gray-50 cursor-pointer transition-colors flex items-center justify-between"
+                            data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase()}-${nestedItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+                          >
+                            <span>{nestedItem.label}</span>
+                            {nestedItem.external && (
+                              <ExternalLink className="h-3 w-3 text-gray-400" />
+                            )}
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 );
