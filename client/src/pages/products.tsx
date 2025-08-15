@@ -310,60 +310,7 @@ function ProductsPage() {
         </div>
       </section>
 
-      {/* Quality Assurance Section */}
-      <section className="py-20 bg-[#1c2d56] text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2
-            className="text-3xl md:text-4xl font-bold mb-8"
-            data-testid="quality-section-title"
-          >
-            Quality & Standards
-          </h2>
-          <p
-            className="text-xl text-white/90 mb-12 max-w-3xl mx-auto"
-            data-testid="quality-section-description"
-          >
-            All our products meet or exceed international standards and are
-            manufactured with the highest quality materials and processes.
-          </p>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center" data-testid="standard-iso">
-              <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold">ISO</span>
-              </div>
-              <h3 className="font-semibold mb-2">ISO Certified</h3>
-              <p className="text-sm text-white/80">
-                Quality Management Systems
-              </p>
-            </div>
-
-            <div className="text-center" data-testid="standard-en">
-              <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-2xl font-bold">EN</span>
-              </div>
-              <h3 className="font-semibold mb-2">European Standards</h3>
-              <p className="text-sm text-white/80">CE Marking Compliance</p>
-            </div>
-
-            <div className="text-center" data-testid="standard-testing">
-              <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-xl">🧪</span>
-              </div>
-              <h3 className="font-semibold mb-2">Quality Testing</h3>
-              <p className="text-sm text-white/80">Rigorous Quality Control</p>
-            </div>
-
-            <div className="text-center" data-testid="standard-durability">
-              <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-xl">⚡</span>
-              </div>
-              <h3 className="font-semibold mb-2">50+ Years</h3>
-              <p className="text-sm text-white/80">Product Lifespan</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* CTA Section */}
       <section className="py-20 bg-white">
