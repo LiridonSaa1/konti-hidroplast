@@ -506,7 +506,7 @@ function WaterSupplySystemsPage() {
                               rel="noopener noreferrer"
                               className="flex items-center gap-3 w-full text-[#1c2d56] hover:text-blue-700"
                             >
-                              <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center flex-shrink-0">
+                              <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 bg-[#1c2d56]">
                                 <Download className="w-3 h-3 text-white" />
                               </div>
                               <span className="text-sm font-medium">{item.name}</span>
