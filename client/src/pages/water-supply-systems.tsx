@@ -73,52 +73,148 @@ const fittingTypes = [
     id: "butt-welding",
     title: "Butt Welding",
     description: "High-strength welded fittings for permanent pipe connections",
+    image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Butt-Wealding-min.png",
     items: [
-      "Fitting Stub Ends (Welding Collars)",
-      "Fitting – FF Piece",
-      "Fitting – Metal Flange",
-      "Fitting – Elbow 11°-12°-30°",
-      "Fitting – Elbow 45°",
-      "Fitting – Elbow 60°",
-      "Fitting – Elbow 90°",
-      "Fitting – Concentric Reducer",
-      "Fitting – End Cup",
-      "Fitting – Tee Outlet",
+      {
+        name: "Fitting Stub Ends (Welding Collars)",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/1.PE_Fitinzi_-_Adapter_flansa-1.pdf"
+      },
+      {
+        name: "Fitting – FF Piece",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/2.PE_Fitinzi_-_FF_Parce-1.pdf"
+      },
+      {
+        name: "Fitting – Metal Flange",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/3.PE_Fitinzi_-_Flansa-1.pdf"
+      },
+      {
+        name: "Fitting – Elbow 11°-12°-30°",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/4.PE_Fitinzi_-_Koleno_11-22-30-1.pdf"
+      },
+      {
+        name: "Fitting – Elbow 45°",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/5.PE_Fitinzi_-_Koleno_45-1.pdf"
+      },
+      {
+        name: "Fitting – Elbow 60°",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/6.PE_Fitinzi_-_Koleno_60-1.pdf"
+      },
+      {
+        name: "Fitting – Elbow 90°",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/7.PE_Fitinzi_-_Koleno_90-1.pdf"
+      },
+      {
+        name: "Fitting – Concentric Reducer",
+        pdf: null
+      },
+      {
+        name: "Fitting – End Cup",
+        pdf: null
+      },
+      {
+        name: "Fitting – Tee Outlet Without Reinforcement",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/8.PE_Fitinzi_-_Te_stek_nepojacan-1.pdf"
+      },
+      {
+        name: "Fitting – Tee Outlet Reducer",
+        pdf: null
+      },
     ],
   },
   {
     id: "mechanical-fittings",
     title: "Mechanical Fittings",
     description: "Compression fittings for quick and reliable pipe connections",
+    image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Mechanical-fittings-min.png",
     items: [
-      "Coupling",
-      "Reducer Coupling",
-      "Adapter Coupling Male",
-      "Adapter Coupling Female",
-      "Line End",
-      "Reducing Coupling 90°",
-      "Tee Male Thread 90°",
-      "Tee Female Thread 90°",
-      "Equal Tee 90°",
-      "Elbow 90°",
-      "2 Bolt Saddle",
-      "4 Bolt Saddle Female Thread",
-      "6 Bolt Saddle Female Thread",
+      {
+        name: "Coupling",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/1-spojka.pdf"
+      },
+      {
+        name: "Reducer Coupling",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/2-reducir-spojka.pdf"
+      },
+      {
+        name: "Adapter Coupling Male",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/3-adapter-spojka-m.pdf"
+      },
+      {
+        name: "Adapter Coupling Female",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/stopna.pdf"
+      },
+      {
+        name: "Line End",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/4-stopna.pdf"
+      },
+      {
+        name: "Reducing Coupling 90°",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/5-te-reducir-90.pdf"
+      },
+      {
+        name: "Tee Male Thread 90°",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/6-te-stek-90-so-navoj-m.pdf"
+      },
+      {
+        name: "Tee Female Thread 90°",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/7-te-stek-90-so-navoj-f.pdf"
+      },
+      {
+        name: "Equal Tee 90°",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/8-te-stek-90.pdf"
+      },
+      {
+        name: "Elbow 90°",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/9-koleno-90.pdf"
+      },
+      {
+        name: "2 Bolt Saddle",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/12-ogrlica-so-2-navrtki.pdf"
+      },
+      {
+        name: "4 Bolt Saddle Female Thread",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/13-ogrlica-so-4-navrtki-so-zajaknat-nergosuvacki-metalen-prsten.pdf"
+      },
+      {
+        name: "6 Bolt Saddle Female Thread",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/14-ogrlica-so-6-navrtki-so-zajaknat-nergosuvacki-metalen-prsten.pdf"
+      },
     ],
   },
   {
     id: "electrofusion-fittings",
     title: "Electrofusion Fittings",
-    description:
-      "Electric welded fittings for automated and precise pipe joining",
+    description: "Electric welded fittings for automated and precise pipe joining",
+    image: "/attached_assets/CABLE-PROTECTION-min-1_1755115210995.jpg",
     items: [
-      "Electrofusion Socket",
-      "Electrofusion Tee Outlet",
-      "Electrofusion Tee Reducer",
-      "Electrofusion Elbow 45°",
-      "Electrofusion Elbow 90°",
-      "Electrofusion Reducer",
-      "Electrofusion End Cap",
+      {
+        name: "Electrofusion Socket",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/1_str_Elektrofuzioni_fitinzi-elektrofuzionen_muf.pdf"
+      },
+      {
+        name: "Electrofusion Tee Outlet",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/2_str_Elektrofuzioni_fitinzi-elektrofuzionen_te_stek.pdf"
+      },
+      {
+        name: "Electrofusion Tee Reducer",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/3_str_Elektrofuzioni_fitinzi-elektrofuzionen_te_stek_reducir.pdf"
+      },
+      {
+        name: "Electrofusion Elbow 45°",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/4_str_Elektrofuzioni_fitinzi-elektrofuziono_koleno_45.pdf"
+      },
+      {
+        name: "Electrofusion Elbow 90°",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/5_str_Elektrofuzioni_fitinzi-elektrofuziono_koleno_90.pdf"
+      },
+      {
+        name: "Electrofusion Reducer",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/6_str_Elektrofuzioni_fitinzi-elektrofuzionen_reducir.pdf"
+      },
+      {
+        name: "Electrofusion End Cap",
+        pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/7_str_Elektrofuzioni_fitinzi-elektrofuziono_Cep.pdf"
+      },
     ],
   },
 ];
@@ -393,21 +489,55 @@ function WaterSupplySystemsPage() {
               className={`${activeFittingTab === fitting.id ? "block" : "hidden"} transition-all duration-500`}
             >
               <div className="bg-white rounded-2xl p-8 shadow-sm">
-                <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
-                  {fitting.title}
-                </h3>
-                <p className="text-gray-700 mb-8">{fitting.description}</p>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                  {/* Left Column - Fittings List */}
+                  <div>
+                    <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
+                      {fitting.title}
+                    </h3>
+                    <p className="text-gray-700 mb-8">{fitting.description}</p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {fitting.items.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
-                    >
-                      <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
-                      <span className="text-sm text-gray-700">{item}</span>
+                    <div className="space-y-3">
+                      {fitting.items.map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-3 p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                        >
+                          {item.pdf ? (
+                            <a
+                              href={item.pdf}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-3 w-full text-[#1c2d56] hover:text-blue-700"
+                            >
+                              <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center flex-shrink-0">
+                                <Download className="w-3 h-3 text-white" />
+                              </div>
+                              <span className="text-sm font-medium">{item.name}</span>
+                            </a>
+                          ) : (
+                            <div className="flex items-center gap-3 w-full text-gray-600">
+                              <div className="w-6 h-6 bg-gray-400 rounded flex items-center justify-center flex-shrink-0">
+                                <Download className="w-3 h-3 text-white" />
+                              </div>
+                              <span className="text-sm">{item.name}</span>
+                            </div>
+                          )}
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+
+                  {/* Right Column - Fitting Image */}
+                  <div className="relative">
+                    <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg overflow-hidden p-8 flex items-center justify-center">
+                      <img
+                        src={fitting.image}
+                        alt={fitting.title}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
