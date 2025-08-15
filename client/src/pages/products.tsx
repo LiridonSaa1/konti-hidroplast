@@ -239,39 +239,7 @@ function ProductsPage() {
               </div>
             </div>
 
-            {/* Interactive Legend */}
-            <div className="mt-16 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
-                  Material Classification Guide
-                </h3>
-                <p className="text-gray-600">
-                  Click on any specification to learn more about its
-                  applications and properties
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-                  <div className="text-blue-600 font-bold text-lg mb-2">
-                    Pressure Rating
-                  </div>
-                  <div className="text-gray-600 text-sm">PN 4 - PN 32 bar</div>
-                </div>
-                <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-                  <div className="text-purple-600 font-bold text-lg mb-2">
-                    Temperature Range
-                  </div>
-                  <div className="text-gray-600 text-sm">-40°C to +60°C</div>
-                </div>
-                <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-                  <div className="text-green-600 font-bold text-lg mb-2">
-                    Lifespan
-                  </div>
-                  <div className="text-gray-600 text-sm">50+ years</div>
-                </div>
-              </div>
-            </div>
+            
           </div>
         </div>
       </section>
