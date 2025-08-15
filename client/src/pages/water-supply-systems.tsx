@@ -297,7 +297,7 @@ function WaterSupplySystemsPage() {
                   aria-label="Konti Hidroplast water supply systems manufacturing video"
                 />
               </div>
-              <div className="absolute -bottom-4 -right-4 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg">
+              <div className="absolute -bottom-4 -right-4 text-white px-4 py-2 rounded-full shadow-lg bg-[#ef4444]">
                 <span className="text-sm font-medium">Premium Quality</span>
               </div>
             </div>
