@@ -169,10 +169,14 @@ function WaterSupplySystemsPage() {
 
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
-                <img
-                  src="/attached_assets/Water-supply-min-1_1755115058874.jpg"
-                  alt="Water supply systems with PE pipes"
+                <video
+                  src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/Konti-Hidroplast_1-1.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
                   className="w-full h-full object-cover"
+                  aria-label="Konti Hidroplast water supply systems manufacturing video"
                 />
               </div>
               <div className="absolute -bottom-4 -right-4 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg">
