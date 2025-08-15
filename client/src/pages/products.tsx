@@ -159,8 +159,48 @@ function ProductsPage() {
         </div>
       </section>
 
+      {/* Our Products Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">Our Products</h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+            <div className="max-w-4xl mx-auto text-gray-700 leading-relaxed space-y-4">
+              <p>
+                Konti Hidroplast is an export-oriented Macedonian company for production of PE (polyethylene) and PP (polypropylene) pipes. 
+                Situated in the southern area of North Macedonia, municipality of Gevgelija, Konti Hidroplast was founded in 1975 as a small plant for 
+                production of tools and elements of injection molded plastic.
+              </p>
+              <p>
+                Following the successful start aided by the experience gained by successfully realized projects in the Republic of North Macedonia, 
+                today our company is export-oriented, and <strong>95% of its products are exported</strong> in international markets.
+              </p>
+              <p>
+                Besides the experience, our large range of products and top quality, by all internationally recognized standards, enabled us to get 
+                access to international markets. Our current production program covers all fields of application: pipes and hoses for water supply 
+                systems, sewage systems, PE and PP manholes, pipes for transporting gas and oil products, pipes and hoses for protection of 
+                telecommunication cables, drainage systems and fittings for all dimensions, which also range from a minimum diameter of 16mm up 
+                to 2000mm.
+              </p>
+              <p>
+                Konti Hidroplast became known to the market through quality supply and constant application of flexibility in operation, which is 
+                very important in an industry where the complexity of managing all processes is quite high.
+              </p>
+              <p>
+                One of the key factors for sustainability despite tough competition is constant reinvestment in innovative technologies and 
+                pursuing general technological progress. The combination of all these key factors are contributing for Konti Hidroplast to play an 
+                important role in the domestic and foreign markets with the constant presence of all major and minor infrastructure projects.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Products Grid */}
-      <section className="py-20">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {productCategories.map((product, index) => (
