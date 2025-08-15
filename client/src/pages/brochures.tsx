@@ -12,25 +12,33 @@ const brochureCategories = [
     brochures: [
       {
         title: "PE 80/100",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pe-80-100-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pe-80-100-en.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf",
       },
       {
         title: "PE 100 RC",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pe-100-rc-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-PE100-RC_EN_2021_compressed.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pe-100-rc-en.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-PE100-RC_EN_2021_compressed.pdf",
       },
       {
         title: "PE FITTINGS FOR BUTT WELDING",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pe-elektrofuzioni-fitinzi.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pe-elektrofuzioni-fitinzi.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf",
       },
       {
         title: "ELECTROFUSION FITTINGS",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pe_fitinzi_za_celno_zavaruvanje.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf"
-      }
-    ]
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pe_fitinzi_za_celno_zavaruvanje.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf",
+      },
+    ],
   },
   {
     id: "sewerage",
@@ -38,45 +46,61 @@ const brochureCategories = [
     brochures: [
       {
         title: "KONTI KAN",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-cevki-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-cevki-en.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-cevki-en.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-cevki-en.pdf",
       },
       {
         title: "KONTI KAN SPIRAL",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral-cevki-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral-cevki-en.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral-cevki-en.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral-cevki-en.pdf",
       },
       {
         title: "KONTI KAN FITTINGS",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-fitinzi.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-fitinzi.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-fitinzi.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-fitinzi.pdf",
       },
       {
         title: "KONTI KAN PPHM FITTINGS",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-pp-hm-2023-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-fitinzi.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-pp-hm-2023-en.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-fitinzi.pdf",
       },
       {
         title: "KONTI KAN PPHM",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-pp-hm-2023-en-1.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-pp-hm-2023-en.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-pp-hm-2023-en-1.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-pp-hm-2023-en.pdf",
       },
       {
         title: "PPHM HIGH PERFORMANCE",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-visoki-performansi-en-1.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-visoki-performansi-en.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-visoki-performansi-en-1.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-visoki-performansi-en.pdf",
       },
       {
         title: "DRAINAGE PIPES",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-drenaza-en-1.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-drenaza-en.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-drenaza-en-1.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-drenaza-en.pdf",
       },
       {
         title: "POLYPROPYLENE MANHOLES",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/polipropilenski-sahti-en-1.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/polipropilenski-sahti-en.pdf"
-      }
-    ]
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/polipropilenski-sahti-en-1.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/polipropilenski-sahti-en.pdf",
+      },
+    ],
   },
   {
     id: "gas",
@@ -84,15 +108,19 @@ const brochureCategories = [
     brochures: [
       {
         title: "GAS PIPES",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/priroden-gas-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/priroden-gas-en.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/priroden-gas-en.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/priroden-gas-en.pdf",
       },
       {
         title: "PETROL GAS",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/petrol-gas-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/petrol-gas-en.pdf"
-      }
-    ]
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/petrol-gas-en.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/petrol-gas-en.pdf",
+      },
+    ],
   },
   {
     id: "cable-protection",
@@ -100,11 +128,13 @@ const brochureCategories = [
     brochures: [
       {
         title: "KONTI KAN DUCT",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-dakt-en.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/konti-kan-dakt-en.pdf"
-      }
-    ]
-  }
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-dakt-en.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/konti-kan-dakt-en.pdf",
+      },
+    ],
+  },
 ];
 
 function BrochuresPage() {
@@ -138,9 +168,7 @@ function BrochuresPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
-              <span className="text-sm font-medium">
-                PRODUCT DOCUMENTATION
-              </span>
+              <span className="text-sm font-medium">PRODUCT DOCUMENTATION</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
               PRODUCT<span className="text-red-500"> BROCHURES</span>
@@ -153,7 +181,9 @@ function BrochuresPage() {
               className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
               data-testid="hero-description"
             >
-              Download comprehensive product documentation, technical specifications, and catalogs for all our pipe and fitting solutions.
+              Download comprehensive product documentation, technical
+              specifications, and catalogs for all our pipe and fitting
+              solutions.
             </p>
           </div>
         </div>
@@ -233,26 +263,26 @@ function BrochuresPage() {
           ))}
         </div>
       </section>
-      {/* Contact Section */}
-      <section className="py-20 bg-gradient-to-r from-gray-50 to-blue-50">
+      <section className="py-20 bg-[#ffffff]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Need Additional Information?
+                Get in Touch: Connect with Us Today!
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Can't find what you're looking for? Contact our technical team for custom documentation and support.
+              Need more information about our cable protection solutions?
+              Contact our team of experts.
             </p>
             <a
               href="/contact"
               className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
-              Contact Technical Support
+              Contact Us
             </a>
           </div>
         </div>

@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Download, Shield, Award, CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Download,
+  Shield,
+  Award,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 // Certificates data organized by category
 const certificateCategories = [
@@ -12,25 +19,33 @@ const certificateCategories = [
     certificates: [
       {
         title: "PE100 and PE 100 RC pipes",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/PE100-and-PE-100-RC-pipes.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/PE-100-PE-100-RC.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/PE100-and-PE-100-RC-pipes.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/PE-100-PE-100-RC.pdf",
       },
       {
         title: "KONTI KAN PPHM pipes and fittings",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/KONTI-KAN-PPHM-pipes-and-fittings.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/KONTI-KAN-PPHM.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/KONTI-KAN-PPHM-pipes-and-fittings.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/KONTI-KAN-PPHM.pdf",
       },
       {
         title: "KONTI KAN HDPE pipes and fittings",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/KONTI-KAN-HDPE-pipes-and-fittings.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/KONTI-KAN-HDPE.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/KONTI-KAN-HDPE-pipes-and-fittings.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/KONTI-KAN-HDPE.pdf",
       },
       {
         title: "MANHOLES",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/Manholes.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/Manhole.pdf"
-      }
-    ]
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/Manholes.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/Manhole.pdf",
+      },
+    ],
   },
   {
     id: "quality-management",
@@ -38,35 +53,47 @@ const certificateCategories = [
     certificates: [
       {
         title: "IQNET-9001",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IQNET-9001.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/IQNET-9001.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IQNET-9001.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/IQNET-9001.pdf",
       },
       {
         title: "IQNET-14001",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IQNET-14001.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/IQNET-14001.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IQNET-14001.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/IQNET-14001.pdf",
       },
       {
         title: "IQNET-45001",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IQNET-45001.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/IQNET-45001.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IQNET-45001.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/IQNET-45001.pdf",
       },
       {
         title: "QAUSTRIA-9001",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/QAUSTRIA-9001.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/QAUSTRIA-9001.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/QAUSTRIA-9001.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/QAUSTRIA-9001.pdf",
       },
       {
         title: "QAUSTRIA-14001",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/QAUSTRIA-14001.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/QAUSTRIA-14001.pdf"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/QAUSTRIA-14001.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/QAUSTRIA-14001.pdf",
       },
       {
         title: "QAUSTRIA-45001",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/QAUSTRIA-45001.jpg",
-        downloadUrl: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/QAUSTRIA-45001.pdf"
-      }
-    ]
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/QAUSTRIA-45001.jpg",
+        downloadUrl:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/QAUSTRIA-45001.pdf",
+      },
+    ],
   },
   {
     id: "water-supply",
@@ -77,363 +104,425 @@ const certificateCategories = [
         certificates: [
           {
             title: "DV-8146",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DV-8146.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DV-8146.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DV-8141",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DV-8141.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DV-8141.jpg",
+            downloadUrl: "#",
           },
           {
             title: "IGH-2351",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IGH-2351.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IGH-2351.jpg",
+            downloadUrl: "#",
           },
           {
             title: "MIRTEC-12201-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/MIRTEC-12201-GR.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/MIRTEC-12201-GR.jpg",
+            downloadUrl: "#",
           },
           {
             title: "MIRTEC-12201-GR",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/MIRTEC-12201-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/MIRTEC-12201-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "BWA-EK-018-59-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BWA-EK-018-066-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BWA-EK-018-066-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "BS-31-PE100RC-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BS-31-PE100RC-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BS-31-PE100RC-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "IC-5213",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IC-5213.jpg",
-            downloadUrl: "#"
-          }
-        ]
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IC-5213.jpg",
+            downloadUrl: "#",
+          },
+        ],
       },
       {
         title: "PE 100 RC",
         certificates: [
           {
             title: "BS-31-PE100RC-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BS-31-PE100RC-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BS-31-PE100RC-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "IGH-2350",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IGH-2350.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IGH-2350.jpg",
+            downloadUrl: "#",
           },
           {
             title: "BWA-EK-018-066-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BWA-EK-018-066-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BWA-EK-018-066-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "BS-31-PE100RC-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BS-31-PE100RC-EN-1.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BS-31-PE100RC-EN-1.jpg",
+            downloadUrl: "#",
           },
           {
             title: "INSTA-CERT-5213",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/INSTA-CERT-5213.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/INSTA-CERT-5213.jpg",
+            downloadUrl: "#",
           },
           {
             title: "INSTA-CERT-5213",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/INSTA-CERT-5213-1.jpg",
-            downloadUrl: "#"
-          }
-        ]
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/INSTA-CERT-5213-1.jpg",
+            downloadUrl: "#",
+          },
+        ],
       },
       {
         title: "PE 100 RC TYPE 1 DN/OD 20-800mm",
         certificates: [
           {
             title: "DW-8136-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DW-8136-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DW-8136-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DW-8141-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DW-8141-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DW-8141-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DW-8141-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DW-8141-EN-1.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DW-8141-EN-1.jpg",
+            downloadUrl: "#",
           },
           {
             title: "P1R0642 2023 DE",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0642_2023-06-20_EZ_2023_de.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0642_2023-06-20_EZ_2023_de.jpg",
+            downloadUrl: "#",
           },
           {
             title: "P1R0642 2023 EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0642_2023-06-20_EZ_2023_en.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0642_2023-06-20_EZ_2023_en.jpg",
+            downloadUrl: "#",
           },
           {
             title: "P1R0643 2023 DE",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0643_2023-06-20_EZ_2023_de.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0643_2023-06-20_EZ_2023_de.jpg",
+            downloadUrl: "#",
           },
           {
             title: "P1R0643 2023 EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0643_2023-06-20_EZ_2023_en.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0643_2023-06-20_EZ_2023_en.jpg",
+            downloadUrl: "#",
           },
           {
             title: "P1R0644 2023 DE",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0644_2023-06-20_EZ_2023_de.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0644_2023-06-20_EZ_2023_de.jpg",
+            downloadUrl: "#",
           },
           {
             title: "P1R0644 2023 EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0644_2023-06-20_EZ_2023_en.jpg",
-            downloadUrl: "#"
-          }
-        ]
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0644_2023-06-20_EZ_2023_en.jpg",
+            downloadUrl: "#",
+          },
+        ],
       },
       {
         title: "PE 100 RC TYPE 2 DN/OD 20-800mm",
         certificates: [
           {
             title: "DVGW-8138-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DVGW-8138-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DVGW-8138-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DVGW-8143-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DVGW-8143-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DVGW-8143-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DVGW-8148-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DVGW-8148-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DVGW-8148-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DIN-CERTCO-645-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-645-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-645-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DIN-CERTCO-645-DE",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-645-DE.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-645-DE.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DIN-CERTCO-646-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-646-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-646-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DIN-CERTCO-646-DE",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-646-DE.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-646-DE.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DIN-CERTCO-647-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-647-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-647-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DIN-CERTCO-647-DE",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-647-DE.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-647-DE.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DIN-CERTCO-666-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-666-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-666-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DIN-CERTCO-666-DE",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-666-DE.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-666-DE.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DIN-CERTCO-667-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-667-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-667-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DIN-CERTCO-667-DE",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-667-DE.jpg",
-            downloadUrl: "#"
-          }
-        ]
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-667-DE.jpg",
+            downloadUrl: "#",
+          },
+        ],
       },
       {
         title: "PE 100 RC type 3",
         certificates: [
           {
             title: "DW-8152",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DW-8152.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DW-8152.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DW-8154",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DW-8154.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DW-8154.jpg",
+            downloadUrl: "#",
           },
           {
             title: "P1R0648 2023 EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0648_2023-06-20_EZ_2023_en.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/P1R0648_2023-06-20_EZ_2023_en.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DIN-CERTCO-649-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-649-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-649-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "DIN-CERTCO-649-DE",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-649-DE.jpg",
-            downloadUrl: "#"
-          }
-        ]
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DIN-CERTCO-649-DE.jpg",
+            downloadUrl: "#",
+          },
+        ],
       },
       {
         title: "Hygiene certificates",
         certificates: [
           {
             title: "Hygiene Certificate 1",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/Scan2659_page-0001-min.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/Scan2659_page-0001-min.jpg",
+            downloadUrl: "#",
           },
           {
             title: "Hygiene Certificate 2",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/Scan2660_page-0001-min.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/Scan2660_page-0001-min.jpg",
+            downloadUrl: "#",
           },
           {
             title: "Hygiene Certificate 3",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/Scan2663_page-0001-min.jpg",
-            downloadUrl: "#"
-          }
-        ]
-      }
-    ]
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/04/Scan2663_page-0001-min.jpg",
+            downloadUrl: "#",
+          },
+        ],
+      },
+    ],
   },
   {
     id: "sewerage",
     title: "Sewerage Systems",
     subsections: [
       {
-        title: "HDPE Konti Kan double wall corrugated sewage pipes DN/OD 110-1200mm",
+        title:
+          "HDPE Konti Kan double wall corrugated sewage pipes DN/OD 110-1200mm",
         certificates: [
           {
             title: "BC-3793-BG",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BC-3793-BG-1.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BC-3793-BG-1.jpg",
+            downloadUrl: "#",
           },
           {
             title: "MIRTEC-13476-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/MIRTEC-13476-EN.jpg",
-            downloadUrl: "#"
-          }
-        ]
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/MIRTEC-13476-EN.jpg",
+            downloadUrl: "#",
+          },
+        ],
       },
       {
-        title: "Konti Kan Spiral - PE/PP Spiral sewage non pressure pipe DN/ID 1300-200mm",
+        title:
+          "Konti Kan Spiral - PE/PP Spiral sewage non pressure pipe DN/ID 1300-200mm",
         certificates: [
           {
             title: "BC-3791-BG",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BC-3791-BG.jpg",
-            downloadUrl: "#"
-          }
-        ]
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BC-3791-BG.jpg",
+            downloadUrl: "#",
+          },
+        ],
       },
       {
         title: "PE/PP Manholes sewage system",
         certificates: [
           {
             title: "EXACT-0479-MANHOLE",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-0479-MANHOLE.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-0479-MANHOLE.jpg",
+            downloadUrl: "#",
           },
           {
             title: "AVIZ-46554",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/AVIZ-46554.jpg",
-            downloadUrl: "#"
-          }
-        ]
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/AVIZ-46554.jpg",
+            downloadUrl: "#",
+          },
+        ],
       },
       {
-        title: "PPHM Konti Kan double wall corrugated sewage pipe DN/ID 100-1200mm",
+        title:
+          "PPHM Konti Kan double wall corrugated sewage pipe DN/ID 100-1200mm",
         certificates: [
           {
             title: "BC-3792-BG",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BC-3792-BG.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BC-3792-BG.jpg",
+            downloadUrl: "#",
           },
           {
             title: "MIRTEC-13476-3-PP-GR",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/MIRTEC-13476-3-PP-GR.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/MIRTEC-13476-3-PP-GR.jpg",
+            downloadUrl: "#",
           },
           {
             title: "IC-5210-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IC-5210-EN.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IC-5210-EN.jpg",
+            downloadUrl: "#",
           },
           {
             title: "BS-015-58-BG",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BS-015-58-BG.jpg",
-            downloadUrl: "#"
-          }
-        ]
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BS-015-58-BG.jpg",
+            downloadUrl: "#",
+          },
+        ],
       },
       {
         title: "PP HM Smooth Pipe (Solid PP sewage pipe) DN/OD 110-500mm",
         certificates: [
           {
             title: "EXACT-0438-P",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-0438-P.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-0438-P.jpg",
+            downloadUrl: "#",
           },
           {
             title: "EXACT-246",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-246.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-246.jpg",
+            downloadUrl: "#",
           },
           {
             title: "IGMAT-1852",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IGMAT-1852.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IGMAT-1852.jpg",
+            downloadUrl: "#",
           },
           {
             title: "BC-3794-BG",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BC-3794-BG.jpg",
-            downloadUrl: "#"
-          }
-        ]
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/BC-3794-BG.jpg",
+            downloadUrl: "#",
+          },
+        ],
       },
       {
         title: "Rubber Gasket",
         certificates: [
           {
             title: "EXACT-0394-P",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-0394-P.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-0394-P.jpg",
+            downloadUrl: "#",
           },
           {
             title: "EXACT-0424-P",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-0424-P.jpg",
-            downloadUrl: "#"
-          }
-        ]
-      }
-    ]
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-0424-P.jpg",
+            downloadUrl: "#",
+          },
+        ],
+      },
+    ],
   },
   {
     id: "gas",
@@ -441,62 +530,72 @@ const certificateCategories = [
     certificates: [
       {
         title: "DVGW-8106",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DVGW-8106.jpg",
-        downloadUrl: "#"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DVGW-8106.jpg",
+        downloadUrl: "#",
       },
       {
         title: "DVGW-8111",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DVGW-8111.jpg",
-        downloadUrl: "#"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DVGW-8111.jpg",
+        downloadUrl: "#",
       },
       {
         title: "DVGW-8116",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DVGW-8116.jpg",
-        downloadUrl: "#"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/DVGW-8116.jpg",
+        downloadUrl: "#",
       },
       {
         title: "IGH-2349",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IGH-2349.jpg",
-        downloadUrl: "#"
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/IGH-2349.jpg",
+        downloadUrl: "#",
       },
       {
         title: "Gas Certificate",
-        image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/gas.jpg",
-        downloadUrl: "#"
-      }
-    ]
+        image:
+          "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/gas.jpg",
+        downloadUrl: "#",
+      },
+    ],
   },
   {
     id: "cable-protection",
     title: "Cable Protection",
     subsections: [
       {
-        title: "Konti Kan Duct (HDPE double wall corrugated pipe DN/OD 40-200mm)",
+        title:
+          "Konti Kan Duct (HDPE double wall corrugated pipe DN/OD 40-200mm)",
         certificates: [
           {
             title: "EXACT-0466",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-0466.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-0466.jpg",
+            downloadUrl: "#",
           },
           {
             title: "EXACT-0467",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-0467.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/EXACT-0467.jpg",
+            downloadUrl: "#",
           },
           {
             title: "MIRTEC-61386-EN",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/MIRTEC-61386-EN-scaled.jpg",
-            downloadUrl: "#"
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/MIRTEC-61386-EN-scaled.jpg",
+            downloadUrl: "#",
           },
           {
             title: "MIRTEC-61386-GR",
-            image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/MIRTEC-61386-GR.jpg",
-            downloadUrl: "#"
-          }
-        ]
-      }
-    ]
-  }
+            image:
+              "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/MIRTEC-61386-GR.jpg",
+            downloadUrl: "#",
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 function CertificatesPage() {
@@ -504,14 +603,14 @@ function CertificatesPage() {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const nextTab = () => {
-    setActiveTabIndex((prev) => 
-      prev === certificateCategories.length - 1 ? 0 : prev + 1
+    setActiveTabIndex((prev) =>
+      prev === certificateCategories.length - 1 ? 0 : prev + 1,
     );
   };
 
   const prevTab = () => {
-    setActiveTabIndex((prev) => 
-      prev === 0 ? certificateCategories.length - 1 : prev - 1
+    setActiveTabIndex((prev) =>
+      prev === 0 ? certificateCategories.length - 1 : prev - 1,
     );
   };
 
@@ -570,7 +669,7 @@ function CertificatesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white pt-32 pb-20">
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
@@ -581,9 +680,7 @@ function CertificatesPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
-              <span className="text-sm font-medium">
-                QUALITY ASSURANCE
-              </span>
+              <span className="text-sm font-medium">QUALITY ASSURANCE</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
               QUALITY<span className="text-red-500"> CERTIFICATES</span>
@@ -596,7 +693,9 @@ function CertificatesPage() {
               className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
               data-testid="hero-description"
             >
-              Official certificates and quality assurance documentation demonstrating our commitment to international standards and environmental responsibility.
+              Official certificates and quality assurance documentation
+              demonstrating our commitment to international standards and
+              environmental responsibility.
             </p>
             <div className="flex justify-center space-x-8 text-sm">
               <div className="flex items-center">
@@ -631,7 +730,7 @@ function CertificatesPage() {
 
           {/* Tab Slider */}
           <div className="flex items-center justify-center mb-12">
-            <button 
+            <button
               onClick={prevTab}
               className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors mr-4"
               data-testid="tab-prev"
@@ -649,8 +748,8 @@ function CertificatesPage() {
                     key={index}
                     onClick={() => setActiveTabIndex(index)}
                     className={`w-2 h-2 rounded-full transition-all ${
-                      index === activeTabIndex 
-                        ? "bg-[#1c2d56]" 
+                      index === activeTabIndex
+                        ? "bg-[#1c2d56]"
                         : "bg-gray-300 hover:bg-gray-400"
                     }`}
                     data-testid={`tab-dot-${index}`}
@@ -659,7 +758,7 @@ function CertificatesPage() {
               </div>
             </div>
 
-            <button 
+            <button
               onClick={nextTab}
               className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors ml-4"
               data-testid="tab-next"
@@ -717,26 +816,26 @@ function CertificatesPage() {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="py-20 bg-gradient-to-r from-gray-50 to-blue-50">
+      <section className="py-20 bg-[#ffffff]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Need Additional Certificates?
+                Get in Touch: Connect with Us Today!
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Contact our quality assurance team for specific certificates or additional documentation requirements.
+              Need more information about our cable protection solutions?
+              Contact our team of experts.
             </p>
             <a
-              href="#contact"
+              href="/contact"
               className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
-              Contact Quality Team
+              Contact Us
             </a>
           </div>
         </div>
