@@ -8,6 +8,8 @@ import Duct_min_400x400 from "@assets/Duct-min-400x400.jpg";
 
 import duct_close_up_min_400x400 from "@assets/duct-close-up-min-400x400.jpg";
 
+import KONTI_KAN_DUCT_Double_layered_corrugated_pipes_min_400x400 from "@assets/KONTI-KAN-DUCT-Double-layered-corrugated-pipes-min-400x400.jpg";
+
 // Cable Protection specifications data
 const cableProtectionProducts = [
   {
@@ -48,7 +50,7 @@ const cableProtectionProducts = [
     id: "konti-kan-optic",
     title: "Konti Kan Optic Cable Protection",
     description:
-      "HDPE double wall pipes with smooth interior and corrugated exterior surface, used for protection or holders of the protection pipes",
+      "These HDPE pipes are used for protection or holders of the protection pipes, especially for passage of roads and bridges. They are double wall pipes within the smooth interior and the exterior surface is corrugated.Pipes with bigger diameters that are used for insertion of a bundle of pipes for protection of optic cables and for road or bridge passage. They are produced in black, red and yellow color, but also in any special color requested by the customer.",
     features: [
       "Double wall pipes with smooth interior and corrugated exterior surface",
       "Used for protection or holders of the protection pipes",
@@ -366,7 +368,7 @@ function CableProtectionPage() {
                 <div className="relative max-w-md mx-auto lg:mx-0">
                   <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
                     <img
-                      src={duct_close_up_min_400x400}
+                      src={KONTI_KAN_DUCT_Double_layered_corrugated_pipes_min_400x400}
                       alt={product.title}
                       className="w-full h-full object-cover"
                     />
