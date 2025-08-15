@@ -326,11 +326,18 @@ function ProductsPage() {
           {/* Advanced PE Specifications Flow Diagram */}
           <div className="relative min-h-[800px]">
             
-            {/* Decorative Background Elements */}
+            {/* Enhanced Decorative Background Elements */}
             <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute top-20 left-10 w-32 h-32 bg-blue-400/5 rounded-full"></div>
-              <div className="absolute bottom-20 right-10 w-40 h-40 bg-purple-400/5 rounded-full"></div>
-              <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-green-400/5 rounded-full"></div>
+              <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-blue-400/10 to-cyan-400/5 rounded-full blur-xl animate-pulse"></div>
+              <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-br from-purple-400/10 to-pink-400/5 rounded-full blur-xl animate-pulse delay-75"></div>
+              <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-br from-green-400/10 to-emerald-400/5 rounded-full blur-xl animate-pulse delay-150"></div>
+              <div className="absolute top-10 right-1/4 w-28 h-28 bg-gradient-to-br from-orange-400/8 to-red-400/4 rounded-full blur-xl animate-pulse delay-300"></div>
+              <div className="absolute bottom-32 left-1/3 w-36 h-36 bg-gradient-to-br from-indigo-400/8 to-violet-400/4 rounded-full blur-xl animate-pulse delay-500"></div>
+              
+              {/* Floating particles */}
+              <div className="absolute top-1/4 left-1/2 w-2 h-2 bg-blue-400/30 rounded-full animate-bounce delay-1000"></div>
+              <div className="absolute top-3/4 right-1/3 w-1.5 h-1.5 bg-purple-400/40 rounded-full animate-bounce delay-1500"></div>
+              <div className="absolute top-1/3 left-1/4 w-1 h-1 bg-green-400/50 rounded-full animate-bounce delay-2000"></div>
             </div>
 
             {/* Top Row - PE Specifications */}
@@ -339,12 +346,14 @@ function ProductsPage() {
                 
                 {/* PE 23 */}
                 <div className="relative group">
-                  <div className="bg-gradient-to-br from-[#1c2d56] via-[#2a4086] to-[#1c2d56] rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 border-2 border-white/20 backdrop-blur-sm cursor-pointer">
-                    <div className="text-center">
-                      <div className="text-white font-bold text-xl mb-1">PE 23</div>
-                      <div className="text-blue-200 text-xs">Low Density</div>
+                  <div className="bg-gradient-to-br from-[#1c2d56] via-[#2a4086] to-[#3d5aa0] rounded-3xl p-8 shadow-[0_20px_50px_rgba(28,45,86,0.3)] hover:shadow-[0_30px_70px_rgba(28,45,86,0.5)] transition-all duration-700 hover:scale-110 border-4 border-gradient-to-r from-blue-400/30 to-cyan-400/30 backdrop-blur-lg cursor-pointer relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-blue-400/10 to-transparent rounded-3xl"></div>
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-white/20 to-transparent rounded-bl-3xl"></div>
+                    <div className="relative text-center">
+                      <div className="text-white font-bold text-2xl mb-2 tracking-wide drop-shadow-lg">PE 23</div>
+                      <div className="text-blue-200 text-sm font-medium tracking-wider">Low Density</div>
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-blue-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-500 animate-pulse"></div>
                   </div>
                   
                   {/* Connection to PE 40 */}
@@ -356,12 +365,14 @@ function ProductsPage() {
 
                 {/* PE 63 */}
                 <div className="relative group">
-                  <div className="bg-gradient-to-br from-purple-700 via-purple-600 to-purple-700 rounded-2xl p-6 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 border-2 border-white/20 backdrop-blur-sm cursor-pointer">
-                    <div className="text-center">
-                      <div className="text-white font-bold text-xl mb-1">PE 63</div>
-                      <div className="text-purple-200 text-xs">Medium Density</div>
+                  <div className="bg-gradient-to-br from-purple-800 via-purple-600 to-pink-600 rounded-3xl p-8 shadow-[0_20px_50px_rgba(147,51,234,0.3)] hover:shadow-[0_30px_70px_rgba(147,51,234,0.5)] transition-all duration-700 hover:scale-110 border-4 border-gradient-to-r from-purple-400/30 to-pink-400/30 backdrop-blur-lg cursor-pointer relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-purple-400/10 to-transparent rounded-3xl"></div>
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-white/20 to-transparent rounded-bl-3xl"></div>
+                    <div className="relative text-center">
+                      <div className="text-white font-bold text-2xl mb-2 tracking-wide drop-shadow-lg">PE 63</div>
+                      <div className="text-purple-200 text-sm font-medium tracking-wider">Medium Density</div>
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-pink-400/20 to-purple-600/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-all duration-500 animate-pulse"></div>
                   </div>
                   
                   {/* Connection to PE 40 */}
@@ -456,12 +467,17 @@ function ProductsPage() {
 
                 {/* PE 32 - Central Hub */}
                 <div className="relative group">
-                  <div className="bg-gradient-to-br from-cyan-700 via-cyan-600 to-cyan-700 rounded-3xl p-10 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-110 border-2 border-white/20 backdrop-blur-sm cursor-pointer">
-                    <div className="text-center">
-                      <div className="text-white font-bold text-3xl mb-3">PE 32</div>
-                      <div className="text-cyan-200 text-lg">Hub Connector</div>
+                  <div className="bg-gradient-to-br from-cyan-800 via-cyan-600 to-teal-600 rounded-[2rem] p-12 shadow-[0_25px_60px_rgba(6,182,212,0.4)] hover:shadow-[0_35px_80px_rgba(6,182,212,0.6)] transition-all duration-700 hover:scale-115 border-4 border-gradient-to-r from-cyan-400/40 to-teal-400/40 backdrop-blur-xl cursor-pointer relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-cyan-400/15 to-transparent rounded-[2rem]"></div>
+                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-white/25 to-transparent rounded-bl-[2rem]"></div>
+                    <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-cyan-400/20 to-transparent rounded-tr-[2rem]"></div>
+                    <div className="relative text-center">
+                      <div className="text-white font-bold text-4xl mb-4 tracking-wide drop-shadow-2xl">PE 32</div>
+                      <div className="text-cyan-200 text-xl font-semibold tracking-wider">Hub Connector</div>
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-transparent rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-teal-400/25 to-cyan-600/25 rounded-[2rem] opacity-0 group-hover:opacity-100 transition-all duration-500">
+                      <div className="absolute inset-2 border-2 border-white/20 rounded-[1.5rem] animate-pulse"></div>
+                    </div>
                   </div>
                   
                   {/* Three-way connections to density categories */}
@@ -486,20 +502,25 @@ function ProductsPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                 
                 {/* Low Density */}
-                <div className="group cursor-pointer transform hover:scale-105 transition-all duration-500">
-                  <div className="bg-gradient-to-br from-blue-700 via-blue-600 to-cyan-600 rounded-3xl p-10 shadow-2xl hover:shadow-3xl border-2 border-white/20 backdrop-blur-sm relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="group cursor-pointer transform hover:scale-105 transition-all duration-700 hover:rotate-1">
+                  <div className="bg-gradient-to-br from-blue-800 via-blue-600 to-cyan-500 rounded-[2rem] p-12 shadow-[0_30px_60px_rgba(59,130,246,0.4)] hover:shadow-[0_40px_80px_rgba(59,130,246,0.6)] border-4 border-gradient-to-br from-blue-400/30 to-cyan-400/30 backdrop-blur-xl relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-blue-400/10 to-transparent opacity-50"></div>
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-white/20 to-transparent rounded-bl-[2rem]"></div>
+                    <div className="absolute bottom-0 left-0 w-20 h-20 bg-gradient-to-tr from-cyan-400/15 to-transparent rounded-tr-[2rem]"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                      <div className="absolute inset-4 border-2 border-white/30 rounded-[1.5rem] animate-pulse"></div>
+                    </div>
                     <div className="relative text-white text-center">
-                      <div className="text-4xl mb-2">🔵</div>
-                      <div className="text-3xl font-bold mb-4">Low Density</div>
-                      <div className="text-blue-100 text-lg mb-4">PE 23, PE 32, PE 40</div>
-                      <div className="text-blue-200 text-sm leading-relaxed">
+                      <div className="text-6xl mb-4 filter drop-shadow-2xl">🔵</div>
+                      <div className="text-4xl font-bold mb-6 tracking-wide drop-shadow-lg">Low Density</div>
+                      <div className="text-blue-100 text-xl mb-6 font-semibold tracking-wider">PE 23, PE 32, PE 40</div>
+                      <div className="text-blue-200 text-base leading-relaxed font-medium">
                         Suitable for low pressure applications and general purpose piping systems with flexible installation requirements
                       </div>
-                      <div className="mt-6 grid grid-cols-3 gap-2 text-xs">
-                        <div className="bg-white/20 rounded-lg p-2">PN 4-6</div>
-                        <div className="bg-white/20 rounded-lg p-2">20-200mm</div>
-                        <div className="bg-white/20 rounded-lg p-2">Standard</div>
+                      <div className="mt-8 grid grid-cols-3 gap-3 text-sm">
+                        <div className="bg-white/25 backdrop-blur rounded-xl p-3 border border-white/20 font-semibold">PN 4-6</div>
+                        <div className="bg-white/25 backdrop-blur rounded-xl p-3 border border-white/20 font-semibold">20-200mm</div>
+                        <div className="bg-white/25 backdrop-blur rounded-xl p-3 border border-white/20 font-semibold">Standard</div>
                       </div>
                     </div>
                   </div>
@@ -549,25 +570,40 @@ function ProductsPage() {
               </div>
             </div>
 
-            {/* Animated Connection Lines */}
+            {/* Enhanced Animated Connection Lines */}
             <div className="hidden lg:block absolute inset-0 pointer-events-none">
               <svg className="w-full h-full" style={{ zIndex: 10 }}>
                 <defs>
                   <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#1c2d56" stopOpacity="0.8"/>
-                    <stop offset="50%" stopColor="#2a4086" stopOpacity="0.6"/>
-                    <stop offset="100%" stopColor="#1c2d56" stopOpacity="0.8"/>
+                    <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.9"/>
+                    <stop offset="25%" stopColor="#3b82f6" stopOpacity="0.8"/>
+                    <stop offset="50%" stopColor="#8b5cf6" stopOpacity="0.7"/>
+                    <stop offset="75%" stopColor="#ec4899" stopOpacity="0.8"/>
+                    <stop offset="100%" stopColor="#10b981" stopOpacity="0.9"/>
                   </linearGradient>
-                  <marker id="arrowMarker" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
-                    <path d="M0,0 L0,6 L8,3 z" fill="url(#connectionGradient)"/>
+                  <filter id="glow">
+                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                    <feMerge> 
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                  <marker id="arrowMarker" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto" markerUnits="strokeWidth">
+                    <path d="M0,0 L0,8 L12,4 z" fill="url(#connectionGradient)" filter="url(#glow)"/>
                   </marker>
                 </defs>
                 
-                {/* Dynamic connection lines with subtle animation */}
-                <g className="animate-pulse">
-                  <path d="M 50% 40% Q 20% 60% 16.67% 75%" stroke="url(#connectionGradient)" strokeWidth="3" fill="none" markerEnd="url(#arrowMarker)" opacity="0.7"/>
-                  <path d="M 50% 40% L 50% 75%" stroke="url(#connectionGradient)" strokeWidth="3" fill="none" markerEnd="url(#arrowMarker)" opacity="0.7"/>
-                  <path d="M 50% 40% Q 80% 60% 83.33% 75%" stroke="url(#connectionGradient)" strokeWidth="3" fill="none" markerEnd="url(#arrowMarker)" opacity="0.7"/>
+                {/* Dynamic connection lines with enhanced animation */}
+                <g>
+                  <path d="M 50% 40% Q 20% 60% 16.67% 75%" stroke="url(#connectionGradient)" strokeWidth="4" fill="none" markerEnd="url(#arrowMarker)" opacity="0.8" filter="url(#glow)" className="animate-pulse">
+                    <animate attributeName="stroke-dasharray" values="0,1000;20,980;0,1000" dur="3s" repeatCount="indefinite"/>
+                  </path>
+                  <path d="M 50% 40% L 50% 75%" stroke="url(#connectionGradient)" strokeWidth="4" fill="none" markerEnd="url(#arrowMarker)" opacity="0.8" filter="url(#glow)" className="animate-pulse delay-500">
+                    <animate attributeName="stroke-dasharray" values="0,1000;20,980;0,1000" dur="3s" begin="0.5s" repeatCount="indefinite"/>
+                  </path>
+                  <path d="M 50% 40% Q 80% 60% 83.33% 75%" stroke="url(#connectionGradient)" strokeWidth="4" fill="none" markerEnd="url(#arrowMarker)" opacity="0.8" filter="url(#glow)" className="animate-pulse delay-1000">
+                    <animate attributeName="stroke-dasharray" values="0,1000;20,980;0,1000" dur="3s" begin="1s" repeatCount="indefinite"/>
+                  </path>
                 </g>
               </svg>
             </div>
