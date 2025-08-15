@@ -9,6 +9,12 @@ Preferred communication style: Simple, everyday language.
 # Recent Changes (August 2025)
 
 ## August 15, 2025
+- **Certificates Page Added**: Created comprehensive certificates page at /certificates route
+  - Fetched all certificate data from https://konti-hidroplast.com.mk/certificates/
+  - Organized certificates by categories: EPD, Quality Management, Water Supply, Sewerage, Gas, Cable Protection
+  - Professional design with downloadable PDFs and certificate-only viewing
+  - Updated navigation to link to certificates page instead of external URL
+  - Added proper routing in App.tsx for certificates page
 - **Brochures Fix**: Updated all sewerage systems brochure PDF download links with authentic URLs from konti-hidroplast.com.mk
   - Fixed 8 sewerage system brochures with correct PDF download links
   - All brochure downloads now link to the actual company PDF files

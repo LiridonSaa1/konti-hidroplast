@@ -59,8 +59,7 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
       },
       {
         label: "Certificates",
-        href: "https://konti-hidroplast.com.mk/products/",
-        external: true,
+        href: "/certificates",
       },
     ],
   },
