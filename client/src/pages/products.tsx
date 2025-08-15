@@ -206,13 +206,7 @@ function ProductsPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             
-            <p
-              className="text-xl text-gray-600 max-w-3xl mx-auto"
-              data-testid="technical-flow-description"
-            >
-              Interactive polyethylene material classification and density
-              relationships
-            </p>
+            
           </div>
 
           {/* Technical PE Specifications Diagram - Using the new PE flow diagram */}
