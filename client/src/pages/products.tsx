@@ -195,7 +195,7 @@ function ProductsPage() {
       <section className="py-20 bg-white relative overflow-hidden">
         {/* Background pipe image integration */}
         <div className="absolute inset-0">
-          <img 
+          <img
             src="/attached_assets/download_1755250894007.png"
             alt="PE Pipe Technical Specifications Diagram"
             className="w-full h-full object-cover opacity-20"
@@ -205,36 +205,68 @@ function ProductsPage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-[#1c2d56] mb-6" data-testid="technical-flow-title">
-              Technical <span className="text-red-500">Specifications</span> Flow
+            <h2
+              className="text-4xl md:text-5xl font-bold text-[#1c2d56] mb-6"
+              data-testid="technical-flow-title"
+            >
+              Technical <span className="text-red-500">Specifications</span>{" "}
+              Flow
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto" data-testid="technical-flow-description">
-              Interactive polyethylene material classification and density relationships
+            <p
+              className="text-xl text-gray-600 max-w-3xl mx-auto"
+              data-testid="technical-flow-description"
+            >
+              Interactive polyethylene material classification and density
+              relationships
             </p>
           </div>
 
           {/* Technical PE Specifications Diagram */}
-          <div className="relative py-20" style={{ backgroundImage: `url('/attached_assets/image_1755251723335.png')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+          <div
+            className="relative py-20"
+            style={{
+              backgroundImage: `url('/attached_assets/image_1755251723335.png')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
             {/* Dark overlay to match the original */}
             <div className="absolute inset-0 bg-slate-900/80"></div>
-            
+
             <div className="relative max-w-6xl mx-auto px-4">
-              
               {/* Top Row - PE Specifications */}
               <div className="flex justify-center items-center gap-8 mb-12">
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">PE 23</div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">PE 63</div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">PE 80</div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">PE 63</div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">PE 80</div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">PE 100</div>
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[90px]">PE 100RC</div>
+                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+                  PE 23
+                </div>
+                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+                  PE 63
+                </div>
+                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+                  PE 80
+                </div>
+                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+                  PE 63
+                </div>
+                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+                  PE 80
+                </div>
+                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+                  PE 100
+                </div>
+                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[90px]">
+                  PE 100RC
+                </div>
               </div>
 
               {/* Middle Row - Intermediate Specifications */}
               <div className="flex justify-center items-center gap-64 mb-12">
-                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">PE 40</div>
-                <div className="bg-slate-800/90 border border-slate-500 px-8 py-4 text-white font-medium text-center min-w-[80px] text-lg">PE 32</div>
+                <div className="bg-slate-800/90 border border-slate-500 px-6 py-3 text-white font-medium text-center min-w-[80px]">
+                  PE 40
+                </div>
+                <div className="bg-slate-800/90 border border-slate-500 px-8 py-4 text-white font-medium text-center min-w-[80px] text-lg">
+                  PE 32
+                </div>
               </div>
 
               {/* Bottom Row - Density Categories */}
@@ -253,50 +285,130 @@ function ProductsPage() {
               </div>
 
               {/* Connection Lines - Simple SVG */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                style={{ zIndex: 1 }}
+              >
                 <defs>
-                  <marker id="simpleArrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
-                    <path d="M0,0 L0,6 L8,3 z" fill="white" opacity="0.8"/>
+                  <marker
+                    id="simpleArrow"
+                    markerWidth="8"
+                    markerHeight="6"
+                    refX="7"
+                    refY="3"
+                    orient="auto"
+                  >
+                    <path d="M0,0 L0,6 L8,3 z" fill="white" opacity="0.8" />
                   </marker>
                 </defs>
-                
+
                 {/* Lines from PE 23 to PE 40 */}
-                <line x1="12%" y1="35%" x2="25%" y2="55%" stroke="white" strokeWidth="2" opacity="0.6"/>
-                
+                <line
+                  x1="12%"
+                  y1="35%"
+                  x2="25%"
+                  y2="55%"
+                  stroke="white"
+                  strokeWidth="2"
+                  opacity="0.6"
+                />
+
                 {/* Lines from PE 63 to PE 40 */}
-                <line x1="25%" y1="35%" x2="25%" y2="55%" stroke="white" strokeWidth="2" opacity="0.6"/>
-                
+                <line
+                  x1="25%"
+                  y1="35%"
+                  x2="25%"
+                  y2="55%"
+                  stroke="white"
+                  strokeWidth="2"
+                  opacity="0.6"
+                />
+
                 {/* Lines from PE 80 to PE 63 (middle) */}
-                <line x1="38%" y1="35%" x2="75%" y2="55%" stroke="white" strokeWidth="2" opacity="0.6"/>
-                
+                <line
+                  x1="38%"
+                  y1="35%"
+                  x2="75%"
+                  y2="55%"
+                  stroke="white"
+                  strokeWidth="2"
+                  opacity="0.6"
+                />
+
                 {/* Lines from PE 63 (right) to PE 32 */}
-                <line x1="62%" y1="35%" x2="75%" y2="55%" stroke="white" strokeWidth="2" opacity="0.6"/>
-                
+                <line
+                  x1="62%"
+                  y1="35%"
+                  x2="75%"
+                  y2="55%"
+                  stroke="white"
+                  strokeWidth="2"
+                  opacity="0.6"
+                />
+
                 {/* Lines from PE 32 to all three density categories */}
-                <line x1="75%" y1="65%" x2="16.67%" y2="85%" stroke="white" strokeWidth="2" opacity="0.6" markerEnd="url(#simpleArrow)"/>
-                <line x1="75%" y1="65%" x2="50%" y2="85%" stroke="white" strokeWidth="2" opacity="0.6" markerEnd="url(#simpleArrow)"/>
-                <line x1="75%" y1="65%" x2="83.33%" y2="85%" stroke="white" strokeWidth="2" opacity="0.6" markerEnd="url(#simpleArrow)"/>
+                <line
+                  x1="75%"
+                  y1="65%"
+                  x2="16.67%"
+                  y2="85%"
+                  stroke="white"
+                  strokeWidth="2"
+                  opacity="0.6"
+                  markerEnd="url(#simpleArrow)"
+                />
+                <line
+                  x1="75%"
+                  y1="65%"
+                  x2="50%"
+                  y2="85%"
+                  stroke="white"
+                  strokeWidth="2"
+                  opacity="0.6"
+                  markerEnd="url(#simpleArrow)"
+                />
+                <line
+                  x1="75%"
+                  y1="65%"
+                  x2="83.33%"
+                  y2="85%"
+                  stroke="white"
+                  strokeWidth="2"
+                  opacity="0.6"
+                  markerEnd="url(#simpleArrow)"
+                />
               </svg>
             </div>
 
             {/* Interactive Legend */}
             <div className="mt-16 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200">
               <div className="text-center mb-8">
-                <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">Material Classification Guide</h3>
-                <p className="text-gray-600">Click on any specification to learn more about its applications and properties</p>
+                <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
+                  Material Classification Guide
+                </h3>
+                <p className="text-gray-600">
+                  Click on any specification to learn more about its
+                  applications and properties
+                </p>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-                  <div className="text-blue-600 font-bold text-lg mb-2">Pressure Rating</div>
+                  <div className="text-blue-600 font-bold text-lg mb-2">
+                    Pressure Rating
+                  </div>
                   <div className="text-gray-600 text-sm">PN 4 - PN 32 bar</div>
                 </div>
                 <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-                  <div className="text-purple-600 font-bold text-lg mb-2">Temperature Range</div>
+                  <div className="text-purple-600 font-bold text-lg mb-2">
+                    Temperature Range
+                  </div>
                   <div className="text-gray-600 text-sm">-40°C to +60°C</div>
                 </div>
                 <div className="text-center p-4 bg-white rounded-xl shadow-sm">
-                  <div className="text-green-600 font-bold text-lg mb-2">Lifespan</div>
+                  <div className="text-green-600 font-bold text-lg mb-2">
+                    Lifespan
+                  </div>
                   <div className="text-gray-600 text-sm">50+ years</div>
                 </div>
               </div>
@@ -305,38 +417,191 @@ function ProductsPage() {
         </div>
       </section>
       {/* Products Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 relative overflow-hidden bg-[#1c2d56] text-[#ffffff]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
+              <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
                 Products
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
           </div>
-          
-          {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {productCategories.map((product) => (
-              <div key={product.id} className="bg-[#1c2d56] rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                <div className="aspect-video overflow-hidden">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                  />
-                </div>
-                <div className="p-8 text-[#ffffff]">
-                  <h3 className="text-2xl font-bold text-white mb-4">{product.title}</h3>
-                  <p className="text-gray-300 mb-6 leading-relaxed">{product.description}</p>
-                  <button className="bg-[#1c2d56] text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors duration-300 font-medium border border-gray-400 hover:border-red-600">
-                    Learn More →
+
+          {/* Products Grid - Vertical Card Design */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+            {/* Product 1 - Water Supply Systems */}
+            <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
+              {/* Product Image - Top */}
+              <div className="h-64 relative overflow-hidden">
+                <img
+                  src="/attached_assets/Water-supply-min-1_1755115058874.jpg"
+                  alt="Water Supply Systems"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
+              </div>
+
+              {/* Product Content - Bottom */}
+              <div className="p-8 relative">
+                {/* Decorative accent */}
+                <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
+
+                <div className="mt-4">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                    WATER SUPPLY SYSTEMS
+                  </h3>
+
+                  {/* Learn More Button */}
+                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                    <span>Learn More</span>
+                    <svg
+                      className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
                   </button>
                 </div>
               </div>
-            ))}
+            </div>
+
+            {/* Product 2 - Sewerage Systems */}
+            <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
+              {/* Product Image - Top */}
+              <div className="h-64 relative overflow-hidden">
+                <img
+                  src="/attached_assets/Konti-Hidroplast-Proizvodstvo-27-1_1755115099243.jpg"
+                  alt="Sewerage Systems"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
+              </div>
+
+              {/* Product Content - Bottom */}
+              <div className="p-8 relative">
+                {/* Decorative accent */}
+                <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
+
+                <div className="mt-4">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                    SEWERAGE SYSTEMS
+                  </h3>
+
+                  {/* Learn More Button */}
+                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                    <span>Learn More</span>
+                    <svg
+                      className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Product 3 - Gas Pipeline System */}
+            <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
+              {/* Product Image - Top */}
+              <div className="h-64 relative overflow-hidden">
+                <img
+                  src="/attached_assets/GAS-PIPELINE-SYSTEM-min-1_1755115129403.jpg"
+                  alt="Gas Pipeline System"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
+              </div>
+
+              {/* Product Content - Bottom */}
+              <div className="p-8 relative">
+                {/* Decorative accent */}
+                <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
+
+                <div className="mt-4">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                    GAS PIPELINE SYSTEM
+                  </h3>
+
+                  {/* Learn More Button */}
+                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                    <span>Learn More</span>
+                    <svg
+                      className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Product 4 - Cable Protection */}
+            <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
+              {/* Product Image - Top */}
+              <div className="h-64 relative overflow-hidden">
+                <img
+                  src="/attached_assets/CABLE-PROTECTION-min-1_1755115210995.jpg"
+                  alt="Cable Protection"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
+              </div>
+
+              {/* Product Content - Bottom */}
+              <div className="p-8 relative">
+                {/* Decorative accent */}
+                <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
+
+                <div className="mt-4">
+                  <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                    CABLE PROTECTION
+                  </h3>
+
+                  {/* Learn More Button */}
+                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                    <span>Learn More</span>
+                    <svg
+                      className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
