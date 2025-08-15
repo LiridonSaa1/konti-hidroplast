@@ -323,7 +323,7 @@ export function Navigation() {
                       <span>{subItem.label}</span>
                       <ChevronDown className="h-4 w-4 -rotate-90" />
                     </div>
-                    <div className="absolute left-full top-[-16px] w-56 bg-white shadow-lg border border-gray-100 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 ml-2">
+                    <div className="absolute right-full top-[-16px] w-56 bg-white shadow-lg border border-gray-100 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 mr-2">
                       <div className="py-2">
                         {subItem.subItems.map((nestedItem, nestedIndex) => (
                           <div
