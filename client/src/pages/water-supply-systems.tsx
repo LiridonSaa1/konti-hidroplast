@@ -261,15 +261,42 @@ function WaterSupplySystemsPage() {
         </div>
       </section>
 
-      
+      {/* Applications Section */}
+      <section className="py-16 bg-gradient-to-r from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-[#1c2d56] mb-4">
+              Applications
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+            {[
+              "Water-supply systems",
+              "Gas Transport",
+              "Sewerage systems",
+              "Irrigation systems",
+              "Protection of optical cables",
+            ].map((application, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div className="text-sm font-medium text-gray-800">
+                  {application}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* PE Water-Supply Pipes Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-[#1c2d56] text-[#ffffff]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
+              <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
                 PE Water-Supply Pipes
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
@@ -303,16 +330,16 @@ function WaterSupplySystemsPage() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
-                  <h3 className="text-3xl font-bold text-[#1c2d56] mb-4">
+                  <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
                     {spec.title}
                   </h3>
-                  <p className="text-gray-700 mb-6">{spec.description}</p>
+                  <p className="text-white-700 mb-6">{spec.description}</p>
 
                   <div className="space-y-3 mb-8">
                     {spec.features.map((feature, index) => (
                       <div key={index} className="flex items-start gap-3">
                         <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700">{feature}</span>
+                        <span className="text-white-700">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -322,7 +349,7 @@ function WaterSupplySystemsPage() {
                       href={spec.specifications}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      className="inline-flex items-center px-6 py-3 bg-[#ffffff] text-[#1c2d56] rounded-lg hover:bg-[#ffffff] transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
                       Download Specs
@@ -331,7 +358,7 @@ function WaterSupplySystemsPage() {
                       href={spec.brochure}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                      className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-white-700 transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
                       Download Brochure
@@ -342,7 +369,7 @@ function WaterSupplySystemsPage() {
                 <div className="relative">
                   <div className="aspect-square bg-black rounded-2xl shadow-2xl overflow-hidden">
                     <img
-                      src={spec.image}
+                      src="/attached_assets/PE80-1-min-400x302_1755265816361.jpg"
                       alt={spec.title}
                       className="w-full h-full object-cover"
                     />
