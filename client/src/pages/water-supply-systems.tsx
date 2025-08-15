@@ -544,6 +544,31 @@ function WaterSupplySystemsPage() {
           ))}
         </div>
       </section>
+      {/* Contact Section */}
+      <section className="py-20 bg-gradient-to-r from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
+                Get in Touch: Connect with Us Today!
+              </h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+            <p className="text-xl text-gray-600 mb-8">
+              Need more information about our cable protection solutions?
+              Contact our team of experts.
+            </p>
+            <a
+              href="/contact"
+              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
+              data-testid="contact-button"
+            >
+              Contact Us
+            </a>
+          </div>
+        </div>
+      </section>
       <Footer />
     </div>
   );

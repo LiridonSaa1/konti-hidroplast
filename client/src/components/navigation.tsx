@@ -22,8 +22,9 @@ interface NavigationLink {
 
 interface DropdownItem {
   label: string;
-  href: string;
+  href?: string;
   external?: boolean;
+  subItems?: DropdownItem[];
 }
 
 interface NavigationDropdown {
@@ -43,7 +44,17 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
     items: [
       { label: "All Products", href: "/products" },
       { label: "Water Supply Systems", href: "/products/water-supply-systems" },
-      { label: "Sewerage Systems", href: "/products#sewerage" },
+      { 
+        label: "Sewerage Systems", 
+        subItems: [
+          { label: "HDPE Konti Kan OD", href: "/products#sewerage-hdpe-od" },
+          { label: "PPHM Konti Kan ID", href: "/products#sewerage-pphm-id" },
+          { label: "Konti Kan spiral HDPE/ID", href: "/products#sewerage-spiral-hdpe" },
+          { label: "PP ML Compact Pipe OD", href: "/products#sewerage-pp-ml-compact" },
+          { label: "Manholes", href: "/products#sewerage-manholes" },
+          { label: "Konti Kan Drainage", href: "/products#sewerage-drainage" }
+        ]
+      },
       { label: "Gas Pipeline System", href: "/products/gas-pipeline-systems" },
       { label: "Cable Protection", href: "/products/cable-protection" },
       // { label: "Full Catalog", href: "https://konti-hidroplast.com.mk/products/", external: true },
@@ -225,19 +236,44 @@ export function Navigation() {
           <div className="px-4 py-3 text-base font-medium text-konti-gray border-b border-gray-200">
             {item.label}
           </div>
-          {item.items.map((subItem, index) => (
-            <button
-              key={index}
-              onClick={() =>
-                handleDropdownClick(subItem.href, subItem.external)
-              }
-              className="w-full text-left px-6 py-3 text-base text-gray-600 hover:text-konti-blue transition-colors flex items-center justify-between"
-              data-testid={`mobile-nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
-            >
-              {subItem.label}
-              {subItem.external && <ExternalLink className="h-4 w-4" />}
-            </button>
-          ))}
+          {item.items.map((subItem, index) => {
+            if (subItem.subItems) {
+              // Handle nested dropdown for mobile
+              return (
+                <div key={index} className="space-y-2">
+                  <div className="px-6 py-2 text-sm font-medium text-konti-blue border-l-2 border-konti-blue ml-4">
+                    {subItem.label}
+                  </div>
+                  {subItem.subItems.map((nestedItem, nestedIndex) => (
+                    <button
+                      key={nestedIndex}
+                      onClick={() =>
+                        handleDropdownClick(nestedItem.href!, nestedItem.external)
+                      }
+                      className="w-full text-left px-8 py-2 text-sm text-gray-500 hover:text-konti-blue transition-colors flex items-center justify-between"
+                      data-testid={`mobile-nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase()}-${nestedItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+                    >
+                      {nestedItem.label}
+                      {nestedItem.external && <ExternalLink className="h-3 w-3" />}
+                    </button>
+                  ))}
+                </div>
+              );
+            }
+            return (
+              <button
+                key={index}
+                onClick={() =>
+                  handleDropdownClick(subItem.href!, subItem.external)
+                }
+                className="w-full text-left px-6 py-3 text-base text-gray-600 hover:text-konti-blue transition-colors flex items-center justify-between"
+                data-testid={`mobile-nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+              >
+                {subItem.label}
+                {subItem.external && <ExternalLink className="h-4 w-4" />}
+              </button>
+            );
+          })}
         </div>
       );
     }
@@ -278,21 +314,51 @@ export function Navigation() {
             onMouseEnter={() => handleDropdownMouseEnter(item.label)}
             onMouseLeave={handleDropdownMouseLeave}
           >
-            {item.items.map((subItem, index) => (
-              <DropdownMenuItem
-                key={index}
-                onClick={() =>
-                  handleDropdownClick(subItem.href, subItem.external)
-                }
-                className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
-                data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
-              >
-                <span>{subItem.label}</span>
-                {subItem.external && (
-                  <ExternalLink className="h-3 w-3 text-gray-400" />
-                )}
-              </DropdownMenuItem>
-            ))}
+            {item.items.map((subItem, index) => {
+              if (subItem.subItems) {
+                // Handle nested dropdown for desktop
+                return (
+                  <div key={index} className="relative group">
+                    <div className="nav-dropdown-item px-4 py-2 text-sm font-medium text-konti-gray hover:text-konti-blue cursor-default flex items-center justify-between">
+                      <span>{subItem.label}</span>
+                      <ChevronDown className="h-3 w-3 -rotate-90" />
+                    </div>
+                    <div className="absolute left-full top-0 ml-1 w-56 bg-white shadow-lg border-0 rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                      {subItem.subItems.map((nestedItem, nestedIndex) => (
+                        <DropdownMenuItem
+                          key={nestedIndex}
+                          onClick={() =>
+                            handleDropdownClick(nestedItem.href!, nestedItem.external)
+                          }
+                          className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
+                          data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase()}-${nestedItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+                        >
+                          <span>{nestedItem.label}</span>
+                          {nestedItem.external && (
+                            <ExternalLink className="h-3 w-3 text-gray-400" />
+                          )}
+                        </DropdownMenuItem>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+              return (
+                <DropdownMenuItem
+                  key={index}
+                  onClick={() =>
+                    handleDropdownClick(subItem.href!, subItem.external)
+                  }
+                  className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
+                  data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+                >
+                  <span>{subItem.label}</span>
+                  {subItem.external && (
+                    <ExternalLink className="h-3 w-3 text-gray-400" />
+                  )}
+                </DropdownMenuItem>
+              );
+            })}
           </DropdownMenuContent>
         </div>
       </DropdownMenu>
