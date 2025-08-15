@@ -54,22 +54,12 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
     type: "dropdown",
     items: [
       {
-        label: t("nav.brochures"),
+        label: "Brochures",
         href: "https://konti-hidroplast.com.mk/products/",
         external: true,
       },
       {
-        label: t("nav.technical"),
-        href: "https://konti-hidroplast.com.mk/products/",
-        external: true,
-      },
-      {
-        label: "Installation Guides",
-        href: "https://konti-hidroplast.com.mk/products/",
-        external: true,
-      },
-      {
-        label: t("nav.certifications"),
+        label: "Certificates",
         href: "https://konti-hidroplast.com.mk/products/",
         external: true,
       },
