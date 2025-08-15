@@ -121,7 +121,11 @@ function ProductsPage() {
                 className="text-5xl md:text-6xl font-bold mb-8 leading-tight"
                 data-testid="products-hero-title"
               >
-                OUR <span className="text-red-500">PRODUCTS</span>
+                PRODUCTS <span className="text-red-500">KONTI</span>
+                <br />
+                <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+                  HIDROPLAST
+                </span>
               </h1>
               <p
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
@@ -297,180 +301,224 @@ function ProductsPage() {
         </div>
       </section>
 
-      {/* Product Range Technical Overview */}
-      <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400/10 rounded-full -translate-x-48 -translate-y-48"></div>
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-400/10 rounded-full translate-x-48 translate-y-48"></div>
-          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-white/5 rounded-full -translate-x-32 -translate-y-32"></div>
+      {/* Technical Specifications Flow Diagram */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        {/* Background pipe image integration */}
+        <div className="absolute inset-0">
+          <img 
+            src="/attached_assets/download_1755250894007.png"
+            alt="PE Pipe Technical Specifications Diagram"
+            className="w-full h-full object-cover opacity-20"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/90"></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6" data-testid="product-range-title">
-              Product Range <span className="text-red-500">Specifications</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-[#1c2d56] mb-6" data-testid="technical-flow-title">
+              Technical <span className="text-red-500">Specifications</span> Flow
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto" data-testid="product-range-description">
-              Comprehensive technical overview of our polyethylene and polypropylene pipe systems
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto" data-testid="technical-flow-description">
+              Interactive polyethylene material classification and density relationships
             </p>
           </div>
 
-          {/* Technical Specifications Diagram */}
+          {/* Main Flow Diagram */}
           <div className="relative">
-            {/* Background Image Integration */}
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/40 to-slate-900/40 rounded-3xl"></div>
-            <div className="relative bg-black/20 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-white/10">
-              
-              {/* Main Diagram Container */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
-                
-                {/* Left Column - Low Density */}
-                <div className="space-y-8">
-                  <div className="text-center mb-8">
-                    <div className="inline-block px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 rounded-full shadow-lg">
-                      <span className="text-white font-bold text-lg">Low Density</span>
-                    </div>
+            {/* Top Row - PE Specifications */}
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-12">
+              {/* PE 23 */}
+              <div className="col-start-1 lg:col-start-1">
+                <div className="group cursor-pointer">
+                  <div className="bg-gradient-to-br from-[#1c2d56] to-[#2a4086] rounded-lg p-4 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-blue-200">
+                    <span className="text-white font-bold text-lg">PE 23</span>
                   </div>
-                  
-                  <div className="space-y-4">
-                    {['PE 23', 'PE 32', 'PE 40'].map((spec, index) => (
-                      <div key={spec} className="group">
-                        <div className="bg-gradient-to-r from-slate-700 to-slate-600 border border-blue-400/30 rounded-xl p-4 hover:from-blue-700 hover:to-blue-600 transition-all duration-300 cursor-pointer transform hover:scale-105 shadow-lg">
-                          <div className="flex items-center justify-between">
-                            <span className="text-white font-semibold text-lg">{spec}</span>
-                            <div className="w-3 h-3 bg-blue-400 rounded-full group-hover:bg-white transition-colors"></div>
-                          </div>
-                          <div className="mt-2 text-blue-200 text-sm opacity-75">
-                            {spec === 'PE 23' && 'Minimum density applications'}
-                            {spec === 'PE 32' && 'Light pressure systems'}
-                            {spec === 'PE 40' && 'Standard applications'}
-                          </div>
-                        </div>
-                        
-                        {/* Connecting Lines */}
-                        <div className="hidden lg:block absolute top-1/2 right-0 w-8 h-px bg-gradient-to-r from-blue-400 to-transparent transform -translate-y-1/2"></div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Center Column - Medium Density */}
-                <div className="space-y-8 lg:scale-110">
-                  <div className="text-center mb-8">
-                    <div className="inline-block px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-500 rounded-full shadow-lg">
-                      <span className="text-white font-bold text-lg">Linear Low & Medium</span>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    {['PE 63', 'PE 80'].map((spec, index) => (
-                      <div key={spec} className="group relative">
-                        <div className="bg-gradient-to-r from-purple-700 to-purple-600 border border-purple-400/30 rounded-xl p-6 hover:from-pink-700 hover:to-pink-600 transition-all duration-300 cursor-pointer transform hover:scale-110 shadow-xl">
-                          <div className="flex items-center justify-between">
-                            <span className="text-white font-bold text-xl">{spec}</span>
-                            <div className="w-4 h-4 bg-purple-400 rounded-full group-hover:bg-white transition-colors"></div>
-                          </div>
-                          <div className="mt-3 text-purple-200 text-sm opacity-90">
-                            {spec === 'PE 63' && 'Medium pressure systems'}
-                            {spec === 'PE 80' && 'High performance applications'}
-                          </div>
-                        </div>
-                        
-                        {/* Enhanced Connecting Lines */}
-                        <div className="hidden lg:block absolute top-1/2 -left-8 w-8 h-px bg-gradient-to-r from-transparent to-purple-400 transform -translate-y-1/2"></div>
-                        <div className="hidden lg:block absolute top-1/2 -right-8 w-8 h-px bg-gradient-to-r from-purple-400 to-transparent transform -translate-y-1/2"></div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Right Column - High Density */}
-                <div className="space-y-8">
-                  <div className="text-center mb-8">
-                    <div className="inline-block px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-500 rounded-full shadow-lg">
-                      <span className="text-white font-bold text-lg">Medium & High Density</span>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    {['PE 100', 'PE 100RC'].map((spec, index) => (
-                      <div key={spec} className="group">
-                        <div className="bg-gradient-to-r from-green-700 to-green-600 border border-green-400/30 rounded-xl p-4 hover:from-emerald-700 hover:to-emerald-600 transition-all duration-300 cursor-pointer transform hover:scale-105 shadow-lg">
-                          <div className="flex items-center justify-between">
-                            <span className="text-white font-semibold text-lg">{spec}</span>
-                            <div className="w-3 h-3 bg-green-400 rounded-full group-hover:bg-white transition-colors"></div>
-                          </div>
-                          <div className="mt-2 text-green-200 text-sm opacity-75">
-                            {spec === 'PE 100' && 'Maximum pressure capability'}
-                            {spec === 'PE 100RC' && 'Crack-resistant technology'}
-                          </div>
-                        </div>
-                        
-                        {/* Connecting Lines */}
-                        <div className="hidden lg:block absolute top-1/2 left-0 w-8 h-px bg-gradient-to-r from-transparent to-green-400 transform -translate-y-1/2"></div>
-                      </div>
-                    ))}
+                  {/* Connecting line to PE 40 */}
+                  <div className="hidden lg:block relative">
+                    <div className="absolute top-4 left-1/2 w-px h-8 bg-[#1c2d56] transform -translate-x-0.5"></div>
+                    <div className="absolute top-12 left-1/2 w-8 h-px bg-[#1c2d56] transform -translate-x-4"></div>
                   </div>
                 </div>
               </div>
 
-              {/* Bottom Technical Stats */}
-              <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
-                <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
-                  <div className="text-3xl font-bold text-blue-400 mb-2">20-630mm</div>
-                  <div className="text-gray-300 text-sm">Diameter Range</div>
-                </div>
-                <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
-                  <div className="text-3xl font-bold text-purple-400 mb-2">PN 4-32</div>
-                  <div className="text-gray-300 text-sm">Pressure Ratings</div>
-                </div>
-                <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
-                  <div className="text-3xl font-bold text-green-400 mb-2">ISO/EN</div>
-                  <div className="text-gray-300 text-sm">Certified Standards</div>
-                </div>
-                <div className="text-center p-4 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10">
-                  <div className="text-3xl font-bold text-red-400 mb-2">50+</div>
-                  <div className="text-gray-300 text-sm">Years Lifespan</div>
+              {/* PE 63 */}
+              <div className="col-start-2 lg:col-start-3">
+                <div className="group cursor-pointer">
+                  <div className="bg-gradient-to-br from-[#1c2d56] to-[#2a4086] rounded-lg p-4 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-blue-200">
+                    <span className="text-white font-bold text-lg">PE 63</span>
+                  </div>
+                  {/* Connecting line down */}
+                  <div className="hidden lg:block relative">
+                    <div className="absolute top-4 left-1/2 w-px h-12 bg-[#1c2d56] transform -translate-x-0.5"></div>
+                  </div>
                 </div>
               </div>
 
-              {/* Interactive Elements */}
-              <div className="mt-12 text-center">
-                <div className="inline-flex items-center gap-4 p-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm rounded-full border border-white/10">
-                  <div className="w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
-                  <span className="text-white font-medium">Interactive Specifications Available</span>
-                  <div className="w-3 h-3 bg-purple-400 rounded-full animate-pulse"></div>
+              {/* PE 80 */}
+              <div className="col-start-1 lg:col-start-4">
+                <div className="group cursor-pointer">
+                  <div className="bg-gradient-to-br from-[#1c2d56] to-[#2a4086] rounded-lg p-4 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-blue-200">
+                    <span className="text-white font-bold text-lg">PE 80</span>
+                  </div>
+                  {/* Connecting line to PE 63 */}
+                  <div className="hidden lg:block relative">
+                    <div className="absolute top-4 left-1/2 w-px h-8 bg-[#1c2d56] transform -translate-x-0.5"></div>
+                    <div className="absolute top-12 left-1/2 w-8 h-px bg-[#1c2d56] transform -translate-x-4"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* PE 63 (second) */}
+              <div className="col-start-2 lg:col-start-6">
+                <div className="group cursor-pointer">
+                  <div className="bg-gradient-to-br from-[#1c2d56] to-[#2a4086] rounded-lg p-4 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-blue-200">
+                    <span className="text-white font-bold text-lg">PE 63</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* PE 80 (second) */}
+              <div className="col-start-1 lg:col-start-6">
+                <div className="group cursor-pointer">
+                  <div className="bg-gradient-to-br from-[#1c2d56] to-[#2a4086] rounded-lg p-4 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-blue-200">
+                    <span className="text-white font-bold text-lg">PE 80</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* PE 100 */}
+              <div className="col-start-2 lg:col-start-6">
+                <div className="group cursor-pointer">
+                  <div className="bg-gradient-to-br from-[#1c2d56] to-[#2a4086] rounded-lg p-4 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-blue-200">
+                    <span className="text-white font-bold text-lg">PE 100</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* PE 100RC */}
+              <div className="col-start-1 lg:col-start-7">
+                <div className="group cursor-pointer">
+                  <div className="bg-gradient-to-br from-[#1c2d56] to-[#2a4086] rounded-lg p-4 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-blue-200">
+                    <span className="text-white font-bold text-lg">PE 100RC</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Animated Background Elements */}
-            <div className="absolute top-10 right-10 w-32 h-32 border border-blue-400/20 rounded-full animate-ping"></div>
-            <div className="absolute bottom-10 left-10 w-24 h-24 border border-purple-400/20 rounded-full animate-pulse"></div>
-          </div>
-
-          {/* Additional Product Categories */}
-          <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { name: "Water Supply", icon: "💧", color: "from-blue-600 to-cyan-500", specs: "PE 80, PE 100" },
-              { name: "Gas Systems", icon: "⚡", color: "from-yellow-600 to-orange-500", specs: "PE 80, PE 100-RC" },
-              { name: "Sewerage", icon: "🔄", color: "from-green-600 to-emerald-500", specs: "PP, PE 100" },
-              { name: "Cable Protection", icon: "🛡️", color: "from-purple-600 to-pink-500", specs: "HDPE, PP" }
-            ].map((category, index) => (
-              <div key={category.name} className="group cursor-pointer">
-                <div className={`bg-gradient-to-br ${category.color} rounded-2xl p-6 hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl`}>
-                  <div className="text-center">
-                    <div className="text-4xl mb-4">{category.icon}</div>
-                    <h3 className="text-white font-bold text-lg mb-2">{category.name}</h3>
-                    <p className="text-white/80 text-sm">{category.specs}</p>
+            {/* Second Row - Intermediate PE Specifications */}
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-12">
+              {/* PE 40 */}
+              <div className="col-start-1 lg:col-start-2">
+                <div className="group cursor-pointer">
+                  <div className="bg-gradient-to-br from-[#2a4086] to-[#1c2d56] rounded-lg p-4 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-purple-200">
+                    <span className="text-white font-bold text-lg">PE 40</span>
                   </div>
-                  <div className="mt-4 w-full h-1 bg-white/20 rounded-full overflow-hidden">
-                    <div className="h-full bg-white/40 rounded-full transform -translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
+                  {/* Connecting line down */}
+                  <div className="hidden lg:block relative">
+                    <div className="absolute top-4 left-1/2 w-px h-12 bg-[#1c2d56] transform -translate-x-0.5"></div>
                   </div>
                 </div>
               </div>
-            ))}
+
+              {/* PE 32 */}
+              <div className="col-start-2 lg:col-start-3">
+                <div className="group cursor-pointer">
+                  <div className="bg-gradient-to-br from-[#2a4086] to-[#1c2d56] rounded-lg p-4 text-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-purple-200">
+                    <span className="text-white font-bold text-lg">PE 32</span>
+                  </div>
+                  {/* Connecting lines to density categories */}
+                  <div className="hidden lg:block relative">
+                    <div className="absolute top-4 left-1/2 w-px h-16 bg-[#1c2d56] transform -translate-x-0.5"></div>
+                    <div className="absolute top-20 left-1/2 w-32 h-px bg-[#1c2d56] transform -translate-x-16"></div>
+                    <div className="absolute top-20 left-1/2 w-32 h-px bg-[#1c2d56]"></div>
+                    <div className="absolute top-20 right-0 w-32 h-px bg-[#1c2d56]"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Row - Density Categories */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+              {/* Low Density */}
+              <div className="group cursor-pointer transform hover:scale-105 transition-all duration-300">
+                <div className="bg-gradient-to-br from-blue-600 to-cyan-500 rounded-xl p-8 text-center shadow-xl hover:shadow-2xl">
+                  <div className="text-white">
+                    <div className="text-2xl font-bold mb-3">Low Density</div>
+                    <div className="text-blue-100 text-sm">PE 23, PE 32, PE 40</div>
+                    <div className="mt-4 text-xs text-blue-200 leading-relaxed">
+                      Suitable for low pressure applications and general purpose piping systems
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Linear Low & Medium Density */}
+              <div className="group cursor-pointer transform hover:scale-105 transition-all duration-300">
+                <div className="bg-gradient-to-br from-purple-600 to-pink-500 rounded-xl p-8 text-center shadow-xl hover:shadow-2xl">
+                  <div className="text-white">
+                    <div className="text-2xl font-bold mb-3">Linear Low &</div>
+                    <div className="text-2xl font-bold mb-3">Medium Density</div>
+                    <div className="text-purple-100 text-sm">PE 63, PE 80</div>
+                    <div className="mt-4 text-xs text-purple-200 leading-relaxed">
+                      Enhanced performance for medium pressure and specialized applications
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Medium & High Density */}
+              <div className="group cursor-pointer transform hover:scale-105 transition-all duration-300">
+                <div className="bg-gradient-to-br from-green-600 to-emerald-500 rounded-xl p-8 text-center shadow-xl hover:shadow-2xl">
+                  <div className="text-white">
+                    <div className="text-2xl font-bold mb-3">Medium &</div>
+                    <div className="text-2xl font-bold mb-3">High Density</div>
+                    <div className="text-green-100 text-sm">PE 100, PE 100RC</div>
+                    <div className="mt-4 text-xs text-green-200 leading-relaxed">
+                      Maximum strength and durability for high pressure and critical infrastructure
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* SVG Connecting Lines for Desktop */}
+            <svg className="hidden lg:block absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+              {/* Connecting lines from PE specifications to density categories */}
+              <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" 
+                 refX="0" refY="3.5" orient="auto">
+                  <polygon points="0 0, 10 3.5, 0 7" fill="#1c2d56" />
+                </marker>
+              </defs>
+              
+              {/* Lines from PE 32 to all three density categories */}
+              <line x1="50%" y1="60%" x2="16.67%" y2="85%" stroke="#1c2d56" strokeWidth="2" markerEnd="url(#arrowhead)"/>
+              <line x1="50%" y1="60%" x2="50%" y2="85%" stroke="#1c2d56" strokeWidth="2" markerEnd="url(#arrowhead)"/>
+              <line x1="50%" y1="60%" x2="83.33%" y2="85%" stroke="#1c2d56" strokeWidth="2" markerEnd="url(#arrowhead)"/>
+            </svg>
+
+            {/* Interactive Legend */}
+            <div className="mt-16 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">Material Classification Guide</h3>
+                <p className="text-gray-600">Click on any specification to learn more about its applications and properties</p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="text-center p-4 bg-white rounded-xl shadow-sm">
+                  <div className="text-blue-600 font-bold text-lg mb-2">Pressure Rating</div>
+                  <div className="text-gray-600 text-sm">PN 4 - PN 32 bar</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-xl shadow-sm">
+                  <div className="text-purple-600 font-bold text-lg mb-2">Temperature Range</div>
+                  <div className="text-gray-600 text-sm">-40°C to +60°C</div>
+                </div>
+                <div className="text-center p-4 bg-white rounded-xl shadow-sm">
+                  <div className="text-green-600 font-bold text-lg mb-2">Lifespan</div>
+                  <div className="text-gray-600 text-sm">50+ years</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
