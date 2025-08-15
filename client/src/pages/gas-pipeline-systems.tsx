@@ -14,12 +14,14 @@ const gasSpecifications = [
     description:
       "Polyethylene gas pipes are made of PE 80 and PE 100, and are intended for distribution of gas through a network, up to working pressure of 10 bar.",
     features: [
-      "Color: Black with longitudinal yellow lines, or yellow color for PE 80",
-      "Color: Black with yellow lines or orange color for PE 100",
+      "Color: Black with longitudinal yellow lines, or yellow color for PE 80, and black with yellow lines or orange color for PE 100",
       "Standards: EN 1555-2 and ISO 4437",
-      "PE 80: Designed for medium-pressure applications",
-      "PE 100: Higher density and strength compared to PE 80",
-      "Working pressure up to 10 bar",
+      "PE 80: Designed for medium-pressure applications with good flexibility and durability",
+      "PE 80: Suitable for smaller diameter and lower pressure systems",
+      "PE 100: Higher density and strength compared to PE 80, designed for high-pressure systems",
+      "PE 100: Enables thinner wall thickness for the same pressure class, leading to reduced weight and cost savings",
+      "PE 100: Longer service life due to improved resistance to stress cracking and environmental stress",
+      "PE 80 is preferred for low to medium-pressure systems with smaller diameters, while PE 100 is ideal for high-pressure systems, larger diameters, and long-term, demanding applications",
     ],
     image: "/attached_assets/GAS-PIPELINE-SYSTEM-min-1_1755115129403.jpg",
     specifications:
