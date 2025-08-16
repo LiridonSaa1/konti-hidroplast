@@ -68,19 +68,24 @@ export function CertificationsSection() {
     if (!hasIntersected) return;
 
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % Math.ceil(certifications.length / 5));
+      setCurrentSlide(
+        (prev) => (prev + 1) % Math.ceil(certifications.length / 5),
+      );
     }, 3000); // Change slide every 3 seconds
 
     return () => clearInterval(interval);
   }, [hasIntersected]);
 
   // Get visible certifications (5 per slide)
-  const visibleCertifications = certifications.slice(currentSlide * 5, currentSlide * 5 + 5);
+  const visibleCertifications = certifications.slice(
+    currentSlide * 5,
+    currentSlide * 5 + 5,
+  );
 
   return (
     <section
       ref={ref}
-      className="py-16 bg-konti-gray-light overflow-hidden"
+      className="py-16 bg-gradient-to-r from-blue-50 to-cyan-50 overflow-hidden"
       data-testid="certifications-section"
     >
       <div className="w-full px-4 sm:px-6 lg:px-8">
@@ -102,7 +107,10 @@ export function CertificationsSection() {
                   style={{ animationDelay: `${index * 150}ms` }}
                   data-testid={`certification-${index}`}
                 >
-                  <div className="rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-konti-blue/20" style={{backgroundColor: '#1c2d56', color: '#ffffff'}}>
+                  <div
+                    className="rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 hover:border-konti-blue/20"
+                    style={{ backgroundColor: "#1c2d56", color: "#ffffff" }}
+                  >
                     <div className="flex flex-col items-center">
                       <div className="h-16 w-full flex items-center justify-center mb-2">
                         <img
@@ -124,16 +132,20 @@ export function CertificationsSection() {
 
           {/* Slide indicators */}
           <div className="flex justify-center mt-8 space-x-2">
-            {Array.from({ length: Math.ceil(certifications.length / 5) }).map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentSlide ? 'bg-konti-blue scale-125' : 'bg-gray-300 hover:bg-gray-400'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
+            {Array.from({ length: Math.ceil(certifications.length / 5) }).map(
+              (_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    index === currentSlide
+                      ? "bg-konti-blue scale-125"
+                      : "bg-gray-300 hover:bg-gray-400"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ),
+            )}
           </div>
         </div>
       </div>

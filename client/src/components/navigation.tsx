@@ -130,6 +130,10 @@ export function Navigation() {
     }
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const handleDropdownClick = (href: string, external?: boolean) => {
     if (external) {
       window.open(href, "_blank", "noopener,noreferrer");
@@ -295,7 +299,7 @@ export function Navigation() {
               src={isScrolled ? logoScrolled : logoDefault}
               alt="Urban Rohr"
               className="h-16 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
-              onClick={() => scrollToSection("/")}
+              onClick={scrollToTop}
               data-testid="logo"
             />
           </div>
@@ -333,7 +337,8 @@ export function Navigation() {
                     <img
                       src={logoScrolled}
                       alt="Urban Rohr"
-                      className="h-14 w-auto"
+                      className="h-14 w-auto cursor-pointer"
+                      onClick={scrollToTop}
                     />
                     <LanguageSwitcher />
                   </div>
