@@ -251,26 +251,16 @@ function PPHMPipesAndFittingsPage() {
                 pipes include:
               </p>
               <p className="text-lg leading-relaxed">
-                Common international standards for PP double-wall corrugated
-                pipes include: <strong>EN 13476-1 and EN 13476-3</strong>{" "}
-                (Production standard for structured-wall plastic pipes),{" "}
-                <strong>ISO 21138</strong> (Specifications for non-pressure
-                drainage and sewerage systems), and{" "}
-                <strong>ASTM F2736/F2764</strong> (Standards for polypropylene
-                corrugated pipes).
+                - EN 13476-1 and EN 13476-3: Production standard for
+                structured-wall plastic pipes.
               </p>
               <p className="text-lg leading-relaxed">
-                PP double-wall corrugated pipes are an excellent choice for
-                heavy-duty sewage and drainage systems, offering superior
-                durability, chemical resistance, and hydraulic efficiency.
-                Greater chemical and thermal resistance compared to HDPE makes
-                them ideal for challenging applications.
+                - ISO 21138: Specifications for non-pressure drainage and
+                sewerage systems.
               </p>
               <p className="text-lg leading-relaxed">
-                These pipes are designed to handle high flow rates in drainage
-                and sewage systems with UV-stabilized material for applications
-                exposed to sunlight, and can operate between -20°C and +90°C,
-                with short-term resistance to higher temperatures.
+                - ASTM F2736/F2764: Standards for polypropylene corrugated
+                pipes.
               </p>
             </div>
           </div>
