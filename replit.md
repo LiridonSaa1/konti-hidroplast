@@ -26,6 +26,8 @@ Preferred communication style: Simple, everyday language.
   - Enhanced navigation functionality for category switching
 - **About Section Learn More Button Fix**: Updated "Learn More" button in home page About section
   - Button now correctly redirects to /about-us page instead of scrolling to contact section
+  - Fixed pointer events issue where background decorative elements blocked button clicks
+  - Added pointer-events-none to background elements to allow proper button interaction
   - Improved navigation flow for users wanting to learn more about the company
   - Maintains consistent user experience with proper page routing
 - **KONTI KAN DRAINAGE Page Added**: Created comprehensive drainage systems page at /konti-kan-drainage route

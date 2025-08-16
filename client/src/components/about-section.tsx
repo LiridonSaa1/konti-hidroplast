@@ -20,11 +20,11 @@ export function AboutSection() {
       data-testid="about-section"
     >
       {/* Background Design with Red Lines */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 pointer-events-none">
 
         
         {/* Red accent lines */}
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
           {/* Diagonal red lines */}
           <div className="absolute top-0 left-0 w-96 h-1 bg-red-500 transform rotate-45 origin-left"></div>
           <div className="absolute top-32 left-0 w-80 h-1 bg-red-500 transform rotate-45 origin-left"></div>
@@ -41,7 +41,7 @@ export function AboutSection() {
         </div>
         
         {/* Decorative elements */}
-        <div className="absolute inset-0 opacity-10">
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute top-0 right-0 w-32 h-32 border-2 border-red-500 rounded-full"></div>
           <div className="absolute bottom-0 left-0 w-24 h-24 border-2 border-red-500 rounded-full"></div>
           <div className="absolute top-1/2 left-0 w-6 h-6 bg-red-500 rounded-full transform -translate-y-1/2"></div>
