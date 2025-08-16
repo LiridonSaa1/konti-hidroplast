@@ -297,6 +297,7 @@ export function Navigation() {
               if (subItem.items && subItem.items.length > 0) {
                 // Nested dropdown for sewerage systems - using a different approach
                 const subIsOpen = openSubDropdown === `${item.label}-${subItem.label}`;
+                console.log('Sub dropdown check:', openSubDropdown, `${item.label}-${subItem.label}`, subIsOpen);
                 return (
                   <div key={index} className="relative">
                     <DropdownMenuItem
@@ -310,6 +311,7 @@ export function Navigation() {
                           clearTimeout(subDropdownTimeoutRef.current);
                         }
                         setOpenSubDropdown(`${item.label}-${subItem.label}`);
+                        console.log('Setting sub dropdown:', `${item.label}-${subItem.label}`);
                       }}
                       onMouseLeave={() => {
                         subDropdownTimeoutRef.current = setTimeout(() => {
