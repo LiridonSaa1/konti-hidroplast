@@ -4,6 +4,12 @@ import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Calendar, User, ArrowRight, Loader2 } from "lucide-react";
 
+// Utility function to truncate text
+const truncateText = (text: string, maxLength: number) => {
+  if (text.length <= maxLength) return text;
+  return text.substring(0, maxLength - 3) + "...";
+};
+
 // News articles data from the website
 const newsArticles = [
   {
@@ -183,7 +189,7 @@ function NewsPage() {
           </span>
         </div>
         <h3 className="text-xl font-bold text-[#1c2d56] mb-3 leading-tight">
-          {article.title}
+          {truncateText(article.title, 56)}
         </h3>
         <p className="text-gray-600 mb-6 leading-relaxed">{article.excerpt}</p>
         <a

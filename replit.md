@@ -8,6 +8,16 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes (August 2025)
 
+## August 16, 2025
+- **Migration to Standard Replit**: Successfully migrated project from Replit Agent to standard Replit environment
+  - Enhanced security with proper client/server separation
+  - Maintained all existing functionality and features
+  - Project structure and dependencies verified and working
+- **News Page Enhancement**: Added text truncation functionality to news article titles
+  - Titles now automatically truncate to 56 characters with ellipsis
+  - Improves visual consistency in news card layout
+  - Maintains readability while preventing layout breaks
+
 ## August 15, 2025
 - **Career Page Added**: Created comprehensive career page at /career route
   - Based on content structure from https://konti-hidroplast.com.mk/career/
