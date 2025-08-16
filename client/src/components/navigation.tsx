@@ -64,7 +64,6 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
     ],
   },
   { href: "/news", label: t("nav.news"), type: "link" },
-  { href: "/career", label: "Career", type: "link" },
   {
     label: t("nav.contact"),
     type: "dropdown",
