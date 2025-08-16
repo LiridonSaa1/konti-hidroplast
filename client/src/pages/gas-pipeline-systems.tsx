@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ChevronDown, Download, Play, Check } from "lucide-react";
+import { ChevronDown, Download, Play, Check, ChevronLeft, ChevronRight } from "lucide-react";
 
 import Gas_gore from "@assets/Gas-gore.jpg";
 
@@ -182,6 +182,19 @@ function GasPipelineSystemsPage() {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("gas-pe");
   const [activeFittingTab, setActiveFittingTab] = useState("butt-welding");
+  const [activeFittingTabIndex, setActiveFittingTabIndex] = useState(0);
+
+  const nextFittingTab = () => {
+    const nextIndex = activeFittingTabIndex === gasFittingTypes.length - 1 ? 0 : activeFittingTabIndex + 1;
+    setActiveFittingTabIndex(nextIndex);
+    setActiveFittingTab(gasFittingTypes[nextIndex].id);
+  };
+
+  const prevFittingTab = () => {
+    const prevIndex = activeFittingTabIndex === 0 ? gasFittingTypes.length - 1 : activeFittingTabIndex - 1;
+    setActiveFittingTabIndex(prevIndex);
+    setActiveFittingTab(gasFittingTypes[prevIndex].id);
+  };
 
   useEffect(() => {
     // Set page title
@@ -414,23 +427,46 @@ function GasPipelineSystemsPage() {
             </div>
           </div>
 
-          {/* Fitting Tabs */}
-          <div className="flex justify-center mb-12">
-            <div className="flex flex-wrap bg-gray-100 rounded-xl p-1">
-              {gasFittingTypes.map((fitting) => (
-                <button
-                  key={fitting.id}
-                  onClick={() => setActiveFittingTab(fitting.id)}
-                  className={`px-4 py-3 rounded-lg font-semibold transition-all ${
-                    activeFittingTab === fitting.id
-                      ? "bg-[#1c2d56] text-white shadow-lg"
-                      : "text-gray-600 hover:text-[#1c2d56]"
-                  }`}
-                >
-                  {fitting.title}
-                </button>
-              ))}
+          {/* Fitting Tab Slider - matching water supply systems page design */}
+          <div className="flex items-center justify-center mb-12">
+            <button
+              onClick={prevFittingTab}
+              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors mr-4"
+              data-testid="fitting-tab-prev"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
+              <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
+                {gasFittingTypes[activeFittingTabIndex].title}
+              </h3>
+              <div className="flex justify-center space-x-1 mt-3">
+                {gasFittingTypes.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      setActiveFittingTabIndex(index);
+                      setActiveFittingTab(gasFittingTypes[index].id);
+                    }}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === activeFittingTabIndex
+                        ? "bg-[#1c2d56]"
+                        : "bg-gray-300 hover:bg-gray-400"
+                    }`}
+                    data-testid={`fitting-tab-dot-${index}`}
+                  />
+                ))}
+              </div>
             </div>
+
+            <button
+              onClick={nextFittingTab}
+              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors ml-4"
+              data-testid="fitting-tab-next"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
 
           {/* Fitting Content */}

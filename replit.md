@@ -14,6 +14,11 @@ Preferred communication style: Simple, everyday language.
   - Added left/right navigation arrows and dot indicators matching PE Fittings design
   - Improved user experience with consistent design patterns across product pages
   - Enhanced mobile and desktop navigation experience
+- **Gas Pipeline Systems Fittings Update**: Updated Gas Pipeline Systems PE Fittings section to match Water Supply Systems design
+  - Replaced simple tab-based navigation with modern slider-style navigation
+  - Added left/right navigation arrows and dot indicators for consistent UX
+  - Improved navigation functionality with next/previous tab controls
+  - Enhanced visual consistency across all product pages
 - **KONTI KAN DRAINAGE Page Added**: Created comprehensive drainage systems page at /konti-kan-drainage route
   - Fetched all content from https://konti-hidroplast.com.mk/konti-kan-drainage/
   - Features KONTI DREN drainage pipes with technical specifications
