@@ -167,11 +167,12 @@ export function Navigation() {
     setOpenDropdown(label);
   };
 
-  const handleDropdownMouseLeave = () => {
+  const handleDropdownMouseLeave = (event?: React.MouseEvent) => {
+    // Increased delay and better handling for nested dropdowns
     dropdownTimeoutRef.current = setTimeout(() => {
       setOpenDropdown(null);
       setOpenSubDropdown(null);
-    }, 300); // Increased delay to allow moving to nested dropdowns
+    }, 500); // Longer delay for easier navigation
   };
 
   const handleSubDropdownMouseEnter = (label: string) => {
@@ -308,18 +309,40 @@ export function Navigation() {
             onMouseLeave={handleDropdownMouseLeave}
             onPointerDownOutside={(event) => event.preventDefault()}
             onFocusOutside={(event) => event.preventDefault()}
+            onEscapeKeyDown={(event) => {
+              event.preventDefault();
+              setOpenDropdown(null);
+            }}
           >
             {item.items.map((subItem, index) => {
               if (subItem.items && subItem.items.length > 0) {
                 // Nested dropdown for sewerage systems
                 return (
                   <DropdownMenuSub key={index}>
-                    <DropdownMenuSubTrigger className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none">
+                    <DropdownMenuSubTrigger 
+                      className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
+                      onMouseEnter={() => {
+                        if (dropdownTimeoutRef.current) {
+                          clearTimeout(dropdownTimeoutRef.current);
+                        }
+                      }}
+                    >
                       <span>{subItem.label}</span>
                     </DropdownMenuSubTrigger>
                     <DropdownMenuSubContent 
                       className="w-56 bg-white shadow-lg border-0 z-50"
                       sideOffset={8}
+                      onMouseEnter={() => {
+                        if (dropdownTimeoutRef.current) {
+                          clearTimeout(dropdownTimeoutRef.current);
+                        }
+                        if (subDropdownTimeoutRef.current) {
+                          clearTimeout(subDropdownTimeoutRef.current);
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        // Don't close immediately, let the parent handle it
+                      }}
                     >
                       {subItem.items.map((nestedItem, nestedIndex) => (
                         <DropdownMenuItem
