@@ -19,6 +19,11 @@ Preferred communication style: Simple, everyday language.
   - Added left/right navigation arrows and dot indicators for consistent UX
   - Improved navigation functionality with next/previous tab controls
   - Enhanced visual consistency across all product pages
+- **Brochures Page Navigation Update**: Updated Brochures page to use consistent slider-style navigation
+  - Replaced simple tab-based category navigation with modern slider design
+  - Added left/right navigation arrows and dot indicators matching other product pages
+  - Improved user experience with consistent design patterns across all pages
+  - Enhanced navigation functionality for category switching
 - **KONTI KAN DRAINAGE Page Added**: Created comprehensive drainage systems page at /konti-kan-drainage route
   - Fetched all content from https://konti-hidroplast.com.mk/konti-kan-drainage/
   - Features KONTI DREN drainage pipes with technical specifications
