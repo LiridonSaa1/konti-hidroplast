@@ -2,16 +2,11 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { useLocation } from "wouter";
+import { Link } from "wouter";
 
 export function AboutSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.2 });
   const { t } = useLanguage();
-  const [, navigate] = useLocation();
-
-  const navigateToAbout = () => {
-    navigate("/about-us");
-  };
 
   const openVideo = () => {
     window.open("https://www.youtube.com/watch?v=R7b9-m_EM2s", "_blank");
@@ -82,14 +77,15 @@ export function AboutSection() {
                 {t("about.text3")}
               </p>
               <div className="flex justify-center lg:justify-start">
-                <Button
-                  onClick={navigateToAbout}
-                  className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
-                  data-testid="about-cta"
-                >
-                  Learn More
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Link href="/about-us">
+                  <Button
+                    className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
+                    data-testid="about-cta"
+                  >
+                    Learn More
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </div>
             </div>
 
