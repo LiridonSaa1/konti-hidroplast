@@ -683,53 +683,55 @@ export default function AboutUs() {
           </div>
 
           <Tabs defaultValue="commerce" className="w-full">
-            {/* Slider-style tab navigation */}
+            {/* Horizontal slider navigation like certificates page */}
             <div className="relative mb-12">
-              <div className="bg-white rounded-xl shadow-lg p-2 mx-auto max-w-6xl">
-                <TabsList className="grid w-full h-auto bg-transparent p-0 gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
-                  <TabsTrigger 
-                    value="commerce" 
-                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    Commerce
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="legal" 
-                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    Legal Department
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="technical" 
-                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    Technical Service
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="laboratory" 
-                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    Laboratory
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="accounting" 
-                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    Accounting
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="public-relations" 
-                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    Public Relations
-                  </TabsTrigger>
-                  <TabsTrigger 
-                    value="human-resources" 
-                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
-                  >
-                    Human Resources
-                  </TabsTrigger>
-                </TabsList>
+              <div className="bg-white rounded-xl shadow-lg p-4 mx-auto max-w-6xl overflow-hidden">
+                <div className="overflow-x-auto scrollbar-hide">
+                  <TabsList className="flex w-max h-auto bg-transparent p-0 gap-3 min-w-full">
+                    <TabsTrigger 
+                      value="commerce" 
+                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
+                    >
+                      Commerce
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="legal" 
+                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
+                    >
+                      Legal Department
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="technical" 
+                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
+                    >
+                      Technical Service
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="laboratory" 
+                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
+                    >
+                      Laboratory
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="accounting" 
+                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
+                    >
+                      Accounting
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="public-relations" 
+                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
+                    >
+                      Public Relations
+                    </TabsTrigger>
+                    <TabsTrigger 
+                      value="human-resources" 
+                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
+                    >
+                      Human Resources
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
               </div>
             </div>
 
