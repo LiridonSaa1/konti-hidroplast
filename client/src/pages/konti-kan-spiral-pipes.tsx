@@ -75,32 +75,32 @@ const fittingTypes = [
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/Gogo_20240824_9415-19.jpg",
     items: [
       {
-        name: "EN 13476-1:2007 - Sewage System",
-        pdf: null,
+        standard: "EN 13476-1:2007",
+        application: "Sewage System – waste water and combined systems",
       },
       {
-        name: "EN 13476-2:2007 - Highway building",
-        pdf: null,
+        standard: "EN 13476-2:2007",
+        application: "When building highways",
       },
       {
-        name: "EN 476:2001 - Surface water drainage",
-        pdf: null,
+        standard: "EN 476:2001",
+        application: "Drainage of surface water",
       },
       {
-        name: "EN 1610:2002 - Residential drainage",
-        pdf: null,
+        standard: "EN 1610:2002",
+        application: "Residential drainage systems",
       },
       {
-        name: "EN 1852-1:1999 - Industrial pipelines",
-        pdf: null,
+        standard: "EN 1852-1:1999",
+        application: "Industrial pipelines",
       },
       {
-        name: "ENV 1046:2002 - Underwater installations",
-        pdf: null,
+        standard: "ENV 1046:2002 (Y)",
+        application: "Underwater installations",
       },
       {
-        name: "SFS 5906:2004 - Renovation",
-        pdf: null,
+        standard: "SFS 5906:2004",
+        application: "Renovation",
       },
     ],
   },
@@ -464,58 +464,92 @@ function KontiKanSpiralPipesPage() {
               className={`${activeFittingTab === fitting.id ? "block" : "hidden"} transition-all duration-500`}
             >
               <div className="bg-white rounded-2xl p-8 shadow-sm">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                  {/* Left Column - Methods/Standards List */}
+                {fitting.id === "reference-standards" ? (
                   <div>
                     <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
                       {fitting.title}
                     </h3>
                     <p className="text-gray-600 mb-6">{fitting.description}</p>
-
-                    <div className="space-y-3">
-                      {fitting.items.map((item, index) => (
-                        <div
-                          key={index}
-                          className="flex items-center gap-3 p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                        >
-                          {item.pdf ? (
-                            <a
-                              href={item.pdf}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-3 w-full text-[#1c2d56] hover:text-blue-700"
-                            >
-                              <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 bg-[#1c2d56]">
-                                <Download className="w-3 h-3 text-white" />
-                              </div>
-                              <span className="text-sm font-medium">
-                                {item.name}
-                              </span>
-                            </a>
-                          ) : (
-                            <div className="flex items-center gap-3 w-full text-gray-700">
-                              <div className="w-6 h-6 bg-gray-400 rounded flex items-center justify-center flex-shrink-0">
-                                <Check className="w-3 h-3 text-white" />
-                              </div>
-                              <span className="text-sm font-medium">{item.name}</span>
-                            </div>
-                          )}
-                        </div>
-                      ))}
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse border border-gray-300">
+                        <thead>
+                          <tr className="bg-gray-50">
+                            <th className="border border-gray-300 px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                              Reference Standards
+                            </th>
+                            <th className="border border-gray-300 px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                              Application
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {fitting.items.map((item, index) => (
+                            <tr key={index} className="hover:bg-gray-50">
+                              <td className="border border-gray-300 px-6 py-4 text-sm font-medium text-[#1c2d56]">
+                                {'standard' in item ? item.standard : ''}
+                              </td>
+                              <td className="border border-gray-300 px-6 py-4 text-sm text-gray-700">
+                                {'application' in item ? item.application : ''}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
+                ) : (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                    {/* Left Column - Methods List */}
+                    <div>
+                      <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
+                        {fitting.title}
+                      </h3>
+                      <p className="text-gray-600 mb-6">{fitting.description}</p>
+                      <div className="space-y-3">
+                        {fitting.items.map((item, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center gap-3 p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                          >
+                            {'pdf' in item && item.pdf ? (
+                              <a
+                                href={item.pdf}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-3 w-full text-[#1c2d56] hover:text-blue-700"
+                              >
+                                <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 bg-[#1c2d56]">
+                                  <Download className="w-3 h-3 text-white" />
+                                </div>
+                                <span className="text-sm font-medium">
+                                  {'name' in item ? item.name : ''}
+                                </span>
+                              </a>
+                            ) : (
+                              <div className="flex items-center gap-3 w-full text-gray-700">
+                                <div className="w-6 h-6 bg-gray-400 rounded flex items-center justify-center flex-shrink-0">
+                                  <Check className="w-3 h-3 text-white" />
+                                </div>
+                                <span className="text-sm font-medium">{'name' in item ? item.name : ''}</span>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
-                  {/* Right Column - Image */}
-                  <div className="relative">
-                    <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg overflow-hidden p-8 flex items-center justify-center">
-                      <img
-                        src={fitting.image}
-                        alt={fitting.title}
-                        className="w-full h-full object-contain"
-                      />
+                    {/* Right Column - Image */}
+                    <div className="relative">
+                      <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg overflow-hidden p-8 flex items-center justify-center">
+                        <img
+                          src={fitting.image}
+                          alt={fitting.title}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           ))}
