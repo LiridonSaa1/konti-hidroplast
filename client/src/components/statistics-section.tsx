@@ -19,7 +19,35 @@ export function StatisticsSection() {
       data-testid="statistics-section"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-8">
+        {/* Mobile layout: 2x2 grid with centered turnover */}
+        <div className="lg:hidden">
+          <div className="grid grid-cols-2 gap-8 mb-8">
+            {statistics.slice(0, 4).map((stat, index) => (
+              <StatisticCard
+                key={stat.label}
+                value={stat.value}
+                label={stat.label}
+                suffix={stat.suffix}
+                isActive={hasIntersected}
+                delay={index * 200}
+              />
+            ))}
+          </div>
+          {/* Centered turnover */}
+          <div className="flex justify-center">
+            <StatisticCard
+              key={statistics[4].label}
+              value={statistics[4].value}
+              label={statistics[4].label}
+              suffix={statistics[4].suffix}
+              isActive={hasIntersected}
+              delay={4 * 200}
+            />
+          </div>
+        </div>
+        
+        {/* Desktop layout: single row */}
+        <div className="hidden lg:grid lg:grid-cols-5 gap-8">
           {statistics.map((stat, index) => (
             <StatisticCard
               key={stat.label}
