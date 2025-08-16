@@ -64,19 +64,11 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
     ],
   },
   { href: "/news", label: t("nav.news"), type: "link" },
+  { href: "/career", label: "Career", type: "link" },
   {
     label: t("nav.contact"),
     type: "dropdown",
-    items: [
-      { label: "Contact Form", href: "#contact" },
-      { label: "Office Locations", href: "#contact" },
-      { label: "Phone Numbers", href: "#contact" },
-      {
-        label: "Full Contact Page",
-        href: "https://konti-hidroplast.com.mk/contacts/",
-        external: true,
-      },
-    ],
+    items: [{ label: "Career", href: "/career" }],
   },
 ];
 

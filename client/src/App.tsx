@@ -15,6 +15,7 @@ import CableProtectionPage from "@/pages/cable-protection";
 import BrochuresPage from "@/pages/brochures";
 import CertificatesPage from "@/pages/certificates";
 import NewsPage from "@/pages/news";
+import CareerPage from "@/pages/career";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -29,6 +30,7 @@ function Router() {
       <Route path="/brochures" component={BrochuresPage} />
       <Route path="/certificates" component={CertificatesPage} />
       <Route path="/news" component={NewsPage} />
+      <Route path="/career" component={CareerPage} />
       <Route component={NotFound} />
     </Switch>
   );

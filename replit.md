@@ -9,6 +9,12 @@ Preferred communication style: Simple, everyday language.
 # Recent Changes (August 2025)
 
 ## August 15, 2025
+- **Career Page Added**: Created comprehensive career page at /career route
+  - Based on content structure from https://konti-hidroplast.com.mk/career/
+  - Features company culture, career opportunities across departments, and application process
+  - Professional design with contact information and application flow
+  - Added career link to navigation menu
+  - Added proper routing in App.tsx for career page
 - **News Page Added**: Created comprehensive news page at /news route
   - Fetched all news content from https://konti-hidroplast.com.mk/news/
   - Displays 6 news cards initially with "Load More" functionality
