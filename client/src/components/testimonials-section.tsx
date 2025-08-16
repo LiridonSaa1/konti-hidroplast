@@ -4,12 +4,14 @@ import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 const testimonials = [
   {
-    quote: "As your long-term partner, we are very happy to work with you and your company. Over the years, we have received very good service, great quality of products, fast and competent responses from Konti Hidroplast. All employees are responsive, competent and well-known in the products you produce.",
+    quote:
+      "As your long-term partner, we are very happy to work with you and your company. Over the years, we have received very good service, great quality of products, fast and competent responses from Konti Hidroplast. All employees are responsive, competent and well-known in the products you produce.",
     author: "Petar Ermenliev",
     company: "Eurocom 2000",
   },
   {
-    quote: "Working with Konti Hidroplast has been a truly positive experience. Their professionalism, attention to detail, and commitment to delivering high-quality products & services consistently exceed our expectations. The team's expertise and responsiveness make every project smooth and efficient.",
+    quote:
+      "Working with Konti Hidroplast has been a truly positive experience. Their professionalism, attention to detail, and commitment to delivering high-quality products & services consistently exceed our expectations. The team's expertise and responsiveness make every project smooth and efficient.",
     author: "Alex Negrescu",
     company: "General Manager, Dematek Water Management",
   },
@@ -21,12 +23,10 @@ export function TestimonialsSection() {
   return (
     <section
       ref={ref}
-      className="py-20 bg-konti-gray-light"
+      className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50"
       data-testid="testimonials-section"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {testimonials.map((testimonial, index) => (
             <Card

@@ -189,7 +189,7 @@ function BrochuresPage() {
         </div>
       </section>
       {/* Brochures Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
