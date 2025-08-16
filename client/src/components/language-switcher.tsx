@@ -1,6 +1,6 @@
-import { useLanguage, Language } from '@/contexts/LanguageContext';
-import { Globe } from 'lucide-react';
-import { useState, useRef, useEffect } from 'react';
+import { useLanguage, Language } from "@/contexts/LanguageContext";
+import { Globe } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
 
 export function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
@@ -9,24 +9,27 @@ export function LanguageSwitcher() {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   const languages = [
-    { code: 'en' as Language, name: 'English', flag: '🇺🇸' },
-    { code: 'mk' as Language, name: 'Македонски', flag: '🇲🇰' },
-    { code: 'de' as Language, name: 'Deutsch', flag: '🇩🇪' }
+    { code: "en" as Language, flag: "🇺🇸" },
+    { code: "mk" as Language, flag: "🇲🇰" },
+    { code: "de" as Language, flag: "🇩🇪" },
   ];
 
-  const currentLanguage = languages.find(lang => lang.code === language);
+  const currentLanguage = languages.find((lang) => lang.code === language);
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -40,13 +43,18 @@ export function LanguageSwitcher() {
         <span className="hidden md:inline">{currentLanguage?.name}</span>
         <svg
           className={`w-4 h-4 transform transition-transform duration-200 ${
-            isOpen ? 'rotate-180' : ''
+            isOpen ? "rotate-180" : ""
           }`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       </button>
 
@@ -60,15 +68,25 @@ export function LanguageSwitcher() {
                 setIsOpen(false);
               }}
               className={`w-full flex items-center space-x-3 px-4 py-3 text-sm text-left hover:bg-gray-50 transition-colors duration-150 ${
-                language === lang.code ? 'bg-konti-blue/5 text-konti-blue' : 'text-gray-700'
+                language === lang.code
+                  ? "bg-konti-blue/5 text-konti-blue"
+                  : "text-gray-700"
               }`}
               data-testid={`language-option-${lang.code}`}
             >
               <span className="text-lg">{lang.flag}</span>
               <span className="font-medium">{lang.name}</span>
               {language === lang.code && (
-                <svg className="w-4 h-4 ml-auto text-konti-blue" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                <svg
+                  className="w-4 h-4 ml-auto text-konti-blue"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
                 </svg>
               )}
             </button>
