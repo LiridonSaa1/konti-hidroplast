@@ -24,6 +24,10 @@ Preferred communication style: Simple, everyday language.
   - Added left/right navigation arrows and dot indicators matching other product pages
   - Improved user experience with consistent design patterns across all pages
   - Enhanced navigation functionality for category switching
+- **About Section Learn More Button Fix**: Updated "Learn More" button in home page About section
+  - Button now correctly redirects to /about-us page instead of scrolling to contact section
+  - Improved navigation flow for users wanting to learn more about the company
+  - Maintains consistent user experience with proper page routing
 - **KONTI KAN DRAINAGE Page Added**: Created comprehensive drainage systems page at /konti-kan-drainage route
   - Fetched all content from https://konti-hidroplast.com.mk/konti-kan-drainage/
   - Features KONTI DREN drainage pipes with technical specifications

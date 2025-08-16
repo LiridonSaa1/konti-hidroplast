@@ -2,16 +2,15 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useLocation } from "wouter";
 
 export function AboutSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.2 });
   const { t } = useLanguage();
+  const [, navigate] = useLocation();
 
-  const scrollToContact = () => {
-    const contactSection = document.getElementById("contact");
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth" });
-    }
+  const navigateToAbout = () => {
+    navigate("/about-us");
   };
 
   const openVideo = () => {
@@ -84,7 +83,7 @@ export function AboutSection() {
               </p>
               <div className="flex justify-center lg:justify-start">
                 <Button
-                  onClick={scrollToContact}
+                  onClick={navigateToAbout}
                   className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
                   data-testid="about-cta"
                 >
