@@ -191,7 +191,7 @@ function NewsPage() {
         <h3 className="text-xl font-bold text-[#1c2d56] mb-3 leading-tight">
           {truncateText(article.title, 40)}
         </h3>
-        <p className="text-gray-600 mb-6 leading-relaxed">{truncateText(article.excerpt, 80)}</p>
+        <p className="text-gray-600 mb-6 leading-relaxed">{truncateText(article.excerpt, 70)}</p>
         <a
           href={article.url}
           target={article.url.startsWith("http") ? "_blank" : "_self"}
