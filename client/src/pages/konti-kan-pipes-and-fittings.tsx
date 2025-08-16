@@ -192,7 +192,7 @@ function KontiKanPipesAndFittingsPage() {
                   aria-label="HDPE Konti Kan Sewage Pipe video"
                   poster="https://konti-hidroplast.com.mk/wp-content/uploads/2024/09/konti-kan-1.jpg"
                 >
-                  <source src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/Konti-Hidroplast-Proizvodstvo-27-1.mp4" type="video/mp4" />
+                  <source src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/Konti-Hidroplast_2-1.mp4" type="video/mp4" />
                   Sorry, your browser doesn't support embedded videos.
                 </video>
               </div>
