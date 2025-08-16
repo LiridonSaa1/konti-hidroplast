@@ -437,7 +437,7 @@ function ProductsPage() {
             </p>
             <a
               href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
+              className="inline-flex items-center px-8 py-4  text-white rounded-lg bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
               Contact Us

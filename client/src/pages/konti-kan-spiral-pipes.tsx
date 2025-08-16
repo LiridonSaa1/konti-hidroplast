@@ -17,7 +17,7 @@ const pipeSpecifications = [
       "Color: Black (other color on request)",
       "Length: 6m",
       "Service life of over 50 years under normal conditions",
-      "Fully recyclable"
+      "Fully recyclable",
     ],
     image:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral.jpg",
@@ -109,7 +109,8 @@ const fittingTypes = [
 function KontiKanSpiralPipesPage() {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("konti-kan-spiral");
-  const [activeFittingTab, setActiveFittingTab] = useState("connection-methods");
+  const [activeFittingTab, setActiveFittingTab] =
+    useState("connection-methods");
 
   useEffect(() => {
     // Set page title
@@ -126,7 +127,10 @@ function KontiKanSpiralPipesPage() {
   }, []);
 
   const referenceStandards = [
-    { standard: "EN 13476-1:2007", application: "Sewage System – waste water and combined systems" },
+    {
+      standard: "EN 13476-1:2007",
+      application: "Sewage System – waste water and combined systems",
+    },
     { standard: "EN 13476-2:2007", application: "When building highways" },
     { standard: "EN 476:2001", application: "Drainage of surface water" },
     { standard: "EN 1610:2002", application: "Residential drainage systems" },
@@ -142,14 +146,14 @@ function KontiKanSpiralPipesPage() {
     "Connection with thread with inside welding or with thermo shrink tape",
     "Electro fusion connection",
     "Connection with metal part with inside rubber layer",
-    "But welding"
+    "But welding",
   ];
 
   const materialProperties = [
     "High-Density Polyethylene (HDPE)",
     "Lightweight but strong, with high tensile strength.",
     "Excellent resistance to chemical and biological degradation.",
-    "Flexible and resistant to environmental stress cracking."
+    "Flexible and resistant to environmental stress cracking.",
   ];
 
   const applications = [
@@ -157,7 +161,7 @@ function KontiKanSpiralPipesPage() {
     "Large-scale water transport and storage.",
     "Industrial effluent pipelines.",
     "Culverts and irrigation systems.",
-    "Ventilation ducts in mines."
+    "Ventilation ducts in mines.",
   ];
 
   const characteristics = [
@@ -167,14 +171,14 @@ function KontiKanSpiralPipesPage() {
     "Service life of over 50 years under normal conditions.",
     "Can be used above ground with UV-stabilized formulations.",
     "Functional between -40°C to +60°C, with short-term resistance to higher temperatures.",
-    "Fully recyclable."
+    "Fully recyclable.",
   ];
 
   const usageAreas = [
     "Municipality for infrastructure objects",
     "Industry",
     "Roads building",
-    "Reconstruction"
+    "Reconstruction",
   ];
 
   return (
@@ -209,7 +213,10 @@ function KontiKanSpiralPipesPage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                Clients and engineers as ideal pipe material for many pressure and non-pressure applications such as water distribution; gravity sewer, rehabilitation projects and manholes recognize polyethylene.
+                Clients and engineers as ideal pipe material for many pressure
+                and non-pressure applications such as water distribution;
+                gravity sewer, rehabilitation projects and manholes recognize
+                polyethylene.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
@@ -257,16 +264,28 @@ function KontiKanSpiralPipesPage() {
           <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 max-w-6xl mx-auto">
             <div className="space-y-6 text-gray-700">
               <p className="text-lg leading-relaxed">
-                Clients and engineers as ideal pipe material for many pressure and non-pressure applications such as water distribution; gravity sewer, rehabilitation projects and manholes recognize polyethylene.
+                Clients and engineers as ideal pipe material for many pressure
+                and non-pressure applications such as water distribution;
+                gravity sewer, rehabilitation projects and manholes recognize
+                polyethylene.
               </p>
               <p className="text-lg leading-relaxed">
-                Latest development of production of Konti Hidroplast is manufacturing sewage pipes for non-pressure applications. Konti Kan Spiral pipe and complete range of Konti Kan Spiral fittings.
+                Latest development of production of Konti Hidroplast is
+                manufacturing sewage pipes for non-pressure applications. Konti
+                Kan Spiral pipe and complete range of Konti Kan Spiral fittings.
               </p>
               <p className="text-lg leading-relaxed">
-                Konti Kan Spiral pipes are made of hollow PE-HD sections helically wound on a drum with a specific diameter. Konti Kan Spiral Pipe provides all technical advantages of equivalent polyethylene solid wall pipe with substantial saving in weight combining greater ease of installation with increased cost effectiveness. Its unique structure can offer a range of pipe sizes and ring stiffness, depending of customers requirements.
+                Konti Kan Spiral pipes are made of hollow PE-HD sections
+                helically wound on a drum with a specific diameter. Konti Kan
+                Spiral Pipe provides all technical advantages of equivalent
+                polyethylene solid wall pipe with substantial saving in weight
+                combining greater ease of installation with increased cost
+                effectiveness. Its unique structure can offer a range of pipe
+                sizes and ring stiffness, depending of customers requirements.
               </p>
               <p className="text-lg leading-relaxed">
-                The characteristics of raw material and the technology of production are combined to insure application in:
+                The characteristics of raw material and the technology of
+                production are combined to insure application in:
               </p>
               <ul className="text-lg leading-relaxed list-disc list-inside ml-4">
                 <li>Municipality for infrastructure objects</li>
@@ -275,19 +294,28 @@ function KontiKanSpiralPipesPage() {
                 <li>Reconstruction</li>
               </ul>
               <p className="text-lg leading-relaxed">
-                Konti Kan Spiral provides all technical advantages as well as polyethylene or polypropylene pipes with solid wall, the only difference is that Konti Kan Spiral are significantly lighter in weight and thus for the installation, which is also financially viable.
+                Konti Kan Spiral provides all technical advantages as well as
+                polyethylene or polypropylene pipes with solid wall, the only
+                difference is that Konti Kan Spiral are significantly lighter in
+                weight and thus for the installation, which is also financially
+                viable.
               </p>
               <p className="text-lg leading-relaxed">
-                <strong>Color:</strong> Black (other color on request) | <strong>Length:</strong> 6m
+                <strong>Color:</strong> Black (other color on request) |{" "}
+                <strong>Length:</strong> 6m
               </p>
               <p className="text-lg leading-relaxed">
-                For connection of the pipes and fittings Konti Kan spiral pipe are use the following methods:
+                For connection of the pipes and fittings Konti Kan spiral pipe
+                are use the following methods:
               </p>
               <ul className="text-lg leading-relaxed list-disc list-inside ml-4">
                 <li>Connection with socket +EPDM gasket</li>
                 <li>Extrusion welding from both side</li>
                 <li>Extrusion welding inside</li>
-                <li>Connection with thread with inside welding or with thermo shrink tape</li>
+                <li>
+                  Connection with thread with inside welding or with thermo
+                  shrink tape
+                </li>
                 <li>Electro fusion connection</li>
                 <li>Connection with metal part with inside rubber layer</li>
                 <li>But welding</li>
@@ -315,7 +343,11 @@ function KontiKanSpiralPipesPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div>
                 <p className="text-white mb-6">
-                  KONTI KAN SPIRAL PIPE is made of PEHD profile spirally wound on a drum with a specific diameter. It contains all technical advantages of equivalent polyethylene pipes with full walls significantly decreasing the weight, providing much easier installation and increased efficiency.
+                  KONTI KAN SPIRAL PIPE is made of PEHD profile spirally wound
+                  on a drum with a specific diameter. It contains all technical
+                  advantages of equivalent polyethylene pipes with full walls
+                  significantly decreasing the weight, providing much easier
+                  installation and increased efficiency.
                 </p>
 
                 <h4 className="text-xl font-bold text-white mb-4">
@@ -452,10 +484,11 @@ function KontiKanSpiralPipesPage() {
                   {[
                     {
                       standard: "EN 13476-1:2007",
-                      application: "Sewage System – waste water and combined systems",
+                      application:
+                        "Sewage System – waste water and combined systems",
                     },
                     {
-                      standard: "EN 13476-2:2007", 
+                      standard: "EN 13476-2:2007",
                       application: "When building highways",
                     },
                     {
@@ -512,7 +545,7 @@ function KontiKanSpiralPipesPage() {
             </p>
             <a
               href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white text-lg font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
+              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-lg font-semibold rounded-lg transition-colors shadow-lg"
               data-testid="contact-button"
             >
               Contact Us

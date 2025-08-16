@@ -46,14 +46,20 @@ export function ProductsSection() {
           }`}
         >
           <div className="flex items-center justify-center mb-4">
-            <div className="w-20 h-0.5 mr-4" style={{backgroundColor: '#eb2127'}}></div>
+            <div
+              className="w-20 h-0.5 mr-4"
+              style={{ backgroundColor: "#eb2127" }}
+            ></div>
             <h2
               className="text-4xl font-bold text-konti-gray"
               data-testid="products-title"
             >
               Products
             </h2>
-            <div className="w-20 h-0.5 ml-4" style={{backgroundColor: '#eb2127'}}></div>
+            <div
+              className="w-20 h-0.5 ml-4"
+              style={{ backgroundColor: "#eb2127" }}
+            ></div>
           </div>
         </div>
 
@@ -77,22 +83,35 @@ export function ProductsSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
               </div>
-              
+
               {/* Product Content - Bottom */}
               <div className="p-8 relative">
                 {/* Decorative accent */}
                 <div className="absolute top-6 left-8 w-12 h-1 bg-konti-blue rounded-full group-hover:w-16 transition-all duration-300" />
-                
+
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-konti-gray mb-6 uppercase tracking-wide leading-tight group-hover:text-konti-blue transition-colors duration-300">
                     {product.title}
                   </h3>
-                  
+
                   {/* Learn More Button */}
-                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg" style={{backgroundColor: '#1c2d56'}}>
+                  <button
+                    className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300"
+                    style={{ backgroundColor: "#1c2d56" }}
+                  >
                     <span>Learn More</span>
-                    <svg className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg
+                      className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </button>
                 </div>

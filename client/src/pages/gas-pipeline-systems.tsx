@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ChevronDown, Download, Play, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronDown,
+  Download,
+  Play,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 import Gas_gore from "@assets/Gas-gore.jpg";
 
@@ -185,13 +192,19 @@ function GasPipelineSystemsPage() {
   const [activeFittingTabIndex, setActiveFittingTabIndex] = useState(0);
 
   const nextFittingTab = () => {
-    const nextIndex = activeFittingTabIndex === gasFittingTypes.length - 1 ? 0 : activeFittingTabIndex + 1;
+    const nextIndex =
+      activeFittingTabIndex === gasFittingTypes.length - 1
+        ? 0
+        : activeFittingTabIndex + 1;
     setActiveFittingTabIndex(nextIndex);
     setActiveFittingTab(gasFittingTypes[nextIndex].id);
   };
 
   const prevFittingTab = () => {
-    const prevIndex = activeFittingTabIndex === 0 ? gasFittingTypes.length - 1 : activeFittingTabIndex - 1;
+    const prevIndex =
+      activeFittingTabIndex === 0
+        ? gasFittingTypes.length - 1
+        : activeFittingTabIndex - 1;
     setActiveFittingTabIndex(prevIndex);
     setActiveFittingTab(gasFittingTypes[prevIndex].id);
   };
@@ -431,7 +444,7 @@ function GasPipelineSystemsPage() {
           <div className="flex items-center justify-center mb-12">
             <button
               onClick={prevFittingTab}
-              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors mr-4"
+              className="p-2 rounded-full text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors mr-4"
               data-testid="fitting-tab-prev"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -462,7 +475,7 @@ function GasPipelineSystemsPage() {
 
             <button
               onClick={nextFittingTab}
-              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors ml-4"
+              className="p-2 rounded-full text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors ml-4"
               data-testid="fitting-tab-next"
             >
               <ChevronRight className="w-5 h-5" />
@@ -494,7 +507,7 @@ function GasPipelineSystemsPage() {
                               href={item.pdf}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="flex items-center gap-3 w-full text-[#1c2d56] hover:text-blue-700"
+                              className="flex items-center gap-3 w-full text-[#1c2d56] hover:text-[#1c2d56]"
                             >
                               <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 bg-[#1c2d56]">
                                 <Download className="w-3 h-3 text-white" />
@@ -548,7 +561,7 @@ function GasPipelineSystemsPage() {
             </p>
             <a
               href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
+              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
               Contact Us

@@ -191,12 +191,14 @@ function NewsPage() {
         <h3 className="text-xl font-bold text-[#1c2d56] mb-3 leading-tight">
           {truncateText(article.title, 40)}
         </h3>
-        <p className="text-gray-600 mb-6 leading-relaxed">{truncateText(article.excerpt, 70)}</p>
+        <p className="text-gray-600 mb-6 leading-relaxed">
+          {truncateText(article.excerpt, 70)}
+        </p>
         <a
           href={article.url}
           target={article.url.startsWith("http") ? "_blank" : "_self"}
           rel={article.url.startsWith("http") ? "noopener noreferrer" : ""}
-          className="inline-flex items-center px-4 py-2 bg-[#1c2d56] text-white text-sm font-medium rounded hover:bg-blue-900 transition-colors"
+          className="inline-flex items-center px-4 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm font-medium rounded transition-colors"
           data-testid={`read-more-${article.id}`}
         >
           Read More
@@ -242,7 +244,7 @@ function NewsPage() {
       </section>
 
       {/* News Articles Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
@@ -250,7 +252,6 @@ function NewsPage() {
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">News</h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
-            
           </div>
 
           {/* News Grid */}
@@ -266,7 +267,7 @@ function NewsPage() {
               <button
                 onClick={loadMoreArticles}
                 disabled={isLoading}
-                className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105"
+                className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105"
                 data-testid="load-more-button"
               >
                 {isLoading ? (
@@ -316,7 +317,7 @@ function NewsPage() {
             </p>
             <a
               href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
+              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
               Contact Us

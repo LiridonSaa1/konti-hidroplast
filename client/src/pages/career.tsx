@@ -2,7 +2,15 @@ import { useEffect } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Users, Award, TrendingUp, Mail, Phone, MapPin, Building } from "lucide-react";
+import {
+  Users,
+  Award,
+  TrendingUp,
+  Mail,
+  Phone,
+  MapPin,
+  Building,
+} from "lucide-react";
 
 function CareerPage() {
   const { t } = useLanguage();
@@ -24,7 +32,7 @@ function CareerPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white pt-32 pb-20">
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
@@ -35,9 +43,7 @@ function CareerPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
-              <span className="text-sm font-medium">
-                JOIN OUR TEAM
-              </span>
+              <span className="text-sm font-medium">JOIN OUR TEAM</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
               <span className="text-red-500">ALWAYS</span> ON THE
@@ -52,7 +58,9 @@ function CareerPage() {
               className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
               data-testid="hero-description"
             >
-              Join Konti Hidroplast and become part of a team dedicated to excellence in pipe manufacturing. We're looking for talented professionals to grow with us.
+              Join Konti Hidroplast and become part of a team dedicated to
+              excellence in pipe manufacturing. We're looking for talented
+              professionals to grow with us.
             </p>
             <div className="flex justify-center space-x-8 text-sm">
               <div className="flex items-center">
@@ -72,32 +80,28 @@ function CareerPage() {
         </div>
       </section>
 
-      
-
-      
-
-      
-
       {/* Apply Section */}
       <section className="py-20 bg-gradient-to-r from-gray-50 to-blue-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Apply
-              </h2>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">Apply</h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-              Submit your application to join our team of talented professionals.
+              Submit your application to join our team of talented
+              professionals.
             </p>
           </div>
 
           <div className="bg-white rounded-xl p-8 shadow-lg">
             <form className="space-y-6">
               <div>
-                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="fullName"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Full Name *
                 </label>
                 <input
@@ -110,7 +114,10 @@ function CareerPage() {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   E-mail *
                 </label>
                 <input
@@ -123,7 +130,10 @@ function CareerPage() {
               </div>
 
               <div>
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Phone Number *
                 </label>
                 <input
@@ -136,7 +146,10 @@ function CareerPage() {
               </div>
 
               <div>
-                <label htmlFor="resume" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="resume"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Resume *
                 </label>
                 <input
@@ -144,13 +157,16 @@ function CareerPage() {
                   id="resume"
                   accept=".pdf,.doc,.docx"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#1c2d56] file:text-white hover:file:bg-blue-900"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#1c2d56] file:text-white hover:file:bg-[#1c2d56]"
                   data-testid="input-resume"
                 />
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="message"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Message
                 </label>
                 <textarea
@@ -165,7 +181,7 @@ function CareerPage() {
               <div className="text-center pt-4">
                 <button
                   type="submit"
-                  className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors font-semibold text-lg"
+                  className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors font-semibold text-lg"
                   data-testid="submit-button"
                 >
                   Submit Application
@@ -174,7 +190,9 @@ function CareerPage() {
             </form>
 
             <div className="mt-12 pt-8 border-t border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Contact Information</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                Contact Information
+              </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-600">
                 <div className="flex items-center">
                   <MapPin className="w-4 h-4 mr-2 text-[#1c2d56]" />

@@ -650,7 +650,7 @@ function CertificatesPage() {
             href={certificate.downloadUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center w-full justify-center px-3 py-2 bg-[#1c2d56] text-white text-sm rounded-lg hover:bg-blue-900 transition-colors"
+            className="inline-flex items-center w-full justify-center px-3 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm rounded-lg transition-colors"
             data-testid={`download-${categoryId}-${index}`}
           >
             <Download className="w-3 h-3 mr-2" />
@@ -732,7 +732,7 @@ function CertificatesPage() {
           <div className="flex items-center justify-center mb-12">
             <button
               onClick={prevTab}
-              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors mr-4"
+              className="p-2 rounded-full bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white transition-colors mr-4"
               data-testid="tab-prev"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -760,7 +760,7 @@ function CertificatesPage() {
 
             <button
               onClick={nextTab}
-              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors ml-4"
+              className="p-2 rounded-full bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white transition-colors ml-4"
               data-testid="tab-next"
             >
               <ChevronRight className="w-5 h-5" />
@@ -832,7 +832,7 @@ function CertificatesPage() {
             </p>
             <a
               href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
+              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
               Contact Us

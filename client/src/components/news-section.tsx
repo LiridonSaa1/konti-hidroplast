@@ -5,21 +5,24 @@ import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 const newsArticles = [
   {
-    image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/HDPE-plastic-pipes-installed-in-Dutch-flood-protection-systems-as-a-climate-resilience-solution.-min.png",
+    image:
+      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/HDPE-plastic-pipes-installed-in-Dutch-flood-protection-systems-as-a-climate-resilience-solution.-min.png",
     category: "News",
     title: "Innovations in Pipe Inspection and Maintenance Technologies",
     excerpt: "Latest advancements in pipeline maintenance technologies...",
     link: "https://konti-hidroplast.com.mk/innovations-in-pipe-inspection-and-maintenance-technologies/",
   },
   {
-    image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/07/konti-novost.jpg",
+    image:
+      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/07/konti-novost.jpg",
     category: "News",
     title: "Konti Hidroplast Donated €100,000 to Hospital in Gevgelija",
     excerpt: "Supporting our community with significant healthcare...",
     link: "https://konti-hidroplast.com.mk/konti-hidroplast-donated-e100000-to-the-public-general-hospital-in-gevgelija/",
   },
   {
-    image: "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/EPD-%E2%80%93-Environmental-Product-Declaration.jpg",
+    image:
+      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/EPD-%E2%80%93-Environmental-Product-Declaration.jpg",
     category: "News",
     title: "EPD – Environmental Product Declaration",
     excerpt: "Our commitment to environmental transparency and...",
@@ -44,14 +47,20 @@ export function NewsSection() {
           }`}
         >
           <div className="flex items-center justify-center mb-4">
-            <div className="w-20 h-0.5 mr-4" style={{backgroundColor: '#eb2127'}}></div>
+            <div
+              className="w-20 h-0.5 mr-4"
+              style={{ backgroundColor: "#eb2127" }}
+            ></div>
             <h2
               className="text-4xl font-bold text-konti-gray"
               data-testid="news-title"
             >
               News
             </h2>
-            <div className="w-20 h-0.5 ml-4" style={{backgroundColor: '#eb2127'}}></div>
+            <div
+              className="w-20 h-0.5 ml-4"
+              style={{ backgroundColor: "#eb2127" }}
+            ></div>
           </div>
         </div>
 
@@ -83,12 +92,12 @@ export function NewsSection() {
                 <p className="text-gray-600 mb-4 line-clamp-3">
                   {article.excerpt}
                 </p>
-                <a 
-                  href={article.link} 
-                  target="_blank" 
+                <a
+                  href={article.link}
+                  target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:shadow-lg"
-                  style={{backgroundColor: '#1c2d56'}}
+                  className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:shadow-lg"
+                  style={{ backgroundColor: "#1c2d56" }}
                   data-testid={`news-read-more-${index}`}
                 >
                   <span>Read More</span>
@@ -100,12 +109,12 @@ export function NewsSection() {
         </div>
 
         <div className="text-center mt-12">
-          <a 
-            href="https://konti-hidroplast.com.mk/news/" 
-            target="_blank" 
+          <a
+            href="https://konti-hidroplast.com.mk/news/"
+            target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center px-8 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:shadow-lg"
-            style={{backgroundColor: '#1c2d56'}}
+            style={{ backgroundColor: "#1c2d56" }}
             data-testid="view-all-news"
           >
             <span>View All News</span>

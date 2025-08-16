@@ -242,9 +242,13 @@ export default function KontiKanDrainagePage() {
               <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
                 {drainageSpecifications[0].title}
               </h3>
-              <p className="text-[#ffffff] mb-6">{drainageSpecifications[0].description}</p>
+              <p className="text-[#ffffff] mb-6">
+                {drainageSpecifications[0].description}
+              </p>
 
-              <p className="text-[#ffffff] mb-6">{drainageSpecifications[0].additionalInfo}</p>
+              <p className="text-[#ffffff] mb-6">
+                {drainageSpecifications[0].additionalInfo}
+              </p>
 
               <div className="space-y-3 mb-8">
                 {drainageSpecifications[0].features.map((feature, index) => (
@@ -305,7 +309,7 @@ export default function KontiKanDrainagePage() {
             </p>
             <a
               href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
+              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
               Contact Us

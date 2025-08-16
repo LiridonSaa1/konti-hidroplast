@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ChevronDown, Download, Play, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ChevronDown,
+  Download,
+  Play,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 // Konti Kan Pipe specifications data
 const pipeSpecifications = [
@@ -126,13 +133,19 @@ function KontiKanPipesAndFittingsPage() {
   const [activeFittingTabIndex, setActiveFittingTabIndex] = useState(0);
 
   const nextFittingTab = () => {
-    const nextIndex = activeFittingTabIndex === fittingTypes.length - 1 ? 0 : activeFittingTabIndex + 1;
+    const nextIndex =
+      activeFittingTabIndex === fittingTypes.length - 1
+        ? 0
+        : activeFittingTabIndex + 1;
     setActiveFittingTabIndex(nextIndex);
     setActiveFittingTab(fittingTypes[nextIndex].id);
   };
 
   const prevFittingTab = () => {
-    const prevIndex = activeFittingTabIndex === 0 ? fittingTypes.length - 1 : activeFittingTabIndex - 1;
+    const prevIndex =
+      activeFittingTabIndex === 0
+        ? fittingTypes.length - 1
+        : activeFittingTabIndex - 1;
     setActiveFittingTabIndex(prevIndex);
     setActiveFittingTab(fittingTypes[prevIndex].id);
   };
@@ -252,7 +265,8 @@ function KontiKanPipesAndFittingsPage() {
                 Common standards for HDPE corrugated pipes:{" "}
                 <strong>EN 13476-1</strong> and <strong>EN 13476-3</strong>
               </p>
-to             </div>
+              to{" "}
+            </div>
           </div>
         </div>
       </section>
@@ -278,16 +292,20 @@ to             </div>
                   HDPE Konti Kan
                 </h3>
                 <p className="text-white mb-6">
-                  HDPE (High-Density Polyethylene) corrugated pipes are widely used in sewage and drainage systems due to their excellent performance characteristics.
+                  HDPE (High-Density Polyethylene) corrugated pipes are widely
+                  used in sewage and drainage systems due to their excellent
+                  performance characteristics.
                 </p>
 
-                <h4 className="text-xl font-bold text-white mb-4">Material Properties:</h4>
+                <h4 className="text-xl font-bold text-white mb-4">
+                  Material Properties:
+                </h4>
                 <div className="space-y-3 mb-6">
                   {[
                     "High-Density Polyethylene (HDPE)",
                     "Lightweight yet durable.",
                     "Excellent chemical resistance, making it ideal for sewage applications.",
-                    "Non-corrosive and resistant to biological and chemical attacks from wastewater."
+                    "Non-corrosive and resistant to biological and chemical attacks from wastewater.",
                   ].map((property, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
@@ -296,13 +314,15 @@ to             </div>
                   ))}
                 </div>
 
-                <h4 className="text-xl font-bold text-white mb-4">Application:</h4>
+                <h4 className="text-xl font-bold text-white mb-4">
+                  Application:
+                </h4>
                 <div className="space-y-3 mb-6">
                   {[
                     "Municipal sewage systems.",
                     "Stormwater drainage.",
                     "Industrial wastewater systems.",
-                    "Agricultural drainage."
+                    "Agricultural drainage.",
                   ].map((application, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
@@ -311,7 +331,9 @@ to             </div>
                   ))}
                 </div>
 
-                <h4 className="text-xl font-bold text-white mb-4">Characteristics:</h4>
+                <h4 className="text-xl font-bold text-white mb-4">
+                  Characteristics:
+                </h4>
                 <div className="space-y-3 mb-8">
                   {[
                     "Common stiffness ratings: SN 4, SN 6, SN 8, or higher, depending on the application.",
@@ -325,7 +347,7 @@ to             </div>
                     "50+ years in standard operating conditions.",
                     "Easier to handle and transport compared to concrete or steel.",
                     "Operates effectively within a temperature range of -40°C to +60°C.",
-                    "Fully recyclable at the end of its service life."
+                    "Fully recyclable at the end of its service life.",
                   ].map((characteristic, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
@@ -396,7 +418,7 @@ to             </div>
           <div className="flex items-center justify-center mb-12">
             <button
               onClick={prevFittingTab}
-              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors mr-4"
+              className="p-2 rounded-full  text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors mr-4"
               data-testid="konti-fitting-tab-prev"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -427,7 +449,7 @@ to             </div>
 
             <button
               onClick={nextFittingTab}
-              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors ml-4"
+              className="p-2 rounded-full  text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors ml-4"
               data-testid="konti-fitting-tab-next"
             >
               <ChevronRight className="w-5 h-5" />
@@ -459,7 +481,7 @@ to             </div>
                             href={item.pdf}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-3 w-full text-[#1c2d56] hover:text-blue-700"
+                            className="flex items-center gap-3 w-full text-[#1c2d56] hover:text-[#1c2d56]"
                           >
                             <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 bg-[#1c2d56]">
                               <Download className="w-3 h-3 text-white" />
@@ -490,8 +512,6 @@ to             </div>
         </div>
       </section>
 
-      
-
       {/* Contact Section */}
       <section className="py-20 bg-[#ffffff]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -509,7 +529,7 @@ to             </div>
             </p>
             <a
               href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white text-lg font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
+              className="inline-flex items-center px-8 py-4 text-white text-lg font-semibold rounded-lg bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors shadow-lg"
               data-testid="contact-button"
             >
               Contact Us

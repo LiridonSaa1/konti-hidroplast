@@ -143,13 +143,15 @@ function BrochuresPage() {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const nextTab = () => {
-    const nextIndex = activeTabIndex === brochureCategories.length - 1 ? 0 : activeTabIndex + 1;
+    const nextIndex =
+      activeTabIndex === brochureCategories.length - 1 ? 0 : activeTabIndex + 1;
     setActiveTabIndex(nextIndex);
     setActiveTab(brochureCategories[nextIndex].id);
   };
 
   const prevTab = () => {
-    const prevIndex = activeTabIndex === 0 ? brochureCategories.length - 1 : activeTabIndex - 1;
+    const prevIndex =
+      activeTabIndex === 0 ? brochureCategories.length - 1 : activeTabIndex - 1;
     setActiveTabIndex(prevIndex);
     setActiveTab(brochureCategories[prevIndex].id);
   };
@@ -218,7 +220,7 @@ function BrochuresPage() {
           <div className="flex items-center justify-center mb-12">
             <button
               onClick={prevTab}
-              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors mr-4"
+              className="p-2 rounded-full bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white transition-colors mr-4"
               data-testid="category-tab-prev"
             >
               <ChevronLeft className="w-5 h-5" />
@@ -249,7 +251,7 @@ function BrochuresPage() {
 
             <button
               onClick={nextTab}
-              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors ml-4"
+              className="p-2 rounded-full bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white transition-colors ml-4"
               data-testid="category-tab-next"
             >
               <ChevronRight className="w-5 h-5" />
@@ -284,7 +286,7 @@ function BrochuresPage() {
                         href={brochure.downloadUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center w-full justify-center px-4 py-2 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors"
+                        className="inline-flex items-center w-full justify-center px-4 py-2 bg-[#1c2d56] text-white rounded-lg hover:bg-[#1c2d56]/90 transition-colors"
                         data-testid={`download-${category.id}-${index}`}
                       >
                         <Download className="w-4 h-4 mr-2" />
@@ -314,7 +316,7 @@ function BrochuresPage() {
             </p>
             <a
               href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
+              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
               Contact Us
