@@ -454,52 +454,7 @@ to             </div>
         </div>
       </section>
 
-      {/* Applications Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-[#1c2d56] mb-8">
-              Applications
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                title: "Municipal Sewage Systems",
-                description: "Reliable wastewater collection and transport",
-                icon: "🏢",
-              },
-              {
-                title: "Stormwater Drainage",
-                description: "Efficient rainwater management systems",
-                icon: "🌧️",
-              },
-              {
-                title: "Industrial Wastewater",
-                description: "Heavy-duty industrial applications",
-                icon: "🏭",
-              },
-              {
-                title: "Agricultural Drainage",
-                description: "Field drainage and irrigation systems",
-                icon: "🌾",
-              },
-            ].map((application, index) => (
-              <div
-                key={index}
-                className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 text-center"
-              >
-                <div className="text-4xl mb-4">{application.icon}</div>
-                <h3 className="text-xl font-bold text-[#1c2d56] mb-3">
-                  {application.title}
-                </h3>
-                <p className="text-gray-600">{application.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      
 
       {/* Contact Section */}
       <section className="py-20 bg-[#ffffff]">
