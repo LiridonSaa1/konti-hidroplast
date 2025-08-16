@@ -242,7 +242,7 @@ function BrochuresPage() {
                       />
                     </div>
                     <div className="p-6">
-                      <h3 className="font-semibold text-[#1c2d56] mb-4 line-clamp-2 text-[16px]">
+                      <h3 className="font-semibold text-[#1c2d56] mb-4 line-clamp-2 text-[15px]">
                         {brochure.title}
                       </h3>
                       <a
