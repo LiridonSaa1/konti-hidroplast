@@ -153,7 +153,11 @@ const teamCategories = [
   { id: "technical", title: "Technical Service", data: "technical" },
   { id: "laboratory", title: "Laboratory", data: "laboratory" },
   { id: "accounting", title: "Accounting", data: "accounting" },
-  { id: "public-relations", title: "Public Relations", data: "publicRelations" },
+  {
+    id: "public-relations",
+    title: "Public Relations",
+    data: "publicRelations",
+  },
   { id: "human-resources", title: "Human Resources", data: "humanResources" },
 ];
 
@@ -746,7 +750,9 @@ export default function AboutUs() {
 
           {/* Team Content - showing active team category */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {teamData[teamCategories[activeTeamTabIndex].data as keyof typeof teamData].map((member, index) => (
+            {teamData[
+              teamCategories[activeTeamTabIndex].data as keyof typeof teamData
+            ].map((member, index) => (
               <Card
                 key={index}
                 className="border-0 shadow-lg hover:shadow-xl transition-shadow"
@@ -1087,7 +1093,7 @@ export default function AboutUs() {
         </div>
       </section>
       {/* Gallery Section */}
-      <section className="py-20 bg-white relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50 relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
