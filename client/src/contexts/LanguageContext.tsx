@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export type Language = 'en' | 'mk';
+export type Language = 'en' | 'mk' | 'de';
 
 interface LanguageContextType {
   language: Language;
@@ -159,6 +159,80 @@ const translations = {
     'common.loading': 'Се вчитува...',
     'common.error': 'Настана грешка',
     'common.success': 'Успешно',
+  },
+  de: {
+    // Navigation
+    'nav.home': 'Startseite',
+    'nav.about': 'Über uns',
+    'nav.products': 'Produkte',
+    'nav.downloads': 'Downloads',
+    'nav.news': 'Nachrichten',
+    'nav.contact': 'Kontakt',
+    'nav.certifications': 'Zertifizierungen',
+    'nav.technical': 'Technische Dokumentation',
+    'nav.brochures': 'Produktbroschüren',
+    
+    // Hero Section
+    'hero.title.line1': 'Unvergleichliche europäische',
+    'hero.title.line2': 'Standards',
+    'hero.title.line3': 'für Rohrleitungspräzision',
+    'hero.banner.title': 'HOCHWERTIGE ROHRE',
+    'hero.banner.subtitle': 'FORTSCHRITT DURCH INNOVATION',
+    
+    // About Section
+    'about.title': 'Über uns',
+    'about.description': 'Exportorientiertes mazedonisches Unternehmen für die Herstellung von PE- und PP-Rohren seit 1975. Wir sind verpflichtet, höchste Qualität bei Rohrleitungslösungen mit europäischen Standards zu liefern.',
+    'about.text1': 'Konti Hidroplast ist ein exportorientiertes mazedonisches Unternehmen für die Herstellung von PE- (Polyethylen) und PP- (Polypropylen) Rohren.',
+    'about.text2': 'In Südmazedonien gelegen, Gemeinde Gevgelija, wurde Konti Hidroplast 1975 als kleine Fabrik für die Herstellung von Werkzeugen und Elementen aus spritzgegossenem Kunststoff gegründet.',
+    'about.text3': 'Nach dem erfolgreichen Start, unterstützt durch die Erfahrung aus erfolgreich realisierten Projekten in der Republik Mazedonien, ist unser Unternehmen heute exportorientiert und 95% seiner Produkte werden auf internationale Märkte exportiert.',
+    'about.mission': 'Unsere Mission ist es, innovative und zuverlässige Rohrsysteme bereitzustellen, die den sich entwickelnden Bedürfnissen unserer Kunden weltweit gerecht werden.',
+    'about.vision': 'Der führende Hersteller von PE- und PP-Rohren in der Region zu sein, bekannt für Qualität, Innovation und Umweltverantwortung.',
+    
+    // Statistics
+    'stats.experience': 'Jahre Erfahrung',
+    'stats.products': 'Hergestellte Produkte',
+    'stats.countries': 'Bediente Länder',
+    'stats.capacity': 'Jährliche Produktionskapazität',
+    
+    // Products
+    'products.title': 'Unsere Produkte',
+    'products.subtitle': 'Hochwertige PE- und PP-Rohrlösungen für verschiedene Anwendungen',
+    'products.pe.title': 'PE-Rohre',
+    'products.pe.description': 'Polyethylen-Rohre für Wasserversorgung, Gasverteilung und industrielle Anwendungen.',
+    'products.pp.title': 'PP-Rohre',
+    'products.pp.description': 'Polypropylen-Rohre für chemische Beständigkeit und Hochtemperaturanwendungen.',
+    'products.fittings.title': 'Rohrfittings',
+    'products.fittings.description': 'Komplettes Sortiment an Fittings und Zubehör für alle Rohrsysteme.',
+    'products.systems.title': 'Komplette Systeme',
+    'products.systems.description': 'Entwickelte Rohrleitungssysteme für komplexe industrielle und kommunale Projekte.',
+    
+    // News
+    'news.title': 'Neueste Nachrichten',
+    'news.subtitle': 'Bleiben Sie über unsere neuesten Entwicklungen und Brancheneinblicke auf dem Laufenden',
+    'news.more': 'Mehr Nachrichten lesen',
+    
+    // Contact
+    'contact.title': 'Kontaktieren Sie uns',
+    'contact.subtitle': 'Nehmen Sie Kontakt mit unserem Team für Anfragen und Support auf',
+    'contact.address': 'Adresse',
+    'contact.phone': 'Telefon',
+    'contact.email': 'E-Mail',
+    'contact.form.name': 'Vollständiger Name',
+    'contact.form.email': 'E-Mail-Adresse',
+    'contact.form.message': 'Nachricht',
+    'contact.form.send': 'Nachricht senden',
+    
+    // Footer
+    'footer.company': 'Unternehmen',
+    'footer.products': 'Produkte',
+    'footer.support': 'Support',
+    'footer.contact': 'Kontakt',
+    'footer.rights': 'Alle Rechte vorbehalten.',
+    
+    // Common
+    'common.loading': 'Laden...',
+    'common.error': 'Ein Fehler ist aufgetreten',
+    'common.success': 'Erfolgreich',
   }
 };
 
@@ -170,7 +244,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
   const [language, setLanguage] = useState<Language>(() => {
     // Get saved language from localStorage or default to English
     const saved = localStorage.getItem('konti-language');
-    return (saved === 'mk' || saved === 'en') ? saved : 'en';
+    return (saved === 'mk' || saved === 'en' || saved === 'de') ? saved : 'en';
   });
 
   useEffect(() => {

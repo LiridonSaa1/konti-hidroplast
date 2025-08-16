@@ -22,7 +22,8 @@ export function LanguageSwitcher() {
 
   const languages = [
     { code: 'en' as Language, name: 'English', flag: '🇺🇸' },
-    { code: 'mk' as Language, name: 'Македонски', flag: '🇲🇰' }
+    { code: 'mk' as Language, name: 'Македонски', flag: '🇲🇰' },
+    { code: 'de' as Language, name: 'Deutsch', flag: '🇩🇪' }
   ];
 
   const currentLanguage = languages.find(lang => lang.code === language);

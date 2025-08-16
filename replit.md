@@ -36,6 +36,12 @@ Preferred communication style: Simple, everyday language.
   - Added parent dropdown highlighting when child pages are active
   - Dropdown menu items show active state with red text and light red background
   - Improved user experience by clearly indicating current page location
+- **Language Switcher Update**: Updated language options to include only US, MK, and DE
+  - Removed French, Spanish, and Italian language options
+  - Added comprehensive German translations for all UI elements
+  - Updated Language type definition to support 'de' language code
+  - Enhanced language persistence with localStorage support for all three languages
+  - Maintained consistent user experience across all supported languages
 - **KONTI KAN DRAINAGE Page Added**: Created comprehensive drainage systems page at /konti-kan-drainage route
   - Fetched all content from https://konti-hidroplast.com.mk/konti-kan-drainage/
   - Features KONTI DREN drainage pipes with technical specifications
