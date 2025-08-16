@@ -56,7 +56,7 @@ export function AboutSection() {
       </div>
       <div className="w-full px-4 sm:px-6 lg:px-8 flex items-center justify-center">
         <div className="max-w-6xl w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-screen">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center min-h-screen py-16 md:py-8 lg:py-0">
             {/* Content */}
             <div
               className={`text-center lg:text-left ${
