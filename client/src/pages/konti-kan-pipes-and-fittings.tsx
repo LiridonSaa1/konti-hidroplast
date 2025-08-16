@@ -209,45 +209,33 @@ function KontiKanPipesAndFittingsPage() {
       {/* Overview Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
                 Technical Specifications
               </h2>
-              <div className="space-y-4 text-gray-700">
-                <p>
-                  HDPE (High-Density Polyethylene) corrugated pipes are widely used in sewage and drainage systems due to their excellent performance characteristics.
-                </p>
-                <p>
-                  Common standards for HDPE corrugated pipes: EN 13476-1 and EN 13476-3
-                </p>
-                <p>
-                  Their lightweight, flexibility, and chemical resistance further enhance their suitability for a wide range of applications.
-                </p>
-              </div>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
+          </div>
 
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-                Material Properties
-              </h3>
-              <div className="space-y-3">
-                {[
-                  "High-Density Polyethylene (HDPE)",
-                  "Lightweight yet durable",
-                  "Excellent chemical resistance",
-                  "Non-corrosive and resistant to biological attacks",
-                  "Smooth internal surface resistant to deposits",
-                  "High resistance to UV degradation",
-                  "Flexible and resistant to cracking",
-                  "Fully recyclable at the end of its service life",
-                ].map((property, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-gray-700">{property}</span>
-                  </div>
-                ))}
-              </div>
+          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 max-w-6xl mx-auto">
+            <div className="space-y-6 text-gray-700">
+              <p className="text-lg leading-relaxed">
+                HDPE (High-Density Polyethylene) corrugated pipes are widely used in sewage and drainage systems due to their excellent performance characteristics.
+              </p>
+              <p className="text-lg leading-relaxed">
+                Common standards for HDPE corrugated pipes: <strong>EN 13476-1</strong> and <strong>EN 13476-3</strong>
+              </p>
+              <p className="text-lg leading-relaxed">
+                Besides the experience, our large range of products and top quality, by all internationally recognized standards, enabled us to get access to international markets. Our current production program covers all fields of application: pipes and hoses for water supply systems, sewage systems, PE and PP manholes, pipes for transporting gas and oil products, pipes and hoses for protection of telecommunication cables, drainage systems and fittings for all dimensions, which also range from a minimum diameter of 12mm up to 2000mm.
+              </p>
+              <p className="text-lg leading-relaxed">
+                Konti Hidroplast became known to the market through quality supply and constant application of flexibility in operation, which is very important in an industry where the complexity of managing all processes is quite high.
+              </p>
+              <p className="text-lg leading-relaxed">
+                Their lightweight, flexibility, and chemical resistance further enhance their suitability for a wide range of applications including municipal sewage systems, stormwater drainage, industrial wastewater systems, and agricultural drainage.
+              </p>
             </div>
           </div>
         </div>
