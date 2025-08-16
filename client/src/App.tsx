@@ -20,6 +20,7 @@ import CareerPage from "@/pages/career";
 import KontiKanPipesAndFittingsPage from "@/pages/konti-kan-pipes-and-fittings";
 import KontiKanSpiralPipesPage from "@/pages/konti-kan-spiral-pipes";
 import PPHMPipesAndFittingsPage from "@/pages/pp-hm-pipes-and-fittings";
+import PPHMSmoothODPage from "@/pages/pp-hm-smooth-od";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -41,6 +42,7 @@ function Router() {
       <Route path="/konti-kan-pipes-and-fittings" component={KontiKanPipesAndFittingsPage} />
       <Route path="/konti-kan-spiral-pipes" component={KontiKanSpiralPipesPage} />
       <Route path="/pp-hm-pipes-and-fittings" component={PPHMPipesAndFittingsPage} />
+      <Route path="/pp-hm-smooth-od" component={PPHMSmoothODPage} />
       <Route component={NotFound} />
     </Switch>
   );
