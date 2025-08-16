@@ -147,6 +147,16 @@ const timelineData = [
   },
 ];
 
+const teamCategories = [
+  { id: "commerce", title: "Commerce", data: "commerce" },
+  { id: "legal", title: "Legal Department", data: "legal" },
+  { id: "technical", title: "Technical Service", data: "technical" },
+  { id: "laboratory", title: "Laboratory", data: "laboratory" },
+  { id: "accounting", title: "Accounting", data: "accounting" },
+  { id: "public-relations", title: "Public Relations", data: "publicRelations" },
+  { id: "human-resources", title: "Human Resources", data: "humanResources" },
+];
+
 const teamData = {
   commerce: [
     {
@@ -272,6 +282,19 @@ const teamData = {
 export default function AboutUs() {
   const [activeYear, setActiveYear] = useState("1990");
   const [sliderValue, setSliderValue] = useState([0]);
+  const [activeTeamTabIndex, setActiveTeamTabIndex] = useState(0);
+
+  const nextTeamTab = () => {
+    setActiveTeamTabIndex((prev) =>
+      prev === teamCategories.length - 1 ? 0 : prev + 1,
+    );
+  };
+
+  const prevTeamTab = () => {
+    setActiveTeamTabIndex((prev) =>
+      prev === 0 ? teamCategories.length - 1 : prev - 1,
+    );
+  };
 
   // Handle slider change
   const handleSliderChange = (value: number[]) => {
@@ -682,306 +705,81 @@ export default function AboutUs() {
             </div>
           </div>
 
-          <Tabs defaultValue="commerce" className="w-full">
-            {/* Horizontal slider navigation like certificates page */}
-            <div className="relative mb-12">
-              <div className="bg-white rounded-xl shadow-lg p-4 mx-auto max-w-6xl overflow-hidden">
-                <div className="overflow-x-auto scrollbar-hide">
-                  <TabsList className="flex w-max h-auto bg-transparent p-0 gap-3 min-w-full">
-                    <TabsTrigger 
-                      value="commerce" 
-                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
-                    >
-                      Commerce
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="legal" 
-                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
-                    >
-                      Legal Department
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="technical" 
-                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
-                    >
-                      Technical Service
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="laboratory" 
-                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
-                    >
-                      Laboratory
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="accounting" 
-                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
-                    >
-                      Accounting
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="public-relations" 
-                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
-                    >
-                      Public Relations
-                    </TabsTrigger>
-                    <TabsTrigger 
-                      value="human-resources" 
-                      className="rounded-lg px-6 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap flex-shrink-0"
-                    >
-                      Human Resources
-                    </TabsTrigger>
-                  </TabsList>
-                </div>
+          {/* Team Tab Slider - matching certificates page design */}
+          <div className="flex items-center justify-center mb-12">
+            <button
+              onClick={prevTeamTab}
+              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors mr-4"
+              data-testid="team-tab-prev"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
+              <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
+                {teamCategories[activeTeamTabIndex].title}
+              </h3>
+              <div className="flex justify-center space-x-1 mt-3">
+                {teamCategories.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setActiveTeamTabIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === activeTeamTabIndex
+                        ? "bg-[#1c2d56]"
+                        : "bg-gray-300 hover:bg-gray-400"
+                    }`}
+                    data-testid={`team-tab-dot-${index}`}
+                  />
+                ))}
               </div>
             </div>
 
-            <TabsContent value="commerce" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {teamData.commerce.map((member, index) => (
-                  <Card
-                    key={index}
-                    className="border-0 shadow-lg hover:shadow-xl transition-shadow"
-                  >
-                    <CardContent className="p-6 text-center">
-                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
-                        <img
-                          src={`/attached_assets/${member.photo}`}
-                          alt={member.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        {member.name}
-                      </h3>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full"
-                        onClick={() =>
-                          window.open(`mailto:${member.email}`, "_blank")
-                        }
-                      >
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact Us
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
+            <button
+              onClick={nextTeamTab}
+              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors ml-4"
+              data-testid="team-tab-next"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
 
-            <TabsContent value="legal" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {teamData.legal.map((member, index) => (
-                  <Card
-                    key={index}
-                    className="border-0 shadow-lg hover:shadow-xl transition-shadow"
+          {/* Team Content - showing active team category */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {teamData[teamCategories[activeTeamTabIndex].data as keyof typeof teamData].map((member, index) => (
+              <Card
+                key={index}
+                className="border-0 shadow-lg hover:shadow-xl transition-shadow"
+              >
+                <CardContent className="p-6 text-center">
+                  <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                    <img
+                      src={`/attached_assets/${member.photo}`}
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    {member.name}
+                  </h3>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full"
+                    onClick={() =>
+                      window.open(`mailto:${member.email}`, "_blank")
+                    }
                   >
-                    <CardContent className="p-6 text-center">
-                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
-                        <img
-                          src={`/attached_assets/${member.photo}`}
-                          alt={member.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        {member.name}
-                      </h3>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full"
-                        onClick={() =>
-                          window.open(`mailto:${member.email}`, "_blank")
-                        }
-                      >
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact Us
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="technical" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {teamData.technical.map((member, index) => (
-                  <Card
-                    key={index}
-                    className="border-0 shadow-lg hover:shadow-xl transition-shadow"
-                  >
-                    <CardContent className="p-6 text-center">
-                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
-                        <img
-                          src={`/attached_assets/${member.photo}`}
-                          alt={member.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        {member.name}
-                      </h3>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full"
-                        onClick={() =>
-                          window.open(`mailto:${member.email}`, "_blank")
-                        }
-                      >
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact Us
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="laboratory" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {teamData.laboratory.map((member, index) => (
-                  <Card
-                    key={index}
-                    className="border-0 shadow-lg hover:shadow-xl transition-shadow"
-                  >
-                    <CardContent className="p-6 text-center">
-                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
-                        <img
-                          src={`/attached_assets/${member.photo}`}
-                          alt={member.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        {member.name}
-                      </h3>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full"
-                        onClick={() =>
-                          window.open(`mailto:${member.email}`, "_blank")
-                        }
-                      >
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact Us
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="accounting" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {teamData.accounting.map((member, index) => (
-                  <Card
-                    key={index}
-                    className="border-0 shadow-lg hover:shadow-xl transition-shadow"
-                  >
-                    <CardContent className="p-6 text-center">
-                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
-                        <img
-                          src={`/attached_assets/${member.photo}`}
-                          alt={member.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        {member.name}
-                      </h3>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full"
-                        onClick={() =>
-                          window.open(`mailto:${member.email}`, "_blank")
-                        }
-                      >
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact Us
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="public-relations" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {teamData.publicRelations.map((member, index) => (
-                  <Card
-                    key={index}
-                    className="border-0 shadow-lg hover:shadow-xl transition-shadow"
-                  >
-                    <CardContent className="p-6 text-center">
-                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
-                        <img
-                          src={`/attached_assets/${member.photo}`}
-                          alt={member.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        {member.name}
-                      </h3>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full"
-                        onClick={() =>
-                          window.open(`mailto:${member.email}`, "_blank")
-                        }
-                      >
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact Us
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="human-resources" className="mt-0">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {teamData.humanResources.map((member, index) => (
-                  <Card
-                    key={index}
-                    className="border-0 shadow-lg hover:shadow-xl transition-shadow"
-                  >
-                    <CardContent className="p-6 text-center">
-                      <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
-                        <img
-                          src={`/attached_assets/${member.photo}`}
-                          alt={member.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        {member.name}
-                      </h3>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full"
-                        onClick={() =>
-                          window.open(`mailto:${member.email}`, "_blank")
-                        }
-                      >
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact Us
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-          </Tabs>
+                    <Mail className="h-4 w-4 mr-2" />
+                    Contact Us
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </section>
+
       {/* Certifications */}
       <CertificationsSection />
       {/* Projects Section */}
