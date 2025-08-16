@@ -123,7 +123,8 @@ export function Navigation() {
         element.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     } else if (href.startsWith("/")) {
-      // Internal navigation
+      // Internal navigation - scroll to top immediately when changing pages
+      window.scrollTo({ top: 0, behavior: "instant" });
       setLocation(href);
     } else {
       window.open(href, "_blank", "noopener,noreferrer");

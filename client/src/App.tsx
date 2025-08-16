@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { LoadingScreen } from "@/components/loading-screen";
+import { useScrollToTop } from "@/hooks/use-scroll-to-top";
 import Home from "@/pages/home";
 import AboutUs from "@/pages/about-us";
 import ProductsPage from "@/pages/products";
@@ -19,6 +20,9 @@ import CareerPage from "@/pages/career";
 import NotFound from "@/pages/not-found";
 
 function Router() {
+  // Add scroll to top functionality for all route changes
+  useScrollToTop();
+  
   return (
     <Switch>
       <Route path="/" component={Home} />
