@@ -250,10 +250,7 @@ function NewsPage() {
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">News</h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Discover the latest developments, innovations, and insights from
-              Konti Hidroplast and the pipe manufacturing industry.
-            </p>
+            
           </div>
 
           {/* News Grid */}
