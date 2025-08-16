@@ -306,16 +306,12 @@ export default function ManholesPage() {
                 </div>
 
                 <div className="relative max-w-md mx-auto lg:mx-0">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {spec.images.map((image, index) => (
-                      <div key={index} className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
-                        <img
-                          src={image}
-                          alt={`${spec.title} ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    ))}
+                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                    <img
+                      src={spec.images[0]}
+                      alt={spec.title}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
               </div>
