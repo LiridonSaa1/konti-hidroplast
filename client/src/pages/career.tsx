@@ -40,17 +40,19 @@ function CareerPage() {
               </span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-              BUILD YOUR<span className="text-red-500"> CAREER</span>
+              <span className="text-red-500">ALWAYS</span> ON THE
               <br />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                WITH KONTI
+                LOOKOUT FOR
               </span>
+              <br />
+              <span className="text-white">TOP TALENT</span>
             </h1>
             <p
               className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
               data-testid="hero-description"
             >
-              Join a leading manufacturer of PE and PP pipes with over 45 years of excellence. Be part of a team that shapes the future of infrastructure and industrial piping systems.
+              Join Konti Hidroplast and become part of a team dedicated to excellence in pipe manufacturing. We're looking for talented professionals to grow with us.
             </p>
             <div className="flex justify-center space-x-8 text-sm">
               <div className="flex items-center">
@@ -290,103 +292,116 @@ function CareerPage() {
         </div>
       </section>
 
-      {/* How to Apply Section */}
+      {/* Apply Section */}
       <section className="py-20 bg-gradient-to-r from-gray-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Ready to Join Us?
+                Apply
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-              We're always looking for talented individuals to join our team. Send us your CV and become part of our success story.
+              Submit your application to join our team of talented professionals.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="bg-white rounded-xl p-8 shadow-lg">
-              <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">How to Apply</h3>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="w-8 h-8 bg-[#1c2d56] text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">
-                    1
-                  </div>
-                  <p className="text-gray-600">
-                    Prepare your CV highlighting your relevant experience and qualifications
-                  </p>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-8 h-8 bg-[#1c2d56] text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">
-                    2
-                  </div>
-                  <p className="text-gray-600">
-                    Write a brief cover letter explaining your interest in joining Konti Hidroplast
-                  </p>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-8 h-8 bg-[#1c2d56] text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">
-                    3
-                  </div>
-                  <p className="text-gray-600">
-                    Send your application to our HR department using the contact information provided
-                  </p>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-8 h-8 bg-[#1c2d56] text-white rounded-full flex items-center justify-center text-sm font-bold mr-4 flex-shrink-0">
-                    4
-                  </div>
-                  <p className="text-gray-600">
-                    Our HR team will review your application and contact you if there's a suitable position
-                  </p>
-                </div>
+          <div className="bg-white rounded-xl p-8 shadow-lg">
+            <form className="space-y-6">
+              <div>
+                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+                  Full Name *
+                </label>
+                <input
+                  type="text"
+                  id="fullName"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
+                  data-testid="input-full-name"
+                />
               </div>
-            </div>
 
-            <div className="bg-white rounded-xl p-8 shadow-lg">
-              <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">Contact Information</h3>
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <Mail className="w-6 h-6 text-[#1c2d56] mr-3 mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-gray-800">Email</p>
-                    <a href="mailto:hr@konti-hidroplast.com.mk" className="text-[#1c2d56] hover:underline">
-                      hr@konti-hidroplast.com.mk
-                    </a>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <Phone className="w-6 h-6 text-[#1c2d56] mr-3 mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-gray-800">Phone</p>
-                    <p className="text-gray-600">+389 34 215 225</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <MapPin className="w-6 h-6 text-[#1c2d56] mr-3 mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="font-semibold text-gray-800">Address</p>
-                    <p className="text-gray-600">
-                      Industriska 5, 1480 Gevgelija<br />
-                      North Macedonia
-                    </p>
-                  </div>
-                </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  E-mail *
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
+                  data-testid="input-email"
+                />
               </div>
-              
-              <div className="mt-8">
-                <a
-                  href="mailto:hr@konti-hidroplast.com.mk"
-                  className="inline-flex items-center w-full justify-center px-6 py-3 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors font-semibold"
-                  data-testid="apply-now-button"
+
+              <div>
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
+                  data-testid="input-phone"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="resume" className="block text-sm font-medium text-gray-700 mb-2">
+                  Resume *
+                </label>
+                <input
+                  type="file"
+                  id="resume"
+                  accept=".pdf,.doc,.docx"
+                  required
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#1c2d56] file:text-white hover:file:bg-blue-900"
+                  data-testid="input-resume"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  rows={4}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
+                  placeholder="Tell us about yourself and why you'd like to join our team..."
+                  data-testid="textarea-message"
+                ></textarea>
+              </div>
+
+              <div className="text-center pt-4">
+                <button
+                  type="submit"
+                  className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors font-semibold text-lg"
+                  data-testid="submit-button"
                 >
-                  <Mail className="w-5 h-5 mr-2" />
-                  Send Your CV
-                </a>
+                  Submit Application
+                </button>
+              </div>
+            </form>
+
+            <div className="mt-12 pt-8 border-t border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">Contact Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-600">
+                <div className="flex items-center">
+                  <MapPin className="w-4 h-4 mr-2 text-[#1c2d56]" />
+                  Industriska 5, 1480 Gevgelija, North Macedonia
+                </div>
+                <div className="flex items-center">
+                  <Phone className="w-4 h-4 mr-2 text-[#1c2d56]" />
+                  +389 34 215 225
+                </div>
+                <div className="flex items-center">
+                  <Mail className="w-4 h-4 mr-2 text-[#1c2d56]" />
+                  hr@konti-hidroplast.com.mk
+                </div>
               </div>
             </div>
           </div>
