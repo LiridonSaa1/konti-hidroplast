@@ -95,6 +95,8 @@ export function Navigation() {
   const [activeSection, setActiveSection] = useState("home");
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isHoveringDropdownArea, setIsHoveringDropdownArea] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileDropdowns, setMobileDropdowns] = useState<Record<string, boolean>>({});
   const { t } = useLanguage();
   const navigationItems = useNavigationItems(t);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -108,6 +110,12 @@ export function Navigation() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Close mobile dropdowns when location changes
+  useEffect(() => {
+    setMobileDropdowns({});
+    setMobileMenuOpen(false);
+  }, [location]);
 
   useEffect(() => {
     const handleSectionChange = () => {
@@ -160,7 +168,21 @@ export function Navigation() {
       window.open(href, "_blank", "noopener,noreferrer");
     } else {
       scrollToSection(href);
+      // Close mobile menu when navigating
+      setMobileMenuOpen(false);
+      closeMobileDropdowns();
     }
+  };
+
+  const toggleMobileDropdown = (label: string) => {
+    setMobileDropdowns((prev) => ({
+      ...prev,
+      [label]: !prev[label],
+    }));
+  };
+
+  const closeMobileDropdowns = () => {
+    setMobileDropdowns({});
   };
 
   const handleDropdownMouseEnter = (label: string) => {
@@ -204,7 +226,11 @@ export function Navigation() {
         return (
           <button
             key={item.href}
-            onClick={() => scrollToSection(item.href)}
+            onClick={() => {
+              scrollToSection(item.href);
+              setMobileMenuOpen(false);
+              closeMobileDropdowns();
+            }}
             className={`w-full text-left px-4 py-3 text-base font-medium transition-colors ${
               isActive
                 ? "text-konti-blue bg-blue-50"
@@ -240,24 +266,74 @@ export function Navigation() {
 
     if (isMobile) {
       // For mobile dropdown items
+      const isDropdownOpen = mobileDropdowns[item.label];
       return (
         <div key={item.label} className="space-y-2">
-          <div className="px-4 py-3 text-base font-medium text-konti-gray border-b border-gray-200">
+          <button
+            onClick={() => toggleMobileDropdown(item.label)}
+            className="w-full flex items-center justify-between px-4 py-3 text-base font-medium text-konti-gray border-b border-gray-200 hover:text-konti-blue transition-colors"
+            data-testid={`mobile-nav-dropdown-${item.label.toLowerCase()}`}
+          >
             {item.label}
-          </div>
-          {item.items.map((subItem, index) => (
-            <button
-              key={index}
-              onClick={() =>
-                handleDropdownClick(subItem.href, subItem.external)
-              }
-              className="w-full text-left px-6 py-3 text-base text-gray-600 hover:text-konti-blue transition-colors flex items-center justify-between"
-              data-testid={`mobile-nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
-            >
-              {subItem.label}
-              {subItem.external && <ExternalLink className="h-4 w-4" />}
-            </button>
-          ))}
+            <ChevronDown
+              className={`h-5 w-5 transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}
+            />
+          </button>
+          {isDropdownOpen && (
+            <div className="space-y-1">
+              {item.items.map((subItem, index) => {
+                if (subItem.items && subItem.items.length > 0) {
+                  // Handle nested dropdowns (like Sewerage Systems)
+                  const nestedKey = `${item.label}-${subItem.label}`;
+                  const isNestedOpen = mobileDropdowns[nestedKey];
+                  return (
+                    <div key={index} className="space-y-1">
+                      <button
+                        onClick={() => toggleMobileDropdown(nestedKey)}
+                        className="w-full flex items-center justify-between px-6 py-3 text-base text-gray-600 hover:text-konti-blue transition-colors"
+                        data-testid={`mobile-nav-nested-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+                      >
+                        {subItem.label}
+                        <ChevronRight
+                          className={`h-4 w-4 transition-transform duration-200 ${isNestedOpen ? "rotate-90" : ""}`}
+                        />
+                      </button>
+                      {isNestedOpen && (
+                        <div className="pl-4 space-y-1">
+                          {subItem.items.map((nestedItem, nestedIndex) => (
+                            <button
+                              key={nestedIndex}
+                              onClick={() =>
+                                handleDropdownClick(nestedItem.href, nestedItem.external)
+                              }
+                              className="w-full text-left px-8 py-2 text-sm text-gray-600 hover:text-konti-blue transition-colors flex items-center justify-between"
+                              data-testid={`mobile-nav-nested-item-${nestedItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+                            >
+                              {nestedItem.label}
+                              {nestedItem.external && <ExternalLink className="h-3 w-3" />}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                return (
+                  <button
+                    key={index}
+                    onClick={() =>
+                      handleDropdownClick(subItem.href, subItem.external)
+                    }
+                    className="w-full text-left px-6 py-3 text-base text-gray-600 hover:text-konti-blue transition-colors flex items-center justify-between"
+                    data-testid={`mobile-nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+                  >
+                    {subItem.label}
+                    {subItem.external && <ExternalLink className="h-4 w-4" />}
+                  </button>
+                );
+              })}
+            </div>
+          )}
         </div>
       );
     }
@@ -412,7 +488,7 @@ export function Navigation() {
 
           {/* Mobile menu */}
           <div className="md:hidden">
-            <Sheet>
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
                 <Button
                   variant="ghost"
@@ -423,18 +499,32 @@ export function Navigation() {
                       : "text-white hover:text-white/80"
                   }`}
                   data-testid="mobile-menu-trigger"
+                  onClick={() => {
+                    setMobileMenuOpen(true);
+                    // Close any open dropdowns when opening menu
+                    closeMobileDropdowns();
+                  }}
                 >
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-80">
+              <SheetContent 
+                side="right" 
+                className="w-80"
+                onOpenAutoFocus={(event) => event.preventDefault()}
+                onCloseAutoFocus={(event) => event.preventDefault()}
+              >
                 <div className="flex flex-col space-y-6 mt-8">
                   <div className="flex items-center justify-between mb-6">
                     <img
                       src={logoScrolled}
                       alt="Urban Rohr"
                       className="h-14 w-auto cursor-pointer"
-                      onClick={scrollToTop}
+                      onClick={() => {
+                        scrollToTop();
+                        setMobileMenuOpen(false);
+                        closeMobileDropdowns();
+                      }}
                     />
                     <LanguageSwitcher />
                   </div>
