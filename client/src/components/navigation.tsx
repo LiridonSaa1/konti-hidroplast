@@ -91,9 +91,11 @@ export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [openSubDropdown, setOpenSubDropdown] = useState<string | null>(null);
   const { t } = useLanguage();
   const navigationItems = useNavigationItems(t);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const subDropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -168,7 +170,21 @@ export function Navigation() {
   const handleDropdownMouseLeave = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setOpenDropdown(null);
-    }, 200); // Small delay to allow moving to the dropdown content
+      setOpenSubDropdown(null);
+    }, 300); // Increased delay to allow moving to nested dropdowns
+  };
+
+  const handleSubDropdownMouseEnter = (label: string) => {
+    if (subDropdownTimeoutRef.current) {
+      clearTimeout(subDropdownTimeoutRef.current);
+    }
+    setOpenSubDropdown(label);
+  };
+
+  const handleSubDropdownMouseLeave = () => {
+    subDropdownTimeoutRef.current = setTimeout(() => {
+      setOpenSubDropdown(null);
+    }, 200);
   };
 
   const renderNavigationItem = (
@@ -248,7 +264,16 @@ export function Navigation() {
         key={item.label}
         modal={false}
         open={isOpen}
-        onOpenChange={() => {}}
+        onOpenChange={(open) => {
+          if (!open) {
+            // Only close if not hovering
+            setTimeout(() => {
+              if (openDropdown === item.label) {
+                setOpenDropdown(null);
+              }
+            }, 100);
+          }
+        }}
       >
         <div
           onMouseEnter={() => handleDropdownMouseEnter(item.label)}
@@ -274,8 +299,15 @@ export function Navigation() {
             className="nav-dropdown w-56 bg-white shadow-lg border-0 z-50"
             sideOffset={8}
             onCloseAutoFocus={(event) => event.preventDefault()}
-            onMouseEnter={() => handleDropdownMouseEnter(item.label)}
+            onMouseEnter={() => {
+              if (dropdownTimeoutRef.current) {
+                clearTimeout(dropdownTimeoutRef.current);
+              }
+              handleDropdownMouseEnter(item.label);
+            }}
             onMouseLeave={handleDropdownMouseLeave}
+            onPointerDownOutside={(event) => event.preventDefault()}
+            onFocusOutside={(event) => event.preventDefault()}
           >
             {item.items.map((subItem, index) => {
               if (subItem.items && subItem.items.length > 0) {
@@ -284,7 +316,6 @@ export function Navigation() {
                   <DropdownMenuSub key={index}>
                     <DropdownMenuSubTrigger className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none">
                       <span>{subItem.label}</span>
-                      <ChevronRight className="h-3 w-3 text-gray-400" />
                     </DropdownMenuSubTrigger>
                     <DropdownMenuSubContent 
                       className="w-56 bg-white shadow-lg border-0 z-50"
