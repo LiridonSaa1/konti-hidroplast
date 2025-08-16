@@ -183,8 +183,16 @@ export default function ManholesPage() {
             </div>
 
             <div className="relative">
-              <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden flex items-center justify-center">
-                <p className="text-white text-center">Sorry, your browser doesn't support embedded videos.</p>
+              <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
+                <video
+                  src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/Konti-Hidroplast_3-1.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="w-full h-full object-cover"
+                  aria-label="Konti Hidroplast manholes manufacturing video"
+                />
               </div>
               <div className="absolute -bottom-4 -right-4 text-white px-4 py-2 rounded-full shadow-lg bg-[#ef4444]">
                 <span className="text-sm font-medium">Premium Quality</span>
