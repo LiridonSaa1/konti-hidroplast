@@ -257,14 +257,41 @@ function KontiKanSpiralPipesPage() {
           <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 max-w-6xl mx-auto">
             <div className="space-y-6 text-gray-700">
               <p className="text-lg leading-relaxed">
+                Clients and engineers as ideal pipe material for many pressure and non-pressure applications such as water distribution; gravity sewer, rehabilitation projects and manholes recognize polyethylene.
+              </p>
+              <p className="text-lg leading-relaxed">
                 Latest development of production of Konti Hidroplast is manufacturing sewage pipes for non-pressure applications. Konti Kan Spiral pipe and complete range of Konti Kan Spiral fittings.
               </p>
               <p className="text-lg leading-relaxed">
-                Konti Kan Spiral pipes are made of hollow PE-HD sections helically wound on a drum with a specific diameter. Konti Kan Spiral Pipe provides all technical advantages of equivalent polyethylene solid wall pipe with substantial saving in weight combining greater ease of installation with increased cost effectiveness.
+                Konti Kan Spiral pipes are made of hollow PE-HD sections helically wound on a drum with a specific diameter. Konti Kan Spiral Pipe provides all technical advantages of equivalent polyethylene solid wall pipe with substantial saving in weight combining greater ease of installation with increased cost effectiveness. Its unique structure can offer a range of pipe sizes and ring stiffness, depending of customers requirements.
               </p>
               <p className="text-lg leading-relaxed">
-                Common standards: <strong>EN 13476-1:2007</strong>, <strong>EN 13476-2:2007</strong>, and <strong>DIN 16961</strong>
+                The characteristics of raw material and the technology of production are combined to insure application in:
               </p>
+              <ul className="text-lg leading-relaxed list-disc list-inside ml-4">
+                <li>Municipality for infrastructure objects</li>
+                <li>Industry</li>
+                <li>Roads building</li>
+                <li>Reconstruction</li>
+              </ul>
+              <p className="text-lg leading-relaxed">
+                Konti Kan Spiral provides all technical advantages as well as polyethylene or polypropylene pipes with solid wall, the only difference is that Konti Kan Spiral are significantly lighter in weight and thus for the installation, which is also financially viable.
+              </p>
+              <p className="text-lg leading-relaxed">
+                <strong>Color:</strong> Black (other color on request) | <strong>Length:</strong> 6m
+              </p>
+              <p className="text-lg leading-relaxed">
+                For connection of the pipes and fittings Konti Kan spiral pipe are use the following methods:
+              </p>
+              <ul className="text-lg leading-relaxed list-disc list-inside ml-4">
+                <li>Connection with socket +EPDM gasket</li>
+                <li>Extrusion welding from both side</li>
+                <li>Extrusion welding inside</li>
+                <li>Connection with thread with inside welding or with thermo shrink tape</li>
+                <li>Electro fusion connection</li>
+                <li>Connection with metal part with inside rubber layer</li>
+                <li>But welding</li>
+              </ul>
             </div>
           </div>
         </div>
