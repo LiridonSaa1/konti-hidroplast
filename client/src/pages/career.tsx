@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Users, Award, TrendingUp, Heart, Mail, Phone, MapPin, Building } from "lucide-react";
+import { Users, Award, TrendingUp, Mail, Phone, MapPin, Building } from "lucide-react";
 
 function CareerPage() {
   const { t } = useLanguage();
@@ -76,64 +76,7 @@ function CareerPage() {
 
       
 
-      {/* Company Culture Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="flex items-center mb-6">
-                <Heart className="w-8 h-8 text-red-500 mr-3" />
-                <h2 className="text-4xl font-bold text-[#1c2d56]">Our Culture</h2>
-              </div>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-                At Konti Hidroplast, we believe that our people are our greatest asset. We foster a culture of 
-                innovation, collaboration, and continuous improvement where every team member can thrive and contribute 
-                to our shared success.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <p className="text-gray-600">
-                    <strong>Innovation:</strong> We encourage creative thinking and welcome new ideas from all team members.
-                  </p>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <p className="text-gray-600">
-                    <strong>Collaboration:</strong> We work together as one team, supporting each other to achieve common goals.
-                  </p>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <p className="text-gray-600">
-                    <strong>Excellence:</strong> We strive for the highest standards in everything we do.
-                  </p>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
-                  <p className="text-gray-600">
-                    <strong>Sustainability:</strong> We are committed to environmental responsibility and sustainable practices.
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-blue-50 to-gray-100 rounded-2xl p-8">
-              <img
-                src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Konti-Hidroplast-Proizvodstvo-27-1.jpg"
-                alt="Konti Hidroplast Team"
-                className="w-full h-80 object-cover rounded-xl mb-6"
-              />
-              <blockquote className="text-lg italic text-gray-700">
-                "Join us and be part of a company that values innovation, quality, and the professional growth of our team members."
-              </blockquote>
-              <div className="mt-4">
-                <p className="font-semibold text-[#1c2d56]">Boris Madjunkov</p>
-                <p className="text-gray-600 text-sm">General Manager</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Apply Section */}
       <section className="py-20 bg-gradient-to-r from-gray-50 to-blue-50">
