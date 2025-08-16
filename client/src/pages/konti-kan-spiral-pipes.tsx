@@ -435,121 +435,63 @@ function KontiKanSpiralPipesPage() {
             </div>
           </div>
 
-          {/* Fitting Tabs */}
-          <div className="flex justify-center mb-12">
-            <div className="flex flex-wrap bg-gray-100 rounded-xl p-1">
-              {fittingTypes.map((fitting) => (
-                <button
-                  key={fitting.id}
-                  onClick={() => setActiveFittingTab(fitting.id)}
-                  className={`px-4 py-3 rounded-lg font-semibold transition-all ${
-                    activeFittingTab === fitting.id
-                      ? "bg-[#1c2d56] text-white shadow-lg"
-                      : "text-gray-600 hover:text-[#1c2d56]"
-                  }`}
-                >
-                  {fitting.title}
-                </button>
-              ))}
+          <div className="bg-white rounded-2xl p-8 shadow-sm">
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-gray-300">
+                <thead>
+                  <tr className="bg-gray-50">
+                    <th className="border border-gray-300 px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      Reference Standards
+                    </th>
+                    <th className="border border-gray-300 px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                      Application
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    {
+                      standard: "EN 13476-1:2007",
+                      application: "Sewage System – waste water and combined systems",
+                    },
+                    {
+                      standard: "EN 13476-2:2007", 
+                      application: "When building highways",
+                    },
+                    {
+                      standard: "EN 476:2001",
+                      application: "Drainage of surface water",
+                    },
+                    {
+                      standard: "EN 1610:2002",
+                      application: "Residential drainage systems",
+                    },
+                    {
+                      standard: "EN 1852-1:1999",
+                      application: "Industrial pipelines",
+                    },
+                    {
+                      standard: "ENV 1046:2002 (Y)",
+                      application: "Underwater installations",
+                    },
+                    {
+                      standard: "SFS 5906:2004",
+                      application: "Renovation",
+                    },
+                  ].map((item, index) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                      <td className="border border-gray-300 px-6 py-4 text-sm font-medium text-[#1c2d56]">
+                        {item.standard}
+                      </td>
+                      <td className="border border-gray-300 px-6 py-4 text-sm text-gray-700">
+                        {item.application}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-
-          {/* Fitting Content */}
-          {fittingTypes.map((fitting) => (
-            <div
-              key={fitting.id}
-              className={`${activeFittingTab === fitting.id ? "block" : "hidden"} transition-all duration-500`}
-            >
-              <div className="bg-white rounded-2xl p-8 shadow-sm">
-                {fitting.id === "reference-standards" ? (
-                  <div>
-                    <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
-                      {fitting.title}
-                    </h3>
-                    <p className="text-gray-600 mb-6">{fitting.description}</p>
-                    <div className="overflow-x-auto">
-                      <table className="w-full border-collapse border border-gray-300">
-                        <thead>
-                          <tr className="bg-gray-50">
-                            <th className="border border-gray-300 px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                              Reference Standards
-                            </th>
-                            <th className="border border-gray-300 px-6 py-4 text-left text-sm font-semibold text-gray-900">
-                              Application
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {fitting.items.map((item, index) => (
-                            <tr key={index} className="hover:bg-gray-50">
-                              <td className="border border-gray-300 px-6 py-4 text-sm font-medium text-[#1c2d56]">
-                                {'standard' in item ? item.standard : ''}
-                              </td>
-                              <td className="border border-gray-300 px-6 py-4 text-sm text-gray-700">
-                                {'application' in item ? item.application : ''}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                    {/* Left Column - Methods List */}
-                    <div>
-                      <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
-                        {fitting.title}
-                      </h3>
-                      <p className="text-gray-600 mb-6">{fitting.description}</p>
-                      <div className="space-y-3">
-                        {fitting.items.map((item, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center gap-3 p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors"
-                          >
-                            {'pdf' in item && item.pdf ? (
-                              <a
-                                href={item.pdf}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-3 w-full text-[#1c2d56] hover:text-blue-700"
-                              >
-                                <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 bg-[#1c2d56]">
-                                  <Download className="w-3 h-3 text-white" />
-                                </div>
-                                <span className="text-sm font-medium">
-                                  {'name' in item ? item.name : ''}
-                                </span>
-                              </a>
-                            ) : (
-                              <div className="flex items-center gap-3 w-full text-gray-700">
-                                <div className="w-6 h-6 bg-gray-400 rounded flex items-center justify-center flex-shrink-0">
-                                  <Check className="w-3 h-3 text-white" />
-                                </div>
-                                <span className="text-sm font-medium">{'name' in item ? item.name : ''}</span>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Right Column - Image */}
-                    <div className="relative">
-                      <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg overflow-hidden p-8 flex items-center justify-center">
-                        <img
-                          src={fitting.image}
-                          alt={fitting.title}
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
