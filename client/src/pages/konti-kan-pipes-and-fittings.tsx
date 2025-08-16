@@ -344,12 +344,21 @@ to             </div>
               </div>
 
               <div className="relative max-w-md mx-auto lg:mx-0">
-                <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
-                  <img
-                    src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/09/konti-kan-1.jpg"
-                    alt="HDPE Konti Kan"
-                    className="w-full h-full object-cover"
-                  />
+                <div className="space-y-6">
+                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                    <img
+                      src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/09/konti-kan-1.jpg"
+                      alt="HDPE Konti Kan Pipes"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                    <img
+                      src="/attached_assets/Konti-Hidroplast-Proizvodstvo-27-1 (1)_1755354410219.jpg"
+                      alt="HDPE Konti Kan Manufacturing"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
