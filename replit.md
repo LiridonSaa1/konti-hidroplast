@@ -9,6 +9,12 @@ Preferred communication style: Simple, everyday language.
 # Recent Changes (August 2025)
 
 ## August 16, 2025
+- **KONTI KAN DRAINAGE Page Added**: Created comprehensive drainage systems page at /konti-kan-drainage route
+  - Fetched all content from https://konti-hidroplast.com.mk/konti-kan-drainage/
+  - Features KONTI DREN drainage pipes with technical specifications
+  - Includes slot patterns (PP, MP, FP), applications, and compliance standards
+  - Professional design matching water-supply-systems page structure
+  - Added proper routing in App.tsx for drainage page
 - **Manholes Page Added**: Created comprehensive manholes page at /manholes route
   - Fetched all content from https://konti-hidroplast.com.mk/manholes/
   - Features detailed information about HDPE and PP manholes with characteristics

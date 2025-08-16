@@ -10,7 +10,8 @@ const manholesSpecifications = [
     title: "HDPE MANHOLES",
     description:
       "HDPE manholes exhibit high structural strength and rigidity, capable of handling both dynamic and static loads, including traffic loads and deep burial. While stiff, HDPE manholes also have a certain degree of flexibility, allowing them to absorb slight ground movements without cracking.",
-    additionalInfo: "HDPE is highly resistant to a wide range of chemicals, including acids, bases, and salts, making it suitable for sewage and industrial waste environments.",
+    additionalInfo:
+      "HDPE is highly resistant to a wide range of chemicals, including acids, bases, and salts, making it suitable for sewage and industrial waste environments.",
     features: [
       "High-Density Polyethylene (HDPE)",
       "Excellent chemical and biological resistance",
@@ -60,7 +61,7 @@ const manholesSpecifications = [
 const structuralForms = [
   "Injection molded – Konti Rigid manhole",
   "Manufactured, combination of injection molding part and corrugate pipe",
-  "Special manhole – tailor made, special construction of manholes (non standard). These manholes can be manufactured from KONTI KAN SPIRAL PIPE, inlet and outlet from KONTI KAN pipes."
+  "Special manhole – tailor made, special construction of manholes (non standard). These manholes can be manufactured from KONTI KAN SPIRAL PIPE, inlet and outlet from KONTI KAN pipes.",
 ];
 
 // Applications data
@@ -81,46 +82,50 @@ const applications = [
 const advantages = [
   {
     title: "Chemical Resistance",
-    description: "In comparison to the concrete manholes"
+    description: "In comparison to the concrete manholes",
   },
   {
     title: "Economic",
-    description: "Reduced material costs due to optimized chamber nominal diameter"
+    description:
+      "Reduced material costs due to optimized chamber nominal diameter",
   },
   {
     title: "Durable",
-    description: "Corrosion-resistant material polypropylene increases durability and protects the environment"
+    description:
+      "Corrosion-resistant material polypropylene increases durability and protects the environment",
   },
   {
     title: "100% Leak-tight",
-    description: "Complete sealing ensures no leakage"
+    description: "Complete sealing ensures no leakage",
   },
   {
     title: "Safe and Inspection-friendly",
-    description: "Inspection-friendly color orange"
+    description: "Inspection-friendly color orange",
   },
   {
     title: "Favorable Installation",
-    description: "Modular system ensures easy handling on the construction site"
+    description:
+      "Modular system ensures easy handling on the construction site",
   },
   {
     title: "Lower Costs",
-    description: "Lower wage and equipment costs due to weight and assembly advantages"
+    description:
+      "Lower wage and equipment costs due to weight and assembly advantages",
   },
   {
     title: "Built-in Slope",
-    description: "Integrated slope design for optimal flow"
-  }
+    description: "Integrated slope design for optimal flow",
+  },
 ];
 
 // Connection types
 const connectionTypes = [
   "Polypropylene smooth pipe",
-  "PVC pipe", 
+  "PVC pipe",
   "Cast Iron",
   "GRP pipe",
   "Clay pipe",
-  "Corrugate pipe"
+  "Corrugate pipe",
 ];
 
 export default function ManholesPage() {
@@ -143,7 +148,7 @@ export default function ManholesPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white pt-32 pb-20">
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
@@ -166,7 +171,10 @@ export default function ManholesPage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                Both PP (Polypropylene) and HDPE (High-Density Polyethylene) manholes are widely used in modern drainage and sewage systems, offering a range of advantages in terms of durability, efficiency, and ease of installation.
+                Both PP (Polypropylene) and HDPE (High-Density Polyethylene)
+                manholes are widely used in modern drainage and sewage systems,
+                offering a range of advantages in terms of durability,
+                efficiency, and ease of installation.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
@@ -211,9 +219,7 @@ export default function ManholesPage() {
                 Structural Forms
               </h2>
               <div className="space-y-4 text-gray-700">
-                <p>
-                  By structural form, HDPE and PP manholes can be:
-                </p>
+                <p>By structural form, HDPE and PP manholes can be:</p>
                 <div className="space-y-3">
                   {structuralForms.map((form, index) => (
                     <div key={index} className="flex items-start gap-3">
@@ -286,7 +292,7 @@ export default function ManholesPage() {
                     {spec.title}
                   </h3>
                   <p className="text-[#ffffff] mb-6">{spec.description}</p>
-                  
+
                   {spec.additionalInfo && (
                     <p className="text-[#ffffff] mb-6">{spec.additionalInfo}</p>
                   )}
@@ -343,8 +349,13 @@ export default function ManholesPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
             {advantages.map((advantage, index) => (
-              <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                <h3 className="font-semibold text-[#1c2d56] mb-3">{advantage.title}</h3>
+              <div
+                key={index}
+                className="bg-white p-6 rounded-xl shadow-sm border border-gray-100"
+              >
+                <h3 className="font-semibold text-[#1c2d56] mb-3">
+                  {advantage.title}
+                </h3>
                 <p className="text-gray-700 text-sm">{advantage.description}</p>
               </div>
             ))}
@@ -352,11 +363,18 @@ export default function ManholesPage() {
 
           {/* Connection Types */}
           <div className="bg-white rounded-2xl p-8 shadow-sm">
-            <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">Connection Compatibility</h3>
-            <p className="text-gray-700 mb-6">Connection can be made with different kind of pipes:</p>
+            <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
+              Connection Compatibility
+            </h3>
+            <p className="text-gray-700 mb-6">
+              Connection can be made with different kind of pipes:
+            </p>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {connectionTypes.map((type, index) => (
-                <div key={index} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                <div
+                  key={index}
+                  className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
+                >
                   <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
                   <span className="text-gray-700 text-sm">{type}</span>
                 </div>
@@ -365,7 +383,31 @@ export default function ManholesPage() {
           </div>
         </div>
       </section>
-
+      {/* Contact Section */}
+      <section className="py-20 bg-[#ffffff]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
+                Get in Touch: Connect with Us Today!
+              </h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+            <p className="text-xl text-gray-600 mb-8">
+              Need more information about our cable protection solutions?
+              Contact our team of experts.
+            </p>
+            <a
+              href="/contact"
+              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
+              data-testid="contact-button"
+            >
+              Contact Us
+            </a>
+          </div>
+        </div>
+      </section>
       <Footer />
     </div>
   );
