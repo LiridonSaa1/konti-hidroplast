@@ -92,6 +92,7 @@ export function Navigation() {
   const [activeSection, setActiveSection] = useState("home");
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [openSubDropdown, setOpenSubDropdown] = useState<string | null>(null);
+  const [isHoveringDropdown, setIsHoveringDropdown] = useState(false);
   const { t } = useLanguage();
   const navigationItems = useNavigationItems(t);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -164,15 +165,39 @@ export function Navigation() {
     if (dropdownTimeoutRef.current) {
       clearTimeout(dropdownTimeoutRef.current);
     }
+    if (subDropdownTimeoutRef.current) {
+      clearTimeout(subDropdownTimeoutRef.current);
+    }
     setOpenDropdown(label);
+    setIsHoveringDropdown(true);
   };
 
-  const handleDropdownMouseLeave = (event?: React.MouseEvent) => {
-    // Increased delay and better handling for nested dropdowns
+  const handleDropdownMouseLeave = () => {
+    setIsHoveringDropdown(false);
+    dropdownTimeoutRef.current = setTimeout(() => {
+      if (!isHoveringDropdown) {
+        setOpenDropdown(null);
+        setOpenSubDropdown(null);
+      }
+    }, 150);
+  };
+
+  const handleDropdownAreaEnter = () => {
+    if (dropdownTimeoutRef.current) {
+      clearTimeout(dropdownTimeoutRef.current);
+    }
+    if (subDropdownTimeoutRef.current) {
+      clearTimeout(subDropdownTimeoutRef.current);
+    }
+    setIsHoveringDropdown(true);
+  };
+
+  const handleDropdownAreaLeave = () => {
+    setIsHoveringDropdown(false);
     dropdownTimeoutRef.current = setTimeout(() => {
       setOpenDropdown(null);
       setOpenSubDropdown(null);
-    }, 500); // Longer delay for easier navigation
+    }, 150);
   };
 
   const handleSubDropdownMouseEnter = (label: string) => {
@@ -300,13 +325,8 @@ export function Navigation() {
             className="nav-dropdown w-56 bg-white shadow-lg border-0 z-50"
             sideOffset={8}
             onCloseAutoFocus={(event) => event.preventDefault()}
-            onMouseEnter={() => {
-              if (dropdownTimeoutRef.current) {
-                clearTimeout(dropdownTimeoutRef.current);
-              }
-              handleDropdownMouseEnter(item.label);
-            }}
-            onMouseLeave={handleDropdownMouseLeave}
+            onMouseEnter={handleDropdownAreaEnter}
+            onMouseLeave={handleDropdownAreaLeave}
             onPointerDownOutside={(event) => event.preventDefault()}
             onFocusOutside={(event) => event.preventDefault()}
             onEscapeKeyDown={(event) => {
@@ -321,28 +341,15 @@ export function Navigation() {
                   <DropdownMenuSub key={index}>
                     <DropdownMenuSubTrigger 
                       className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
-                      onMouseEnter={() => {
-                        if (dropdownTimeoutRef.current) {
-                          clearTimeout(dropdownTimeoutRef.current);
-                        }
-                      }}
+                      onMouseEnter={handleDropdownAreaEnter}
                     >
                       <span>{subItem.label}</span>
                     </DropdownMenuSubTrigger>
                     <DropdownMenuSubContent 
                       className="w-56 bg-white shadow-lg border-0 z-50"
                       sideOffset={8}
-                      onMouseEnter={() => {
-                        if (dropdownTimeoutRef.current) {
-                          clearTimeout(dropdownTimeoutRef.current);
-                        }
-                        if (subDropdownTimeoutRef.current) {
-                          clearTimeout(subDropdownTimeoutRef.current);
-                        }
-                      }}
-                      onMouseLeave={() => {
-                        // Don't close immediately, let the parent handle it
-                      }}
+                      onMouseEnter={handleDropdownAreaEnter}
+                      onMouseLeave={handleDropdownAreaLeave}
                     >
                       {subItem.items.map((nestedItem, nestedIndex) => (
                         <DropdownMenuItem
@@ -350,6 +357,7 @@ export function Navigation() {
                           onClick={() =>
                             handleDropdownClick(nestedItem.href, nestedItem.external)
                           }
+                          onMouseEnter={handleDropdownAreaEnter}
                           className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
                           data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase()}-${nestedItem.label.toLowerCase().replace(/\s+/g, "-")}`}
                         >
@@ -370,6 +378,7 @@ export function Navigation() {
                     onClick={() =>
                       handleDropdownClick(subItem.href, subItem.external)
                     }
+                    onMouseEnter={handleDropdownAreaEnter}
                     className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
                     data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
                   >
