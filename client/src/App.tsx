@@ -17,6 +17,7 @@ import BrochuresPage from "@/pages/brochures";
 import CertificatesPage from "@/pages/certificates";
 import NewsPage from "@/pages/news";
 import CareerPage from "@/pages/career";
+import KontiKanPipesAndFittingsPage from "@/pages/konti-kan-pipes-and-fittings";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/certificates" component={CertificatesPage} />
       <Route path="/news" component={NewsPage} />
       <Route path="/career" component={CareerPage} />
+      <Route path="/konti-kan-pipes-and-fittings" component={KontiKanPipesAndFittingsPage} />
       <Route component={NotFound} />
     </Switch>
   );

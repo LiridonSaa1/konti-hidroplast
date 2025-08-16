@@ -47,17 +47,20 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
     items: [
       { label: "All Products", href: "/products" },
       { label: "Water Supply Systems", href: "/products/water-supply-systems" },
-      { 
-        label: "Sewerage Systems", 
+      {
+        label: "Sewerage Systems",
         href: "/products#sewerage",
         items: [
-          { label: "KONTI KAN", href: "/products#sewerage" },
-          { label: "KONTI KAN SPIRAL", href: "/products#sewerage" },
-          { label: "KONTI KAN FITTINGS", href: "/products#sewerage" },
-          { label: "KONTI KAN PPHM", href: "/products#sewerage" },
-          { label: "DRAINAGE PIPES", href: "/products#sewerage" },
-          { label: "POLYPROPYLENE MANHOLES", href: "/products#sewerage" },
-        ]
+          { label: "HDPE Konti Kan OD", href: "/konti-kan-pipes-and-fittings" },
+          { label: "PPHM Konti Kan ID", href: "/pp-hm-pipes-and-fittings" },
+          {
+            label: "Konti kan spiral HDPE/ID",
+            href: "/konti-kan-spiral-pipes",
+          },
+          { label: "PP ML Compact Pipe OD", href: "/pp-hm-smooth-od" },
+          { label: "Manholes", href: "/manholes" },
+          { label: "Konti Kan Drainage", href: "/konti-kan-drainage" },
+        ],
       },
       { label: "Gas Pipeline System", href: "/products/gas-pipeline-systems" },
       { label: "Cable Protection", href: "/products/cable-protection" },
@@ -189,8 +192,6 @@ export function Navigation() {
     }, 200);
   };
 
-
-
   const renderNavigationItem = (
     item: NavigationItem,
     isMobile: boolean = false,
@@ -301,7 +302,7 @@ export function Navigation() {
             onMouseLeave={handleDropdownAreaMouseLeave}
             onInteractOutside={(event) => {
               // Only close if clicking outside, not on hover
-              if (event.type === 'pointerdown') {
+              if (event.type === "pointerdown") {
                 setOpenDropdown(null);
               } else {
                 event.preventDefault();
@@ -317,13 +318,13 @@ export function Navigation() {
                 // Nested dropdown for sewerage systems
                 return (
                   <DropdownMenuSub key={index}>
-                    <DropdownMenuSubTrigger 
+                    <DropdownMenuSubTrigger
                       className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
                       onMouseEnter={handleDropdownAreaMouseEnter}
                     >
                       <span>{subItem.label}</span>
                     </DropdownMenuSubTrigger>
-                    <DropdownMenuSubContent 
+                    <DropdownMenuSubContent
                       className="w-56 bg-white shadow-lg border-0 z-50"
                       sideOffset={8}
                       onMouseEnter={handleDropdownAreaMouseEnter}
@@ -333,7 +334,10 @@ export function Navigation() {
                         <DropdownMenuItem
                           key={nestedIndex}
                           onClick={() =>
-                            handleDropdownClick(nestedItem.href, nestedItem.external)
+                            handleDropdownClick(
+                              nestedItem.href,
+                              nestedItem.external,
+                            )
                           }
                           onMouseEnter={handleDropdownAreaMouseEnter}
                           className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
