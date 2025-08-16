@@ -1,11 +1,115 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Download, Check } from "lucide-react";
+import { ChevronDown, Download, Play, Check } from "lucide-react";
+
+// Konti Kan Spiral Pipe specifications data
+const pipeSpecifications = [
+  {
+    id: "konti-kan-spiral",
+    title: "KONTI KAN SPIRAL",
+    description:
+      "KONTI KAN SPIRAL PIPE is made of PEHD profile spirally wound on a drum with a specific diameter. Designed for large diameters and high stiffness requirements.",
+    features: [
+      "Common stiffness classes include SN 2, SN 4, SN 8, SN 12.5, or even higher",
+      "Dimension range: Ø 1300 – 2000 mm",
+      "Color: Black (other color on request)",
+      "Length: 6m",
+      "Service life of over 50 years under normal conditions",
+      "Fully recyclable"
+    ],
+    image:
+      "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral.jpg",
+    specifications:
+      "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Konti-Kan-Spiral-table-en.pdf",
+    brochure:
+      "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-KONTI-SPIRAL_EN_2021_compressed.pdf",
+  },
+];
+
+// Fitting types data
+const fittingTypes = [
+  {
+    id: "connection-methods",
+    title: "Connection Methods",
+    description: "Various connection methods for Konti Kan spiral pipes",
+    image:
+      "https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/Gogo_20240824_9420-24.jpg",
+    items: [
+      {
+        name: "Connection with socket +EPDM gasket",
+        pdf: null,
+      },
+      {
+        name: "Extrusion welding from both side",
+        pdf: null,
+      },
+      {
+        name: "Extrusion welding inside",
+        pdf: null,
+      },
+      {
+        name: "Connection with thread with inside welding",
+        pdf: null,
+      },
+      {
+        name: "Electro fusion connection",
+        pdf: null,
+      },
+      {
+        name: "Connection with metal part with inside rubber layer",
+        pdf: null,
+      },
+      {
+        name: "But welding",
+        pdf: null,
+      },
+    ],
+  },
+  {
+    id: "reference-standards",
+    title: "Reference Standards",
+    description: "Compliance standards for various applications",
+    image:
+      "https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/Gogo_20240824_9415-19.jpg",
+    items: [
+      {
+        name: "EN 13476-1:2007 - Sewage System",
+        pdf: null,
+      },
+      {
+        name: "EN 13476-2:2007 - Highway building",
+        pdf: null,
+      },
+      {
+        name: "EN 476:2001 - Surface water drainage",
+        pdf: null,
+      },
+      {
+        name: "EN 1610:2002 - Residential drainage",
+        pdf: null,
+      },
+      {
+        name: "EN 1852-1:1999 - Industrial pipelines",
+        pdf: null,
+      },
+      {
+        name: "ENV 1046:2002 - Underwater installations",
+        pdf: null,
+      },
+      {
+        name: "SFS 5906:2004 - Renovation",
+        pdf: null,
+      },
+    ],
+  },
+];
 
 function KontiKanSpiralPipesPage() {
   const { t } = useLanguage();
+  const [activeTab, setActiveTab] = useState("konti-kan-spiral");
+  const [activeFittingTab, setActiveFittingTab] = useState("connection-methods");
 
   useEffect(() => {
     // Set page title
@@ -156,219 +260,238 @@ function KontiKanSpiralPipesPage() {
                 Latest development of production of Konti Hidroplast is manufacturing sewage pipes for non-pressure applications. Konti Kan Spiral pipe and complete range of Konti Kan Spiral fittings.
               </p>
               <p className="text-lg leading-relaxed">
-                Konti Kan Spiral pipes are made of hollow PE-HD sections helically wound on a drum with a specific diameter. Konti Kan Spiral Pipe provides all technical advantages of equivalent polyethylene solid wall pipe with substantial saving in weight combining greater ease of installation with increased cost effectiveness. Its unique structure can offer a range of pipe sizes and ring stiffness, depending of customers requirements.
+                Konti Kan Spiral pipes are made of hollow PE-HD sections helically wound on a drum with a specific diameter. Konti Kan Spiral Pipe provides all technical advantages of equivalent polyethylene solid wall pipe with substantial saving in weight combining greater ease of installation with increased cost effectiveness.
               </p>
               <p className="text-lg leading-relaxed">
-                <strong>Color:</strong> Black (other color on request) | <strong>Length:</strong> 6m
+                Common standards: <strong>EN 13476-1:2007</strong>, <strong>EN 13476-2:2007</strong>, and <strong>DIN 16961</strong>
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Technical Specifications Section */}
+      {/* Konti Kan Spiral Pipes Section */}
       <section className="py-20 bg-[#1c2d56]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-white">
-                Technical Specifications
+                KONTI KAN SPIRAL Pipes
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div>
-              <h3 className="text-3xl font-bold text-white mb-6">
-                Konti Kan Spiral Pipes
-              </h3>
-              <p className="text-white mb-6">
-                KONTI KAN SPIRAL PIPE is made of PEHD profile spirally wound on a drum with a specific diameter. It contains all technical advantages of equivalent polyethylene pipes with full walls significantly decreasing the weight, providing much easier installation and increased efficiency.
-              </p>
+          {/* Tab Content */}
+          <div className="transition-all duration-500">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              <div>
+                <h3 className="text-3xl font-bold text-white mb-4">
+                  KONTI KAN SPIRAL
+                </h3>
+                <p className="text-white mb-6">
+                  KONTI KAN SPIRAL PIPE is made of PEHD profile spirally wound on a drum with a specific diameter. It contains all technical advantages of equivalent polyethylene pipes with full walls significantly decreasing the weight, providing much easier installation and increased efficiency.
+                </p>
 
-              <h4 className="text-xl font-bold text-white mb-4">Material Properties:</h4>
-              <div className="space-y-3 mb-6">
-                {materialProperties.map((property, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-white">{property}</span>
-                  </div>
-                ))}
-              </div>
-
-              <h4 className="text-xl font-bold text-white mb-4">Application:</h4>
-              <div className="space-y-3 mb-6">
-                {applications.map((application, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-white">{application}</span>
-                  </div>
-                ))}
-              </div>
-
-              <h4 className="text-xl font-bold text-white mb-4">Usage Areas:</h4>
-              <div className="space-y-3 mb-6">
-                {usageAreas.map((area, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-white">{area}</span>
-                  </div>
-                ))}
-              </div>
-
-              <p className="text-white mb-6">
-                Konti Kan Spiral provides all technical advantages as well as polyethylene or polypropylene pipes with solid wall, the only difference is that Konti Kan Spiral are significantly lighter in weight and thus for the installation, which is also financially viable.
-              </p>
-            </div>
-
-            <div className="relative max-w-md mx-auto lg:mx-0">
-              <div className="space-y-6">
-                <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
-                  <img
-                    src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral.jpg"
-                    alt="Konti Kan Spiral Pipes"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
-                  <img
-                    src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/Gogo_20240824_9420-24.jpg"
-                    alt="Konti Kan Spiral Manufacturing Process"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Characteristics Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center mb-8">
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Characteristics
-              </h2>
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl p-8 shadow-sm">
-            <div className="space-y-4">
-              {characteristics.map((characteristic, index) => (
-                <div key={index} className="flex items-start gap-3 p-3 border-b border-gray-100 last:border-b-0">
-                  <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">{characteristic}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Connection Methods Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center mb-8">
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Connection Methods
-              </h2>
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-            </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
-            <p className="text-lg text-gray-700 mb-8 text-center">
-              For connection of the pipes and fittings Konti Kan spiral pipe are use the following methods:
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {connectionMethods.map((method, index) => (
-                <div key={index} className="flex items-start gap-3 p-4 bg-white rounded-lg shadow-sm">
-                  <Check className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 font-medium">{method}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Reference Standards Section */}
-      <section className="py-20 bg-[#1c2d56]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center mb-8">
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-white">
-                Reference Standards
-              </h2>
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-2xl overflow-hidden shadow-lg">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Reference Standards</th>
-                    <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">Application</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {referenceStandards.map((item, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 text-sm font-medium text-[#1c2d56]">{item.standard}</td>
-                      <td className="px-6 py-4 text-sm text-gray-700">{item.application}</td>
-                    </tr>
+                <h4 className="text-xl font-bold text-white mb-4">
+                  Material Properties:
+                </h4>
+                <div className="space-y-3 mb-6">
+                  {[
+                    "High-Density Polyethylene (HDPE)",
+                    "Lightweight but strong, with high tensile strength",
+                    "Excellent resistance to chemical and biological degradation",
+                    "Flexible and resistant to environmental stress cracking",
+                  ].map((property, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{property}</span>
+                    </div>
                   ))}
-                </tbody>
-              </table>
+                </div>
+
+                <h4 className="text-xl font-bold text-white mb-4">
+                  Application:
+                </h4>
+                <div className="space-y-3 mb-6">
+                  {[
+                    "Sewerage and stormwater drainage systems",
+                    "Large-scale water transport and storage",
+                    "Industrial effluent pipelines",
+                    "Culverts and irrigation systems",
+                    "Ventilation ducts in mines",
+                  ].map((application, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{application}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <h4 className="text-xl font-bold text-white mb-4">
+                  Characteristics:
+                </h4>
+                <div className="space-y-3 mb-8">
+                  {[
+                    "Common stiffness classes include SN 2, SN 4, SN 8, SN 12.5, or even higher for specific applications",
+                    "Suitable for pipes with diameters ranging from Ø 1300 – 2000 mm",
+                    "Color: Black (other color on request)",
+                    "Length: 6m",
+                    "Resistant to both acidic and alkaline environments",
+                    "Service life of over 50 years under normal conditions",
+                    "Can be used above ground with UV-stabilized formulations",
+                    "Functional between -40°C to +60°C",
+                    "Fully recyclable",
+                    "Municipality for infrastructure objects",
+                    "Industry, Roads building, Reconstruction",
+                  ].map((characteristic, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{characteristic}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap gap-4">
+                  <a
+                    href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Konti-Kan-Spiral-table-en.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-white rounded-lg transition-colors"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Specs
+                  </a>
+                  <a
+                    href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-KONTI-SPIRAL_EN_2021_compressed.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Brochure
+                  </a>
+                </div>
+              </div>
+
+              <div className="relative max-w-md mx-auto lg:mx-0">
+                <div className="space-y-6">
+                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                    <img
+                      src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral.jpg"
+                      alt="KONTI KAN SPIRAL Pipes"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                    <img
+                      src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/Gogo_20240824_9420-24.jpg"
+                      alt="KONTI KAN SPIRAL Manufacturing"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Downloads Section */}
+      {/* KONTI KAN SPIRAL Connection & Standards Section */}
       <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Downloads
+                Connection Methods & Standards
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
           </div>
 
-          <div className="flex flex-wrap justify-center gap-6">
-            <a
-              href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Konti-Kan-Spiral-table-en.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white text-lg font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg"
-            >
-              <Download className="w-5 h-5 mr-3" />
-              Download Specs
-            </a>
-            <a
-              href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-KONTI-SPIRAL_EN_2021_compressed.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-8 py-4 bg-red-600 text-white text-lg font-semibold rounded-lg hover:bg-red-700 transition-colors shadow-lg"
-            >
-              <Download className="w-5 h-5 mr-3" />
-              Download Brochure
-            </a>
+          {/* Fitting Tabs */}
+          <div className="flex justify-center mb-12">
+            <div className="flex flex-wrap bg-gray-100 rounded-xl p-1">
+              {fittingTypes.map((fitting) => (
+                <button
+                  key={fitting.id}
+                  onClick={() => setActiveFittingTab(fitting.id)}
+                  className={`px-4 py-3 rounded-lg font-semibold transition-all ${
+                    activeFittingTab === fitting.id
+                      ? "bg-[#1c2d56] text-white shadow-lg"
+                      : "text-gray-600 hover:text-[#1c2d56]"
+                  }`}
+                >
+                  {fitting.title}
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* Fitting Content */}
+          {fittingTypes.map((fitting) => (
+            <div
+              key={fitting.id}
+              className={`${activeFittingTab === fitting.id ? "block" : "hidden"} transition-all duration-500`}
+            >
+              <div className="bg-white rounded-2xl p-8 shadow-sm">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+                  {/* Left Column - Methods/Standards List */}
+                  <div>
+                    <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
+                      {fitting.title}
+                    </h3>
+                    <p className="text-gray-600 mb-6">{fitting.description}</p>
+
+                    <div className="space-y-3">
+                      {fitting.items.map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-3 p-3 border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                        >
+                          {item.pdf ? (
+                            <a
+                              href={item.pdf}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-3 w-full text-[#1c2d56] hover:text-blue-700"
+                            >
+                              <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0 bg-[#1c2d56]">
+                                <Download className="w-3 h-3 text-white" />
+                              </div>
+                              <span className="text-sm font-medium">
+                                {item.name}
+                              </span>
+                            </a>
+                          ) : (
+                            <div className="flex items-center gap-3 w-full text-gray-700">
+                              <div className="w-6 h-6 bg-gray-400 rounded flex items-center justify-center flex-shrink-0">
+                                <Check className="w-3 h-3 text-white" />
+                              </div>
+                              <span className="text-sm font-medium">{item.name}</span>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Right Column - Image */}
+                  <div className="relative">
+                    <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg overflow-hidden p-8 flex items-center justify-center">
+                      <img
+                        src={fitting.image}
+                        alt={fitting.title}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -384,7 +507,7 @@ function KontiKanSpiralPipesPage() {
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our Konti Kan Spiral pipe solutions?
+              Need more information about our KONTI KAN SPIRAL pipe solutions?
               Contact our team of experts.
             </p>
             <a
