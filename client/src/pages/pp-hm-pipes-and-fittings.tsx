@@ -19,7 +19,8 @@ const pipeSpecifications = [
       "Manning's coefficient is typically 0.009",
       "50+ years under normal operating conditions",
     ],
-    image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/PPHMID.png",
+    image:
+      "https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/PPHMID.png",
     specifications:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/tabela-so-dimenzii-en.pdf",
     brochure:
@@ -156,7 +157,7 @@ function PPHMPipesAndFittingsPage() {
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "PP (Polypropylene) double-wall corrugated pipes are widely used for drainage, sewage, and stormwater management systems due to their excellent material properties and structural design."
+        "PP (Polypropylene) double-wall corrugated pipes are widely used for drainage, sewage, and stormwater management systems due to their excellent material properties and structural design.",
       );
     }
   }, []);
@@ -164,7 +165,7 @@ function PPHMPipesAndFittingsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white pt-32 pb-20">
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
@@ -181,7 +182,8 @@ function PPHMPipesAndFittingsPage() {
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                PP HM KONTI KAN<br />
+                PP HM KONTI KAN
+                <br />
                 <span className="text-red-500">SEWAGE</span>
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
@@ -192,7 +194,9 @@ function PPHMPipesAndFittingsPage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                PP double-wall corrugated pipes are an excellent choice for heavy-duty sewage and drainage systems, offering superior durability, chemical resistance, and hydraulic efficiency.
+                PP double-wall corrugated pipes are an excellent choice for
+                heavy-duty sewage and drainage systems, offering superior
+                durability, chemical resistance, and hydraulic efficiency.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
@@ -210,17 +214,11 @@ function PPHMPipesAndFittingsPage() {
 
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
+                <img
+                  src="/attached_assets/PPHMID-800x489_1755356237816.png"
+                  alt="PP HM Konti Kan Sewage Pipe"
                   className="w-full h-full object-cover"
-                  aria-label="PP HM Konti Kan Sewage Pipe video"
-                >
-                  <source src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/Konti-Hidroplast_2-1.mp4" type="video/mp4" />
-                  Sorry, your browser doesn't support embedded videos.
-                </video>
+                />
               </div>
               <div className="absolute -bottom-4 -right-4 text-white px-4 py-2 rounded-full shadow-lg bg-[#ef4444]">
                 <span className="text-sm font-medium">Premium Quality</span>
@@ -246,16 +244,33 @@ function PPHMPipesAndFittingsPage() {
           <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 max-w-6xl mx-auto">
             <div className="space-y-6 text-gray-700">
               <p className="text-lg leading-relaxed">
-                PP (Polypropylene) double-wall corrugated pipes are widely used for drainage, sewage, and stormwater management systems due to their excellent material properties and structural design.
+                PP (Polypropylene) double-wall corrugated pipes are widely used
+                for drainage, sewage, and stormwater management systems due to
+                their excellent material properties and structural design.
+                Common international standards for PP double-wall corrugated
+                pipes include:
               </p>
               <p className="text-lg leading-relaxed">
-                Common international standards for PP double-wall corrugated pipes include: <strong>EN 13476-1 and EN 13476-3</strong> (Production standard for structured-wall plastic pipes), <strong>ISO 21138</strong> (Specifications for non-pressure drainage and sewerage systems), and <strong>ASTM F2736/F2764</strong> (Standards for polypropylene corrugated pipes).
+                Common international standards for PP double-wall corrugated
+                pipes include: <strong>EN 13476-1 and EN 13476-3</strong>{" "}
+                (Production standard for structured-wall plastic pipes),{" "}
+                <strong>ISO 21138</strong> (Specifications for non-pressure
+                drainage and sewerage systems), and{" "}
+                <strong>ASTM F2736/F2764</strong> (Standards for polypropylene
+                corrugated pipes).
               </p>
               <p className="text-lg leading-relaxed">
-                PP double-wall corrugated pipes are an excellent choice for heavy-duty sewage and drainage systems, offering superior durability, chemical resistance, and hydraulic efficiency. Greater chemical and thermal resistance compared to HDPE makes them ideal for challenging applications.
+                PP double-wall corrugated pipes are an excellent choice for
+                heavy-duty sewage and drainage systems, offering superior
+                durability, chemical resistance, and hydraulic efficiency.
+                Greater chemical and thermal resistance compared to HDPE makes
+                them ideal for challenging applications.
               </p>
               <p className="text-lg leading-relaxed">
-                These pipes are designed to handle high flow rates in drainage and sewage systems with UV-stabilized material for applications exposed to sunlight, and can operate between -20°C and +90°C, with short-term resistance to higher temperatures.
+                These pipes are designed to handle high flow rates in drainage
+                and sewage systems with UV-stabilized material for applications
+                exposed to sunlight, and can operate between -20°C and +90°C,
+                with short-term resistance to higher temperatures.
               </p>
             </div>
           </div>
@@ -283,17 +298,22 @@ function PPHMPipesAndFittingsPage() {
                   PP HM Konti Kan
                 </h3>
                 <p className="text-white mb-6">
-                  PP (Polypropylene) double-wall corrugated pipes are widely used for drainage, sewage, and stormwater management systems due to their excellent material properties and structural design.
+                  PP (Polypropylene) double-wall corrugated pipes are widely
+                  used for drainage, sewage, and stormwater management systems
+                  due to their excellent material properties and structural
+                  design.
                 </p>
 
-                <h4 className="text-xl font-bold text-white mb-4">Material Properties:</h4>
+                <h4 className="text-xl font-bold text-white mb-4">
+                  Material Properties:
+                </h4>
                 <div className="space-y-3 mb-6">
                   {[
                     "Polypropylene (PP)",
                     "High strength-to-weight ratio",
                     "Greater chemical and thermal resistance compared to HDPE",
                     "Excellent resistance to abrasion, making it ideal for sewage applications",
-                    "More rigid and durable in higher temperatures than HDPE"
+                    "More rigid and durable in higher temperatures than HDPE",
                   ].map((property, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
@@ -302,12 +322,14 @@ function PPHMPipesAndFittingsPage() {
                   ))}
                 </div>
 
-                <h4 className="text-xl font-bold text-white mb-4">Application:</h4>
+                <h4 className="text-xl font-bold text-white mb-4">
+                  Application:
+                </h4>
                 <div className="space-y-3 mb-6">
                   {[
                     "Municipal and industrial wastewater systems",
                     "Stormwater, rainwater harvesting, and subsoil drainage",
-                    "Road and rail infrastructure, as culverts and drainage pipes"
+                    "Road and rail infrastructure, as culverts and drainage pipes",
                   ].map((application, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
@@ -316,7 +338,9 @@ function PPHMPipesAndFittingsPage() {
                   ))}
                 </div>
 
-                <h4 className="text-xl font-bold text-white mb-4">Characteristics:</h4>
+                <h4 className="text-xl font-bold text-white mb-4">
+                  Characteristics:
+                </h4>
                 <div className="space-y-3 mb-8">
                   {[
                     "Strong corrugated structure for deep burial or heavy traffic loads",
@@ -329,7 +353,7 @@ function PPHMPipesAndFittingsPage() {
                     "UV-stabilized for applications exposed to sunlight",
                     "Typically exceeds 50 years under normal operating conditions",
                     "Can operate between -20°C and +90°C, with short-term resistance to higher temperatures",
-                    "Fully recyclable, making it an eco-friendly option"
+                    "Fully recyclable, making it an eco-friendly option",
                   ].map((characteristic, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
@@ -492,7 +516,8 @@ function PPHMPipesAndFittingsPage() {
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our PP HM sewage pipe solutions? Contact our team of experts.
+              Need more information about our PP HM sewage pipe solutions?
+              Contact our team of experts.
             </p>
             <a
               href="/contact"
