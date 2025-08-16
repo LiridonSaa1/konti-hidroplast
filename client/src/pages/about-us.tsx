@@ -683,29 +683,55 @@ export default function AboutUs() {
           </div>
 
           <Tabs defaultValue="commerce" className="w-full">
-            <TabsList className="grid w-full grid-cols-7 mb-12">
-              <TabsTrigger value="commerce" className="text-lg">
-                Commerce
-              </TabsTrigger>
-              <TabsTrigger value="legal" className="text-lg">
-                Legal Department
-              </TabsTrigger>
-              <TabsTrigger value="technical" className="text-lg">
-                Technical Service
-              </TabsTrigger>
-              <TabsTrigger value="laboratory" className="text-lg">
-                Laboratory
-              </TabsTrigger>
-              <TabsTrigger value="accounting" className="text-lg">
-                Accounting
-              </TabsTrigger>
-              <TabsTrigger value="public-relations" className="text-lg">
-                Public Relations
-              </TabsTrigger>
-              <TabsTrigger value="human-resources" className="text-lg">
-                Human Resources
-              </TabsTrigger>
-            </TabsList>
+            {/* Slider-style tab navigation */}
+            <div className="relative mb-12">
+              <div className="bg-white rounded-xl shadow-lg p-2 mx-auto max-w-6xl">
+                <TabsList className="grid w-full h-auto bg-transparent p-0 gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-7">
+                  <TabsTrigger 
+                    value="commerce" 
+                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
+                  >
+                    Commerce
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="legal" 
+                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
+                  >
+                    Legal Department
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="technical" 
+                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
+                  >
+                    Technical Service
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="laboratory" 
+                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
+                  >
+                    Laboratory
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="accounting" 
+                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
+                  >
+                    Accounting
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="public-relations" 
+                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
+                  >
+                    Public Relations
+                  </TabsTrigger>
+                  <TabsTrigger 
+                    value="human-resources" 
+                    className="flex-1 rounded-lg px-4 py-3 text-sm font-medium transition-all duration-200 data-[state=active]:bg-[#1c2d56] data-[state=active]:text-white data-[state=inactive]:text-gray-600 data-[state=inactive]:hover:bg-gray-100 whitespace-nowrap"
+                  >
+                    Human Resources
+                  </TabsTrigger>
+                </TabsList>
+              </div>
+            </div>
 
             <TabsContent value="commerce" className="mt-0">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
