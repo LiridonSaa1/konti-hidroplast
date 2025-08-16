@@ -19,7 +19,8 @@ const pipeSpecifications = [
       "High flow capacity due to low Manning's coefficient (0.009)",
       "50+ years in standard operating conditions",
     ],
-    image: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/09/konti-kan-1.jpg",
+    image:
+      "https://konti-hidroplast.com.mk/wp-content/uploads/2024/09/konti-kan-1.jpg",
     specifications:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/09/Konti_kan_cevki-tabela_za_dimenzii_i_tezini-en.pdf",
     brochure:
@@ -132,7 +133,7 @@ function KontiKanPipesAndFittingsPage() {
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "HDPE corrugated sewage pipes excel in durability, hydraulic efficiency, and structural performance, making them a preferred choice for sewage and drainage systems."
+        "HDPE corrugated sewage pipes excel in durability, hydraulic efficiency, and structural performance, making them a preferred choice for sewage and drainage systems.",
       );
     }
   }, []);
@@ -140,7 +141,7 @@ function KontiKanPipesAndFittingsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white pt-32 pb-20">
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
@@ -157,7 +158,8 @@ function KontiKanPipesAndFittingsPage() {
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                HDPE KONTI KAN<br />
+                HDPE KONTI KAN
+                <br />
                 <span className="text-red-500">SEWAGE</span>
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
@@ -168,7 +170,9 @@ function KontiKanPipesAndFittingsPage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                HDPE corrugated sewage pipes excel in durability, hydraulic efficiency, and structural performance, making them a preferred choice for sewage and drainage systems.
+                HDPE corrugated sewage pipes excel in durability, hydraulic
+                efficiency, and structural performance, making them a preferred
+                choice for sewage and drainage systems.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
@@ -194,7 +198,10 @@ function KontiKanPipesAndFittingsPage() {
                   className="w-full h-full object-cover"
                   aria-label="HDPE Konti Kan Sewage Pipe video"
                 >
-                  <source src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/Konti-Hidroplast_2-1.mp4" type="video/mp4" />
+                  <source
+                    src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/Konti-Hidroplast_2-1.mp4"
+                    type="video/mp4"
+                  />
                   Sorry, your browser doesn't support embedded videos.
                 </video>
               </div>
@@ -222,21 +229,17 @@ function KontiKanPipesAndFittingsPage() {
           <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 max-w-6xl mx-auto">
             <div className="space-y-6 text-gray-700">
               <p className="text-lg leading-relaxed">
-                HDPE (High-Density Polyethylene) corrugated pipes are widely used in sewage and drainage systems due to their excellent performance characteristics.
+                HDPE corrugated sewage pipes excel in durability, hydraulic
+                efficiency, and structural performance, making them a preferred
+                choice for sewage and drainage systems. Their lightweight,
+                flexibility, and chemical resistance further enhance their
+                suitability for a wide range of applications.
               </p>
               <p className="text-lg leading-relaxed">
-                Common standards for HDPE corrugated pipes: <strong>EN 13476-1</strong> and <strong>EN 13476-3</strong>
+                Common standards for HDPE corrugated pipes:{" "}
+                <strong>EN 13476-1</strong> and <strong>EN 13476-3</strong>
               </p>
-              <p className="text-lg leading-relaxed">
-                Besides the experience, our large range of products and top quality, by all internationally recognized standards, enabled us to get access to international markets. Our current production program covers all fields of application: pipes and hoses for water supply systems, sewage systems, PE and PP manholes, pipes for transporting gas and oil products, pipes and hoses for protection of telecommunication cables, drainage systems and fittings for all dimensions, which also range from a minimum diameter of 12mm up to 2000mm.
-              </p>
-              <p className="text-lg leading-relaxed">
-                Konti Hidroplast became known to the market through quality supply and constant application of flexibility in operation, which is very important in an industry where the complexity of managing all processes is quite high.
-              </p>
-              <p className="text-lg leading-relaxed">
-                Their lightweight, flexibility, and chemical resistance further enhance their suitability for a wide range of applications including municipal sewage systems, stormwater drainage, industrial wastewater systems, and agricultural drainage.
-              </p>
-            </div>
+to             </div>
           </div>
         </div>
       </section>
@@ -255,61 +258,102 @@ function KontiKanPipesAndFittingsPage() {
           </div>
 
           {/* Tab Content */}
-          {pipeSpecifications.map((spec) => (
-            <div
-              key={spec.id}
-              className="transition-all duration-500"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div>
-                  <h3 className="text-3xl font-bold text-white mb-4">
-                    {spec.title}
-                  </h3>
-                  <p className="text-white mb-6">{spec.description}</p>
+          <div className="transition-all duration-500">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              <div>
+                <h3 className="text-3xl font-bold text-white mb-4">
+                  HDPE Konti Kan
+                </h3>
+                <p className="text-white mb-6">
+                  HDPE (High-Density Polyethylene) corrugated pipes are widely used in sewage and drainage systems due to their excellent performance characteristics.
+                </p>
 
-                  <div className="space-y-3 mb-8">
-                    {spec.features.map((feature, index) => (
-                      <div key={index} className="flex items-start gap-3">
-                        <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                        <span className="text-white">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-wrap gap-4">
-                    <a
-                      href={spec.specifications}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-white rounded-lg transition-colors"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Specs
-                    </a>
-                    <a
-                      href={spec.brochure}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      Download Brochure
-                    </a>
-                  </div>
+                <h4 className="text-xl font-bold text-white mb-4">Material Properties:</h4>
+                <div className="space-y-3 mb-6">
+                  {[
+                    "High-Density Polyethylene (HDPE)",
+                    "Lightweight yet durable.",
+                    "Excellent chemical resistance, making it ideal for sewage applications.",
+                    "Non-corrosive and resistant to biological and chemical attacks from wastewater."
+                  ].map((property, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{property}</span>
+                    </div>
+                  ))}
                 </div>
 
-                <div className="relative max-w-md mx-auto lg:mx-0">
-                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
-                    <img
-                      src={spec.image}
-                      alt={spec.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                <h4 className="text-xl font-bold text-white mb-4">Application:</h4>
+                <div className="space-y-3 mb-6">
+                  {[
+                    "Municipal sewage systems.",
+                    "Stormwater drainage.",
+                    "Industrial wastewater systems.",
+                    "Agricultural drainage."
+                  ].map((application, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{application}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <h4 className="text-xl font-bold text-white mb-4">Characteristics:</h4>
+                <div className="space-y-3 mb-8">
+                  {[
+                    "Common stiffness ratings: SN 4, SN 6, SN 8, or higher, depending on the application.",
+                    "Dimension range: DN/OD 110-1200mm",
+                    "Color: Outer black with inner light grey",
+                    "Smooth Inner Surface: minimizes friction, allowing efficient flow of sewage and wastewater.",
+                    "High flow capacity due to low Manning's coefficient (commonly 0.009).",
+                    "Corrugated Outer Wall: enhances structural strength while reducing material weight.",
+                    "High resistance to UV degradation.",
+                    "Flexible and resistant to cracking.",
+                    "50+ years in standard operating conditions.",
+                    "Easier to handle and transport compared to concrete or steel.",
+                    "Operates effectively within a temperature range of -40°C to +60°C.",
+                    "Fully recyclable at the end of its service life."
+                  ].map((characteristic, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{characteristic}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap gap-4">
+                  <a
+                    href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/09/Konti_kan_cevki-tabela_za_dimenzii_i_tezini-en.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-white rounded-lg transition-colors"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Specs
+                  </a>
+                  <a
+                    href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-Konti-Kan-siv_EN-2021-so-korekcii-MART-2021-2.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Brochure
+                  </a>
+                </div>
+              </div>
+
+              <div className="relative max-w-md mx-auto lg:mx-0">
+                <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                  <img
+                    src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/09/konti-kan-1.jpg"
+                    alt="HDPE Konti Kan"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
@@ -405,7 +449,9 @@ function KontiKanPipesAndFittingsPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-[#1c2d56] mb-8">Applications</h2>
+            <h2 className="text-4xl font-bold text-[#1c2d56] mb-8">
+              Applications
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -413,27 +459,32 @@ function KontiKanPipesAndFittingsPage() {
               {
                 title: "Municipal Sewage Systems",
                 description: "Reliable wastewater collection and transport",
-                icon: "🏢"
+                icon: "🏢",
               },
               {
                 title: "Stormwater Drainage",
                 description: "Efficient rainwater management systems",
-                icon: "🌧️"
+                icon: "🌧️",
               },
               {
                 title: "Industrial Wastewater",
                 description: "Heavy-duty industrial applications",
-                icon: "🏭"
+                icon: "🏭",
               },
               {
                 title: "Agricultural Drainage",
                 description: "Field drainage and irrigation systems",
-                icon: "🌾"
-              }
+                icon: "🌾",
+              },
             ].map((application, index) => (
-              <div key={index} className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 text-center">
+              <div
+                key={index}
+                className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 text-center"
+              >
                 <div className="text-4xl mb-4">{application.icon}</div>
-                <h3 className="text-xl font-bold text-[#1c2d56] mb-3">{application.title}</h3>
+                <h3 className="text-xl font-bold text-[#1c2d56] mb-3">
+                  {application.title}
+                </h3>
                 <p className="text-gray-600">{application.description}</p>
               </div>
             ))}
@@ -453,7 +504,8 @@ function KontiKanPipesAndFittingsPage() {
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our Konti Kan sewage pipe solutions? Contact our team of experts.
+              Need more information about our Konti Kan sewage pipe solutions?
+              Contact our team of experts.
             </p>
             <a
               href="/contact"
