@@ -9,6 +9,11 @@ Preferred communication style: Simple, everyday language.
 # Recent Changes (August 2025)
 
 ## August 16, 2025
+- **PP HM Fittings Design Update**: Updated PP HM Fittings section design to match Water Supply Systems PE Fittings
+  - Replaced simple tab-based navigation with modern slider-style navigation
+  - Added left/right navigation arrows and dot indicators matching PE Fittings design
+  - Improved user experience with consistent design patterns across product pages
+  - Enhanced mobile and desktop navigation experience
 - **KONTI KAN DRAINAGE Page Added**: Created comprehensive drainage systems page at /konti-kan-drainage route
   - Fetched all content from https://konti-hidroplast.com.mk/konti-kan-drainage/
   - Features KONTI DREN drainage pipes with technical specifications
