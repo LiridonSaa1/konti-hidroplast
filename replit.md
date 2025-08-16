@@ -9,6 +9,12 @@ Preferred communication style: Simple, everyday language.
 # Recent Changes (August 2025)
 
 ## August 16, 2025
+- **Manholes Page Added**: Created comprehensive manholes page at /manholes route
+  - Fetched all content from https://konti-hidroplast.com.mk/manholes/
+  - Features detailed information about HDPE and PP manholes with characteristics
+  - Includes applications, advantages, and technical specifications
+  - Professional design with image galleries and brochure download links
+  - Added proper routing in App.tsx for manholes page
 - **Migration to Standard Replit**: Successfully migrated project from Replit Agent to standard Replit environment
   - Enhanced security with proper client/server separation
   - Maintained all existing functionality and features

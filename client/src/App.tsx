@@ -17,6 +17,7 @@ import BrochuresPage from "@/pages/brochures";
 import CertificatesPage from "@/pages/certificates";
 import NewsPage from "@/pages/news";
 import CareerPage from "@/pages/career";
+import ManholesPage from "@/pages/manholes";
 import KontiKanPipesAndFittingsPage from "@/pages/konti-kan-pipes-and-fittings";
 import KontiKanSpiralPipesPage from "@/pages/konti-kan-spiral-pipes";
 import PPHMPipesAndFittingsPage from "@/pages/pp-hm-pipes-and-fittings";
@@ -39,6 +40,7 @@ function Router() {
       <Route path="/certificates" component={CertificatesPage} />
       <Route path="/news" component={NewsPage} />
       <Route path="/career" component={CareerPage} />
+      <Route path="/manholes" component={ManholesPage} />
       <Route path="/konti-kan-pipes-and-fittings" component={KontiKanPipesAndFittingsPage} />
       <Route path="/konti-kan-spiral-pipes" component={KontiKanSpiralPipesPage} />
       <Route path="/pp-hm-pipes-and-fittings" component={PPHMPipesAndFittingsPage} />
