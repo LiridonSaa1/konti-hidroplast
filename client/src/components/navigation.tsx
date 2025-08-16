@@ -171,20 +171,7 @@ export function Navigation() {
     dropdownTimeoutRef.current = setTimeout(() => {
       setOpenDropdown(null);
       setOpenSubDropdown(null);
-    }, 300); // Increased delay to allow moving to nested dropdowns
-  };
-
-  const handleSubDropdownMouseEnter = (label: string) => {
-    if (subDropdownTimeoutRef.current) {
-      clearTimeout(subDropdownTimeoutRef.current);
-    }
-    setOpenSubDropdown(label);
-  };
-
-  const handleSubDropdownMouseLeave = () => {
-    subDropdownTimeoutRef.current = setTimeout(() => {
-      setOpenSubDropdown(null);
-    }, 200);
+    }, 500); // Longer delay to allow moving to nested dropdowns
   };
 
   const renderNavigationItem = (
@@ -264,20 +251,12 @@ export function Navigation() {
         key={item.label}
         modal={false}
         open={isOpen}
-        onOpenChange={(open) => {
-          if (!open) {
-            // Only close if not hovering
-            setTimeout(() => {
-              if (openDropdown === item.label) {
-                setOpenDropdown(null);
-              }
-            }, 100);
-          }
-        }}
+        onOpenChange={() => {}} // Prevent auto-closing
       >
         <div
           onMouseEnter={() => handleDropdownMouseEnter(item.label)}
           onMouseLeave={handleDropdownMouseLeave}
+          className="relative"
         >
           <DropdownMenuTrigger asChild>
             <button
@@ -306,38 +285,78 @@ export function Navigation() {
               handleDropdownMouseEnter(item.label);
             }}
             onMouseLeave={handleDropdownMouseLeave}
-            onPointerDownOutside={(event) => event.preventDefault()}
-            onFocusOutside={(event) => event.preventDefault()}
+            onPointerDownOutside={(event) => {
+              // Allow clicking outside to close
+              setOpenDropdown(null);
+            }}
+            onEscapeKeyDown={() => {
+              setOpenDropdown(null);
+            }}
           >
             {item.items.map((subItem, index) => {
               if (subItem.items && subItem.items.length > 0) {
-                // Nested dropdown for sewerage systems
+                // Nested dropdown for sewerage systems - using a different approach
+                const subIsOpen = openSubDropdown === `${item.label}-${subItem.label}`;
                 return (
-                  <DropdownMenuSub key={index}>
-                    <DropdownMenuSubTrigger className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none">
-                      <span>{subItem.label}</span>
-                    </DropdownMenuSubTrigger>
-                    <DropdownMenuSubContent 
-                      className="w-56 bg-white shadow-lg border-0 z-50"
-                      sideOffset={8}
+                  <div key={index} className="relative">
+                    <DropdownMenuItem
+                      onSelect={(e) => e.preventDefault()}
+                      className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
+                      onMouseEnter={() => {
+                        if (dropdownTimeoutRef.current) {
+                          clearTimeout(dropdownTimeoutRef.current);
+                        }
+                        if (subDropdownTimeoutRef.current) {
+                          clearTimeout(subDropdownTimeoutRef.current);
+                        }
+                        setOpenSubDropdown(`${item.label}-${subItem.label}`);
+                      }}
+                      onMouseLeave={() => {
+                        subDropdownTimeoutRef.current = setTimeout(() => {
+                          setOpenSubDropdown(null);
+                        }, 200);
+                      }}
+                      data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
                     >
-                      {subItem.items.map((nestedItem, nestedIndex) => (
-                        <DropdownMenuItem
-                          key={nestedIndex}
-                          onClick={() =>
-                            handleDropdownClick(nestedItem.href, nestedItem.external)
+                      <span>{subItem.label}</span>
+                      <ChevronRight className="h-3 w-3 text-gray-400" />
+                    </DropdownMenuItem>
+                    {subIsOpen && (
+                      <div 
+                        className="absolute left-full top-0 w-56 bg-white shadow-lg border border-gray-200 rounded-md z-50 py-1"
+                        style={{ marginLeft: '4px' }}
+                        onMouseEnter={() => {
+                          if (subDropdownTimeoutRef.current) {
+                            clearTimeout(subDropdownTimeoutRef.current);
                           }
-                          className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
-                          data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase()}-${nestedItem.label.toLowerCase().replace(/\s+/g, "-")}`}
-                        >
-                          <span>{nestedItem.label}</span>
-                          {nestedItem.external && (
-                            <ExternalLink className="h-3 w-3 text-gray-400" />
-                          )}
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuSubContent>
-                  </DropdownMenuSub>
+                          if (dropdownTimeoutRef.current) {
+                            clearTimeout(dropdownTimeoutRef.current);
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          subDropdownTimeoutRef.current = setTimeout(() => {
+                            setOpenSubDropdown(null);
+                          }, 200);
+                        }}
+                      >
+                        {subItem.items.map((nestedItem, nestedIndex) => (
+                          <button
+                            key={nestedIndex}
+                            onClick={() =>
+                              handleDropdownClick(nestedItem.href, nestedItem.external)
+                            }
+                            className="w-full text-left px-3 py-2 text-sm font-medium text-konti-gray hover:text-konti-blue hover:bg-gray-50 flex items-center justify-between focus:outline-none focus:bg-gray-50 focus:text-konti-blue"
+                            data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase()}-${nestedItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+                          >
+                            <span>{nestedItem.label}</span>
+                            {nestedItem.external && (
+                              <ExternalLink className="h-3 w-3 text-gray-400" />
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 );
               } else {
                 // Regular dropdown item
