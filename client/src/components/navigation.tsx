@@ -7,8 +7,11 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu, ChevronDown, ExternalLink } from "lucide-react";
+import { Menu, ChevronDown, ExternalLink, ChevronRight } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import logoScrolled from "@assets/urban-rohr-logo.svg";
@@ -24,6 +27,7 @@ interface DropdownItem {
   label: string;
   href: string;
   external?: boolean;
+  items?: DropdownItem[]; // For nested dropdowns
 }
 
 interface NavigationDropdown {
@@ -43,7 +47,18 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
     items: [
       { label: "All Products", href: "/products" },
       { label: "Water Supply Systems", href: "/products/water-supply-systems" },
-      { label: "Sewerage Systems", href: "/products#sewerage" },
+      { 
+        label: "Sewerage Systems", 
+        href: "/products#sewerage",
+        items: [
+          { label: "KONTI KAN", href: "/products#sewerage" },
+          { label: "KONTI KAN SPIRAL", href: "/products#sewerage" },
+          { label: "KONTI KAN FITTINGS", href: "/products#sewerage" },
+          { label: "KONTI KAN PPHM", href: "/products#sewerage" },
+          { label: "DRAINAGE PIPES", href: "/products#sewerage" },
+          { label: "POLYPROPYLENE MANHOLES", href: "/products#sewerage" },
+        ]
+      },
       { label: "Gas Pipeline System", href: "/products/gas-pipeline-systems" },
       { label: "Cable Protection", href: "/products/cable-protection" },
       // { label: "Full Catalog", href: "https://konti-hidroplast.com.mk/products/", external: true },
@@ -262,21 +277,56 @@ export function Navigation() {
             onMouseEnter={() => handleDropdownMouseEnter(item.label)}
             onMouseLeave={handleDropdownMouseLeave}
           >
-            {item.items.map((subItem, index) => (
-              <DropdownMenuItem
-                key={index}
-                onClick={() =>
-                  handleDropdownClick(subItem.href, subItem.external)
-                }
-                className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
-                data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
-              >
-                <span>{subItem.label}</span>
-                {subItem.external && (
-                  <ExternalLink className="h-3 w-3 text-gray-400" />
-                )}
-              </DropdownMenuItem>
-            ))}
+            {item.items.map((subItem, index) => {
+              if (subItem.items && subItem.items.length > 0) {
+                // Nested dropdown for sewerage systems
+                return (
+                  <DropdownMenuSub key={index}>
+                    <DropdownMenuSubTrigger className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none">
+                      <span>{subItem.label}</span>
+                      <ChevronRight className="h-3 w-3 text-gray-400" />
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent 
+                      className="w-56 bg-white shadow-lg border-0 z-50"
+                      sideOffset={8}
+                    >
+                      {subItem.items.map((nestedItem, nestedIndex) => (
+                        <DropdownMenuItem
+                          key={nestedIndex}
+                          onClick={() =>
+                            handleDropdownClick(nestedItem.href, nestedItem.external)
+                          }
+                          className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
+                          data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase()}-${nestedItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+                        >
+                          <span>{nestedItem.label}</span>
+                          {nestedItem.external && (
+                            <ExternalLink className="h-3 w-3 text-gray-400" />
+                          )}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                );
+              } else {
+                // Regular dropdown item
+                return (
+                  <DropdownMenuItem
+                    key={index}
+                    onClick={() =>
+                      handleDropdownClick(subItem.href, subItem.external)
+                    }
+                    className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
+                    data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+                  >
+                    <span>{subItem.label}</span>
+                    {subItem.external && (
+                      <ExternalLink className="h-3 w-3 text-gray-400" />
+                    )}
+                  </DropdownMenuItem>
+                );
+              }
+            })}
           </DropdownMenuContent>
         </div>
       </DropdownMenu>
