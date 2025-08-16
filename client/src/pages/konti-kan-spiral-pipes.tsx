@@ -314,9 +314,6 @@ function KontiKanSpiralPipesPage() {
           <div className="transition-all duration-500">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div>
-                <h3 className="text-3xl font-bold text-white mb-4">
-                  KONTI KAN SPIRAL
-                </h3>
                 <p className="text-white mb-6">
                   KONTI KAN SPIRAL PIPE is made of PEHD profile spirally wound on a drum with a specific diameter. It contains all technical advantages of equivalent polyethylene pipes with full walls significantly decreasing the weight, providing much easier installation and increased efficiency.
                 </p>
