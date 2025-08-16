@@ -63,23 +63,46 @@ export function CertificationsSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.2 });
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Determine items per slide based on screen size
+  const getItemsPerSlide = () => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768 ? 2 : 5; // 2 for mobile, 5 for desktop
+    }
+    return 5;
+  };
+
+  const [itemsPerSlide, setItemsPerSlide] = useState(getItemsPerSlide);
+
+  // Update items per slide on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setItemsPerSlide(getItemsPerSlide());
+      setCurrentSlide(0); // Reset to first slide when screen size changes
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Set initial value
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   // Auto-slide effect
   useEffect(() => {
     if (!hasIntersected) return;
 
     const interval = setInterval(() => {
       setCurrentSlide(
-        (prev) => (prev + 1) % Math.ceil(certifications.length / 5),
+        (prev) => (prev + 1) % Math.ceil(certifications.length / itemsPerSlide),
       );
     }, 3000); // Change slide every 3 seconds
 
     return () => clearInterval(interval);
-  }, [hasIntersected]);
+  }, [hasIntersected, itemsPerSlide]);
 
-  // Get visible certifications (5 per slide)
+  // Get visible certifications based on items per slide
   const visibleCertifications = certifications.slice(
-    currentSlide * 5,
-    currentSlide * 5 + 5,
+    currentSlide * itemsPerSlide,
+    currentSlide * itemsPerSlide + itemsPerSlide,
   );
 
   return (
@@ -132,7 +155,7 @@ export function CertificationsSection() {
 
           {/* Slide indicators */}
           <div className="flex justify-center mt-8 space-x-2">
-            {Array.from({ length: Math.ceil(certifications.length / 5) }).map(
+            {Array.from({ length: Math.ceil(certifications.length / itemsPerSlide) }).map(
               (_, index) => (
                 <button
                   key={index}
