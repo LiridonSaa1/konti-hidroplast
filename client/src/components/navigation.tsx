@@ -233,9 +233,10 @@ export function Navigation() {
             }}
             className={`w-full text-left px-4 py-3 text-base font-medium transition-colors ${
               isActive
-                ? "text-konti-blue bg-blue-50"
+                ? "bg-blue-50"
                 : "text-konti-gray hover:text-konti-blue"
             }`}
+            style={isActive ? { color: "#eb2127" } : {}}
             data-testid={`mobile-nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
           >
             {item.label}
@@ -256,7 +257,7 @@ export function Navigation() {
                 ? "text-black hover:text-konti-blue"
                 : "text-white/90 hover:text-white nav-text-shadow"
           }`}
-          style={isActive && isScrolled ? { color: "rgb(235, 33, 39)" } : {}}
+          style={isActive ? { color: "#eb2127" } : {}}
           data-testid={`nav-${item.label.toLowerCase().replace(/\s+/g, "-")}`}
         >
           {item.label}
@@ -339,6 +340,14 @@ export function Navigation() {
     }
 
     const isOpen = openDropdown === item.label;
+    
+    // Check if any child item is active
+    const isParentActive = item.items.some((subItem) => {
+      if (subItem.items) {
+        return subItem.items.some((nestedItem) => location === nestedItem.href);
+      }
+      return location === subItem.href;
+    });
 
     return (
       <DropdownMenu
@@ -361,6 +370,7 @@ export function Navigation() {
                   ? `text-black hover:text-konti-blue ${isOpen ? "text-konti-blue" : ""}`
                   : `text-white/90 hover:text-white nav-text-shadow ${isOpen ? "text-white" : ""}`
               }`}
+              style={isParentActive ? { color: "#eb2127" } : {}}
               data-testid={`nav-${item.label.toLowerCase()}`}
             >
               {item.label}
@@ -406,30 +416,35 @@ export function Navigation() {
                       onMouseEnter={handleDropdownAreaMouseEnter}
                       onMouseLeave={handleDropdownAreaMouseLeave}
                     >
-                      {subItem.items.map((nestedItem, nestedIndex) => (
-                        <DropdownMenuItem
-                          key={nestedIndex}
-                          onClick={() =>
-                            handleDropdownClick(
-                              nestedItem.href,
-                              nestedItem.external,
-                            )
-                          }
-                          onMouseEnter={handleDropdownAreaMouseEnter}
-                          className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
-                          data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase()}-${nestedItem.label.toLowerCase().replace(/\s+/g, "-")}`}
-                        >
-                          <span>{nestedItem.label}</span>
-                          {nestedItem.external && (
-                            <ExternalLink className="h-3 w-3 text-gray-400" />
-                          )}
-                        </DropdownMenuItem>
-                      ))}
+                      {subItem.items.map((nestedItem, nestedIndex) => {
+                        const isNestedActive = location === nestedItem.href;
+                        return (
+                          <DropdownMenuItem
+                            key={nestedIndex}
+                            onClick={() =>
+                              handleDropdownClick(
+                                nestedItem.href,
+                                nestedItem.external,
+                              )
+                            }
+                            onMouseEnter={handleDropdownAreaMouseEnter}
+                            className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
+                            style={isNestedActive ? { color: "#eb2127", backgroundColor: "#fef2f2" } : {}}
+                            data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase()}-${nestedItem.label.toLowerCase().replace(/\s+/g, "-")}`}
+                          >
+                            <span>{nestedItem.label}</span>
+                            {nestedItem.external && (
+                              <ExternalLink className="h-3 w-3 text-gray-400" />
+                            )}
+                          </DropdownMenuItem>
+                        );
+                      })}
                     </DropdownMenuSubContent>
                   </DropdownMenuSub>
                 );
               } else {
                 // Regular dropdown item
+                const isSubItemActive = location === subItem.href;
                 return (
                   <DropdownMenuItem
                     key={index}
@@ -437,7 +452,8 @@ export function Navigation() {
                       handleDropdownClick(subItem.href, subItem.external)
                     }
                     onMouseEnter={handleDropdownAreaMouseEnter}
-                    className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
+                    className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
+                    style={isSubItemActive ? { color: "#eb2127", backgroundColor: "#fef2f2" } : {}}
                     data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}
                   >
                     <span>{subItem.label}</span>

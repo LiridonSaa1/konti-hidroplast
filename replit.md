@@ -30,6 +30,12 @@ Preferred communication style: Simple, everyday language.
   - Added pointer-events-none to background elements to allow proper button interaction
   - Improved navigation flow for users wanting to learn more about the company
   - Maintains consistent user experience with proper page routing
+- **Navigation Active State Enhancement**: Added active URL highlighting to header navigation
+  - Active navigation links now display in red color (#eb2127) for better user orientation
+  - Enhanced both desktop and mobile navigation with consistent active state styling
+  - Added parent dropdown highlighting when child pages are active
+  - Dropdown menu items show active state with red text and light red background
+  - Improved user experience by clearly indicating current page location
 - **KONTI KAN DRAINAGE Page Added**: Created comprehensive drainage systems page at /konti-kan-drainage route
   - Fetched all content from https://konti-hidroplast.com.mk/konti-kan-drainage/
   - Features KONTI DREN drainage pipes with technical specifications
