@@ -193,67 +193,66 @@ function BrochuresPage() {
                 ))}
               </div>
 
-              {/* Brochures Grid */}
+              {/* Brochures Grid - EPD Style Layout */}
               {groupedBrochures[activeTabIndex] && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {groupedBrochures[activeTabIndex].brochures.map((brochure) => (
                     <div
                       key={brochure.id}
-                      className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-blue-200 hover:-translate-y-1"
+                      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 hover:border-gray-300"
                     >
-                      <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50">
+                      {/* EPD Certificate Header */}
+                      <div className="bg-white border-b border-gray-200 p-4">
+                        <div className="text-center">
+                          <div className="text-xs text-gray-600 font-medium mb-1">EPD - Environmental Product Declaration</div>
+                          <div className="h-px bg-gray-200 mb-2"></div>
+                          <div className="text-sm font-bold text-gray-800 mb-1">ENVIRONMENTAL PRODUCT DECLARATION</div>
+                          <div className="text-xs text-gray-600">Water supply PE 100 and PE 100 RC pipes</div>
+                          <div className="text-xs text-gray-500 mt-1">Valid for Konti Hidroplast Pipes and fittings</div>
+                        </div>
+                        
+                        {/* Certificate badges */}
+                        <div className="flex justify-center items-center mt-3 space-x-2">
+                          <div className="w-6 h-6 bg-green-100 rounded border border-green-300 flex items-center justify-center">
+                            <span className="text-xs text-green-600 font-bold">✓</span>
+                          </div>
+                          <div className="text-xs text-gray-600">Certified Product</div>
+                        </div>
+                      </div>
+
+                      {/* Product Image */}
+                      <div className="relative aspect-square bg-gray-50 flex items-center justify-center p-8">
                         {brochure.imageUrl ? (
                           <img
                             src={brochure.imageUrl}
                             alt={brochure.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            className="w-full h-full object-contain max-h-32"
                             loading="lazy"
                           />
                         ) : (
                           <div className="flex items-center justify-center h-full">
-                            <ImageIcon className="h-16 w-16 text-blue-300" />
+                            <ImageIcon className="h-16 w-16 text-gray-300" />
                           </div>
                         )}
-                        
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        
-                        {/* Language indicator */}
-                        <div className="absolute top-3 left-3">
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-white/90 text-gray-800">
-                            {language === 'en' ? '🇺🇸' : language === 'mk' ? '🇲🇰' : language === 'de' ? '🇩🇪' : '🌐'}
-                            {' '}
-                            {language === 'en' ? 'EN' : language === 'mk' ? 'MK' : language === 'de' ? 'DE' : language}
-                          </span>
-                        </div>
                       </div>
-                      
-                      <div className="p-6">
-                        <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-[#1c2d56] transition-colors">
+
+                      {/* Product Title and Download */}
+                      <div className="p-4 text-center">
+                        <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wide">
                           {brochure.title}
                         </h3>
                         
-                        {brochure.description && (
-                          <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                            {brochure.description}
-                          </p>
-                        )}
-                        
-                        <div className="flex items-center justify-between">
-                          <div className="text-xs text-gray-500">
-                            Category: {brochure.category}
-                          </div>
-                          
-                          <a
-                            href={brochure.pdfUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center space-x-2 bg-[#1c2d56] text-white px-4 py-2 rounded-full hover:bg-[#1c2d56]/90 transition-all duration-300 group-hover:shadow-lg text-sm font-medium"
-                            data-testid={`download-${brochure.id}`}
-                          >
-                            <Download className="h-4 w-4" />
-                            <span>Download</span>
-                          </a>
-                        </div>
+                        <a
+                          href={brochure.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center justify-center w-full gap-2 bg-[#1e3a8a] hover:bg-[#1e40af] text-white px-4 py-2.5 rounded text-sm font-medium transition-colors"
+                          aria-label={`Download ${brochure.title} brochure`}
+                          data-testid={`download-${brochure.id}`}
+                        >
+                          <Download className="h-4 w-4" />
+                          Download
+                        </a>
                       </div>
                     </div>
                   ))}
