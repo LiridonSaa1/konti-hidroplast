@@ -84,6 +84,7 @@ export const brochures = pgTable("brochures", {
   name: text("name").notNull(),
   category: text("category").notNull(),
   pdfUrl: text("pdf_url").notNull(),
+  imageUrl: text("image_url"),
   description: text("description"),
   status: text("status").notNull().default("active"), // active, inactive, draft
   active: boolean("active").default(true),
@@ -137,10 +138,16 @@ export const insertCertificateSchema = createInsertSchema(certificates).omit({
   createdAt: true,
 });
 
-export const insertBrochureSchema = createInsertSchema(brochures).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
+export const insertBrochureSchema = createInsertSchema(brochures, {
+  title: z.string().min(1, "Title is required"),
+  name: z.string().min(1, "Name is required"),
+  category: z.string().min(1, "Category is required"),
+  pdfUrl: z.string().min(1, "PDF URL is required"),
+  imageUrl: z.string().optional(),
+  description: z.string().optional(),
+  status: z.enum(["active", "inactive", "draft"]).default("active"),
+  active: z.boolean().default(true),
+  sortOrder: z.number().int().default(0),
 });
 
 export const insertBrochureCategorySchema = createInsertSchema(brochureCategories).omit({

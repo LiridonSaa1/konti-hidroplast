@@ -21,6 +21,7 @@ interface BrochureFormData {
   name: string;
   category: string;
   pdfFile: File | null;
+  imageFile: File | null;
   description: string;
   status: string;
   active: boolean;
@@ -134,6 +135,7 @@ export function BrochuresManager() {
       name: "",
       category: "",
       pdfFile: null,
+      imageFile: null,
       description: "",
       status: "active",
       active: true,
@@ -147,6 +149,7 @@ export function BrochuresManager() {
       name: brochure.name,
       category: brochure.category,
       pdfFile: null, // Will be handled separately for existing files
+      imageFile: null, // Will be handled separately for existing files
       description: brochure.description || "",
       status: brochure.status || "active",
       active: brochure.active ?? true,
@@ -157,8 +160,9 @@ export function BrochuresManager() {
 
   const handleSubmit = async () => {
     let pdfUrl = "";
+    let imageUrl = "";
     
-    // If we have a file, upload it first
+    // If we have a PDF file, upload it first
     if (formData.pdfFile) {
       const uploadFormData = new FormData();
       uploadFormData.append('file', formData.pdfFile);
@@ -170,7 +174,7 @@ export function BrochuresManager() {
         });
         
         if (!uploadResponse.ok) {
-          throw new Error('Failed to upload file');
+          throw new Error('Failed to upload PDF file');
         }
         
         const uploadResult = await uploadResponse.json();
@@ -184,12 +188,40 @@ export function BrochuresManager() {
         return;
       }
     }
+
+    // If we have an image file, upload it
+    if (formData.imageFile) {
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', formData.imageFile);
+      
+      try {
+        const uploadResponse = await fetch('/api/upload', {
+          method: 'POST',
+          body: uploadFormData,
+        });
+        
+        if (!uploadResponse.ok) {
+          throw new Error('Failed to upload image file');
+        }
+        
+        const uploadResult = await uploadResponse.json();
+        imageUrl = uploadResult.url;
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to upload image file",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
     
     const submissionData = {
       title: formData.name, // Use name as title
       name: formData.name,
       category: formData.category,
       pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
+      imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
       description: formData.description,
       status: formData.status,
       active: formData.active,
@@ -300,6 +332,7 @@ export function BrochuresManager() {
                   <TableHead>Description</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>PDF</TableHead>
+                  <TableHead>Image</TableHead>
                   <TableHead>Order</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
@@ -347,6 +380,28 @@ export function BrochuresManager() {
                         </div>
                       ) : (
                         <span className="text-slate-400 text-sm">No PDF</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {brochure.imageUrl ? (
+                        <div className="flex items-center gap-1">
+                          <img 
+                            src={brochure.imageUrl} 
+                            alt={brochure.name}
+                            className="h-8 w-8 object-cover rounded"
+                          />
+                          <Button
+                            variant="link"
+                            size="sm"
+                            onClick={() => window.open(brochure.imageUrl, '_blank')}
+                            data-testid={`button-view-image-${brochure.id}`}
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            View
+                          </Button>
+                        </div>
+                      ) : (
+                        <span className="text-slate-400 text-sm">No Image</span>
                       )}
                     </TableCell>
                     <TableCell data-testid={`brochure-order-${brochure.id}`}>
@@ -478,6 +533,16 @@ function BrochureFormDialog({
     }
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      setFormData({ ...formData, imageFile: file });
+    } else if (file) {
+      alert('Please select an image file (JPG, PNG, etc.)');
+      e.target.value = '';
+    }
+  };
+
   return (
     <DialogContent className="max-w-2xl" data-testid="brochure-form-dialog">
       <DialogHeader>
@@ -515,22 +580,43 @@ function BrochureFormDialog({
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="pdfFile">PDF File *</Label>
-          <div className="flex items-center gap-2">
-            <Input
-              id="pdfFile"
-              type="file"
-              accept=".pdf"
-              onChange={handleFileChange}
-              data-testid="input-brochure-pdf-file"
-              className="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-            />
-            {formData.pdfFile && (
-              <span className="text-sm text-green-600">
-                {formData.pdfFile.name}
-              </span>
-            )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="pdfFile">PDF File *</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                id="pdfFile"
+                type="file"
+                accept=".pdf"
+                onChange={handleFileChange}
+                data-testid="input-brochure-pdf-file"
+                className="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              {formData.pdfFile && (
+                <span className="text-sm text-green-600">
+                  {formData.pdfFile.name}
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="imageFile">Image File</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                id="imageFile"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                data-testid="input-brochure-image-file"
+                className="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
+              />
+              {formData.imageFile && (
+                <span className="text-sm text-green-600">
+                  {formData.imageFile.name}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
