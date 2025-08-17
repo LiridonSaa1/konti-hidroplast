@@ -349,9 +349,7 @@ export class MemStorage implements IStorage {
   async createUser(user: InsertUser): Promise<User> {
     const newUser: User = {
       ...user,
-      id: `user_${Date.now()}`,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      id: `user_${Date.now()}`
     };
     this.users.push(newUser);
     return newUser;
@@ -425,8 +423,10 @@ export class MemStorage implements IStorage {
     const newMedia: Media = {
       ...media,
       id: `media_${Date.now()}`,
-      createdAt: new Date(),
-      updatedAt: null
+      altText: media.altText ?? null,
+      fileSize: media.fileSize ?? null,
+      mimeType: media.mimeType ?? null,
+      createdAt: new Date()
     };
     this.mediaData.push(newMedia);
     return newMedia;
@@ -462,8 +462,7 @@ export class MemStorage implements IStorage {
       const newInfo: CompanyInfo = {
         ...info,
         id: `info_${Date.now()}`,
-        createdAt: new Date(),
-        updatedAt: null
+        updatedAt: new Date()
       };
       this.companyInfoData.push(newInfo);
       return newInfo;
@@ -531,8 +530,13 @@ export class MemStorage implements IStorage {
     const newCertificate: Certificate = {
       ...certificate,
       id: `cert_${Date.now()}`,
-      createdAt: new Date(),
-      updatedAt: null
+      imageUrl: certificate.imageUrl ?? null,
+      pdfUrl: certificate.pdfUrl ?? null,
+      validFrom: certificate.validFrom ?? null,
+      validUntil: certificate.validUntil ?? null,
+      active: certificate.active ?? null,
+      sortOrder: certificate.sortOrder ?? null,
+      createdAt: new Date()
     };
     this.certificatesData.push(newCertificate);
     return newCertificate;
@@ -569,8 +573,10 @@ export class MemStorage implements IStorage {
     const newBrochure: Brochure = {
       ...brochure,
       id: `brochure_${Date.now()}`,
-      createdAt: new Date(),
-      updatedAt: null
+      description: brochure.description ?? null,
+      active: brochure.active ?? null,
+      sortOrder: brochure.sortOrder ?? null,
+      createdAt: new Date()
     };
     this.brochuresData.push(newBrochure);
     return newBrochure;
