@@ -183,22 +183,22 @@ export default function AdminPanel() {
               </CollapsibleTrigger>
               <CollapsibleContent className="pl-6 space-y-1">
                 <Button
-                  variant={activeTab === "teams" ? "default" : "ghost"}
-                  className="w-full justify-start text-sm"
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "teams" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
                   onClick={() => setActiveTab("teams")}
                   data-testid="nav-teams"
                 >
-                  <Users className="h-3 w-3 mr-2" />
+                  <Users className={`h-3 w-3 mr-2 ${activeTab === "teams" ? "text-blue-600" : ""}`} />
                   Team Members
                 </Button>
                 
                 <Button
-                  variant={activeTab === "positions" ? "default" : "ghost"}
-                  className="w-full justify-start text-sm"
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "positions" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
                   onClick={() => setActiveTab("positions")}
                   data-testid="nav-positions"
                 >
-                  <Briefcase className="h-3 w-3 mr-2" />
+                  <Briefcase className={`h-3 w-3 mr-2 ${activeTab === "positions" ? "text-blue-600" : ""}`} />
                   Positions
                 </Button>
               </CollapsibleContent>
