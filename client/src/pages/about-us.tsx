@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   ChevronRight,
   ChevronLeft,
@@ -288,6 +289,30 @@ export default function AboutUs() {
   const [sliderValue, setSliderValue] = useState([0]);
   const [activeTeamTabIndex, setActiveTeamTabIndex] = useState(0);
 
+  // Fetch leadership data
+  const { data: leadershipData } = useQuery({
+    queryKey: ["/api/admin/company-info", "leadership_message"],
+    queryFn: async () => {
+      try {
+        const response = await fetch("/api/admin/company-info/leadership_message");
+        if (!response.ok) throw new Error('Not found');
+        return await response.json();
+      } catch (error) {
+        // Return default data if not found
+        return {
+          value: JSON.stringify({
+            title: "Building the Future of Infrastructure",
+            description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
+            description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
+            leaderName: "Boris Madjunkov",
+            leaderPosition: "General Director",
+            leaderImage: "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg"
+          })
+        };
+      }
+    }
+  });
+
   const nextTeamTab = () => {
     setActiveTeamTabIndex((prev) =>
       prev === teamCategories.length - 1 ? 0 : prev + 1,
@@ -338,6 +363,9 @@ export default function AboutUs() {
       );
     }
   }, []);
+
+  // Parse leadership content
+  const leadershipContent = leadershipData ? JSON.parse(leadershipData.value) : {};
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -628,8 +656,8 @@ export default function AboutUs() {
                 <div className="w-80 h-80 bg-white rounded-2xl p-4 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
                   <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
                     <img
-                      src="/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg"
-                      alt="Boris Madjunkov - General Director"
+                      src={leadershipContent.leaderImage || "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg"}
+                      alt={`${leadershipContent.leaderName || "Boris Madjunkov"} - ${leadershipContent.leaderPosition || "General Director"}`}
                       className="w-full h-full object-cover rounded-xl"
                     />
                   </div>
@@ -652,33 +680,27 @@ export default function AboutUs() {
                 </div>
 
                 <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
-                  Building the Future of
-                  <span className="block text-blue-200">Infrastructure</span>
+                  {leadershipContent.title || "Building the Future of Infrastructure"}
                 </h2>
               </div>
 
               <div className="space-y-6 text-lg leading-relaxed text-white/90">
                 <p>
-                  At Konti Hidroplast, our mission has always been clear: to
-                  lead with innovation, deliver quality by European standards,
-                  and stay ahead of the curve in our industry. We are committed
-                  to creating sustainable solutions, expanding into new markets,
-                  and sharing knowledge with all who seek to grow.
+                  {leadershipContent.description1 || "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow."}
                 </p>
 
                 <p>
-                  Together, we build not just for today, but for a future our
-                  next generations will be proud of.
+                  {leadershipContent.description2 || "Together, we build not just for today, but for a future our next generations will be proud of."}
                 </p>
               </div>
 
               <div className="pt-4">
                 <div className="space-y-2">
                   <h3 className="text-2xl font-bold text-white">
-                    Boris Madjunkov
+                    {leadershipContent.leaderName || "Boris Madjunkov"}
                   </h3>
                   <p className="text-blue-200 font-semibold text-lg">
-                    General Director
+                    {leadershipContent.leaderPosition || "General Director"}
                   </p>
                 </div>
 
