@@ -17,6 +17,7 @@ export function LeadershipManager() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [refreshKey, setRefreshKey] = useState(0);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -74,11 +75,11 @@ export function LeadershipManager() {
     onSuccess: async () => {
       // Invalidate and refetch the query
       await queryClient.invalidateQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
-      await queryClient.refetchQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
       
       setIsFormOpen(false);
       setSelectedImage(null);
-      setImagePreview(null); // Clear preview since we'll get fresh data
+      setImagePreview(null);
+      setRefreshKey(prev => prev + 1); // Force re-render
       
       toast({
         title: "Success",
@@ -195,7 +196,7 @@ export function LeadershipManager() {
   }
 
   // Parse leadership content - use a key to force re-render
-  let leadershipContent = {};
+  let leadershipContent: any = {};
   if (leadershipData && typeof leadershipData === 'object' && 'value' in leadershipData) {
     try {
       leadershipContent = JSON.parse(leadershipData.value);
@@ -206,7 +207,8 @@ export function LeadershipManager() {
   }
   
   // Add debugging
-  console.log('Leadership data changed:', leadershipData?.id, leadershipContent);
+  const dataId = leadershipData && typeof leadershipData === 'object' && 'id' in leadershipData ? leadershipData.id : 'no-id';
+  console.log('Leadership data changed:', dataId, leadershipContent);
 
   return (
     <div className="space-y-6">
@@ -392,7 +394,7 @@ export function LeadershipManager() {
       </div>
 
       {/* Leadership Message Display */}
-      <div key={leadershipData?.id || 'loading'} className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="leadership-display">
+      <div key={`${dataId}-${refreshKey}`} className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="leadership-display">
         <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <div>
