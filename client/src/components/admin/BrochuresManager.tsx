@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Edit, Trash2, Search, BookOpen, Download, Eye } from "lucide-react";
@@ -16,6 +15,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import type { Brochure, InsertBrochure, BrochureCategory } from "@shared/schema";
+import { FileUpload } from "@/components/ui/file-upload";
+
 
 interface BrochureFormData {
   name: string;
@@ -38,6 +39,7 @@ export function BrochuresManager() {
     name: "",
     category: "",
     pdfFile: null,
+    imageFile: null,
     description: "",
     status: "active",
     active: true,
@@ -161,22 +163,22 @@ export function BrochuresManager() {
   const handleSubmit = async () => {
     let pdfUrl = "";
     let imageUrl = "";
-    
+
     // If we have a PDF file, upload it first
     if (formData.pdfFile) {
       const uploadFormData = new FormData();
       uploadFormData.append('file', formData.pdfFile);
-      
+
       try {
         const uploadResponse = await fetch('/api/upload', {
           method: 'POST',
           body: uploadFormData,
         });
-        
+
         if (!uploadResponse.ok) {
           throw new Error('Failed to upload PDF file');
         }
-        
+
         const uploadResult = await uploadResponse.json();
         pdfUrl = uploadResult.url;
       } catch (error) {
@@ -193,17 +195,17 @@ export function BrochuresManager() {
     if (formData.imageFile) {
       const uploadFormData = new FormData();
       uploadFormData.append('file', formData.imageFile);
-      
+
       try {
         const uploadResponse = await fetch('/api/upload', {
           method: 'POST',
           body: uploadFormData,
         });
-        
+
         if (!uploadResponse.ok) {
           throw new Error('Failed to upload image file');
         }
-        
+
         const uploadResult = await uploadResponse.json();
         imageUrl = uploadResult.url;
       } catch (error) {
@@ -215,7 +217,7 @@ export function BrochuresManager() {
         return;
       }
     }
-    
+
     const submissionData = {
       title: formData.name, // Use name as title
       name: formData.name,
@@ -227,7 +229,7 @@ export function BrochuresManager() {
       active: formData.active,
       sortOrder: formData.sortOrder
     };
-    
+
     if (selectedBrochure) {
       updateMutation.mutate({ id: selectedBrochure.id, data: submissionData });
     } else {
@@ -504,7 +506,7 @@ export function BrochuresManager() {
   );
 }
 
-function BrochureFormDialog({
+function brochureFormDialog({
   isOpen,
   title,
   formData,
@@ -601,22 +603,15 @@ function BrochureFormDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="imageFile">Image File</Label>
-            <div className="flex items-center gap-2">
-              <Input
-                id="imageFile"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                data-testid="input-brochure-image-file"
-                className="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-green-50 file:text-green-700 hover:file:bg-green-100"
-              />
-              {formData.imageFile && (
-                <span className="text-sm text-green-600">
-                  {formData.imageFile.name}
-                </span>
-              )}
-            </div>
+            <Label htmlFor="imageUrl">Brochure Image</Label>
+            <FileUpload
+              label="Brochure Image"
+              value={formData.imageUrl || ""}
+              onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+              type="image"
+              placeholder="Upload brochure image or enter image URL"
+              testId="input-brochure-image"
+            />
           </div>
         </div>
 
