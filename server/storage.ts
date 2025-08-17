@@ -31,7 +31,7 @@ import {
   positions,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, asc } from "drizzle-orm";
 
 export interface IStorage {
   // User methods
@@ -348,7 +348,7 @@ export class DatabaseStorage implements IStorage {
   // Team methods
   async getAllTeams(): Promise<Team[]> {
     if (!db) throw new Error('Database not available');
-    return await db.select().from(teams).orderBy(desc(teams.createdAt));
+    return await db.select().from(teams).orderBy(asc(teams.sortOrder), desc(teams.createdAt));
   }
 
   async getTeam(id: number): Promise<Team | undefined> {
@@ -744,6 +744,14 @@ export class MemStorage implements IStorage {
   // Team methods
   async getAllTeams(): Promise<Team[]> {
     return this.teamsData.sort((a, b) => {
+      // Primary sort by sortOrder (ascending, with null values last)
+      const aOrder = a.sortOrder ?? Number.MAX_SAFE_INTEGER;
+      const bOrder = b.sortOrder ?? Number.MAX_SAFE_INTEGER;
+      if (aOrder !== bOrder) {
+        return aOrder - bOrder;
+      }
+      
+      // Secondary sort by createdAt (descending)
       const aTime = a.createdAt?.getTime() || 0;
       const bTime = b.createdAt?.getTime() || 0;
       return bTime - aTime;
