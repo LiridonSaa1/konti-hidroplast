@@ -606,7 +606,7 @@ function BrochureFormDialog({
         <DialogTitle data-testid="brochure-form-title">{title}</DialogTitle>
       </DialogHeader>
       <div className="space-y-4 py-4">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="name">Brochure Name *</Label>
             <Input
@@ -635,19 +635,24 @@ function BrochureFormDialog({
               </SelectContent>
             </Select>
           </div>
+        </div>
+
+        {/* Language Selection Row */}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div className="space-y-2">
-            <Label htmlFor="language">Language *</Label>
+            <Label htmlFor="language" className="text-blue-900 font-semibold">Language Version *</Label>
+            <p className="text-sm text-blue-700 mb-3">Select the language for this brochure version. You can create multiple versions in different languages.</p>
             <Select
               value={formData.language}
               onValueChange={(value) => setFormData({ ...formData, language: value })}
             >
-              <SelectTrigger data-testid="select-brochure-language">
+              <SelectTrigger data-testid="select-brochure-language" className="bg-white border-blue-300">
                 <SelectValue placeholder="Select language" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="en">English</SelectItem>
-                <SelectItem value="mk">Macedonian</SelectItem>
-                <SelectItem value="de">German</SelectItem>
+                <SelectItem value="en">🇺🇸 English</SelectItem>
+                <SelectItem value="mk">🇲🇰 Macedonian</SelectItem>
+                <SelectItem value="de">🇩🇪 German</SelectItem>
               </SelectContent>
             </Select>
           </div>
