@@ -40,7 +40,7 @@ const upload = multer({
     const allowedTypes = /jpeg|jpg|png|gif|pdf/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
-    
+
     if (mimetype && extname) {
       return cb(null, true);
     } else {
@@ -52,28 +52,28 @@ const upload = multer({
 export async function registerRoutes(app: Express): Promise<Server> {
   // Ensure upload directory exists
   await ensureUploadDir();
-  
+
   // Serve uploaded files statically
   app.use('/uploads', express.static(uploadDir));
-  
+
   // File upload endpoint
   app.post("/api/upload", upload.single('file'), async (req, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({ error: "No file uploaded" });
       }
-      
+
       const fileExtension = path.extname(req.file.originalname);
       const fileName = `${req.file.filename}${fileExtension}`;
       const oldPath = req.file.path;
       const newPath = path.join(uploadDir, fileName);
-      
+
       // Rename file to include extension
       await fs.rename(oldPath, newPath);
-      
+
       // Return the public URL
       const fileUrl = `/uploads/${fileName}`;
-      
+
       res.json({ 
         url: fileUrl,
         originalName: req.file.originalname,
@@ -86,7 +86,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Admin Panel API Routes
-  
+
   // Products routes
   app.get("/api/admin/products", async (req, res) => {
     try {
@@ -323,9 +323,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/brochures", async (req, res) => {
+  app.post("/api/admin/brochures", upload.fields([{ name: 'brochure', maxCount: 1 }, { name: 'description', maxCount: 1 }]), async (req, res) => {
     try {
-      const brochureData = insertBrochureSchema.parse(req.body);
+      const brochureData = {
+        title: req.body.title, // Brochure Title is now optional
+        description: req.body.description, // Description is now optional
+        pdfUrl: req.files && req.files.brochure ? `/uploads/${req.files.brochure[0].filename}` : undefined, // PDF URL is now a file upload
+      };
       const brochure = await storage.createBrochure(brochureData);
       res.status(201).json(brochure);
     } catch (error) {

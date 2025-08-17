@@ -16,10 +16,9 @@ import { apiRequest } from "@/lib/queryClient";
 import type { Brochure, InsertBrochure } from "@shared/schema";
 
 interface BrochureFormData {
-  title: string;
   name: string;
   category: string;
-  pdfUrl: string;
+  pdfFile: File | null;
   description: string;
   status: string;
   active: boolean;
@@ -44,10 +43,9 @@ export function BrochuresManager() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedBrochure, setSelectedBrochure] = useState<Brochure | null>(null);
   const [formData, setFormData] = useState<BrochureFormData>({
-    title: "",
     name: "",
     category: "",
-    pdfUrl: "",
+    pdfFile: null,
     description: "",
     status: "active",
     active: true,
@@ -135,10 +133,9 @@ export function BrochuresManager() {
 
   const resetForm = () => {
     setFormData({
-      title: "",
       name: "",
       category: "",
-      pdfUrl: "",
+      pdfFile: null,
       description: "",
       status: "active",
       active: true,
@@ -149,10 +146,9 @@ export function BrochuresManager() {
   const handleEdit = (brochure: Brochure) => {
     setSelectedBrochure(brochure);
     setFormData({
-      title: brochure.title || "",
       name: brochure.name,
       category: brochure.category,
-      pdfUrl: brochure.pdfUrl,
+      pdfFile: null, // Will be handled separately for existing files
       description: brochure.description || "",
       status: brochure.status || "active",
       active: brochure.active ?? true,
@@ -161,11 +157,50 @@ export function BrochuresManager() {
     setIsEditDialogOpen(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    let pdfUrl = "";
+    
+    // If we have a file, upload it first
+    if (formData.pdfFile) {
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', formData.pdfFile);
+      
+      try {
+        const uploadResponse = await fetch('/api/upload', {
+          method: 'POST',
+          body: uploadFormData,
+        });
+        
+        if (!uploadResponse.ok) {
+          throw new Error('Failed to upload file');
+        }
+        
+        const uploadResult = await uploadResponse.json();
+        pdfUrl = uploadResult.url;
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to upload PDF file",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+    
+    const submissionData = {
+      name: formData.name,
+      category: formData.category,
+      pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
+      description: formData.description,
+      status: formData.status,
+      active: formData.active,
+      sortOrder: formData.sortOrder
+    };
+    
     if (selectedBrochure) {
-      updateMutation.mutate({ id: selectedBrochure.id, data: formData });
+      updateMutation.mutate({ id: selectedBrochure.id, data: submissionData });
     } else {
-      createMutation.mutate(formData);
+      createMutation.mutate(submissionData);
     }
   };
 
@@ -389,23 +424,22 @@ function BrochureFormDialog({
   onCancel: () => void;
   isLoading: boolean;
 }) {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type === 'application/pdf') {
+      setFormData({ ...formData, pdfFile: file });
+    } else if (file) {
+      alert('Please select a PDF file');
+      e.target.value = '';
+    }
+  };
+
   return (
     <DialogContent className="max-w-2xl" data-testid="brochure-form-dialog">
       <DialogHeader>
         <DialogTitle data-testid="brochure-form-title">{title}</DialogTitle>
       </DialogHeader>
       <div className="space-y-4 py-4">
-        <div className="space-y-2">
-          <Label htmlFor="title">Brochure Title *</Label>
-          <Input
-            id="title"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            placeholder="Enter brochure title"
-            data-testid="input-brochure-title"
-          />
-        </div>
-        
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="name">Brochure Name *</Label>
@@ -436,14 +470,22 @@ function BrochureFormDialog({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="pdfUrl">PDF URL *</Label>
-          <Input
-            id="pdfUrl"
-            value={formData.pdfUrl}
-            onChange={(e) => setFormData({ ...formData, pdfUrl: e.target.value })}
-            placeholder="Enter PDF URL"
-            data-testid="input-brochure-pdf-url"
-          />
+          <Label htmlFor="pdfFile">PDF File *</Label>
+          <div className="flex items-center gap-2">
+            <Input
+              id="pdfFile"
+              type="file"
+              accept=".pdf"
+              onChange={handleFileChange}
+              data-testid="input-brochure-pdf-file"
+              className="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+            />
+            {formData.pdfFile && (
+              <span className="text-sm text-green-600">
+                {formData.pdfFile.name}
+              </span>
+            )}
+          </div>
         </div>
 
         <div className="space-y-2">
@@ -452,7 +494,7 @@ function BrochureFormDialog({
             id="description"
             value={formData.description}
             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            placeholder="Enter brochure description"
+            placeholder="Enter brochure description (optional)"
             rows={3}
             data-testid="textarea-brochure-description"
           />
@@ -504,7 +546,7 @@ function BrochureFormDialog({
         </Button>
         <Button 
           onClick={onSubmit} 
-          disabled={isLoading || !formData.title || !formData.name || !formData.category || !formData.pdfUrl}
+          disabled={isLoading || !formData.name || !formData.category || (!formData.pdfFile && title.includes("Add"))}
           data-testid="button-save-brochure"
         >
           {isLoading ? "Saving..." : "Save Brochure"}
