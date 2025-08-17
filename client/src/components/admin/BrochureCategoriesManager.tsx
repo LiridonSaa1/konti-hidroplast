@@ -51,9 +51,13 @@ export function BrochureCategoriesManager() {
 
   const createMutation = useMutation({
     mutationFn: async (data: InsertBrochureCategory) => {
-      return apiRequest("POST", "/api/admin/brochure-categories", data);
+      console.log("Creating brochure category:", data);
+      const result = await apiRequest("POST", "/api/admin/brochure-categories", data);
+      console.log("Creation result:", result);
+      return result;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log("Creation success:", data);
       queryClient.invalidateQueries({ queryKey: ["/api/admin/brochure-categories"] });
       setIsCreateDialogOpen(false);
       resetForm();
@@ -62,10 +66,11 @@ export function BrochureCategoriesManager() {
         description: "Brochure category created successfully",
       });
     },
-    onError: () => {
+    onError: (error) => {
+      console.error("Creation error:", error);
       toast({
         title: "Error",
-        description: "Failed to create brochure category",
+        description: `Failed to create brochure category: ${error.message || 'Unknown error'}`,
         variant: "destructive",
       });
     },
