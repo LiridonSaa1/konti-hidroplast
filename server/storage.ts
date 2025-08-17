@@ -13,6 +13,8 @@ import {
   type InsertCertificate,
   type Brochure,
   type InsertBrochure,
+  type Project,
+  type InsertProject,
   users,
   products,
   media,
@@ -20,6 +22,7 @@ import {
   newsArticles,
   certificates,
   brochures,
+  projects,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -66,6 +69,13 @@ export interface IStorage {
   createBrochure(brochure: InsertBrochure): Promise<Brochure>;
   updateBrochure(id: string, brochure: Partial<InsertBrochure>): Promise<Brochure>;
   deleteBrochure(id: string): Promise<void>;
+  
+  // Project methods
+  getAllProjects(): Promise<Project[]>;
+  getProject(id: number): Promise<Project | undefined>;
+  createProject(project: InsertProject): Promise<Project>;
+  updateProject(id: number, project: Partial<InsertProject>): Promise<Project>;
+  deleteProject(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -243,6 +253,37 @@ export class DatabaseStorage implements IStorage {
 
   async deleteBrochure(id: string): Promise<void> {
     await db.delete(brochures).where(eq(brochures.id, id));
+  }
+  
+  // Project methods
+  async getAllProjects(): Promise<Project[]> {
+    return await db.select().from(projects).orderBy(desc(projects.createdAt));
+  }
+
+  async getProject(id: number): Promise<Project | undefined> {
+    const [project] = await db.select().from(projects).where(eq(projects.id, id));
+    return project || undefined;
+  }
+
+  async createProject(project: InsertProject): Promise<Project> {
+    const [newProject] = await db
+      .insert(projects)
+      .values(project)
+      .returning();
+    return newProject;
+  }
+
+  async updateProject(id: number, project: Partial<InsertProject>): Promise<Project> {
+    const [updated] = await db
+      .update(projects)
+      .set(project)
+      .where(eq(projects.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteProject(id: number): Promise<void> {
+    await db.delete(projects).where(eq(projects.id, id));
   }
 }
 

@@ -8,6 +8,7 @@ import {
   insertNewsArticleSchema,
   insertCertificateSchema,
   insertBrochureSchema,
+  insertProjectSchema,
 } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -265,6 +266,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting brochure:", error);
       res.status(500).json({ error: "Failed to delete brochure" });
+    }
+  });
+
+  // Projects routes
+  app.get("/api/admin/projects", async (req, res) => {
+    try {
+      const projects = await storage.getAllProjects();
+      res.json(projects);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+      res.status(500).json({ error: "Failed to fetch projects" });
+    }
+  });
+
+  app.post("/api/admin/projects", async (req, res) => {
+    try {
+      const projectData = insertProjectSchema.parse(req.body);
+      const project = await storage.createProject(projectData);
+      res.status(201).json(project);
+    } catch (error) {
+      console.error("Error creating project:", error);
+      res.status(400).json({ error: "Invalid project data" });
+    }
+  });
+
+  app.patch("/api/admin/projects/:id", async (req, res) => {
+    try {
+      const projectData = insertProjectSchema.partial().parse(req.body);
+      const project = await storage.updateProject(parseInt(req.params.id), projectData);
+      res.json(project);
+    } catch (error) {
+      console.error("Error updating project:", error);
+      res.status(400).json({ error: "Invalid project data" });
+    }
+  });
+
+  app.delete("/api/admin/projects/:id", async (req, res) => {
+    try {
+      await storage.deleteProject(parseInt(req.params.id));
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      res.status(500).json({ error: "Failed to delete project" });
     }
   });
 

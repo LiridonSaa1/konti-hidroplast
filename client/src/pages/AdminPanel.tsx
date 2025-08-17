@@ -11,7 +11,8 @@ import {
   Phone,
   Mail,
   MapPin,
-  Building
+  Building,
+  FolderOpen
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,6 +24,7 @@ import { CompanyInfoManager } from "@/components/admin/CompanyInfoManager";
 import { NewsManager } from "@/components/admin/NewsManager";
 import { CertificatesManager } from "@/components/admin/CertificatesManager";
 import { BrochuresManager } from "@/components/admin/BrochuresManager";
+import { ProjectsManager } from "@/components/admin/ProjectsManager";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -86,7 +88,15 @@ export default function AdminPanel() {
             
             <Separator className="my-4" />
             
-            
+            <Button
+              variant={activeTab === "projects" ? "default" : "ghost"}
+              className="w-full justify-start"
+              onClick={() => setActiveTab("projects")}
+              data-testid="nav-projects"
+            >
+              <FolderOpen className="h-4 w-4 mr-2" />
+              Projects
+            </Button>
             
             <Button
               variant={activeTab === "media" ? "default" : "ghost"}
@@ -243,7 +253,11 @@ export default function AdminPanel() {
             </div>
           )}
 
-          
+          {activeTab === "projects" && (
+            <div data-testid="projects-manager">
+              <ProjectsManager />
+            </div>
+          )}
 
           {activeTab === "media" && (
             <div data-testid="media-manager">
