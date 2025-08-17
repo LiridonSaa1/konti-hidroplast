@@ -21,7 +21,9 @@ interface BrochureFormData {
   name: string;
   category: string;
   pdfFile: File | null;
+  pdfUrl: string;
   imageFile: File | null;
+  imageUrl: string;
   description: string;
   status: string;
   active: boolean;
@@ -38,7 +40,9 @@ export function BrochuresManager() {
     name: "",
     category: "",
     pdfFile: null,
+    pdfUrl: "",
     imageFile: null,
+    imageUrl: "",
     description: "",
     status: "active",
     active: true,
@@ -136,7 +140,9 @@ export function BrochuresManager() {
       name: "",
       category: "",
       pdfFile: null,
+      pdfUrl: "",
       imageFile: null,
+      imageUrl: "",
       description: "",
       status: "active",
       active: true,
@@ -150,7 +156,9 @@ export function BrochuresManager() {
       name: brochure.name,
       category: brochure.category,
       pdfFile: null, // Will be handled separately for existing files
+      pdfUrl: brochure.pdfUrl || "",
       imageFile: null, // Will be handled separately for existing files
+      imageUrl: brochure.imageUrl || "",
       description: brochure.description || "",
       status: brochure.status || "active",
       active: brochure.active ?? true,
@@ -160,11 +168,30 @@ export function BrochuresManager() {
   };
 
   const handleSubmit = async () => {
-    let pdfUrl = "";
-    let imageUrl = "";
+    if (!formData.name || !formData.category) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
 
-    // If we have a PDF file, upload it first
-    if (formData.pdfFile) {
+    // Check if we have either a PDF file, PDF URL, or existing PDF for editing
+    if (!formData.pdfFile && !formData.pdfUrl && !selectedBrochure?.pdfUrl) {
+      toast({
+        title: "Error",
+        description: "Please provide either a PDF file or PDF URL",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    let pdfUrl = formData.pdfUrl; // Start with URL if provided
+    let imageUrl = formData.imageUrl; // Start with URL if provided
+
+    // Handle PDF file upload (only if no URL is provided)
+    if (formData.pdfFile && !formData.pdfUrl) {
       const uploadFormData = new FormData();
       uploadFormData.append('file', formData.pdfFile);
 
@@ -190,8 +217,8 @@ export function BrochuresManager() {
       }
     }
 
-    // If we have an image file, upload it
-    if (formData.imageFile) {
+    // Handle image file upload (only if no URL is provided)
+    if (formData.imageFile && !formData.imageUrl) {
       const uploadFormData = new FormData();
       uploadFormData.append('file', formData.imageFile);
 
@@ -582,7 +609,7 @@ function BrochureFormDialog({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
+          <div className="space-y-4">
             <Label htmlFor="pdfFile">PDF File *</Label>
             {formData.pdfFile ? (
               <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg bg-gray-50">
@@ -626,9 +653,21 @@ function BrochureFormDialog({
                 </label>
               </div>
             )}
+            <div className="space-y-1">
+              <Label htmlFor="pdfUrl" className="text-sm text-gray-600">Or enter PDF URL</Label>
+              <Input
+                id="pdfUrl"
+                type="url"
+                value={formData.pdfUrl}
+                onChange={(e) => setFormData({ ...formData, pdfUrl: e.target.value })}
+                placeholder="https://example.com/document.pdf"
+                data-testid="input-brochure-pdf-url"
+                className="text-sm"
+              />
+            </div>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-4">
             <Label htmlFor="imageFile">Brochure Image</Label>
             {formData.imageFile ? (
               <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg bg-gray-50">
@@ -672,6 +711,18 @@ function BrochureFormDialog({
                 </label>
               </div>
             )}
+            <div className="space-y-1">
+              <Label htmlFor="imageUrl" className="text-sm text-gray-600">Or enter image URL</Label>
+              <Input
+                id="imageUrl"
+                type="url"
+                value={formData.imageUrl}
+                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                placeholder="https://example.com/image.jpg"
+                data-testid="input-brochure-image-url"
+                className="text-sm"
+              />
+            </div>
           </div>
         </div>
 
