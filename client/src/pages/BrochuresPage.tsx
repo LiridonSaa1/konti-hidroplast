@@ -154,119 +154,90 @@ function BrochuresPage() {
               <div className="flex items-center justify-center mb-12">
                 <button
                   onClick={prevTab}
-                  className="p-3 rounded-full bg-[#374151] hover:bg-[#4b5563] text-white transition-colors shadow-lg"
+                  className="p-2 rounded-full bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white transition-colors mr-4"
                   disabled={groupedBrochures.length <= 1}
+                  data-testid="tab-prev"
                 >
-                  <ChevronLeft className="h-5 w-5" />
+                  <ChevronLeft className="w-5 h-5" />
                 </button>
                 
-                <div className="mx-6 bg-white rounded-full px-8 py-4 shadow-lg border border-gray-200 min-w-[400px]">
-                  <div className="text-center">
-                    <h3 className="text-lg font-semibold text-[#374151] mb-2">
-                      EPD – Environmental Product Declaration
-                    </h3>
-                    
-                    {/* Category dots indicator */}
-                    <div className="flex justify-center space-x-2">
-                      {groupedBrochures.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => {
-                            setActiveTabIndex(index);
-                            setActiveTab(groupedBrochures[index].id);
-                          }}
-                          className={`h-2.5 w-2.5 rounded-full transition-colors ${
-                            index === activeTabIndex
-                              ? "bg-[#374151]"
-                              : "bg-gray-300 hover:bg-gray-400"
-                          }`}
-                        />
-                      ))}
-                    </div>
+                <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
+                  <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
+                    {groupedBrochures[activeTabIndex]?.title || "Category"}
+                  </h3>
+                  <div className="flex justify-center space-x-1 mt-3">
+                    {groupedBrochures.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          setActiveTabIndex(index);
+                          setActiveTab(groupedBrochures[index].id);
+                        }}
+                        className={`w-2 h-2 rounded-full transition-all ${
+                          index === activeTabIndex
+                            ? "bg-[#1c2d56]"
+                            : "bg-gray-300 hover:bg-gray-400"
+                        }`}
+                        data-testid={`tab-dot-${index}`}
+                      />
+                    ))}
                   </div>
                 </div>
                 
                 <button
                   onClick={nextTab}
-                  className="p-3 rounded-full bg-[#374151] hover:bg-[#4b5563] text-white transition-colors shadow-lg"
+                  className="p-2 rounded-full bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white transition-colors ml-4"
                   disabled={groupedBrochures.length <= 1}
+                  data-testid="tab-next"
                 >
-                  <ChevronRight className="h-5 w-5" />
+                  <ChevronRight className="w-5 h-5" />
                 </button>
               </div>
 
-              {/* Brochures Grid - Certificates Style Layout */}
+              {/* Brochures Grid - Exact Certificates Style */}
               {groupedBrochures[activeTabIndex] && (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {groupedBrochures[activeTabIndex].brochures.map((brochure) => (
                     <div
                       key={brochure.id}
-                      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 hover:border-gray-300"
+                      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100"
+                      data-testid={`brochure-${brochure.id}`}
                     >
-                      {/* EPD Certificate Document - Full Height */}
-                      <div className="bg-white p-4">
-                        {/* EPD Header */}
-                        <div className="text-center mb-4">
-                          <div className="text-xs text-gray-600 font-medium mb-1">EPD - Environmental Product Declaration</div>
-                          <div className="h-px bg-gray-300 mb-2"></div>
-                          <div className="text-xs font-bold text-gray-800 mb-1">ENVIRONMENTAL PRODUCT DECLARATION</div>
-                          <div className="text-xs text-gray-600">Water supply PE 100 and PE 100 RC pipes</div>
-                          <div className="text-xs text-gray-500">Valid for Konti Hidroplast Pipes and fittings</div>
-                          
-                          {/* Certificate Circle Logo */}
-                          <div className="flex justify-center my-3">
-                            <div className="w-12 h-12 border-2 border-red-500 rounded-full flex items-center justify-center bg-white">
-                              <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
-                                <span className="text-white text-xs font-bold">KH</span>
-                              </div>
-                            </div>
+                      <div className="aspect-[3/4] bg-gray-100">
+                        {brochure.imageUrl ? (
+                          <img
+                            src={brochure.imageUrl}
+                            alt={brochure.title}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <ImageIcon className="h-20 w-20 text-gray-300" />
                           </div>
-                        </div>
-
-                        {/* Technical Details Section */}
-                        <div className="text-left text-xs space-y-1 mb-4 bg-gray-50 p-3 rounded">
-                          <div><strong>Programme:</strong> The International EPD® System</div>
-                          <div><strong>Programme operator:</strong> EPD International AB</div>
-                          <div><strong>EPD registration number:</strong> S-P-{Math.random().toString().substring(2,7)}</div>
-                          <div><strong>Published:</strong> {new Date().getFullYear()}-{String(new Date().getMonth() + 1).padStart(2, '0')}-{String(new Date().getDate()).padStart(2, '0')}</div>
-                          <div><strong>Valid until:</strong> {new Date().getFullYear() + 5}-{String(new Date().getMonth() + 1).padStart(2, '0')}-{String(new Date().getDate()).padStart(2, '0')}</div>
-                          <div><strong>An EPD should provide current information and may be updated if conditions change.</strong></div>
-                        </div>
-
-                        {/* Product Image */}
-                        <div className="relative h-32 bg-white flex items-center justify-center mb-4 border border-gray-200 rounded">
-                          {brochure.imageUrl ? (
-                            <img
-                              src={brochure.imageUrl}
-                              alt={brochure.title}
-                              className="max-w-full max-h-full object-contain"
-                              loading="lazy"
-                            />
-                          ) : (
-                            <div className="flex items-center justify-center h-full">
-                              <ImageIcon className="h-16 w-16 text-gray-300" />
-                            </div>
-                          )}
-                        </div>
+                        )}
                       </div>
-
-                      {/* Product Title and Download - Outside the certificate */}
-                      <div className="p-4 bg-gray-50 text-center">
-                        <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase">
+                      <div className="p-4">
+                        <h3 className="text-sm font-semibold text-[#1c2d56] mb-3 line-clamp-2 min-h-[2.5rem]">
                           {brochure.title}
                         </h3>
-                        
-                        <a
-                          href={brochure.pdfUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center w-full gap-2 bg-[#374151] hover:bg-[#4b5563] text-white px-4 py-2.5 rounded text-sm font-medium transition-colors"
-                          aria-label={`Download ${brochure.title} brochure`}
-                          data-testid={`download-${brochure.id}`}
-                        >
-                          <Download className="h-4 w-4" />
-                          Download
-                        </a>
+                        {brochure.pdfUrl ? (
+                          <a
+                            href={brochure.pdfUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center w-full justify-center px-3 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm rounded-lg transition-colors"
+                            data-testid={`download-${brochure.id}`}
+                          >
+                            <Download className="w-3 h-3 mr-2" />
+                            Download
+                          </a>
+                        ) : (
+                          <div className="inline-flex items-center w-full justify-center px-3 py-2 bg-gray-300 text-gray-500 text-sm rounded-lg cursor-not-allowed">
+                            <Download className="w-3 h-3 mr-2" />
+                            No PDF Available
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
