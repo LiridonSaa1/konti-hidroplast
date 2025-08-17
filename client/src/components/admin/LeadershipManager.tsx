@@ -71,11 +71,15 @@ export function LeadershipManager() {
     mutationFn: async (data: InsertCompanyInfo) => {
       return await apiRequest("/api/admin/company-info", "POST", data);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
+    onSuccess: async () => {
+      // Invalidate and refetch the query
+      await queryClient.invalidateQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
+      
       setIsFormOpen(false);
       setSelectedImage(null);
-      // Don't clear imagePreview immediately - let it update from the fresh data
+      setImagePreview(null); // Clear preview since we'll get fresh data
+      
       toast({
         title: "Success",
         description: "Leadership message updated successfully",
@@ -170,6 +174,17 @@ export function LeadershipManager() {
       reader.readAsDataURL(file);
     }
   };
+
+  // Update image preview when leadership data changes
+  useEffect(() => {
+    if (leadershipData && typeof leadershipData === 'object' && 'value' in leadershipData && !isFormOpen) {
+      const currentData = JSON.parse(leadershipData.value);
+      if (currentData.leaderImage && !imagePreview) {
+        // Only set preview if there's no current preview (to not override user selection)
+        setImagePreview(currentData.leaderImage);
+      }
+    }
+  }, [leadershipData, isFormOpen, imagePreview]);
 
   if (isLoading) {
     return (
