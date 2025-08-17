@@ -232,6 +232,7 @@ export function BrochuresManager() {
             onSubmit={handleSubmit}
             onCancel={() => setIsCreateDialogOpen(false)}
             isLoading={createMutation.isPending}
+            categories={categories}
           />
         </Dialog>
       </div>
@@ -398,6 +399,7 @@ export function BrochuresManager() {
             resetForm();
           }}
           isLoading={updateMutation.isPending}
+          categories={categories}
         />
       </Dialog>
     </div>
@@ -411,7 +413,8 @@ function BrochureFormDialog({
   setFormData,
   onSubmit,
   onCancel,
-  isLoading
+  isLoading,
+  categories
 }: {
   isOpen: boolean;
   title: string;
@@ -420,6 +423,7 @@ function BrochureFormDialog({
   onSubmit: () => void;
   onCancel: () => void;
   isLoading: boolean;
+  categories: BrochureCategory[];
 }) {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
