@@ -186,6 +186,7 @@ export function BrochuresManager() {
     }
     
     const submissionData = {
+      title: formData.name, // Use name as title
       name: formData.name,
       category: formData.category,
       pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
