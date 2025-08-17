@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Search, FolderOpen, Settings } from "lucide-react";
+import { Plus, Edit, Trash2, Search, FolderOpen, Settings, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -35,6 +35,8 @@ export function BrochureCategoriesManager() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<BrochureCategory | null>(null);
+  const [sortField, setSortField] = useState<keyof BrochureCategory | null>(null);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [formData, setFormData] = useState<CategoryFormData>({
     title: "",
     description: "",
@@ -172,12 +174,50 @@ export function BrochureCategoriesManager() {
     deleteMutation.mutate(id);
   };
 
-  const filteredCategories = categories.filter((category) => {
-    const matchesSearch = category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (category.description && category.description.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesStatus = selectedStatus === "all" || category.status === selectedStatus;
-    return matchesSearch && matchesStatus;
-  });
+  const handleSort = (field: keyof BrochureCategory) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const getSortIcon = (field: keyof BrochureCategory) => {
+    if (sortField !== field) {
+      return <ArrowUpDown className="h-4 w-4" />;
+    }
+    return sortDirection === 'asc' ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />;
+  };
+
+  const filteredAndSortedCategories = categories
+    .filter((category) => {
+      const matchesSearch = category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           (category.description && category.description.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchesStatus = selectedStatus === "all" || category.status === selectedStatus;
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) => {
+      if (!sortField) return 0;
+      
+      let aValue = a[sortField];
+      let bValue = b[sortField];
+      
+      // Handle null/undefined values
+      if (aValue == null && bValue == null) return 0;
+      if (aValue == null) return sortDirection === 'asc' ? 1 : -1;
+      if (bValue == null) return sortDirection === 'asc' ? -1 : 1;
+      
+      // Handle different data types
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
+      
+      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
 
   const getStatusBadgeColor = (status: string) => {
     const option = STATUS_OPTIONS.find(opt => opt.value === status);
@@ -329,7 +369,7 @@ export function BrochureCategoriesManager() {
           <Settings className="h-8 w-8 animate-spin mx-auto mb-4 text-gray-400" />
           <p className="text-gray-500">Loading categories...</p>
         </div>
-      ) : filteredCategories.length === 0 ? (
+      ) : filteredAndSortedCategories.length === 0 ? (
         <Card data-testid="empty-state">
           <CardContent className="text-center py-12">
             <FolderOpen className="h-12 w-12 mx-auto mb-4 text-gray-400" />
@@ -351,7 +391,7 @@ export function BrochureCategoriesManager() {
         <Card>
           <CardHeader>
             <CardTitle data-testid="categories-table-title">
-              Brochure Categories ({filteredCategories.length})
+              Brochure Categories ({filteredAndSortedCategories.length})
             </CardTitle>
             <CardDescription>
               All brochure categories in your database
@@ -361,17 +401,62 @@ export function BrochureCategoriesManager() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Title</TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort('title')}
+                      className="h-auto p-0 font-semibold hover:bg-transparent"
+                    >
+                      Title
+                      {getSortIcon('title')}
+                    </Button>
+                  </TableHead>
                   <TableHead>Description</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Active</TableHead>
-                  <TableHead>Sort Order</TableHead>
-                  <TableHead>Created</TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort('status')}
+                      className="h-auto p-0 font-semibold hover:bg-transparent"
+                    >
+                      Status
+                      {getSortIcon('status')}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort('active')}
+                      className="h-auto p-0 font-semibold hover:bg-transparent"
+                    >
+                      Active
+                      {getSortIcon('active')}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort('sortOrder')}
+                      className="h-auto p-0 font-semibold hover:bg-transparent"
+                    >
+                      Sort Order
+                      {getSortIcon('sortOrder')}
+                    </Button>
+                  </TableHead>
+                  <TableHead>
+                    <Button
+                      variant="ghost"
+                      onClick={() => handleSort('createdAt')}
+                      className="h-auto p-0 font-semibold hover:bg-transparent"
+                    >
+                      Created
+                      {getSortIcon('createdAt')}
+                    </Button>
+                  </TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredCategories.map((category) => (
+                {filteredAndSortedCategories.map((category) => (
                   <TableRow key={category.id} data-testid={`category-row-${category.id}`}>
                     <TableCell className="font-medium" data-testid={`category-title-${category.id}`}>
                       {category.title}
