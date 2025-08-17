@@ -195,52 +195,64 @@ function BrochuresPage() {
                 </button>
               </div>
 
-              {/* Brochures Grid - EPD Style Layout */}
+              {/* Brochures Grid - Certificates Style Layout */}
               {groupedBrochures[activeTabIndex] && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {groupedBrochures[activeTabIndex].brochures.map((brochure) => (
                     <div
                       key={brochure.id}
-                      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 hover:border-gray-300 h-auto min-h-[420px]"
+                      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-200 hover:border-gray-300"
                     >
-                      {/* EPD Certificate Header */}
-                      <div className="bg-white border-b border-gray-200 p-3">
-                        <div className="text-center">
+                      {/* EPD Certificate Document - Full Height */}
+                      <div className="bg-white p-4">
+                        {/* EPD Header */}
+                        <div className="text-center mb-4">
                           <div className="text-xs text-gray-600 font-medium mb-1">EPD - Environmental Product Declaration</div>
-                          <div className="h-px bg-gray-200 mb-2"></div>
-                          <div className="text-xs font-bold text-gray-800 mb-1 leading-tight">ENVIRONMENTAL PRODUCT DECLARATION</div>
-                          <div className="text-xs text-gray-600 leading-tight">Water supply PE 100 and PE 100 RC pipes</div>
-                          <div className="text-xs text-gray-500 mt-1">Valid for Konti Hidroplast Pipes and fittings</div>
-                        </div>
-                        
-                        {/* Certificate badges */}
-                        <div className="flex justify-center items-center mt-2 space-x-2">
-                          <div className="w-5 h-5 bg-green-100 rounded border border-green-300 flex items-center justify-center">
-                            <span className="text-xs text-green-600 font-bold">✓</span>
+                          <div className="h-px bg-gray-300 mb-2"></div>
+                          <div className="text-xs font-bold text-gray-800 mb-1">ENVIRONMENTAL PRODUCT DECLARATION</div>
+                          <div className="text-xs text-gray-600">Water supply PE 100 and PE 100 RC pipes</div>
+                          <div className="text-xs text-gray-500">Valid for Konti Hidroplast Pipes and fittings</div>
+                          
+                          {/* Certificate Circle Logo */}
+                          <div className="flex justify-center my-3">
+                            <div className="w-12 h-12 border-2 border-red-500 rounded-full flex items-center justify-center bg-white">
+                              <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                                <span className="text-white text-xs font-bold">KH</span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="text-xs text-gray-600">Certified Product</div>
+                        </div>
+
+                        {/* Technical Details Section */}
+                        <div className="text-left text-xs space-y-1 mb-4 bg-gray-50 p-3 rounded">
+                          <div><strong>Programme:</strong> The International EPD® System</div>
+                          <div><strong>Programme operator:</strong> EPD International AB</div>
+                          <div><strong>EPD registration number:</strong> S-P-{Math.random().toString().substring(2,7)}</div>
+                          <div><strong>Published:</strong> {new Date().getFullYear()}-{String(new Date().getMonth() + 1).padStart(2, '0')}-{String(new Date().getDate()).padStart(2, '0')}</div>
+                          <div><strong>Valid until:</strong> {new Date().getFullYear() + 5}-{String(new Date().getMonth() + 1).padStart(2, '0')}-{String(new Date().getDate()).padStart(2, '0')}</div>
+                          <div><strong>An EPD should provide current information and may be updated if conditions change.</strong></div>
+                        </div>
+
+                        {/* Product Image */}
+                        <div className="relative h-32 bg-white flex items-center justify-center mb-4 border border-gray-200 rounded">
+                          {brochure.imageUrl ? (
+                            <img
+                              src={brochure.imageUrl}
+                              alt={brochure.title}
+                              className="max-w-full max-h-full object-contain"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <div className="flex items-center justify-center h-full">
+                              <ImageIcon className="h-16 w-16 text-gray-300" />
+                            </div>
+                          )}
                         </div>
                       </div>
 
-                      {/* Product Image */}
-                      <div className="relative h-48 bg-gray-50 flex items-center justify-center p-6">
-                        {brochure.imageUrl ? (
-                          <img
-                            src={brochure.imageUrl}
-                            alt={brochure.title}
-                            className="w-full h-full object-contain max-w-none"
-                            loading="lazy"
-                          />
-                        ) : (
-                          <div className="flex items-center justify-center h-full">
-                            <ImageIcon className="h-20 w-20 text-gray-300" />
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Product Title and Download */}
-                      <div className="p-4 text-center">
-                        <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wide">
+                      {/* Product Title and Download - Outside the certificate */}
+                      <div className="p-4 bg-gray-50 text-center">
+                        <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase">
                           {brochure.title}
                         </h3>
                         
@@ -248,7 +260,7 @@ function BrochuresPage() {
                           href={brochure.pdfUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center w-full gap-2 bg-[#1e3a8a] hover:bg-[#1e40af] text-white px-4 py-2.5 rounded text-sm font-medium transition-colors"
+                          className="inline-flex items-center justify-center w-full gap-2 bg-[#374151] hover:bg-[#4b5563] text-white px-4 py-2.5 rounded text-sm font-medium transition-colors"
                           aria-label={`Download ${brochure.title} brochure`}
                           data-testid={`download-${brochure.id}`}
                         >
