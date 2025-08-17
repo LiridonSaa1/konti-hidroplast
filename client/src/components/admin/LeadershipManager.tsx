@@ -194,9 +194,19 @@ export function LeadershipManager() {
     );
   }
 
-  const leadershipContent = (leadershipData && typeof leadershipData === 'object' && 'value' in leadershipData) 
-    ? JSON.parse(leadershipData.value) 
-    : {};
+  // Parse leadership content - use a key to force re-render
+  let leadershipContent = {};
+  if (leadershipData && typeof leadershipData === 'object' && 'value' in leadershipData) {
+    try {
+      leadershipContent = JSON.parse(leadershipData.value);
+    } catch (error) {
+      console.error('Failed to parse leadership data:', error);
+      leadershipContent = {};
+    }
+  }
+  
+  // Add debugging
+  console.log('Leadership data changed:', leadershipData?.id, leadershipContent);
 
   return (
     <div className="space-y-6">
@@ -382,7 +392,7 @@ export function LeadershipManager() {
       </div>
 
       {/* Leadership Message Display */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="leadership-display">
+      <div key={leadershipData?.id || 'loading'} className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="leadership-display">
         <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <div>
