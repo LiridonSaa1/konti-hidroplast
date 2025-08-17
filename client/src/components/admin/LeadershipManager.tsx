@@ -17,7 +17,6 @@ export function LeadershipManager() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [refreshKey, setRefreshKey] = useState(0);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -37,9 +36,9 @@ export function LeadershipManager() {
     },
   });
 
-  // Fetch leadership data with no caching to ensure fresh data
+  // Fetch leadership data
   const { data: leadershipData, isLoading, refetch } = useQuery({
-    queryKey: ["/api/admin/company-info", "leadership_message", refreshKey],
+    queryKey: ["/api/admin/company-info", "leadership_message"],
     queryFn: async () => {
       try {
         const result = await apiRequest("/api/admin/company-info/leadership_message", "GET");
@@ -64,8 +63,6 @@ export function LeadershipManager() {
         };
       }
     },
-    staleTime: 0, // Always consider data stale
-    gcTime: 0, // Don't cache
   });
 
   // Fetch positions for dropdown
@@ -80,18 +77,13 @@ export function LeadershipManager() {
     onSuccess: async (result) => {
       console.log("Leadership message save successful:", result);
       
-      // Clear all related cache entries
-      await queryClient.resetQueries({ queryKey: ["/api/admin/company-info"] });
-      await queryClient.resetQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
-      
-      // Force immediate refetch
-      await queryClient.refetchQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
+      // Invalidate and refetch the specific query
+      await queryClient.invalidateQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
       
       // Update UI states
       setIsFormOpen(false);
       setSelectedImage(null);
       setImagePreview(null);
-      setRefreshKey(prev => prev + 1);
       
       toast({
         title: "Success",
@@ -200,13 +192,6 @@ export function LeadershipManager() {
     }
   }, [leadershipData, isFormOpen, imagePreview]);
 
-  // Force re-render when leadership data changes
-  useEffect(() => {
-    if (leadershipData) {
-      setRefreshKey(prev => prev + 1);
-    }
-  }, [leadershipData]);
-
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -226,12 +211,7 @@ export function LeadershipManager() {
     }
   }
   
-  // Add debugging and create unique key
-  const dataId = leadershipData && typeof leadershipData === 'object' && 'id' in leadershipData ? leadershipData.id : 'no-id';
-  const updatedAt = leadershipData && typeof leadershipData === 'object' && 'updatedAt' in leadershipData ? leadershipData.updatedAt : '';
-  const uniqueKey = `${dataId}-${updatedAt}-${refreshKey}`;
-  
-  console.log('Leadership data changed:', dataId, updatedAt, leadershipContent);
+  console.log('Leadership data:', leadershipData, leadershipContent);
 
   return (
     <div className="space-y-6">
@@ -417,7 +397,7 @@ export function LeadershipManager() {
       </div>
 
       {/* Leadership Message Display */}
-      <div key={uniqueKey} className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="leadership-display">
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="leadership-display">
         <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <div>
