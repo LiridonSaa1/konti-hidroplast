@@ -37,7 +37,7 @@ The frontend follows a modular component architecture: Pages, Sections, UI Compo
 - **Responsive Design**: Mobile-first approach with Tailwind CSS.
 - **Accessibility**: Radix UI primitives ensure WCAG compliance.
 - **Typography**: Inter font family.
-- **Admin Panel UI**: Grouped navigation for "Our Team" (Team Members and Positions), with consistent table designs.
+- **Admin Panel UI**: Grouped navigation for "Our Team" (Team Members and Positions) and "Brochures" (Brochures and Categories), with consistent table designs and dropdown structures.
 
 ## Feature Specifications
 - **Product Pages**: Slider-style navigation for product sections (e.g., PP HM Fittings, Gas Pipeline Systems, Brochures).
@@ -47,6 +47,7 @@ The frontend follows a modular component architecture: Pages, Sections, UI Compo
 - **About Us Section**: Includes a professional gallery (Production, Quality Control, Storage, Projects), a timeline, leadership message, and updated color schemes.
 - **News Page**: Text truncation for article titles.
 - **Team and Position Management**: CRUD systems for team members and organizational positions, with database and in-memory storage support, accessible via admin panel.
+- **Brochures Management**: Enhanced brochures system with dropdown navigation structure featuring separate management for brochures and categories, both with title, description, and status fields with full CRUD operations.
 
 # External Dependencies
 
