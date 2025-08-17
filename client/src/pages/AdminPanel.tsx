@@ -29,6 +29,7 @@ import { NewsManager } from "@/components/admin/NewsManager";
 import { CertificatesManager } from "@/components/admin/CertificatesManager";
 import { BrochuresManager } from "@/components/admin/BrochuresManager";
 import { EnhancedBrochuresManager } from "@/components/admin/EnhancedBrochuresManager";
+import { DocumentManager } from "@/components/admin/DocumentManager";
 import { ProjectsManager } from "@/components/admin/ProjectsManager";
 import { TeamsManager } from "@/components/admin/TeamsManager";
 import { PositionsManager } from "@/components/admin/PositionsManager";
@@ -47,7 +48,7 @@ export default function AdminPanel() {
   }
   
   // Auto-open brochures dropdown when brochures or brochure-categories tab is active
-  const brochureTabsActive = activeTab === "brochures" || activeTab === "enhanced-brochures" || activeTab === "brochure-categories";
+  const brochureTabsActive = activeTab === "brochures" || activeTab === "enhanced-brochures" || activeTab === "document-manager" || activeTab === "brochure-categories";
   if (brochureTabsActive && !isBrochuresDropdownOpen) {
     setIsBrochuresDropdownOpen(true);
   }
@@ -168,7 +169,7 @@ export default function AdminPanel() {
             >
               <CollapsibleTrigger asChild>
                 <Button
-                  variant={activeTab === "brochures" || activeTab === "brochure-categories" ? "default" : "ghost"}
+                  variant={brochureTabsActive ? "default" : "ghost"}
                   className="w-full justify-start"
                   data-testid="nav-brochures"
                 >
@@ -200,6 +201,16 @@ export default function AdminPanel() {
                 >
                   <BookOpen className={`h-3 w-3 mr-2 ${activeTab === "enhanced-brochures" ? "text-blue-600" : ""}`} />
                   Enhanced Manager
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "document-manager" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("document-manager")}
+                  data-testid="nav-document-manager"
+                >
+                  <FileText className={`h-3 w-3 mr-2 ${activeTab === "document-manager" ? "text-blue-600" : ""}`} />
+                  Document Manager
                 </Button>
                 
                 <Button
@@ -437,6 +448,12 @@ export default function AdminPanel() {
           {activeTab === "enhanced-brochures" && (
             <div data-testid="enhanced-brochures-manager">
               <EnhancedBrochuresManager />
+            </div>
+          )}
+
+          {activeTab === "document-manager" && (
+            <div data-testid="document-manager">
+              <DocumentManager />
             </div>
           )}
 

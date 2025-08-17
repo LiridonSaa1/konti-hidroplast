@@ -24,6 +24,7 @@ interface BrochureEntry {
   imageFile: File | null;
   imageUrl: string;
   language: string;
+  languageName: string;
 }
 
 interface BrochureFormData {
@@ -57,7 +58,8 @@ export function EnhancedBrochuresManager() {
       pdfUrl: "",
       imageFile: null,
       imageUrl: "",
-      language: "en"
+      language: "en",
+      languageName: "English"
     }]
   });
 
@@ -162,7 +164,8 @@ export function EnhancedBrochuresManager() {
         pdfUrl: "",
         imageFile: null,
         imageUrl: "",
-        language: "en"
+        language: "en",
+        languageName: "English"
       }]
     });
   };
@@ -181,7 +184,8 @@ export function EnhancedBrochuresManager() {
         pdfUrl: brochure.pdfUrl || "",
         imageFile: null,
         imageUrl: brochure.imageUrl || "",
-        language: brochure.language || "en"
+        language: brochure.language || "en",
+        languageName: brochure.language === "mk" ? "Macedonian" : brochure.language === "de" ? "German" : "English"
       }]
     });
     setSelectedBrochure(brochure);
@@ -195,11 +199,33 @@ export function EnhancedBrochuresManager() {
       pdfUrl: "",
       imageFile: null,
       imageUrl: "",
-      language: "en"
+      language: "en",
+      languageName: "English"
     };
     setFormData({
       ...formData,
       entries: [...formData.entries, newEntry]
+    });
+  };
+
+  const updateEntryLanguage = (entryId: string, language: string) => {
+    const languageMap = {
+      "en": "English",
+      "mk": "Macedonian", 
+      "de": "German",
+      "fr": "French",
+      "al": "Albanian",
+      "it": "Italian",
+      "es": "Spanish"
+    };
+    
+    setFormData({
+      ...formData,
+      entries: formData.entries.map(entry => 
+        entry.id === entryId 
+          ? { ...entry, language, languageName: languageMap[language as keyof typeof languageMap] || language }
+          : entry
+      )
     });
   };
 
@@ -361,6 +387,7 @@ export function EnhancedBrochuresManager() {
             addEntry={addEntry}
             removeEntry={removeEntry}
             updateEntry={updateEntry}
+            updateEntryLanguage={updateEntryLanguage}
           />
         </Dialog>
       </div>
@@ -607,6 +634,7 @@ export function EnhancedBrochuresManager() {
           addEntry={addEntry}
           removeEntry={removeEntry}
           updateEntry={updateEntry}
+          updateEntryLanguage={updateEntryLanguage}
         />
       </Dialog>
 
@@ -637,6 +665,7 @@ interface BrochureFormDialogProps {
   addEntry: () => void;
   removeEntry: (entryId: string) => void;
   updateEntry: (entryId: string, field: keyof BrochureEntry, value: any) => void;
+  updateEntryLanguage: (entryId: string, language: string) => void;
 }
 
 function BrochureFormDialog({
@@ -650,7 +679,8 @@ function BrochureFormDialog({
   categories,
   addEntry,
   removeEntry,
-  updateEntry
+  updateEntry,
+  updateEntryLanguage
 }: BrochureFormDialogProps) {
   const handleFileChange = (entryId: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -826,7 +856,7 @@ function BrochureFormDialog({
                   <div className="col-span-2">
                     <Select
                       value={entry.language}
-                      onValueChange={(value) => updateEntry(entry.id, 'language', value)}
+                      onValueChange={(value) => updateEntryLanguage(entry.id, value)}
                     >
                       <SelectTrigger className="h-8 text-xs">
                         <SelectValue />
@@ -835,6 +865,10 @@ function BrochureFormDialog({
                         <SelectItem value="en">🇺🇸 English</SelectItem>
                         <SelectItem value="mk">🇲🇰 Macedonian</SelectItem>
                         <SelectItem value="de">🇩🇪 German</SelectItem>
+                        <SelectItem value="fr">🇫🇷 French</SelectItem>
+                        <SelectItem value="al">🇦🇱 Albanian</SelectItem>
+                        <SelectItem value="it">🇮🇹 Italian</SelectItem>
+                        <SelectItem value="es">🇪🇸 Spanish</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
