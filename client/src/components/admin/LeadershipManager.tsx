@@ -75,7 +75,7 @@ export function LeadershipManager() {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
       setIsFormOpen(false);
       setSelectedImage(null);
-      setImagePreview(null);
+      // Don't clear imagePreview immediately - let it update from the fresh data
       toast({
         title: "Success",
         description: "Leadership message updated successfully",
@@ -139,6 +139,10 @@ export function LeadershipManager() {
   };
 
   const handleEdit = () => {
+    // Clear states first
+    setSelectedImage(null);
+    setImagePreview(null);
+    
     if (leadershipData && typeof leadershipData === 'object' && 'value' in leadershipData) {
       const currentData = JSON.parse(leadershipData.value);
       form.reset({
@@ -147,6 +151,7 @@ export function LeadershipManager() {
         value: JSON.stringify(currentData)
       });
       
+      // Set image preview to current saved image if it exists
       if (currentData.leaderImage) {
         setImagePreview(currentData.leaderImage);
       }
