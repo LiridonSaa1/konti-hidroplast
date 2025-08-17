@@ -185,16 +185,6 @@ export default function AdminPanel() {
               <CollapsibleContent className="pl-6 space-y-1">
                 <Button
                   variant="ghost"
-                  className={`w-full justify-start text-sm ${activeTab === "brochures" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("brochures")}
-                  data-testid="nav-brochures-list"
-                >
-                  <BookOpen className={`h-3 w-3 mr-2 ${activeTab === "brochures" ? "text-blue-600" : ""}`} />
-                  Brochures
-                </Button>
-                
-                <Button
-                  variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "enhanced-brochures" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
                   onClick={() => setActiveTab("enhanced-brochures")}
                   data-testid="nav-enhanced-brochures"
