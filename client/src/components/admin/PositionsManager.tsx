@@ -144,8 +144,8 @@ export function PositionsManager() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900" data-testid="positions-title">Position Management</h2>
-          <p className="text-slate-600" data-testid="positions-description">Manage organizational positions and job titles</p>
+          <h2 className="text-2xl font-bold text-slate-900" data-testid="positions-title">Positions Management</h2>
+          <p className="text-slate-600" data-testid="positions-description">Manage organizational positions and their descriptions</p>
         </div>
         
         <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
@@ -232,89 +232,80 @@ export function PositionsManager() {
         </Dialog>
       </div>
 
-      <Card data-testid="positions-table-card">
-        <CardHeader>
-          <CardTitle className="text-lg">All Positions</CardTitle>
-          <CardDescription>Manage organizational positions and their details</CardDescription>
-        </CardHeader>
-        <CardContent>
+      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="positions-table">
+        <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Positions ({positions.length})</h3>
+              <p className="text-sm text-gray-600">All positions in your database</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead className="w-[200px]">Position Title</TableHead>
-                <TableHead className="w-[300px]">Description</TableHead>
-                <TableHead className="w-[120px]">Status</TableHead>
-                <TableHead className="w-[150px]">Created</TableHead>
-                <TableHead className="w-[100px]">Actions</TableHead>
+              <TableRow className="bg-gray-50">
+                <TableHead className="text-gray-600 font-medium px-6 py-3">Title</TableHead>
+                <TableHead className="text-gray-600 font-medium px-6 py-3">Description</TableHead>
+                <TableHead className="text-gray-600 font-medium px-6 py-3">Status</TableHead>
+                <TableHead className="text-gray-600 font-medium px-6 py-3 text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {positions.map((position) => (
-                <TableRow key={position.id} data-testid={`position-row-${position.id}`}>
-                  <TableCell className="font-medium" data-testid={`position-title-${position.id}`}>
-                    <div className="flex items-center space-x-2">
-                      <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                        <Briefcase className="h-4 w-4 text-blue-600" />
-                      </div>
-                      <span>{position.title}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell data-testid={`position-description-${position.id}`}>
-                    {position.description ? (
-                      <span className="text-slate-600">{position.description}</span>
-                    ) : (
-                      <span className="text-slate-400 italic">No description</span>
-                    )}
-                  </TableCell>
-                  <TableCell data-testid={`position-status-${position.id}`}>
-                    <Badge variant={position.active ? "default" : "secondary"}>
-                      {position.active ? "Active" : "Inactive"}
-                    </Badge>
-                  </TableCell>
-                  <TableCell data-testid={`position-created-${position.id}`}>
-                    <span className="text-sm text-slate-500">
-                      {position.createdAt ? new Date(position.createdAt).toLocaleDateString() : "Unknown"}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex space-x-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleEdit(position)}
-                        data-testid={`button-edit-${position.id}`}
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDelete(position.id)}
-                        className="text-red-600 hover:text-red-700"
-                        data-testid={`button-delete-${position.id}`}
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
+              {positions.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={4} className="px-6 py-8 text-center">
+                    <div className="text-gray-500">No positions found</div>
                   </TableCell>
                 </TableRow>
-              ))}
+              ) : (
+                positions.map((position) => (
+                  <TableRow key={position.id} data-testid={`position-row-${position.id}`} className="hover:bg-gray-50">
+                    <TableCell className="px-6 py-4" data-testid={`position-title-${position.id}`}>
+                      <div className="font-medium text-gray-900">{position.title}</div>
+                    </TableCell>
+                    <TableCell className="px-6 py-4" data-testid={`position-description-${position.id}`}>
+                      {position.description ? (
+                        <div className="text-gray-600">{position.description}</div>
+                      ) : (
+                        <div className="text-gray-400 italic">No description</div>
+                      )}
+                    </TableCell>
+                    <TableCell className="px-6 py-4" data-testid={`position-status-${position.id}`}>
+                      <Badge variant={position.active ? "default" : "secondary"} className={position.active ? "bg-blue-100 text-blue-800 hover:bg-blue-100" : ""}>
+                        {position.active ? "Active" : "Inactive"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="px-6 py-4 text-right">
+                      <div className="flex justify-end space-x-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(position)}
+                          data-testid={`button-edit-${position.id}`}
+                          className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDelete(position.id)}
+                          className="h-8 w-8 p-0 text-gray-400 hover:text-red-600"
+                          data-testid={`button-delete-${position.id}`}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
             </TableBody>
           </Table>
-        </CardContent>
-      </Card>
-
-      {positions.length === 0 && (
-        <Card className="p-8 text-center" data-testid="no-positions-message">
-          <Star className="h-12 w-12 mx-auto text-slate-400 mb-4" />
-          <h3 className="text-lg font-medium text-slate-900 mb-2">No positions defined yet</h3>
-          <p className="text-slate-600 mb-4">Start by adding organizational positions to structure your team.</p>
-          <Button onClick={() => resetForm()} data-testid="button-add-first-position">
-            <Plus className="h-4 w-4 mr-2" />
-            Add First Position
-          </Button>
-        </Card>
-      )}
+        </div>
+      </div>
     </div>
   );
 }
