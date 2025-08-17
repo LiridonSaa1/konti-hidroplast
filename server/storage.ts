@@ -15,6 +15,8 @@ import {
   type InsertBrochure,
   type Project,
   type InsertProject,
+  type Team,
+  type InsertTeam,
   users,
   products,
   media,
@@ -23,6 +25,7 @@ import {
   certificates,
   brochures,
   projects,
+  teams,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -76,6 +79,13 @@ export interface IStorage {
   createProject(project: InsertProject): Promise<Project>;
   updateProject(id: number, project: Partial<InsertProject>): Promise<Project>;
   deleteProject(id: number): Promise<void>;
+  
+  // Team methods
+  getAllTeams(): Promise<Team[]>;
+  getTeam(id: number): Promise<Team | undefined>;
+  createTeam(team: InsertTeam): Promise<Team>;
+  updateTeam(id: number, team: Partial<InsertTeam>): Promise<Team>;
+  deleteTeam(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -324,6 +334,42 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     await db.delete(projects).where(eq(projects.id, id));
   }
+  
+  // Team methods
+  async getAllTeams(): Promise<Team[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(teams).orderBy(desc(teams.createdAt));
+  }
+
+  async getTeam(id: number): Promise<Team | undefined> {
+    if (!db) throw new Error('Database not available');
+    const [team] = await db.select().from(teams).where(eq(teams.id, id));
+    return team || undefined;
+  }
+
+  async createTeam(team: InsertTeam): Promise<Team> {
+    if (!db) throw new Error('Database not available');
+    const [newTeam] = await db
+      .insert(teams)
+      .values(team)
+      .returning();
+    return newTeam;
+  }
+
+  async updateTeam(id: number, team: Partial<InsertTeam>): Promise<Team> {
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(teams)
+      .set(team)
+      .where(eq(teams.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteTeam(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(teams).where(eq(teams.id, id));
+  }
 }
 
 // In-memory storage implementation for development
@@ -336,6 +382,7 @@ export class MemStorage implements IStorage {
   private certificatesData: Certificate[] = [];
   private brochuresData: Brochure[] = [];
   private projectsData: Project[] = [];
+  private teamsData: Team[] = [];
 
   // User methods
   async getUser(id: string): Promise<User | undefined> {
@@ -644,6 +691,52 @@ export class MemStorage implements IStorage {
     const index = this.projectsData.findIndex(p => p.id === id);
     if (index !== -1) {
       this.projectsData.splice(index, 1);
+    }
+  }
+  
+  // Team methods
+  async getAllTeams(): Promise<Team[]> {
+    return this.teamsData.sort((a, b) => {
+      const aTime = a.createdAt?.getTime() || 0;
+      const bTime = b.createdAt?.getTime() || 0;
+      return bTime - aTime;
+    });
+  }
+
+  async getTeam(id: number): Promise<Team | undefined> {
+    return this.teamsData.find(team => team.id === id);
+  }
+
+  async createTeam(team: InsertTeam): Promise<Team> {
+    const newTeam: Team = {
+      ...team,
+      id: this.teamsData.length + 1,
+      imageUrl: team.imageUrl ?? null,
+      active: team.active ?? null,
+      sortOrder: team.sortOrder ?? null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.teamsData.push(newTeam);
+    return newTeam;
+  }
+
+  async updateTeam(id: number, team: Partial<InsertTeam>): Promise<Team> {
+    const index = this.teamsData.findIndex(t => t.id === id);
+    if (index === -1) throw new Error('Team member not found');
+    
+    this.teamsData[index] = {
+      ...this.teamsData[index],
+      ...team,
+      updatedAt: new Date()
+    };
+    return this.teamsData[index];
+  }
+
+  async deleteTeam(id: number): Promise<void> {
+    const index = this.teamsData.findIndex(t => t.id === id);
+    if (index !== -1) {
+      this.teamsData.splice(index, 1);
     }
   }
 }

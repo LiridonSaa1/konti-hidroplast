@@ -25,6 +25,7 @@ import { NewsManager } from "@/components/admin/NewsManager";
 import { CertificatesManager } from "@/components/admin/CertificatesManager";
 import { BrochuresManager } from "@/components/admin/BrochuresManager";
 import { ProjectsManager } from "@/components/admin/ProjectsManager";
+import { TeamsManager } from "@/components/admin/TeamsManager";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -47,6 +48,11 @@ export default function AdminPanel() {
 
   const { data: certificatesCount = 0 } = useQuery({
     queryKey: ["/api/admin/certificates"],
+    select: (data: any) => data?.length || 0
+  });
+
+  const { data: teamsCount = 0 } = useQuery({
+    queryKey: ["/api/admin/teams"],
     select: (data: any) => data?.length || 0
   });
 
@@ -138,6 +144,16 @@ export default function AdminPanel() {
               Brochures
             </Button>
             
+            <Button
+              variant={activeTab === "teams" ? "default" : "ghost"}
+              className="w-full justify-start"
+              onClick={() => setActiveTab("teams")}
+              data-testid="nav-teams"
+            >
+              <Users className="h-4 w-4 mr-2" />
+              Team Members
+            </Button>
+            
             <Separator className="my-4" />
             
             <Button
@@ -158,7 +174,7 @@ export default function AdminPanel() {
             <div className="space-y-6" data-testid="overview-content">
               <div>
                 <h2 className="text-xl font-semibold text-slate-900 mb-4">Dashboard Overview</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                   <Card data-testid="card-products-count">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">Products</CardTitle>
@@ -200,6 +216,17 @@ export default function AdminPanel() {
                     <CardContent>
                       <div className="text-2xl font-bold" data-testid="certificates-count">{certificatesCount}</div>
                       <p className="text-xs text-slate-600">Active certificates</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card data-testid="card-teams-count">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">Team Members</CardTitle>
+                      <Users className="h-4 w-4 text-indigo-600" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold" data-testid="teams-count">{teamsCount}</div>
+                      <p className="text-xs text-slate-600">Active team members</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -280,6 +307,12 @@ export default function AdminPanel() {
           {activeTab === "brochures" && (
             <div data-testid="brochures-manager">
               <BrochuresManager />
+            </div>
+          )}
+
+          {activeTab === "teams" && (
+            <div data-testid="teams-manager">
+              <TeamsManager />
             </div>
           )}
 

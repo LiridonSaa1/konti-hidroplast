@@ -13,6 +13,7 @@ import {
   insertCertificateSchema,
   insertBrochureSchema,
   insertProjectSchema,
+  insertTeamSchema,
 } from "@shared/schema";
 
 // Configure multer for file uploads
@@ -379,6 +380,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting project:", error);
       res.status(500).json({ error: "Failed to delete project" });
+    }
+  });
+
+  // Team routes
+  app.get("/api/admin/teams", async (req, res) => {
+    try {
+      const teams = await storage.getAllTeams();
+      res.json(teams);
+    } catch (error) {
+      console.error("Error fetching teams:", error);
+      res.status(500).json({ error: "Failed to fetch teams" });
+    }
+  });
+
+  app.post("/api/admin/teams", async (req, res) => {
+    try {
+      const teamData = insertTeamSchema.parse(req.body);
+      const team = await storage.createTeam(teamData);
+      res.status(201).json(team);
+    } catch (error) {
+      console.error("Error creating team:", error);
+      res.status(400).json({ error: "Invalid team data" });
+    }
+  });
+
+  app.patch("/api/admin/teams/:id", async (req, res) => {
+    try {
+      const teamData = insertTeamSchema.partial().parse(req.body);
+      const team = await storage.updateTeam(parseInt(req.params.id), teamData);
+      res.json(team);
+    } catch (error) {
+      console.error("Error updating team:", error);
+      res.status(400).json({ error: "Invalid team data" });
+    }
+  });
+
+  app.delete("/api/admin/teams/:id", async (req, res) => {
+    try {
+      await storage.deleteTeam(parseInt(req.params.id));
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting team:", error);
+      res.status(500).json({ error: "Failed to delete team" });
     }
   });
 
