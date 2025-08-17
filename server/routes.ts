@@ -6,6 +6,7 @@ import path from "path";
 import { promises as fs } from "fs";
 import { storage } from "./storage";
 import { translationService } from "./services/translationService";
+import translationRoutes from "./routes/translation";
 import {
   insertProductSchema,
   insertMediaSchema,

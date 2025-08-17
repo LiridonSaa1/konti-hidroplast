@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { TranslationService } from "../services/translationService.js";
-import { storage } from "../storage.js";
+import { TranslationService } from "../services/translationService";
+import { storage } from "../storage";
 import path from "path";
 import fs from "fs";
 
