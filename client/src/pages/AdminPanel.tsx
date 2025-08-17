@@ -28,6 +28,7 @@ import { CompanyInfoManager } from "@/components/admin/CompanyInfoManager";
 import { NewsManager } from "@/components/admin/NewsManager";
 import { CertificatesManager } from "@/components/admin/CertificatesManager";
 import { BrochuresManager } from "@/components/admin/BrochuresManager";
+import { EnhancedBrochuresManager } from "@/components/admin/EnhancedBrochuresManager";
 import { ProjectsManager } from "@/components/admin/ProjectsManager";
 import { TeamsManager } from "@/components/admin/TeamsManager";
 import { PositionsManager } from "@/components/admin/PositionsManager";
@@ -46,7 +47,7 @@ export default function AdminPanel() {
   }
   
   // Auto-open brochures dropdown when brochures or brochure-categories tab is active
-  const brochureTabsActive = activeTab === "brochures" || activeTab === "brochure-categories";
+  const brochureTabsActive = activeTab === "brochures" || activeTab === "enhanced-brochures" || activeTab === "brochure-categories";
   if (brochureTabsActive && !isBrochuresDropdownOpen) {
     setIsBrochuresDropdownOpen(true);
   }
@@ -189,6 +190,16 @@ export default function AdminPanel() {
                 >
                   <BookOpen className={`h-3 w-3 mr-2 ${activeTab === "brochures" ? "text-blue-600" : ""}`} />
                   Brochures
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "enhanced-brochures" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("enhanced-brochures")}
+                  data-testid="nav-enhanced-brochures"
+                >
+                  <BookOpen className={`h-3 w-3 mr-2 ${activeTab === "enhanced-brochures" ? "text-blue-600" : ""}`} />
+                  Enhanced Manager
                 </Button>
                 
                 <Button
@@ -420,6 +431,12 @@ export default function AdminPanel() {
           {activeTab === "brochures" && (
             <div data-testid="brochures-manager">
               <BrochuresManager />
+            </div>
+          )}
+
+          {activeTab === "enhanced-brochures" && (
+            <div data-testid="enhanced-brochures-manager">
+              <EnhancedBrochuresManager />
             </div>
           )}
 
