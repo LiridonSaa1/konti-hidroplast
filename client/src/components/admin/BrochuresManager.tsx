@@ -506,7 +506,7 @@ export function BrochuresManager() {
   );
 }
 
-function brochureFormDialog({
+function BrochureFormDialog({
   isOpen,
   title,
   formData,
@@ -603,15 +603,22 @@ function brochureFormDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="imageUrl">Brochure Image</Label>
-            <FileUpload
-              label="Brochure Image"
-              value={formData.imageUrl || ""}
-              onChange={(url) => setFormData({ ...formData, imageUrl: url })}
-              type="image"
-              placeholder="Upload brochure image or enter image URL"
-              testId="input-brochure-image"
-            />
+            <Label htmlFor="imageFile">Brochure Image</Label>
+            <div className="flex items-center gap-2">
+              <Input
+                id="imageFile"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                data-testid="input-brochure-image-file"
+                className="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+              />
+              {formData.imageFile && (
+                <span className="text-sm text-green-600">
+                  {formData.imageFile.name}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
