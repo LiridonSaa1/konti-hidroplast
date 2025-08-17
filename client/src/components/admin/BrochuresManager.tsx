@@ -13,7 +13,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import type { Brochure, InsertBrochure } from "@shared/schema";
+import type { Brochure, InsertBrochure, BrochureCategory } from "@shared/schema";
 
 interface BrochureFormData {
   name: string;
@@ -25,16 +25,7 @@ interface BrochureFormData {
   sortOrder: number;
 }
 
-const BROCHURE_CATEGORIES = [
-  "Water Supply Systems",
-  "Sewerage Systems", 
-  "Gas Pipeline Systems",
-  "Cable Protection Systems",
-  "Drainage Systems",
-  "General",
-  "Technical Specifications",
-  "Installation Guides"
-];
+
 
 export function BrochuresManager() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -57,6 +48,10 @@ export function BrochuresManager() {
 
   const { data: brochures = [], isLoading } = useQuery<Brochure[]>({
     queryKey: ["/api/admin/brochures"]
+  });
+
+  const { data: categories = [] } = useQuery<BrochureCategory[]>({
+    queryKey: ["/api/admin/brochure-categories"]
   });
 
   const createMutation = useMutation({
@@ -263,9 +258,11 @@ export function BrochuresManager() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Categories</SelectItem>
-                {BROCHURE_CATEGORIES.map(category => (
-                  <SelectItem key={category} value={category}>{category}</SelectItem>
-                ))}
+                {categories
+                  .filter(cat => cat.active)
+                  .map(category => (
+                    <SelectItem key={category.id} value={category.title}>{category.title}</SelectItem>
+                  ))}
               </SelectContent>
             </Select>
           </div>
@@ -461,9 +458,11 @@ function BrochureFormDialog({
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                {BROCHURE_CATEGORIES.map(category => (
-                  <SelectItem key={category} value={category}>{category}</SelectItem>
-                ))}
+                {categories
+                  .filter(cat => cat.active)
+                  .map(category => (
+                    <SelectItem key={category.id} value={category.title}>{category.title}</SelectItem>
+                  ))}
               </SelectContent>
             </Select>
           </div>
