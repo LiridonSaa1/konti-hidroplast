@@ -56,6 +56,7 @@ export const newsArticles = pgTable("news_articles", {
   content: text("content").notNull(),
   excerpt: text("excerpt"),
   imageUrl: text("image_url"),
+  author: text("author"),
   published: boolean("published").default(false),
   publishedAt: timestamp("published_at"),
   createdAt: timestamp("created_at").defaultNow(),
