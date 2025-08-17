@@ -188,6 +188,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/admin/company-info/:key", async (req, res) => {
+    try {
+      const info = await storage.getCompanyInfoByKey(req.params.key);
+      if (!info) {
+        return res.status(404).json({ error: "Company info not found" });
+      }
+      res.json(info);
+    } catch (error) {
+      console.error("Error fetching company info by key:", error);
+      res.status(500).json({ error: "Failed to fetch company info" });
+    }
+  });
+
   app.post("/api/admin/company-info", async (req, res) => {
     try {
       const infoData = insertCompanyInfoSchema.parse(req.body);
