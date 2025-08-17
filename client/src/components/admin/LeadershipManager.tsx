@@ -187,6 +187,13 @@ export function LeadershipManager() {
     }
   }, [leadershipData, isFormOpen, imagePreview]);
 
+  // Force re-render when leadership data changes
+  useEffect(() => {
+    if (leadershipData) {
+      setRefreshKey(prev => prev + 1);
+    }
+  }, [leadershipData]);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -206,9 +213,12 @@ export function LeadershipManager() {
     }
   }
   
-  // Add debugging
+  // Add debugging and create unique key
   const dataId = leadershipData && typeof leadershipData === 'object' && 'id' in leadershipData ? leadershipData.id : 'no-id';
-  console.log('Leadership data changed:', dataId, leadershipContent);
+  const updatedAt = leadershipData && typeof leadershipData === 'object' && 'updatedAt' in leadershipData ? leadershipData.updatedAt : '';
+  const uniqueKey = `${dataId}-${updatedAt}-${refreshKey}`;
+  
+  console.log('Leadership data changed:', dataId, updatedAt, leadershipContent);
 
   return (
     <div className="space-y-6">
@@ -394,7 +404,7 @@ export function LeadershipManager() {
       </div>
 
       {/* Leadership Message Display */}
-      <div key={`${dataId}-${refreshKey}`} className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="leadership-display">
+      <div key={uniqueKey} className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="leadership-display">
         <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <div>
