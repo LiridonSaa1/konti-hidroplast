@@ -31,7 +31,6 @@ export function TeamsManager() {
       email: "",
       imageUrl: "",
       active: true,
-      sortOrder: 0,
     },
   });
 
@@ -124,7 +123,6 @@ export function TeamsManager() {
       email: team.email,
       imageUrl: team.imageUrl || "",
       active: team.active || true,
-      sortOrder: team.sortOrder || 0,
     });
     setIsFormOpen(true);
   };
@@ -140,7 +138,6 @@ export function TeamsManager() {
       email: "",
       imageUrl: "",
       active: true,
-      sortOrder: 0,
     });
     setEditingTeam(null);
     setIsFormOpen(false);
@@ -266,45 +263,22 @@ export function TeamsManager() {
                   )}
                 />
 
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="sortOrder"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Sort Order</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="number" 
-                            placeholder="0" 
-                            {...field}
-                            value={field.value || 0}
-                            onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                            data-testid="input-team-sort"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="active"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center space-x-2 pt-8">
-                        <FormControl>
-                          <Switch
-                            checked={field.value || false}
-                            onCheckedChange={field.onChange}
-                            data-testid="input-team-active"
-                          />
-                        </FormControl>
-                        <FormLabel className="!mt-0">Active</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="active"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2">
+                      <FormControl>
+                        <Switch
+                          checked={field.value || false}
+                          onCheckedChange={field.onChange}
+                          data-testid="input-team-active"
+                        />
+                      </FormControl>
+                      <FormLabel className="!mt-0">Active</FormLabel>
+                    </FormItem>
+                  )}
+                />
 
                 <div className="flex justify-end space-x-2 pt-4">
                   <Button type="button" variant="outline" onClick={resetForm} data-testid="button-cancel">
@@ -339,7 +313,6 @@ export function TeamsManager() {
                   <TableHead>Email</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Photo</TableHead>
-                  <TableHead>Order</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
@@ -377,9 +350,6 @@ export function TeamsManager() {
                       ) : (
                         <span className="text-slate-400 text-sm">No photo</span>
                       )}
-                    </TableCell>
-                    <TableCell data-testid={`team-order-${team.id}`}>
-                      {team.sortOrder || 0}
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end space-x-1">
