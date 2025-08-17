@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -231,61 +232,77 @@ export function PositionsManager() {
         </Dialog>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {positions.map((position) => (
-          <Card key={position.id} className="hover:shadow-lg transition-shadow" data-testid={`position-card-${position.id}`}>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                    <Briefcase className="h-5 w-5 text-blue-600" />
-                  </div>
-                  <div className="flex-1">
-                    <CardTitle className="text-lg" data-testid={`position-title-${position.id}`}>
-                      {position.title}
-                    </CardTitle>
-                  </div>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="space-y-3">
-                {position.description && (
-                  <p className="text-sm text-slate-600" data-testid={`position-description-${position.id}`}>
-                    {position.description}
-                  </p>
-                )}
-                
-                <div className="flex items-center justify-between">
-                  <Badge variant={position.active ? "default" : "secondary"} data-testid={`position-status-${position.id}`}>
-                    {position.active ? "Active" : "Inactive"}
-                  </Badge>
-                  
-                  <div className="flex space-x-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleEdit(position)}
-                      data-testid={`button-edit-${position.id}`}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(position.id)}
-                      className="text-red-600 hover:text-red-700"
-                      data-testid={`button-delete-${position.id}`}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <Card data-testid="positions-table-card">
+        <CardHeader>
+          <CardTitle className="text-lg">All Positions</CardTitle>
+          <CardDescription>Manage organizational positions and their details</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[200px]">Position Title</TableHead>
+                <TableHead className="w-[300px]">Description</TableHead>
+                <TableHead className="w-[120px]">Status</TableHead>
+                <TableHead className="w-[150px]">Created</TableHead>
+                <TableHead className="w-[100px]">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {positions.map((position) => (
+                <TableRow key={position.id} data-testid={`position-row-${position.id}`}>
+                  <TableCell className="font-medium" data-testid={`position-title-${position.id}`}>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                        <Briefcase className="h-4 w-4 text-blue-600" />
+                      </div>
+                      <span>{position.title}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell data-testid={`position-description-${position.id}`}>
+                    {position.description ? (
+                      <span className="text-slate-600">{position.description}</span>
+                    ) : (
+                      <span className="text-slate-400 italic">No description</span>
+                    )}
+                  </TableCell>
+                  <TableCell data-testid={`position-status-${position.id}`}>
+                    <Badge variant={position.active ? "default" : "secondary"}>
+                      {position.active ? "Active" : "Inactive"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell data-testid={`position-created-${position.id}`}>
+                    <span className="text-sm text-slate-500">
+                      {position.createdAt ? new Date(position.createdAt).toLocaleDateString() : "Unknown"}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex space-x-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(position)}
+                        data-testid={`button-edit-${position.id}`}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDelete(position.id)}
+                        className="text-red-600 hover:text-red-700"
+                        data-testid={`button-delete-${position.id}`}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
 
       {positions.length === 0 && (
         <Card className="p-8 text-center" data-testid="no-positions-message">
