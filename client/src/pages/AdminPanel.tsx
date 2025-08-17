@@ -48,7 +48,7 @@ export default function AdminPanel() {
   }
   
   // Auto-open brochures dropdown when brochures or brochure-categories tab is active
-  const brochureTabsActive = activeTab === "brochures" || activeTab === "enhanced-brochures" || activeTab === "document-manager" || activeTab === "brochure-categories";
+  const brochureTabsActive = activeTab === "brochures" || activeTab === "enhanced-brochures" || activeTab === "brochure-categories";
   if (brochureTabsActive && !isBrochuresDropdownOpen) {
     setIsBrochuresDropdownOpen(true);
   }
@@ -193,15 +193,7 @@ export default function AdminPanel() {
                   Enhanced Manager
                 </Button>
                 
-                <Button
-                  variant="ghost"
-                  className={`w-full justify-start text-sm ${activeTab === "document-manager" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("document-manager")}
-                  data-testid="nav-document-manager"
-                >
-                  <FileText className={`h-3 w-3 mr-2 ${activeTab === "document-manager" ? "text-blue-600" : ""}`} />
-                  Document Manager
-                </Button>
+                
                 
                 <Button
                   variant="ghost"
@@ -441,11 +433,7 @@ export default function AdminPanel() {
             </div>
           )}
 
-          {activeTab === "document-manager" && (
-            <div data-testid="document-manager">
-              <DocumentManager />
-            </div>
-          )}
+          
 
           {activeTab === "brochure-categories" && (
             <div data-testid="brochure-categories-manager">
