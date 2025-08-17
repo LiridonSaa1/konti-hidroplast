@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -322,7 +323,7 @@ export function BrochureCategoriesManager() {
         </CardContent>
       </Card>
 
-      {/* Categories Grid */}
+      {/* Categories Table */}
       {isLoading ? (
         <div className="text-center py-12" data-testid="loading-state">
           <Settings className="h-8 w-8 animate-spin mx-auto mb-4 text-gray-400" />
@@ -347,87 +348,109 @@ export function BrochureCategoriesManager() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4" data-testid="categories-grid">
-          {filteredCategories.map((category) => (
-            <Card key={category.id} className="hover:shadow-md transition-shadow" data-testid={`category-card-${category.id}`}>
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <CardTitle className="text-lg" data-testid={`category-title-${category.id}`}>
-                        {category.title}
-                      </CardTitle>
+        <Card>
+          <CardHeader>
+            <CardTitle data-testid="categories-table-title">
+              Brochure Categories ({filteredCategories.length})
+            </CardTitle>
+            <CardDescription>
+              All brochure categories in your database
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Title</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Active</TableHead>
+                  <TableHead>Sort Order</TableHead>
+                  <TableHead>Created</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredCategories.map((category) => (
+                  <TableRow key={category.id} data-testid={`category-row-${category.id}`}>
+                    <TableCell className="font-medium" data-testid={`category-title-${category.id}`}>
+                      {category.title}
+                    </TableCell>
+                    <TableCell data-testid={`category-description-${category.id}`}>
+                      {category.description || (
+                        <span className="text-slate-400 text-sm">No description</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
                       <Badge 
                         className={getStatusBadgeColor(category.status)}
                         data-testid={`category-status-${category.id}`}
                       >
                         {category.status}
                       </Badge>
-                      {!category.active && (
-                        <Badge variant="secondary" data-testid={`category-inactive-${category.id}`}>
-                          Inactive
-                        </Badge>
-                      )}
-                    </div>
-                    {category.description && (
-                      <CardDescription data-testid={`category-description-${category.id}`}>
-                        {category.description}
-                      </CardDescription>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleEdit(category)}
-                      data-testid={`button-edit-${category.id}`}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
+                    </TableCell>
+                    <TableCell>
+                      <Badge 
+                        variant={category.active ? "default" : "secondary"} 
+                        data-testid={`category-active-${category.id}`}
+                      >
+                        {category.active ? "Active" : "Inactive"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell data-testid={`category-sort-order-${category.id}`}>
+                      {category.sortOrder || 0}
+                    </TableCell>
+                    <TableCell data-testid={`category-created-${category.id}`}>
+                      {category.createdAt ? new Date(category.createdAt).toLocaleDateString() : 'N/A'}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end space-x-1">
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                          data-testid={`button-delete-${category.id}`}
+                          onClick={() => handleEdit(category)}
+                          data-testid={`button-edit-${category.id}`}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Edit className="h-4 w-4" />
                         </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent data-testid={`dialog-delete-${category.id}`}>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Category</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to delete "{category.title}"? This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel data-testid="button-cancel-delete">Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleDelete(category.id)}
-                            className="bg-red-600 hover:bg-red-700"
-                            data-testid="button-confirm-delete"
-                          >
-                            Delete
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-0">
-                <div className="flex items-center justify-between text-sm text-gray-500">
-                  <span data-testid={`category-sort-order-${category.id}`}>Sort Order: {category.sortOrder || 0}</span>
-                  <span data-testid={`category-created-${category.id}`}>
-                    Created: {category.createdAt ? new Date(category.createdAt).toLocaleDateString() : 'N/A'}
-                  </span>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700"
+                              data-testid={`button-delete-${category.id}`}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent data-testid={`dialog-delete-${category.id}`}>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Category</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{category.title}"? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel data-testid="button-cancel-delete">Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(category.id)}
+                                className="bg-red-600 hover:bg-red-700"
+                                data-testid="button-confirm-delete"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       )}
 
       {/* Edit Dialog */}
