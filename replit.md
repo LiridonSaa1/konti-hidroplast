@@ -48,7 +48,7 @@ The frontend follows a modular component architecture: Pages, Sections, UI Compo
 - **News Page**: Text truncation for article titles.
 - **Team and Position Management**: CRUD systems for team members and organizational positions, with database and in-memory storage support, accessible via admin panel.
 - **Brochures Management**: Enhanced brochures system with dropdown navigation structure featuring separate management for brochures and categories, both with title, description, and status fields with full CRUD operations.
-- **Enhanced Document Management**: Advanced multilingual document management system with table-style interface, "Add More" functionality for multiple language entries, dynamic PDF/image upload capabilities, language switching with automatic content display, and local storage for data persistence.
+- **Enhanced Document Management**: Advanced multilingual document management system with table-style interface, "Add More" functionality for multiple language entries, dynamic PDF/image upload capabilities, language switching with automatic content display, and local storage for data persistence. Fixed issue where only first language entry was being saved - now properly saves all language versions with separate database entries linked by translation groups.
 
 # External Dependencies
 
