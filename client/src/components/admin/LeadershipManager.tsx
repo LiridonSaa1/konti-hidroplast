@@ -37,13 +37,16 @@ export function LeadershipManager() {
     },
   });
 
-  // Fetch leadership data
-  const { data: leadershipData, isLoading } = useQuery({
-    queryKey: ["/api/admin/company-info", "leadership_message"],
+  // Fetch leadership data with no caching to ensure fresh data
+  const { data: leadershipData, isLoading, refetch } = useQuery({
+    queryKey: ["/api/admin/company-info", "leadership_message", refreshKey],
     queryFn: async () => {
       try {
-        return await apiRequest("/api/admin/company-info/leadership_message", "GET");
+        const result = await apiRequest("/api/admin/company-info/leadership_message", "GET");
+        console.log("Fetched leadership data:", result);
+        return result;
       } catch (error) {
+        console.log("Leadership data not found, using default");
         // Return default data if not found
         return {
           id: "",
@@ -60,7 +63,9 @@ export function LeadershipManager() {
           updatedAt: new Date()
         };
       }
-    }
+    },
+    staleTime: 0, // Always consider data stale
+    gcTime: 0, // Don't cache
   });
 
   // Fetch positions for dropdown
@@ -72,20 +77,21 @@ export function LeadershipManager() {
     mutationFn: async (data: InsertCompanyInfo) => {
       return await apiRequest("/api/admin/company-info", "POST", data);
     },
-    onSuccess: async () => {
-      // More aggressive cache invalidation
-      await queryClient.invalidateQueries({ queryKey: ["/api/admin/company-info"] });
-      await queryClient.removeQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
+    onSuccess: async (result) => {
+      console.log("Leadership message save successful:", result);
       
+      // Clear all related cache entries
+      await queryClient.resetQueries({ queryKey: ["/api/admin/company-info"] });
+      await queryClient.resetQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
+      
+      // Force immediate refetch
+      await queryClient.refetchQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
+      
+      // Update UI states
       setIsFormOpen(false);
       setSelectedImage(null);
       setImagePreview(null);
-      setRefreshKey(prev => prev + 1); // Force re-render
-      
-      // Add a small delay to ensure cache is cleared
-      setTimeout(() => {
-        queryClient.refetchQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
-      }, 100);
+      setRefreshKey(prev => prev + 1);
       
       toast({
         title: "Success",
@@ -93,6 +99,7 @@ export function LeadershipManager() {
       });
     },
     onError: (error) => {
+      console.error("Leadership message save failed:", error);
       toast({
         title: "Error",
         description: "Failed to update leadership message",
