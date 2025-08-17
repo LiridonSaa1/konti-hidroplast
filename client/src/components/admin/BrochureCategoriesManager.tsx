@@ -52,9 +52,9 @@ export function BrochureCategoriesManager() {
   const createMutation = useMutation({
     mutationFn: async (data: InsertBrochureCategory) => {
       console.log("Creating brochure category:", data);
-      const result = await apiRequest("POST", "/api/admin/brochure-categories", data);
+      const result = await apiRequest("/api/admin/brochure-categories", "POST", data);
       console.log("Creation result:", result);
-      return result;
+      return result.json();
     },
     onSuccess: (data) => {
       console.log("Creation success:", data);
@@ -78,7 +78,8 @@ export function BrochureCategoriesManager() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: Partial<InsertBrochureCategory> }) => {
-      return apiRequest("PATCH", `/api/admin/brochure-categories/${id}`, data);
+      const result = await apiRequest(`/api/admin/brochure-categories/${id}`, "PATCH", data);
+      return result.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/brochure-categories"] });
@@ -101,7 +102,8 @@ export function BrochureCategoriesManager() {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: number) => {
-      return apiRequest("DELETE", `/api/admin/brochure-categories/${id}`);
+      const result = await apiRequest(`/api/admin/brochure-categories/${id}`, "DELETE");
+      return result;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/brochure-categories"] });
