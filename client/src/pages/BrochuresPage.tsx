@@ -150,47 +150,49 @@ function BrochuresPage() {
 
           {groupedBrochures.length > 0 && (
             <>
-              {/* Category Tab Slider */}
+              {/* Category Tab Slider - EPD Style */}
               <div className="flex items-center justify-center mb-12">
                 <button
                   onClick={prevTab}
-                  className="p-2 rounded-full bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white transition-colors mr-4"
+                  className="p-3 rounded-full bg-[#374151] hover:bg-[#4b5563] text-white transition-colors shadow-lg"
                   disabled={groupedBrochures.length <= 1}
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </button>
                 
-                <div className="bg-white/70 backdrop-blur-sm rounded-full px-6 py-3 border border-white/50">
-                  <h3 className="text-xl font-semibold text-[#1c2d56]">
-                    {groupedBrochures[activeTabIndex]?.title || "Category"}
-                  </h3>
+                <div className="mx-6 bg-white rounded-full px-8 py-4 shadow-lg border border-gray-200 min-w-[400px]">
+                  <div className="text-center">
+                    <h3 className="text-lg font-semibold text-[#374151] mb-2">
+                      EPD – Environmental Product Declaration
+                    </h3>
+                    
+                    {/* Category dots indicator */}
+                    <div className="flex justify-center space-x-2">
+                      {groupedBrochures.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            setActiveTabIndex(index);
+                            setActiveTab(groupedBrochures[index].id);
+                          }}
+                          className={`h-2.5 w-2.5 rounded-full transition-colors ${
+                            index === activeTabIndex
+                              ? "bg-[#374151]"
+                              : "bg-gray-300 hover:bg-gray-400"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
                 </div>
                 
                 <button
                   onClick={nextTab}
-                  className="p-2 rounded-full bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white transition-colors ml-4"
+                  className="p-3 rounded-full bg-[#374151] hover:bg-[#4b5563] text-white transition-colors shadow-lg"
                   disabled={groupedBrochures.length <= 1}
                 >
                   <ChevronRight className="h-5 w-5" />
                 </button>
-              </div>
-
-              {/* Category dots indicator */}
-              <div className="flex justify-center space-x-2 mb-12">
-                {groupedBrochures.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setActiveTabIndex(index);
-                      setActiveTab(groupedBrochures[index].id);
-                    }}
-                    className={`h-3 w-3 rounded-full transition-colors ${
-                      index === activeTabIndex
-                        ? "bg-[#1c2d56]"
-                        : "bg-gray-300 hover:bg-gray-400"
-                    }`}
-                  />
-                ))}
               </div>
 
               {/* Brochures Grid - EPD Style Layout */}
