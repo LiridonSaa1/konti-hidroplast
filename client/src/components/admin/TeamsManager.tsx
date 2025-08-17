@@ -13,7 +13,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FileUpload } from "@/components/ui/file-upload";
-import { insertTeamSchema, type Team, type InsertTeam } from "@shared/schema";
+import { insertTeamSchema, type Team, type InsertTeam, type Position } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 
 export function TeamsManager() {
@@ -36,6 +36,10 @@ export function TeamsManager() {
 
   const { data: teams = [], isLoading } = useQuery<Team[]>({
     queryKey: ["/api/admin/teams"],
+  });
+
+  const { data: positions = [], isLoading: isLoadingPositions } = useQuery<Position[]>({
+    queryKey: ["/api/admin/positions"],
   });
 
   const createTeamMutation = useMutation({
@@ -141,7 +145,7 @@ export function TeamsManager() {
     setIsFormOpen(false);
   };
 
-  if (isLoading) {
+  if (isLoading || isLoadingPositions) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
@@ -196,9 +200,27 @@ export function TeamsManager() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Position</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter position/job title" {...field} data-testid="input-team-position" />
-                      </FormControl>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <FormControl>
+                          <SelectTrigger data-testid="select-team-position">
+                            <SelectValue placeholder="Select a position" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {positions
+                            .filter(pos => pos.active)
+                            .map((position) => (
+                              <SelectItem key={position.id} value={position.title}>
+                                {position.title}
+                              </SelectItem>
+                            ))}
+                          {positions.length === 0 && (
+                            <SelectItem value="custom" disabled>
+                              No positions available - Add positions first
+                            </SelectItem>
+                          )}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
