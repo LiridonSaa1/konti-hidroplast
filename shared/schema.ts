@@ -83,6 +83,7 @@ export const brochures = pgTable("brochures", {
   title: text("title").notNull(),
   name: text("name").notNull(),
   category: text("category").notNull(),
+  language: text("language").notNull().default("en"), // en, mk, de
   pdfUrl: text("pdf_url").notNull(),
   imageUrl: text("image_url"),
   description: text("description"),
@@ -142,6 +143,7 @@ export const insertBrochureSchema = createInsertSchema(brochures, {
   title: z.string().min(1, "Title is required"),
   name: z.string().min(1, "Name is required"),
   category: z.string().min(1, "Category is required"),
+  language: z.enum(["en", "mk", "de"]).default("en"),
   pdfUrl: z.string().min(1, "PDF URL is required"),
   imageUrl: z.string().optional(),
   description: z.string().optional(),

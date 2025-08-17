@@ -20,6 +20,7 @@ import type { Brochure, InsertBrochure, BrochureCategory } from "@shared/schema"
 interface BrochureFormData {
   name: string;
   category: string;
+  language: string;
   pdfFile: File | null;
   pdfUrl: string;
   imageFile: File | null;
@@ -33,12 +34,14 @@ interface BrochureFormData {
 export function BrochuresManager() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedBrochure, setSelectedBrochure] = useState<Brochure | null>(null);
   const [formData, setFormData] = useState<BrochureFormData>({
     name: "",
     category: "",
+    language: "en",
     pdfFile: null,
     pdfUrl: "",
     imageFile: null,
@@ -132,13 +135,15 @@ export function BrochuresManager() {
     const matchesSearch = brochure.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          brochure.description?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === "all" || brochure.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    const matchesLanguage = selectedLanguage === "all" || brochure.language === selectedLanguage;
+    return matchesSearch && matchesCategory && matchesLanguage;
   });
 
   const resetForm = () => {
     setFormData({
       name: "",
       category: "",
+      language: "en",
       pdfFile: null,
       pdfUrl: "",
       imageFile: null,
@@ -155,6 +160,7 @@ export function BrochuresManager() {
     setFormData({
       name: brochure.name,
       category: brochure.category,
+      language: brochure.language || "en",
       pdfFile: null, // Will be handled separately for existing files
       pdfUrl: brochure.pdfUrl || "",
       imageFile: null, // Will be handled separately for existing files
@@ -248,6 +254,7 @@ export function BrochuresManager() {
       title: formData.name, // Use name as title
       name: formData.name,
       category: formData.category,
+      language: formData.language as "en" | "mk" | "de",
       pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
       imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
       description: formData.description,
@@ -336,6 +343,19 @@ export function BrochuresManager() {
                 </SelectContent>
               </Select>
             </div>
+            <div className="w-full sm:w-48">
+              <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+                <SelectTrigger data-testid="select-brochure-language-filter">
+                  <SelectValue placeholder="Filter by language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Languages</SelectItem>
+                  <SelectItem value="en">English</SelectItem>
+                  <SelectItem value="mk">Macedonian</SelectItem>
+                  <SelectItem value="de">German</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -357,6 +377,7 @@ export function BrochuresManager() {
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Category</TableHead>
+                  <TableHead>Language</TableHead>
                   <TableHead>Description</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>PDF</TableHead>
@@ -374,6 +395,14 @@ export function BrochuresManager() {
                     <TableCell data-testid={`brochure-category-${brochure.id}`}>
                       <Badge variant="outline">
                         {brochure.category}
+                      </Badge>
+                    </TableCell>
+                    <TableCell data-testid={`brochure-language-${brochure.id}`}>
+                      <Badge variant="secondary">
+                        {brochure.language === "en" ? "English" : 
+                         brochure.language === "mk" ? "Macedonian" : 
+                         brochure.language === "de" ? "German" : 
+                         brochure.language?.toUpperCase() || "EN"}
                       </Badge>
                     </TableCell>
                     <TableCell data-testid={`brochure-description-${brochure.id}`}>
@@ -577,7 +606,7 @@ function BrochureFormDialog({
         <DialogTitle data-testid="brochure-form-title">{title}</DialogTitle>
       </DialogHeader>
       <div className="space-y-4 py-4">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <div className="space-y-2">
             <Label htmlFor="name">Brochure Name *</Label>
             <Input
@@ -603,6 +632,22 @@ function BrochureFormDialog({
                   .map(category => (
                     <SelectItem key={category.id} value={category.title}>{category.title}</SelectItem>
                   ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="language">Language *</Label>
+            <Select
+              value={formData.language}
+              onValueChange={(value) => setFormData({ ...formData, language: value })}
+            >
+              <SelectTrigger data-testid="select-brochure-language">
+                <SelectValue placeholder="Select language" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="en">English</SelectItem>
+                <SelectItem value="mk">Macedonian</SelectItem>
+                <SelectItem value="de">German</SelectItem>
               </SelectContent>
             </Select>
           </div>
