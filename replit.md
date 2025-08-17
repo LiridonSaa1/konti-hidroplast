@@ -9,6 +9,12 @@ Preferred communication style: Simple, everyday language.
 # Recent Changes (August 2025)
 
 ## August 17, 2025
+- **Admin Panel UI Enhancement**: Updated admin panel navigation to group Team Members and Positions under "Our Team" dropdown
+  - Replaced individual Team Members and Positions navigation buttons with collapsible dropdown menu
+  - Added chevron icons to indicate dropdown state (right arrow when closed, down arrow when open)
+  - Dropdown automatically opens when either Teams or Positions tab is active
+  - Improved navigation organization and reduced sidebar clutter
+  - Enhanced user experience with cleaner admin interface structure
 - **Position Management System Added**: Created CRUD system for organizational positions
   - Added Positions database table with simplified fields: title, description, active status
   - Implemented full CRUD operations in storage layer for both database and in-memory storage

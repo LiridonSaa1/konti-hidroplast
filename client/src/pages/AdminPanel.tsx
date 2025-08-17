@@ -13,12 +13,15 @@ import {
   MapPin,
   Building,
   FolderOpen,
-  Briefcase
+  Briefcase,
+  ChevronDown,
+  ChevronRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ProductsManager } from "@/components/admin/ProductsManager";
 import { MediaManager } from "@/components/admin/MediaManager";
 import { CompanyInfoManager } from "@/components/admin/CompanyInfoManager";
@@ -31,6 +34,13 @@ import { PositionsManager } from "@/components/admin/PositionsManager";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("overview");
+  const [isTeamDropdownOpen, setIsTeamDropdownOpen] = useState(false);
+
+  // Auto-open team dropdown when teams or positions tab is active
+  const teamTabsActive = activeTab === "teams" || activeTab === "positions";
+  if (teamTabsActive && !isTeamDropdownOpen) {
+    setIsTeamDropdownOpen(true);
+  }
 
   // Fetch basic stats for overview
   const { data: productsCount = 0 } = useQuery({
@@ -151,25 +161,48 @@ export default function AdminPanel() {
               Brochures
             </Button>
             
-            <Button
-              variant={activeTab === "teams" ? "default" : "ghost"}
-              className="w-full justify-start"
-              onClick={() => setActiveTab("teams")}
-              data-testid="nav-teams"
+            <Collapsible 
+              open={isTeamDropdownOpen} 
+              onOpenChange={setIsTeamDropdownOpen}
+              className="w-full"
             >
-              <Users className="h-4 w-4 mr-2" />
-              Team Members
-            </Button>
-            
-            <Button
-              variant={activeTab === "positions" ? "default" : "ghost"}
-              className="w-full justify-start"
-              onClick={() => setActiveTab("positions")}
-              data-testid="nav-positions"
-            >
-              <Briefcase className="h-4 w-4 mr-2" />
-              Positions
-            </Button>
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant={activeTab === "teams" || activeTab === "positions" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  data-testid="nav-our-team"
+                >
+                  <Users className="h-4 w-4 mr-2" />
+                  Our Team
+                  {isTeamDropdownOpen ? (
+                    <ChevronDown className="h-4 w-4 ml-auto" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 ml-auto" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pl-6 space-y-1">
+                <Button
+                  variant={activeTab === "teams" ? "default" : "ghost"}
+                  className="w-full justify-start text-sm"
+                  onClick={() => setActiveTab("teams")}
+                  data-testid="nav-teams"
+                >
+                  <Users className="h-3 w-3 mr-2" />
+                  Team Members
+                </Button>
+                
+                <Button
+                  variant={activeTab === "positions" ? "default" : "ghost"}
+                  className="w-full justify-start text-sm"
+                  onClick={() => setActiveTab("positions")}
+                  data-testid="nav-positions"
+                >
+                  <Briefcase className="h-3 w-3 mr-2" />
+                  Positions
+                </Button>
+              </CollapsibleContent>
+            </Collapsible>
             
             <Separator className="my-4" />
             
