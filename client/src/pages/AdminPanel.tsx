@@ -31,13 +31,14 @@ import { BrochuresManager } from "@/components/admin/BrochuresManager";
 import { ProjectsManager } from "@/components/admin/ProjectsManager";
 import { TeamsManager } from "@/components/admin/TeamsManager";
 import { PositionsManager } from "@/components/admin/PositionsManager";
+import { LeadershipManager } from "@/components/admin/LeadershipManager";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("overview");
   const [isTeamDropdownOpen, setIsTeamDropdownOpen] = useState(false);
 
-  // Auto-open team dropdown when teams or positions tab is active
-  const teamTabsActive = activeTab === "teams" || activeTab === "positions";
+  // Auto-open team dropdown when teams, positions, or leadership tab is active
+  const teamTabsActive = activeTab === "teams" || activeTab === "positions" || activeTab === "leadership";
   if (teamTabsActive && !isTeamDropdownOpen) {
     setIsTeamDropdownOpen(true);
   }
@@ -168,7 +169,7 @@ export default function AdminPanel() {
             >
               <CollapsibleTrigger asChild>
                 <Button
-                  variant={activeTab === "teams" || activeTab === "positions" ? "default" : "ghost"}
+                  variant={activeTab === "teams" || activeTab === "positions" || activeTab === "leadership" ? "default" : "ghost"}
                   className="w-full justify-start"
                   data-testid="nav-our-team"
                 >
@@ -200,6 +201,16 @@ export default function AdminPanel() {
                 >
                   <Briefcase className={`h-3 w-3 mr-2 ${activeTab === "positions" ? "text-blue-600" : ""}`} />
                   Positions
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "leadership" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("leadership")}
+                  data-testid="nav-leadership"
+                >
+                  <Building className={`h-3 w-3 mr-2 ${activeTab === "leadership" ? "text-blue-600" : ""}`} />
+                  Leadership
                 </Button>
               </CollapsibleContent>
             </Collapsible>
@@ -380,6 +391,12 @@ export default function AdminPanel() {
           {activeTab === "positions" && (
             <div data-testid="positions-manager">
               <PositionsManager />
+            </div>
+          )}
+
+          {activeTab === "leadership" && (
+            <div data-testid="leadership-manager">
+              <LeadershipManager />
             </div>
           )}
 
