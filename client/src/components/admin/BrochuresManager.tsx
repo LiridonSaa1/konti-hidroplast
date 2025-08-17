@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Search, BookOpen, Download, Eye, Upload, Image, FileText } from "lucide-react";
+import { Plus, Edit, Trash2, Search, BookOpen, Download, Eye, Upload, Image, FileText, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import type { Brochure, InsertBrochure, BrochureCategory } from "@shared/schema";
+import { TranslationHelper } from "./TranslationHelper";
 
 
 interface BrochureFormData {
@@ -37,6 +38,7 @@ export function BrochuresManager() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isTranslationDialogOpen, setIsTranslationDialogOpen] = useState(false);
   const [selectedBrochure, setSelectedBrochure] = useState<Brochure | null>(null);
   const [formData, setFormData] = useState<BrochureFormData>({
     name: "",
@@ -477,6 +479,18 @@ export function BrochuresManager() {
                         <Button
                           variant="ghost"
                           size="sm"
+                          onClick={() => {
+                            setSelectedBrochure(brochure);
+                            setIsTranslationDialogOpen(true);
+                          }}
+                          title="Translate PDF"
+                          data-testid={`button-translate-brochure-${brochure.id}`}
+                        >
+                          <Languages className="h-4 w-4 text-blue-600" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           onClick={() => handleEdit(brochure)}
                           data-testid={`button-edit-brochure-${brochure.id}`}
                         >
@@ -557,6 +571,18 @@ export function BrochuresManager() {
           categories={categories}
         />
       </Dialog>
+
+      {/* Translation Helper Dialog */}
+      {selectedBrochure && (
+        <TranslationHelper
+          brochure={selectedBrochure}
+          isOpen={isTranslationDialogOpen}
+          onClose={() => {
+            setIsTranslationDialogOpen(false);
+            setSelectedBrochure(null);
+          }}
+        />
+      )}
     </div>
   );
 }

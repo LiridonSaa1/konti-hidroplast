@@ -90,6 +90,7 @@ export const brochures = pgTable("brochures", {
   status: text("status").notNull().default("active"), // active, inactive, draft
   active: boolean("active").default(true),
   sortOrder: integer("sort_order").default(0),
+  translationMetadata: jsonb("translation_metadata"), // For tracking translations
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

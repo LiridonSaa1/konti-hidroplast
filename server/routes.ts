@@ -5,6 +5,7 @@ import multer from "multer";
 import path from "path";
 import { promises as fs } from "fs";
 import { storage } from "./storage";
+import { translationService } from "./services/translationService";
 import {
   insertProductSchema,
   insertMediaSchema,
@@ -539,6 +540,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to delete position" });
     }
   });
+
+  // Register translation routes
+  app.use(translationRoutes);
 
   const httpServer = createServer(app);
   return httpServer;

@@ -75,6 +75,7 @@ export interface IStorage {
   
   // Brochure methods
   getAllBrochures(): Promise<Brochure[]>;
+  getBrochureById(id: string): Promise<Brochure | undefined>;
   createBrochure(brochure: InsertBrochure): Promise<Brochure>;
   updateBrochure(id: string, brochure: Partial<InsertBrochure>): Promise<Brochure>;
   deleteBrochure(id: string): Promise<void>;
@@ -293,6 +294,12 @@ export class DatabaseStorage implements IStorage {
   async getAllBrochures(): Promise<Brochure[]> {
     if (!db) throw new Error('Database not available');
     return await db.select().from(brochures).orderBy(desc(brochures.createdAt));
+  }
+
+  async getBrochureById(id: string): Promise<Brochure | undefined> {
+    if (!db) throw new Error('Database not available');
+    const [brochure] = await db.select().from(brochures).where(eq(brochures.id, id));
+    return brochure || undefined;
   }
 
   async createBrochure(brochure: InsertBrochure): Promise<Brochure> {
@@ -708,6 +715,10 @@ export class MemStorage implements IStorage {
       const bTime = b.createdAt?.getTime() || 0;
       return bTime - aTime;
     });
+  }
+
+  async getBrochureById(id: string): Promise<Brochure | undefined> {
+    return this.brochuresData.find(brochure => brochure.id === id);
   }
 
   async createBrochure(brochure: InsertBrochure): Promise<Brochure> {
