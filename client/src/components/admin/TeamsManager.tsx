@@ -6,7 +6,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Trash2, Edit, Plus, Users, Mail, User } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Trash2, Edit, Plus, Users, Mail, User, Eye } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
@@ -319,77 +320,95 @@ export function TeamsManager() {
         </Dialog>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {teams.map((team) => (
-          <Card key={team.id} className="hover:shadow-lg transition-shadow" data-testid={`team-card-${team.id}`}>
-            <CardHeader className="pb-3">
-              <div className="flex items-center space-x-3">
-                {team.imageUrl ? (
-                  <img
-                    src={team.imageUrl}
-                    alt={team.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                    data-testid={`team-avatar-${team.id}`}
-                  />
-                ) : (
-                  <div className="w-12 h-12 rounded-full bg-slate-200 flex items-center justify-center">
-                    <User className="h-6 w-6 text-slate-500" />
-                  </div>
-                )}
-                <div className="flex-1">
-                  <CardTitle className="text-lg" data-testid={`team-name-${team.id}`}>
-                    {team.name}
-                  </CardTitle>
-                  <CardDescription data-testid={`team-position-${team.id}`}>
-                    {team.position}
-                  </CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-0">
-              <div className="space-y-2">
-                <div className="flex items-center text-sm text-slate-600">
-                  <Mail className="h-4 w-4 mr-2" />
-                  <span data-testid={`team-email-${team.id}`}>{team.email}</span>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Badge variant={team.active ? "default" : "secondary"} data-testid={`team-status-${team.id}`}>
-                      {team.active ? "Active" : "Inactive"}
-                    </Badge>
-                    {team.sortOrder !== null && (
-                      <Badge variant="outline" data-testid={`team-order-${team.id}`}>
-                        Order: {team.sortOrder}
+      {teams.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle data-testid="teams-table-title">
+              Team Members ({teams.length})
+            </CardTitle>
+            <CardDescription>
+              All team members in your database
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Position</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Photo</TableHead>
+                  <TableHead>Order</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {teams.map((team) => (
+                  <TableRow key={team.id} data-testid={`team-row-${team.id}`}>
+                    <TableCell className="font-medium" data-testid={`team-name-${team.id}`}>
+                      {team.name}
+                    </TableCell>
+                    <TableCell data-testid={`team-position-${team.id}`}>
+                      {team.position}
+                    </TableCell>
+                    <TableCell data-testid={`team-email-${team.id}`}>
+                      {team.email}
+                    </TableCell>
+                    <TableCell>
+                      <Badge 
+                        variant={team.active ? "default" : "secondary"} 
+                        data-testid={`team-status-${team.id}`}
+                      >
+                        {team.active ? "Active" : "Inactive"}
                       </Badge>
-                    )}
-                  </div>
-                  
-                  <div className="flex space-x-1">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleEdit(team)}
-                      data-testid={`button-edit-${team.id}`}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleDelete(team.id)}
-                      className="text-red-600 hover:text-red-700"
-                      data-testid={`button-delete-${team.id}`}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                    </TableCell>
+                    <TableCell>
+                      {team.imageUrl ? (
+                        <Button
+                          variant="link"
+                          size="sm"
+                          onClick={() => window.open(team.imageUrl, '_blank')}
+                          data-testid={`button-view-photo-${team.id}`}
+                        >
+                          <Eye className="h-4 w-4 mr-1" />
+                          View Photo
+                        </Button>
+                      ) : (
+                        <span className="text-slate-400 text-sm">No photo</span>
+                      )}
+                    </TableCell>
+                    <TableCell data-testid={`team-order-${team.id}`}>
+                      {team.sortOrder || 0}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end space-x-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(team)}
+                          data-testid={`button-edit-${team.id}`}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDelete(team.id)}
+                          className="text-red-600 hover:text-red-700"
+                          data-testid={`button-delete-${team.id}`}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
 
       {teams.length === 0 && (
         <Card className="p-8 text-center" data-testid="no-teams-message">
