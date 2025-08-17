@@ -86,15 +86,7 @@ export default function AdminPanel() {
             
             <Separator className="my-4" />
             
-            <Button
-              variant={activeTab === "products" ? "default" : "ghost"}
-              className="w-full justify-start"
-              onClick={() => setActiveTab("products")}
-              data-testid="nav-products"
-            >
-              <Package className="h-4 w-4 mr-2" />
-              Products
-            </Button>
+            
             
             <Button
               variant={activeTab === "media" ? "default" : "ghost"}
@@ -251,11 +243,7 @@ export default function AdminPanel() {
             </div>
           )}
 
-          {activeTab === "products" && (
-            <div data-testid="products-manager">
-              <ProductsManager />
-            </div>
-          )}
+          
 
           {activeTab === "media" && (
             <div data-testid="media-manager">
