@@ -196,10 +196,7 @@ export const positions = pgTable("positions", {
   id: serial("id").primaryKey(),
   title: varchar("title", { length: 255 }).notNull().unique(),
   description: text("description"),
-  department: varchar("department", { length: 255 }),
-  level: varchar("level", { length: 100 }), // e.g., "Senior", "Manager", "Director"
   active: boolean("active").default(true),
-  sortOrder: integer("sort_order").default(0),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

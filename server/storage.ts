@@ -805,10 +805,7 @@ export class MemStorage implements IStorage {
       ...position,
       id: this.positionsData.length + 1,
       description: position.description ?? null,
-      department: position.department ?? null,
-      level: position.level ?? null,
       active: position.active ?? null,
-      sortOrder: position.sortOrder ?? null,
       createdAt: new Date(),
       updatedAt: new Date()
     };

@@ -26,10 +26,7 @@ export function PositionsManager() {
     defaultValues: {
       title: "",
       description: "",
-      department: "",
-      level: "",
       active: true,
-      sortOrder: 0,
     },
   });
 
@@ -115,10 +112,7 @@ export function PositionsManager() {
     form.reset({
       title: position.title,
       description: position.description || "",
-      department: position.department || "",
-      level: position.level || "",
       active: position.active || true,
-      sortOrder: position.sortOrder || 0,
     });
     setIsFormOpen(true);
   };
@@ -131,10 +125,7 @@ export function PositionsManager() {
     form.reset({
       title: "",
       description: "",
-      department: "",
-      level: "",
       active: true,
-      sortOrder: 0,
     });
     setEditingPosition(null);
     setIsFormOpen(false);
@@ -209,85 +200,22 @@ export function PositionsManager() {
                   )}
                 />
 
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="department"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Department</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="e.g., Engineering, Sales"
-                            {...field}
-                            value={field.value || ""}
-                            data-testid="input-position-department"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="level"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Level</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="e.g., Senior, Manager, Director"
-                            {...field}
-                            value={field.value || ""}
-                            data-testid="input-position-level"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="sortOrder"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Sort Order</FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="number" 
-                            placeholder="0" 
-                            {...field}
-                            value={field.value || 0}
-                            onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
-                            data-testid="input-position-sort"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="active"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center space-x-2 pt-8">
-                        <FormControl>
-                          <Switch
-                            checked={field.value || false}
-                            onCheckedChange={field.onChange}
-                            data-testid="input-position-active"
-                          />
-                        </FormControl>
-                        <FormLabel className="!mt-0">Active</FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="active"
+                  render={({ field }) => (
+                    <FormItem className="flex items-center space-x-2">
+                      <FormControl>
+                        <Switch
+                          checked={field.value || false}
+                          onCheckedChange={field.onChange}
+                          data-testid="input-position-active"
+                        />
+                      </FormControl>
+                      <FormLabel className="!mt-0">Active</FormLabel>
+                    </FormItem>
+                  )}
+                />
 
                 <div className="flex justify-end space-x-2 pt-4">
                   <Button type="button" variant="outline" onClick={resetForm} data-testid="button-cancel">
@@ -316,24 +244,12 @@ export function PositionsManager() {
                     <CardTitle className="text-lg" data-testid={`position-title-${position.id}`}>
                       {position.title}
                     </CardTitle>
-                    {position.level && (
-                      <CardDescription data-testid={`position-level-${position.id}`}>
-                        {position.level}
-                      </CardDescription>
-                    )}
                   </div>
                 </div>
               </div>
             </CardHeader>
             <CardContent className="pt-0">
               <div className="space-y-3">
-                {position.department && (
-                  <div className="flex items-center text-sm text-slate-600">
-                    <Building className="h-4 w-4 mr-2" />
-                    <span data-testid={`position-department-${position.id}`}>{position.department}</span>
-                  </div>
-                )}
-                
                 {position.description && (
                   <p className="text-sm text-slate-600" data-testid={`position-description-${position.id}`}>
                     {position.description}
@@ -341,16 +257,9 @@ export function PositionsManager() {
                 )}
                 
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Badge variant={position.active ? "default" : "secondary"} data-testid={`position-status-${position.id}`}>
-                      {position.active ? "Active" : "Inactive"}
-                    </Badge>
-                    {position.sortOrder !== null && position.sortOrder > 0 && (
-                      <Badge variant="outline" data-testid={`position-order-${position.id}`}>
-                        Order: {position.sortOrder}
-                      </Badge>
-                    )}
-                  </div>
+                  <Badge variant={position.active ? "default" : "secondary"} data-testid={`position-status-${position.id}`}>
+                    {position.active ? "Active" : "Inactive"}
+                  </Badge>
                   
                   <div className="flex space-x-1">
                     <Button
