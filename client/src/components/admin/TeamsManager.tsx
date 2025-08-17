@@ -368,7 +368,7 @@ export function TeamsManager() {
                         <Button
                           variant="link"
                           size="sm"
-                          onClick={() => window.open(team.imageUrl, '_blank')}
+                          onClick={() => team.imageUrl && window.open(team.imageUrl, '_blank')}
                           data-testid={`button-view-photo-${team.id}`}
                         >
                           <Eye className="h-4 w-4 mr-1" />
