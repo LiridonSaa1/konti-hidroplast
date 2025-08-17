@@ -784,7 +784,7 @@ function BrochureFormDialog({
         </Button>
         <Button 
           onClick={onSubmit} 
-          disabled={isLoading || !formData.name || !formData.category || (!formData.pdfFile && title.includes("Add"))}
+          disabled={isLoading || !formData.name || !formData.category || (!formData.pdfFile && !formData.pdfUrl && title.includes("Add"))}
           data-testid="button-save-brochure"
         >
           {isLoading ? "Saving..." : "Save Brochure"}
