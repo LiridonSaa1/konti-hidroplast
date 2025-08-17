@@ -16,10 +16,12 @@ import { apiRequest } from "@/lib/queryClient";
 import type { Brochure, InsertBrochure } from "@shared/schema";
 
 interface BrochureFormData {
+  title: string;
   name: string;
   category: string;
   pdfUrl: string;
   description: string;
+  status: string;
   active: boolean;
   sortOrder: number;
 }
@@ -42,10 +44,12 @@ export function BrochuresManager() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedBrochure, setSelectedBrochure] = useState<Brochure | null>(null);
   const [formData, setFormData] = useState<BrochureFormData>({
+    title: "",
     name: "",
     category: "",
     pdfUrl: "",
     description: "",
+    status: "active",
     active: true,
     sortOrder: 0
   });
@@ -131,10 +135,12 @@ export function BrochuresManager() {
 
   const resetForm = () => {
     setFormData({
+      title: "",
       name: "",
       category: "",
       pdfUrl: "",
       description: "",
+      status: "active",
       active: true,
       sortOrder: 0
     });
@@ -143,10 +149,12 @@ export function BrochuresManager() {
   const handleEdit = (brochure: Brochure) => {
     setSelectedBrochure(brochure);
     setFormData({
+      title: brochure.title || "",
       name: brochure.name,
       category: brochure.category,
       pdfUrl: brochure.pdfUrl,
       description: brochure.description || "",
+      status: brochure.status || "active",
       active: brochure.active ?? true,
       sortOrder: brochure.sortOrder || 0
     });
@@ -387,6 +395,17 @@ function BrochureFormDialog({
         <DialogTitle data-testid="brochure-form-title">{title}</DialogTitle>
       </DialogHeader>
       <div className="space-y-4 py-4">
+        <div className="space-y-2">
+          <Label htmlFor="title">Brochure Title *</Label>
+          <Input
+            id="title"
+            value={formData.title}
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            placeholder="Enter brochure title"
+            data-testid="input-brochure-title"
+          />
+        </div>
+        
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="name">Brochure Name *</Label>
@@ -439,7 +458,23 @@ function BrochureFormDialog({
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="status">Status</Label>
+            <Select
+              value={formData.status}
+              onValueChange={(value) => setFormData({ ...formData, status: value })}
+            >
+              <SelectTrigger data-testid="select-brochure-status">
+                <SelectValue placeholder="Select status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="inactive">Inactive</SelectItem>
+                <SelectItem value="draft">Draft</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <div className="space-y-2">
             <Label htmlFor="sortOrder">Sort Order</Label>
             <Input
@@ -469,7 +504,7 @@ function BrochureFormDialog({
         </Button>
         <Button 
           onClick={onSubmit} 
-          disabled={isLoading || !formData.name || !formData.category || !formData.pdfUrl}
+          disabled={isLoading || !formData.title || !formData.name || !formData.category || !formData.pdfUrl}
           data-testid="button-save-brochure"
         >
           {isLoading ? "Saving..." : "Save Brochure"}

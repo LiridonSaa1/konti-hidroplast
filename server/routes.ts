@@ -12,6 +12,7 @@ import {
   insertNewsArticleSchema,
   insertCertificateSchema,
   insertBrochureSchema,
+  insertBrochureCategorySchema,
   insertProjectSchema,
   insertTeamSchema,
   insertPositionSchema,
@@ -351,6 +352,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting brochure:", error);
       res.status(500).json({ error: "Failed to delete brochure" });
+    }
+  });
+
+  // Brochure categories routes
+  app.get("/api/admin/brochure-categories", async (req, res) => {
+    try {
+      const categories = await storage.getAllBrochureCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error("Error fetching brochure categories:", error);
+      res.status(500).json({ error: "Failed to fetch brochure categories" });
+    }
+  });
+
+  app.get("/api/admin/brochure-categories/:id", async (req, res) => {
+    try {
+      const category = await storage.getBrochureCategory(parseInt(req.params.id));
+      if (!category) {
+        return res.status(404).json({ error: "Brochure category not found" });
+      }
+      res.json(category);
+    } catch (error) {
+      console.error("Error fetching brochure category:", error);
+      res.status(500).json({ error: "Failed to fetch brochure category" });
+    }
+  });
+
+  app.post("/api/admin/brochure-categories", async (req, res) => {
+    try {
+      const categoryData = insertBrochureCategorySchema.parse(req.body);
+      const category = await storage.createBrochureCategory(categoryData);
+      res.status(201).json(category);
+    } catch (error) {
+      console.error("Error creating brochure category:", error);
+      res.status(400).json({ error: "Invalid brochure category data" });
+    }
+  });
+
+  app.patch("/api/admin/brochure-categories/:id", async (req, res) => {
+    try {
+      const categoryData = insertBrochureCategorySchema.partial().parse(req.body);
+      const category = await storage.updateBrochureCategory(parseInt(req.params.id), categoryData);
+      res.json(category);
+    } catch (error) {
+      console.error("Error updating brochure category:", error);
+      res.status(400).json({ error: "Invalid brochure category data" });
+    }
+  });
+
+  app.delete("/api/admin/brochure-categories/:id", async (req, res) => {
+    try {
+      await storage.deleteBrochureCategory(parseInt(req.params.id));
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting brochure category:", error);
+      res.status(500).json({ error: "Failed to delete brochure category" });
     }
   });
 

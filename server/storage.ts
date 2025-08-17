@@ -13,6 +13,8 @@ import {
   type InsertCertificate,
   type Brochure,
   type InsertBrochure,
+  type BrochureCategory,
+  type InsertBrochureCategory,
   type Project,
   type InsertProject,
   type Team,
@@ -26,6 +28,7 @@ import {
   newsArticles,
   certificates,
   brochures,
+  brochureCategories,
   projects,
   teams,
   positions,
@@ -75,6 +78,13 @@ export interface IStorage {
   createBrochure(brochure: InsertBrochure): Promise<Brochure>;
   updateBrochure(id: string, brochure: Partial<InsertBrochure>): Promise<Brochure>;
   deleteBrochure(id: string): Promise<void>;
+  
+  // Brochure category methods
+  getAllBrochureCategories(): Promise<BrochureCategory[]>;
+  getBrochureCategory(id: number): Promise<BrochureCategory | undefined>;
+  createBrochureCategory(category: InsertBrochureCategory): Promise<BrochureCategory>;
+  updateBrochureCategory(id: number, category: Partial<InsertBrochureCategory>): Promise<BrochureCategory>;
+  deleteBrochureCategory(id: number): Promise<void>;
   
   // Project methods
   getAllProjects(): Promise<Project[]>;
@@ -309,6 +319,42 @@ export class DatabaseStorage implements IStorage {
     await db.delete(brochures).where(eq(brochures.id, id));
   }
   
+  // Brochure category methods
+  async getAllBrochureCategories(): Promise<BrochureCategory[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(brochureCategories).orderBy(asc(brochureCategories.sortOrder), desc(brochureCategories.createdAt));
+  }
+
+  async getBrochureCategory(id: number): Promise<BrochureCategory | undefined> {
+    if (!db) throw new Error('Database not available');
+    const [category] = await db.select().from(brochureCategories).where(eq(brochureCategories.id, id));
+    return category || undefined;
+  }
+
+  async createBrochureCategory(category: InsertBrochureCategory): Promise<BrochureCategory> {
+    if (!db) throw new Error('Database not available');
+    const [newCategory] = await db
+      .insert(brochureCategories)
+      .values(category)
+      .returning();
+    return newCategory;
+  }
+
+  async updateBrochureCategory(id: number, category: Partial<InsertBrochureCategory>): Promise<BrochureCategory> {
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(brochureCategories)
+      .set({ ...category, updatedAt: new Date() })
+      .where(eq(brochureCategories.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteBrochureCategory(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(brochureCategories).where(eq(brochureCategories.id, id));
+  }
+  
   // Project methods
   async getAllProjects(): Promise<Project[]> {
     if (!db) throw new Error('Database not available');
@@ -427,6 +473,7 @@ export class MemStorage implements IStorage {
   private newsData: NewsArticle[] = [];
   private certificatesData: Certificate[] = [];
   private brochuresData: Brochure[] = [];
+  private brochureCategoriesData: BrochureCategory[] = [];
   private projectsData: Project[] = [];
   private teamsData: Team[] = [];
   private positionsData: Position[] = [];
@@ -691,6 +738,60 @@ export class MemStorage implements IStorage {
     const index = this.brochuresData.findIndex(b => b.id === id);
     if (index !== -1) {
       this.brochuresData.splice(index, 1);
+    }
+  }
+  
+  // Brochure category methods
+  async getAllBrochureCategories(): Promise<BrochureCategory[]> {
+    return this.brochureCategoriesData.sort((a, b) => {
+      // Primary sort by sortOrder (ascending, with null values last)
+      const aOrder = a.sortOrder ?? Number.MAX_SAFE_INTEGER;
+      const bOrder = b.sortOrder ?? Number.MAX_SAFE_INTEGER;
+      if (aOrder !== bOrder) {
+        return aOrder - bOrder;
+      }
+      
+      // Secondary sort by createdAt (descending)
+      const aTime = a.createdAt?.getTime() || 0;
+      const bTime = b.createdAt?.getTime() || 0;
+      return bTime - aTime;
+    });
+  }
+
+  async getBrochureCategory(id: number): Promise<BrochureCategory | undefined> {
+    return this.brochureCategoriesData.find(category => category.id === id);
+  }
+
+  async createBrochureCategory(category: InsertBrochureCategory): Promise<BrochureCategory> {
+    const newCategory: BrochureCategory = {
+      ...category,
+      id: this.brochureCategoriesData.length + 1,
+      description: category.description ?? null,
+      active: category.active ?? null,
+      sortOrder: category.sortOrder ?? null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.brochureCategoriesData.push(newCategory);
+    return newCategory;
+  }
+
+  async updateBrochureCategory(id: number, category: Partial<InsertBrochureCategory>): Promise<BrochureCategory> {
+    const index = this.brochureCategoriesData.findIndex(c => c.id === id);
+    if (index === -1) throw new Error('Brochure category not found');
+    
+    this.brochureCategoriesData[index] = {
+      ...this.brochureCategoriesData[index],
+      ...category,
+      updatedAt: new Date()
+    };
+    return this.brochureCategoriesData[index];
+  }
+
+  async deleteBrochureCategory(id: number): Promise<void> {
+    const index = this.brochureCategoriesData.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.brochureCategoriesData.splice(index, 1);
     }
   }
 

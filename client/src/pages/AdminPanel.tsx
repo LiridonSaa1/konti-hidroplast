@@ -32,15 +32,23 @@ import { ProjectsManager } from "@/components/admin/ProjectsManager";
 import { TeamsManager } from "@/components/admin/TeamsManager";
 import { PositionsManager } from "@/components/admin/PositionsManager";
 import { LeadershipManager } from "@/components/admin/LeadershipManager";
+import { BrochureCategoriesManager } from "@/components/admin/BrochureCategoriesManager";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("overview");
   const [isTeamDropdownOpen, setIsTeamDropdownOpen] = useState(false);
+  const [isBrochuresDropdownOpen, setIsBrochuresDropdownOpen] = useState(false);
 
   // Auto-open team dropdown when teams, positions, or leadership tab is active
   const teamTabsActive = activeTab === "teams" || activeTab === "positions" || activeTab === "leadership";
   if (teamTabsActive && !isTeamDropdownOpen) {
     setIsTeamDropdownOpen(true);
+  }
+  
+  // Auto-open brochures dropdown when brochures or brochure-categories tab is active
+  const brochureTabsActive = activeTab === "brochures" || activeTab === "brochure-categories";
+  if (brochureTabsActive && !isBrochuresDropdownOpen) {
+    setIsBrochuresDropdownOpen(true);
   }
 
   // Fetch basic stats for overview
@@ -152,15 +160,48 @@ export default function AdminPanel() {
               Certificates
             </Button>
             
-            <Button
-              variant={activeTab === "brochures" ? "default" : "ghost"}
-              className="w-full justify-start"
-              onClick={() => setActiveTab("brochures")}
-              data-testid="nav-brochures"
+            <Collapsible 
+              open={isBrochuresDropdownOpen} 
+              onOpenChange={setIsBrochuresDropdownOpen}
+              className="w-full"
             >
-              <BookOpen className="h-4 w-4 mr-2" />
-              Brochures
-            </Button>
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant={activeTab === "brochures" || activeTab === "brochure-categories" ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  data-testid="nav-brochures"
+                >
+                  <BookOpen className="h-4 w-4 mr-2" />
+                  Brochures
+                  {isBrochuresDropdownOpen ? (
+                    <ChevronDown className="h-4 w-4 ml-auto" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 ml-auto" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pl-6 space-y-1">
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "brochures" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("brochures")}
+                  data-testid="nav-brochures-list"
+                >
+                  <BookOpen className={`h-3 w-3 mr-2 ${activeTab === "brochures" ? "text-blue-600" : ""}`} />
+                  Brochures
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "brochure-categories" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("brochure-categories")}
+                  data-testid="nav-brochure-categories"
+                >
+                  <FolderOpen className={`h-3 w-3 mr-2 ${activeTab === "brochure-categories" ? "text-blue-600" : ""}`} />
+                  Categories
+                </Button>
+              </CollapsibleContent>
+            </Collapsible>
             
             <Collapsible 
               open={isTeamDropdownOpen} 
@@ -379,6 +420,12 @@ export default function AdminPanel() {
           {activeTab === "brochures" && (
             <div data-testid="brochures-manager">
               <BrochuresManager />
+            </div>
+          )}
+
+          {activeTab === "brochure-categories" && (
+            <div data-testid="brochure-categories-manager">
+              <BrochureCategoriesManager />
             </div>
           )}
 

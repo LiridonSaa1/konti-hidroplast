@@ -80,13 +80,28 @@ export const certificates = pgTable("certificates", {
 // Brochures table
 export const brochures = pgTable("brochures", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
   name: text("name").notNull(),
   category: text("category").notNull(),
   pdfUrl: text("pdf_url").notNull(),
   description: text("description"),
+  status: text("status").notNull().default("active"), // active, inactive, draft
   active: boolean("active").default(true),
   sortOrder: integer("sort_order").default(0),
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Brochure categories table
+export const brochureCategories = pgTable("brochure_categories", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  status: text("status").notNull().default("active"), // active, inactive
+  active: boolean("active").default(true),
+  sortOrder: integer("sort_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Insert schemas
@@ -125,6 +140,13 @@ export const insertCertificateSchema = createInsertSchema(certificates).omit({
 export const insertBrochureSchema = createInsertSchema(brochures).omit({
   id: true,
   createdAt: true,
+  updatedAt: true,
+});
+
+export const insertBrochureCategorySchema = createInsertSchema(brochureCategories).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 // Types
@@ -148,6 +170,9 @@ export type Certificate = typeof certificates.$inferSelect;
 
 export type InsertBrochure = z.infer<typeof insertBrochureSchema>;
 export type Brochure = typeof brochures.$inferSelect;
+
+export type InsertBrochureCategory = z.infer<typeof insertBrochureCategorySchema>;
+export type BrochureCategory = typeof brochureCategories.$inferSelect;
 
 export const projects = pgTable("projects", {
   id: serial("id").primaryKey(),
