@@ -81,19 +81,12 @@ export function EnhancedBrochuresManager() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/brochures"] });
-      setIsCreateDialogOpen(false);
-      resetForm();
-      toast({
-        title: "Success",
-        description: "Brochure created successfully",
-      });
+      // Don't close dialog or show success here - let handleSubmit handle it
+      // when all entries are created
     },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to create brochure",
-        variant: "destructive",
-      });
+    onError: (error) => {
+      // Don't show error toast here - let handleSubmit handle it
+      throw error;
     },
   });
 
@@ -257,10 +250,12 @@ export function EnhancedBrochuresManager() {
       return;
     }
 
-    // For simplicity, we'll take the first entry's data to create the brochure
-    // In a more complex implementation, you'd handle multiple entries differently
-    const primaryEntry = formData.entries[0];
-    if (!primaryEntry?.pdfFile && !primaryEntry?.pdfUrl && !selectedBrochure?.pdfUrl) {
+    // Check that at least one entry has valid data
+    const validEntries = formData.entries.filter(entry => 
+      (entry.pdfFile || entry.pdfUrl) && entry.language
+    );
+    
+    if (validEntries.length === 0) {
       toast({
         title: "Error",
         description: "Please provide at least one PDF file or PDF URL",
@@ -269,80 +264,165 @@ export function EnhancedBrochuresManager() {
       return;
     }
 
-    let pdfUrl = primaryEntry?.pdfUrl || "";
-    let imageUrl = primaryEntry?.imageUrl || "";
-
-    // Handle PDF file upload
-    if (primaryEntry?.pdfFile && !primaryEntry.pdfUrl) {
-      const uploadFormData = new FormData();
-      uploadFormData.append('file', primaryEntry.pdfFile);
-
-      try {
-        const uploadResponse = await fetch('/api/upload', {
-          method: 'POST',
-          body: uploadFormData,
-        });
-
-        if (!uploadResponse.ok) {
-          throw new Error('Failed to upload PDF file');
-        }
-
-        const uploadResult = await uploadResponse.json();
-        pdfUrl = uploadResult.url;
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to upload PDF file",
-          variant: "destructive",
-        });
-        return;
-      }
-    }
-
-    // Handle image file upload
-    if (primaryEntry?.imageFile && !primaryEntry.imageUrl) {
-      const uploadFormData = new FormData();
-      uploadFormData.append('file', primaryEntry.imageFile);
-
-      try {
-        const uploadResponse = await fetch('/api/upload', {
-          method: 'POST',
-          body: uploadFormData,
-        });
-
-        if (!uploadResponse.ok) {
-          throw new Error('Failed to upload image file');
-        }
-
-        const uploadResult = await uploadResponse.json();
-        imageUrl = uploadResult.url;
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to upload image file",
-          variant: "destructive",
-        });
-        return;
-      }
-    }
-
-    const submissionData = {
-      title: formData.name,
-      name: formData.name,
-      category: formData.category,
-      language: (primaryEntry?.language || "en") as "en" | "mk" | "de",
-      pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
-      imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
-      description: formData.description,
-      status: formData.status as "active" | "inactive" | "draft",
-      active: formData.active,
-      sortOrder: formData.sortOrder
-    };
-
+    // If editing, just update the single brochure (existing behavior for edit mode)
     if (selectedBrochure) {
+      const primaryEntry = formData.entries[0];
+      let pdfUrl = primaryEntry?.pdfUrl || "";
+      let imageUrl = primaryEntry?.imageUrl || "";
+
+      // Handle PDF file upload for edit mode
+      if (primaryEntry?.pdfFile && !primaryEntry.pdfUrl) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', primaryEntry.pdfFile);
+
+        try {
+          const uploadResponse = await fetch('/api/upload', {
+            method: 'POST',
+            body: uploadFormData,
+          });
+
+          if (!uploadResponse.ok) {
+            throw new Error('Failed to upload PDF file');
+          }
+
+          const uploadResult = await uploadResponse.json();
+          pdfUrl = uploadResult.url;
+        } catch (error) {
+          toast({
+            title: "Error",
+            description: "Failed to upload PDF file",
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+
+      // Handle image file upload for edit mode
+      if (primaryEntry?.imageFile && !primaryEntry.imageUrl) {
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', primaryEntry.imageFile);
+
+        try {
+          const uploadResponse = await fetch('/api/upload', {
+            method: 'POST',
+            body: uploadFormData,
+          });
+
+          if (!uploadResponse.ok) {
+            throw new Error('Failed to upload image file');
+          }
+
+          const uploadResult = await uploadResponse.json();
+          imageUrl = uploadResult.url;
+        } catch (error) {
+          toast({
+            title: "Error",
+            description: "Failed to upload image file",
+            variant: "destructive",
+          });
+          return;
+        }
+      }
+
+      const submissionData = {
+        title: formData.name,
+        name: formData.name,
+        category: formData.category,
+        language: (primaryEntry?.language || "en") as "en" | "mk" | "de",
+        pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
+        imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
+        description: formData.description,
+        status: formData.status as "active" | "inactive" | "draft",
+        active: formData.active,
+        sortOrder: formData.sortOrder
+      };
+
       updateMutation.mutate({ id: selectedBrochure.id, data: submissionData });
-    } else {
-      createMutation.mutate(submissionData);
+      return;
+    }
+
+    // For creating new brochures, handle multiple language entries
+    try {
+      const translationGroupId = Date.now().toString(); // Generate a unique group ID
+      const processedEntries = [];
+
+      // Process each entry - upload files and prepare data
+      for (const entry of validEntries) {
+        let pdfUrl = entry.pdfUrl || "";
+        let imageUrl = entry.imageUrl || "";
+
+        // Handle PDF file upload
+        if (entry.pdfFile && !entry.pdfUrl) {
+          const uploadFormData = new FormData();
+          uploadFormData.append('file', entry.pdfFile);
+
+          const uploadResponse = await fetch('/api/upload', {
+            method: 'POST',
+            body: uploadFormData,
+          });
+
+          if (!uploadResponse.ok) {
+            throw new Error(`Failed to upload PDF file for ${entry.languageName}`);
+          }
+
+          const uploadResult = await uploadResponse.json();
+          pdfUrl = uploadResult.url;
+        }
+
+        // Handle image file upload
+        if (entry.imageFile && !entry.imageUrl) {
+          const uploadFormData = new FormData();
+          uploadFormData.append('file', entry.imageFile);
+
+          const uploadResponse = await fetch('/api/upload', {
+            method: 'POST',
+            body: uploadFormData,
+          });
+
+          if (!uploadResponse.ok) {
+            throw new Error(`Failed to upload image file for ${entry.languageName}`);
+          }
+
+          const uploadResult = await uploadResponse.json();
+          imageUrl = uploadResult.url;
+        }
+
+        // Prepare the data for this language entry
+        processedEntries.push({
+          title: formData.name,
+          name: formData.name,
+          category: formData.category,
+          language: entry.language as "en" | "mk" | "de",
+          pdfUrl,
+          imageUrl,
+          description: formData.description,
+          status: formData.status as "active" | "inactive" | "draft",
+          active: formData.active,
+          sortOrder: formData.sortOrder,
+          translationGroup: translationGroupId
+        });
+      }
+
+      // Create all entries
+      for (const entryData of processedEntries) {
+        await createMutation.mutateAsync(entryData);
+      }
+
+      // Close dialog and reset form after successful creation
+      setIsCreateDialogOpen(false);
+      resetForm();
+      
+      toast({
+        title: "Success",
+        description: `Brochure created with ${processedEntries.length} language version(s)`,
+      });
+
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to create brochure",
+        variant: "destructive",
+      });
     }
   };
 
