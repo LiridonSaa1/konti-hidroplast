@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { FileUpload } from "@/components/ui/file-upload";
 import { insertProjectSchema, type Project, type InsertProject } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 
@@ -214,13 +215,14 @@ export function ProjectsManager() {
                   name="imageUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Image URL</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="Enter image URL" 
-                          {...field}
+                        <FileUpload
+                          label="Image URL"
                           value={field.value || ""}
-                          data-testid="input-project-image"
+                          onChange={field.onChange}
+                          type="image"
+                          placeholder="Enter image URL or upload image"
+                          testId="input-project-image"
                         />
                       </FormControl>
                       <FormMessage />
@@ -233,13 +235,14 @@ export function ProjectsManager() {
                   name="pdfUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>PDF Document URL</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="Enter PDF URL" 
-                          {...field}
+                        <FileUpload
+                          label="PDF Document URL"
                           value={field.value || ""}
-                          data-testid="input-project-pdf"
+                          onChange={field.onChange}
+                          type="pdf"
+                          placeholder="Enter PDF URL or upload document"
+                          testId="input-project-pdf"
                         />
                       </FormControl>
                       <FormMessage />

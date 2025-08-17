@@ -1,5 +1,9 @@
 import type { Express } from "express";
+import express from "express";
 import { createServer, type Server } from "http";
+import multer from "multer";
+import path from "path";
+import { promises as fs } from "fs";
 import { storage } from "./storage";
 import {
   insertProductSchema,
@@ -11,7 +15,73 @@ import {
   insertProjectSchema,
 } from "@shared/schema";
 
+// Configure multer for file uploads
+const uploadDir = path.join(process.cwd(), 'uploads');
+
+// Ensure upload directory exists
+async function ensureUploadDir() {
+  try {
+    await fs.access(uploadDir);
+  } catch {
+    await fs.mkdir(uploadDir, { recursive: true });
+  }
+}
+
+// Configure multer with file validation
+const upload = multer({
+  dest: uploadDir,
+  limits: {
+    fileSize: 10 * 1024 * 1024, // 10MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|gif|pdf/;
+    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = allowedTypes.test(file.mimetype);
+    
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(new Error('Only images (jpeg, jpg, png, gif) and PDFs are allowed'));
+    }
+  }
+});
+
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Ensure upload directory exists
+  await ensureUploadDir();
+  
+  // Serve uploaded files statically
+  app.use('/uploads', express.static(uploadDir));
+  
+  // File upload endpoint
+  app.post("/api/upload", upload.single('file'), async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "No file uploaded" });
+      }
+      
+      const fileExtension = path.extname(req.file.originalname);
+      const fileName = `${req.file.filename}${fileExtension}`;
+      const oldPath = req.file.path;
+      const newPath = path.join(uploadDir, fileName);
+      
+      // Rename file to include extension
+      await fs.rename(oldPath, newPath);
+      
+      // Return the public URL
+      const fileUrl = `/uploads/${fileName}`;
+      
+      res.json({ 
+        url: fileUrl,
+        originalName: req.file.originalname,
+        size: req.file.size
+      });
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      res.status(500).json({ error: "Failed to upload file" });
+    }
+  });
+
   // Admin Panel API Routes
   
   // Products routes
