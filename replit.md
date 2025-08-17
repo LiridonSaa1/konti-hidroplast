@@ -9,6 +9,13 @@ Preferred communication style: Simple, everyday language.
 # Recent Changes (August 2025)
 
 ## August 17, 2025
+- **Position Management System Added**: Created CRUD system for organizational positions
+  - Added Positions database table with fields: title, description, department, level, active, sortOrder
+  - Implemented full CRUD operations in storage layer for both database and in-memory storage
+  - Created PositionsManager component with forms for managing organizational positions
+  - Added positions navigation tab to admin panel with position count dashboard card
+  - Database schema successfully pushed and synchronized
+  - Position management now available to structure organizational hierarchy
 - **Team Management System Added**: Created comprehensive team management system for admin panel
   - Added Teams database table with fields: name, position, email, imageUrl, active, sortOrder
   - Implemented full CRUD operations in storage layer for both database and in-memory storage

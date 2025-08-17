@@ -14,6 +14,7 @@ import {
   insertBrochureSchema,
   insertProjectSchema,
   insertTeamSchema,
+  insertPositionSchema,
 } from "@shared/schema";
 
 // Configure multer for file uploads
@@ -423,6 +424,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting team:", error);
       res.status(500).json({ error: "Failed to delete team" });
+    }
+  });
+
+  // Position routes
+  app.get("/api/admin/positions", async (req, res) => {
+    try {
+      const positions = await storage.getAllPositions();
+      res.json(positions);
+    } catch (error) {
+      console.error("Error fetching positions:", error);
+      res.status(500).json({ error: "Failed to fetch positions" });
+    }
+  });
+
+  app.post("/api/admin/positions", async (req, res) => {
+    try {
+      const positionData = insertPositionSchema.parse(req.body);
+      const position = await storage.createPosition(positionData);
+      res.status(201).json(position);
+    } catch (error) {
+      console.error("Error creating position:", error);
+      res.status(400).json({ error: "Invalid position data" });
+    }
+  });
+
+  app.patch("/api/admin/positions/:id", async (req, res) => {
+    try {
+      const positionData = insertPositionSchema.partial().parse(req.body);
+      const position = await storage.updatePosition(parseInt(req.params.id), positionData);
+      res.json(position);
+    } catch (error) {
+      console.error("Error updating position:", error);
+      res.status(400).json({ error: "Invalid position data" });
+    }
+  });
+
+  app.delete("/api/admin/positions/:id", async (req, res) => {
+    try {
+      await storage.deletePosition(parseInt(req.params.id));
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting position:", error);
+      res.status(500).json({ error: "Failed to delete position" });
     }
   });
 

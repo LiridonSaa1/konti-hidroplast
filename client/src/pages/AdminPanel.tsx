@@ -12,7 +12,8 @@ import {
   Mail,
   MapPin,
   Building,
-  FolderOpen
+  FolderOpen,
+  Briefcase
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,6 +27,7 @@ import { CertificatesManager } from "@/components/admin/CertificatesManager";
 import { BrochuresManager } from "@/components/admin/BrochuresManager";
 import { ProjectsManager } from "@/components/admin/ProjectsManager";
 import { TeamsManager } from "@/components/admin/TeamsManager";
+import { PositionsManager } from "@/components/admin/PositionsManager";
 
 export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -53,6 +55,11 @@ export default function AdminPanel() {
 
   const { data: teamsCount = 0 } = useQuery({
     queryKey: ["/api/admin/teams"],
+    select: (data: any) => data?.length || 0
+  });
+
+  const { data: positionsCount = 0 } = useQuery({
+    queryKey: ["/api/admin/positions"],
     select: (data: any) => data?.length || 0
   });
 
@@ -154,6 +161,16 @@ export default function AdminPanel() {
               Team Members
             </Button>
             
+            <Button
+              variant={activeTab === "positions" ? "default" : "ghost"}
+              className="w-full justify-start"
+              onClick={() => setActiveTab("positions")}
+              data-testid="nav-positions"
+            >
+              <Briefcase className="h-4 w-4 mr-2" />
+              Positions
+            </Button>
+            
             <Separator className="my-4" />
             
             <Button
@@ -174,7 +191,7 @@ export default function AdminPanel() {
             <div className="space-y-6" data-testid="overview-content">
               <div>
                 <h2 className="text-xl font-semibold text-slate-900 mb-4">Dashboard Overview</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
                   <Card data-testid="card-products-count">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">Products</CardTitle>
@@ -227,6 +244,17 @@ export default function AdminPanel() {
                     <CardContent>
                       <div className="text-2xl font-bold" data-testid="teams-count">{teamsCount}</div>
                       <p className="text-xs text-slate-600">Active team members</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card data-testid="card-positions-count">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">Positions</CardTitle>
+                      <Briefcase className="h-4 w-4 text-teal-600" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold" data-testid="positions-count">{positionsCount}</div>
+                      <p className="text-xs text-slate-600">Available positions</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -313,6 +341,12 @@ export default function AdminPanel() {
           {activeTab === "teams" && (
             <div data-testid="teams-manager">
               <TeamsManager />
+            </div>
+          )}
+
+          {activeTab === "positions" && (
+            <div data-testid="positions-manager">
+              <PositionsManager />
             </div>
           )}
 

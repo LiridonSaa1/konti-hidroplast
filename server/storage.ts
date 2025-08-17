@@ -17,6 +17,8 @@ import {
   type InsertProject,
   type Team,
   type InsertTeam,
+  type Position,
+  type InsertPosition,
   users,
   products,
   media,
@@ -26,6 +28,7 @@ import {
   brochures,
   projects,
   teams,
+  positions,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -86,6 +89,13 @@ export interface IStorage {
   createTeam(team: InsertTeam): Promise<Team>;
   updateTeam(id: number, team: Partial<InsertTeam>): Promise<Team>;
   deleteTeam(id: number): Promise<void>;
+  
+  // Position methods
+  getAllPositions(): Promise<Position[]>;
+  getPosition(id: number): Promise<Position | undefined>;
+  createPosition(position: InsertPosition): Promise<Position>;
+  updatePosition(id: number, position: Partial<InsertPosition>): Promise<Position>;
+  deletePosition(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -370,6 +380,42 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     await db.delete(teams).where(eq(teams.id, id));
   }
+  
+  // Position methods
+  async getAllPositions(): Promise<Position[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(positions).orderBy(desc(positions.createdAt));
+  }
+
+  async getPosition(id: number): Promise<Position | undefined> {
+    if (!db) throw new Error('Database not available');
+    const [position] = await db.select().from(positions).where(eq(positions.id, id));
+    return position || undefined;
+  }
+
+  async createPosition(position: InsertPosition): Promise<Position> {
+    if (!db) throw new Error('Database not available');
+    const [newPosition] = await db
+      .insert(positions)
+      .values(position)
+      .returning();
+    return newPosition;
+  }
+
+  async updatePosition(id: number, position: Partial<InsertPosition>): Promise<Position> {
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(positions)
+      .set(position)
+      .where(eq(positions.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deletePosition(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(positions).where(eq(positions.id, id));
+  }
 }
 
 // In-memory storage implementation for development
@@ -383,6 +429,7 @@ export class MemStorage implements IStorage {
   private brochuresData: Brochure[] = [];
   private projectsData: Project[] = [];
   private teamsData: Team[] = [];
+  private positionsData: Position[] = [];
 
   // User methods
   async getUser(id: string): Promise<User | undefined> {
@@ -737,6 +784,54 @@ export class MemStorage implements IStorage {
     const index = this.teamsData.findIndex(t => t.id === id);
     if (index !== -1) {
       this.teamsData.splice(index, 1);
+    }
+  }
+  
+  // Position methods
+  async getAllPositions(): Promise<Position[]> {
+    return this.positionsData.sort((a, b) => {
+      const aTime = a.createdAt?.getTime() || 0;
+      const bTime = b.createdAt?.getTime() || 0;
+      return bTime - aTime;
+    });
+  }
+
+  async getPosition(id: number): Promise<Position | undefined> {
+    return this.positionsData.find(position => position.id === id);
+  }
+
+  async createPosition(position: InsertPosition): Promise<Position> {
+    const newPosition: Position = {
+      ...position,
+      id: this.positionsData.length + 1,
+      description: position.description ?? null,
+      department: position.department ?? null,
+      level: position.level ?? null,
+      active: position.active ?? null,
+      sortOrder: position.sortOrder ?? null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.positionsData.push(newPosition);
+    return newPosition;
+  }
+
+  async updatePosition(id: number, position: Partial<InsertPosition>): Promise<Position> {
+    const index = this.positionsData.findIndex(p => p.id === id);
+    if (index === -1) throw new Error('Position not found');
+    
+    this.positionsData[index] = {
+      ...this.positionsData[index],
+      ...position,
+      updatedAt: new Date()
+    };
+    return this.positionsData[index];
+  }
+
+  async deletePosition(id: number): Promise<void> {
+    const index = this.positionsData.findIndex(p => p.id === id);
+    if (index !== -1) {
+      this.positionsData.splice(index, 1);
     }
   }
 }
