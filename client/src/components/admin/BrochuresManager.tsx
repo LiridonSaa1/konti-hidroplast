@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Search, BookOpen, Download, Eye } from "lucide-react";
+import { Plus, Edit, Trash2, Search, BookOpen, Download, Eye, Upload, Image, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,7 +15,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import type { Brochure, InsertBrochure, BrochureCategory } from "@shared/schema";
-import { FileUpload } from "@/components/ui/file-upload";
 
 
 interface BrochureFormData {
@@ -225,7 +224,7 @@ export function BrochuresManager() {
       pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
       imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
       description: formData.description,
-      status: formData.status,
+      status: formData.status as "active" | "inactive" | "draft",
       active: formData.active,
       sortOrder: formData.sortOrder
     };
@@ -395,7 +394,7 @@ export function BrochuresManager() {
                           <Button
                             variant="link"
                             size="sm"
-                            onClick={() => window.open(brochure.imageUrl, '_blank')}
+                            onClick={() => brochure.imageUrl && window.open(brochure.imageUrl, '_blank')}
                             data-testid={`button-view-image-${brochure.id}`}
                           >
                             <Eye className="h-4 w-4 mr-1" />
@@ -585,40 +584,94 @@ function BrochureFormDialog({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <Label htmlFor="pdfFile">PDF File *</Label>
-            <div className="flex items-center gap-2">
-              <Input
-                id="pdfFile"
-                type="file"
-                accept=".pdf"
-                onChange={handleFileChange}
-                data-testid="input-brochure-pdf-file"
-                className="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
-              {formData.pdfFile && (
-                <span className="text-sm text-green-600">
-                  {formData.pdfFile.name}
-                </span>
-              )}
-            </div>
+            {formData.pdfFile ? (
+              <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg bg-gray-50">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-red-600" />
+                  <span className="text-sm font-medium">{formData.pdfFile.name}</span>
+                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setFormData({ ...formData, pdfFile: null })}
+                  className="text-gray-500 hover:text-red-600"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="relative">
+                <Input
+                  id="pdfFile"
+                  type="file"
+                  accept=".pdf"
+                  onChange={handleFileChange}
+                  data-testid="input-brochure-pdf-file"
+                  className="sr-only"
+                />
+                <label
+                  htmlFor="pdfFile"
+                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 hover:border-gray-400 transition-colors"
+                >
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <Upload className="w-8 h-8 mb-2 text-gray-400" />
+                    <p className="mb-1 text-sm text-gray-600 font-medium">
+                      Click to upload or drag and drop
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      PDF files only (max 10MB)
+                    </p>
+                  </div>
+                </label>
+              </div>
+            )}
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="imageFile">Brochure Image</Label>
-            <div className="flex items-center gap-2">
-              <Input
-                id="imageFile"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                data-testid="input-brochure-image-file"
-                className="file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-              />
-              {formData.imageFile && (
-                <span className="text-sm text-green-600">
-                  {formData.imageFile.name}
-                </span>
-              )}
-            </div>
+            {formData.imageFile ? (
+              <div className="flex items-center justify-between p-3 border border-gray-200 rounded-lg bg-gray-50">
+                <div className="flex items-center gap-2">
+                  <Image className="h-4 w-4 text-blue-600" />
+                  <span className="text-sm font-medium">{formData.imageFile.name}</span>
+                </div>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setFormData({ ...formData, imageFile: null })}
+                  className="text-gray-500 hover:text-red-600"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="relative">
+                <Input
+                  id="imageFile"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  data-testid="input-brochure-image-file"
+                  className="sr-only"
+                />
+                <label
+                  htmlFor="imageFile"
+                  className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 hover:border-gray-400 transition-colors"
+                >
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <Upload className="w-8 h-8 mb-2 text-gray-400" />
+                    <p className="mb-1 text-sm text-gray-600 font-medium">
+                      Click to upload or drag and drop
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Images only (max 10MB)
+                    </p>
+                  </div>
+                </label>
+              </div>
+            )}
           </div>
         </div>
 
