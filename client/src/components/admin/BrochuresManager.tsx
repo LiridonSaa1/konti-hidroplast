@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Edit, Trash2, Search, BookOpen, Download, Eye } from "lucide-react";
@@ -5,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
@@ -24,8 +26,6 @@ interface BrochureFormData {
   active: boolean;
   sortOrder: number;
 }
-
-
 
 export function BrochuresManager() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -203,10 +203,14 @@ export function BrochuresManager() {
     }
   };
 
+  const handleDelete = (id: string) => {
+    deleteMutation.mutate(id);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64" data-testid="brochures-loading">
-        <div className="text-slate-600">Loading brochures...</div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     );
   }
@@ -243,11 +247,11 @@ export function BrochuresManager() {
 
       {/* Filters */}
       <Card data-testid="brochures-filters">
-        <CardContent className="p-4">
+        <CardContent className="pt-6">
           <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
-                <Search className="h-4 w-4 absolute left-3 top-3 text-slate-400" />
+                <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                 <Input
                   placeholder="Search brochures..."
                   value={searchTerm}
@@ -257,135 +261,170 @@ export function BrochuresManager() {
                 />
               </div>
             </div>
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-              <SelectTrigger className="w-48" data-testid="select-brochure-category">
-                <SelectValue placeholder="Filter by category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
-                {categories
-                  .filter(cat => cat.active)
-                  .map(category => (
-                    <SelectItem key={category.id} value={category.title}>{category.title}</SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
+            <div className="w-full sm:w-48">
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger data-testid="select-brochure-category">
+                  <SelectValue placeholder="Filter by category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {categories
+                    .filter(cat => cat.active)
+                    .map(category => (
+                      <SelectItem key={category.id} value={category.title}>{category.title}</SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Brochures Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-testid="brochures-grid">
-        {filteredBrochures.map((brochure) => (
-          <Card key={brochure.id} className="hover:shadow-md transition-shadow" data-testid={`brochure-card-${brochure.id}`}>
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <CardTitle className="text-lg mb-2" data-testid={`brochure-name-${brochure.id}`}>
-                    {brochure.name}
-                  </CardTitle>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" data-testid={`brochure-category-${brochure.id}`}>
-                      {brochure.category}
-                    </Badge>
-                    <Badge 
-                      variant={brochure.active ? "default" : "secondary"}
-                      data-testid={`brochure-status-${brochure.id}`}
-                    >
-                      {brochure.active ? "Active" : "Inactive"}
-                    </Badge>
-                  </div>
-                </div>
-                <BookOpen className="h-8 w-8 text-slate-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              {brochure.description && (
-                <p className="text-sm text-slate-600 mb-4 line-clamp-3" data-testid={`brochure-description-${brochure.id}`}>
-                  {brochure.description}
-                </p>
-              )}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => window.open(brochure.pdfUrl, '_blank')}
-                    data-testid={`button-download-brochure-${brochure.id}`}
-                  >
-                    <Download className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => window.open(brochure.pdfUrl, '_blank')}
-                    data-testid={`button-view-brochure-${brochure.id}`}
-                  >
-                    <Eye className="h-4 w-4" />
-                  </Button>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEdit(brochure)}
-                    data-testid={`button-edit-brochure-${brochure.id}`}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        data-testid={`button-delete-brochure-${brochure.id}`}
+      {/* Brochures Table */}
+      {filteredBrochures.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle data-testid="brochures-table-title">
+              Brochures ({filteredBrochures.length})
+            </CardTitle>
+            <CardDescription>
+              All brochures in your database
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>PDF</TableHead>
+                  <TableHead>Order</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredBrochures.map((brochure) => (
+                  <TableRow key={brochure.id} data-testid={`brochure-row-${brochure.id}`}>
+                    <TableCell className="font-medium" data-testid={`brochure-name-${brochure.id}`}>
+                      {brochure.name}
+                    </TableCell>
+                    <TableCell data-testid={`brochure-category-${brochure.id}`}>
+                      <Badge variant="outline">
+                        {brochure.category}
+                      </Badge>
+                    </TableCell>
+                    <TableCell data-testid={`brochure-description-${brochure.id}`}>
+                      {brochure.description ? (
+                        <span className="text-sm line-clamp-2 max-w-xs">
+                          {brochure.description}
+                        </span>
+                      ) : (
+                        <span className="text-slate-400 text-sm">No description</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Badge 
+                        variant={brochure.active ? "default" : "secondary"} 
+                        data-testid={`brochure-status-${brochure.id}`}
                       >
-                        <Trash2 className="h-4 w-4 text-red-500" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Brochure</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Are you sure you want to delete "{brochure.name}"? This action cannot be undone.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => deleteMutation.mutate(brochure.id)}
-                          className="bg-red-600 hover:bg-red-700"
+                        {brochure.active ? "Active" : "Inactive"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {brochure.pdfUrl ? (
+                        <div className="flex items-center gap-1">
+                          <Button
+                            variant="link"
+                            size="sm"
+                            onClick={() => window.open(brochure.pdfUrl, '_blank')}
+                            data-testid={`button-view-pdf-${brochure.id}`}
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            View PDF
+                          </Button>
+                        </div>
+                      ) : (
+                        <span className="text-slate-400 text-sm">No PDF</span>
+                      )}
+                    </TableCell>
+                    <TableCell data-testid={`brochure-order-${brochure.id}`}>
+                      {brochure.sortOrder || 0}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end space-x-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => window.open(brochure.pdfUrl, '_blank')}
+                          data-testid={`button-download-brochure-${brochure.id}`}
                         >
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                          <Download className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(brochure)}
+                          data-testid={`button-edit-brochure-${brochure.id}`}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700"
+                              data-testid={`button-delete-brochure-${brochure.id}`}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Brochure</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{brochure.name}"? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(brochure.id)}
+                                className="bg-red-600 hover:bg-red-700"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
 
       {filteredBrochures.length === 0 && (
-        <Card data-testid="brochures-empty-state">
-          <CardContent className="p-8 text-center">
-            <BookOpen className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-slate-900 mb-2">No brochures found</h3>
-            <p className="text-slate-600 mb-4">
-              {searchTerm || selectedCategory !== "all" 
-                ? "Try adjusting your search or filter criteria"
-                : "Get started by adding your first brochure"
-              }
-            </p>
-            {!searchTerm && selectedCategory === "all" && (
-              <Button onClick={() => setIsCreateDialogOpen(true)} data-testid="button-add-first-brochure">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Your First Brochure
-              </Button>
-            )}
-          </CardContent>
+        <Card className="p-8 text-center" data-testid="brochures-empty-state">
+          <BookOpen className="h-12 w-12 mx-auto text-slate-400 mb-4" />
+          <h3 className="text-lg font-medium text-slate-900 mb-2">No brochures found</h3>
+          <p className="text-slate-600 mb-4">
+            {searchTerm || selectedCategory !== "all" 
+              ? "No brochures match your current filters"
+              : "Get started by adding your first brochure"
+            }
+          </p>
+          {!searchTerm && selectedCategory === "all" && (
+            <Button onClick={() => setIsCreateDialogOpen(true)} data-testid="button-add-first-brochure">
+              <Plus className="h-4 w-4 mr-2" />
+              Add Your First Brochure
+            </Button>
+          )}
         </Card>
       )}
 
