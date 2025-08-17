@@ -73,13 +73,19 @@ export function LeadershipManager() {
       return await apiRequest("/api/admin/company-info", "POST", data);
     },
     onSuccess: async () => {
-      // Invalidate and refetch the query
-      await queryClient.invalidateQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
+      // More aggressive cache invalidation
+      await queryClient.invalidateQueries({ queryKey: ["/api/admin/company-info"] });
+      await queryClient.removeQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
       
       setIsFormOpen(false);
       setSelectedImage(null);
       setImagePreview(null);
       setRefreshKey(prev => prev + 1); // Force re-render
+      
+      // Add a small delay to ensure cache is cleared
+      setTimeout(() => {
+        queryClient.refetchQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
+      }, 100);
       
       toast({
         title: "Success",
