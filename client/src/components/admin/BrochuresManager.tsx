@@ -56,7 +56,8 @@ export function BrochuresManager() {
 
   const createMutation = useMutation({
     mutationFn: async (data: InsertBrochure) => {
-      return apiRequest("POST", "/api/admin/brochures", data);
+      const result = await apiRequest("/api/admin/brochures", "POST", data);
+      return result.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/brochures"] });
@@ -78,7 +79,8 @@ export function BrochuresManager() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<InsertBrochure> }) => {
-      return apiRequest("PUT", `/api/admin/brochures/${id}`, data);
+      const result = await apiRequest(`/api/admin/brochures/${id}`, "PUT", data);
+      return result.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/brochures"] });
@@ -101,7 +103,8 @@ export function BrochuresManager() {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      return apiRequest("DELETE", `/api/admin/brochures/${id}`);
+      const result = await apiRequest(`/api/admin/brochures/${id}`, "DELETE");
+      return result;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/brochures"] });

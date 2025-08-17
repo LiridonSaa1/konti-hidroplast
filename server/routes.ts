@@ -323,13 +323,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/brochures", upload.fields([{ name: 'brochure', maxCount: 1 }, { name: 'description', maxCount: 1 }]), async (req, res) => {
+  app.post("/api/admin/brochures", async (req, res) => {
     try {
-      const brochureData = {
-        title: req.body.title, // Brochure Title is now optional
-        description: req.body.description, // Description is now optional
-        pdfUrl: req.files && req.files.brochure ? `/uploads/${req.files.brochure[0].filename}` : undefined, // PDF URL is now a file upload
-      };
+      const brochureData = insertBrochureSchema.parse(req.body);
       const brochure = await storage.createBrochure(brochureData);
       res.status(201).json(brochure);
     } catch (error) {
