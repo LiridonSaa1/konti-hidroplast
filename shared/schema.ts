@@ -90,6 +90,7 @@ export const brochures = pgTable("brochures", {
   status: text("status").notNull().default("active"), // active, inactive, draft
   active: boolean("active").default(true),
   sortOrder: integer("sort_order").default(0),
+  translationGroup: text("translation_group"), // Links related language versions
   translationMetadata: jsonb("translation_metadata"), // For tracking translations
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
@@ -151,6 +152,11 @@ export const insertBrochureSchema = createInsertSchema(brochures, {
   status: z.enum(["active", "inactive", "draft"]).default("active"),
   active: z.boolean().default(true),
   sortOrder: z.number().int().default(0),
+  translationGroup: z.string().optional(),
+}).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 export const insertBrochureCategorySchema = createInsertSchema(brochureCategories).omit({

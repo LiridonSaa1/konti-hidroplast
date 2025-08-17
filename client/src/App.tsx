@@ -13,7 +13,7 @@ import ProductsPage from "@/pages/products";
 import WaterSupplySystemsPage from "@/pages/water-supply-systems";
 import GasPipelineSystemsPage from "@/pages/gas-pipeline-systems";
 import CableProtectionPage from "@/pages/cable-protection";
-import BrochuresPage from "@/pages/brochures";
+import BrochuresPage from "@/pages/BrochuresPage";
 import CertificatesPage from "@/pages/certificates";
 import NewsPage from "@/pages/news";
 import CareerPage from "@/pages/career";
