@@ -4,9 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trash2, Edit, Plus, Briefcase, Building, Star } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
@@ -16,18 +17,26 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { insertPositionSchema, type Position, type InsertPosition } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 
+const STATUS_OPTIONS = [
+  { value: "active", label: "Active", color: "bg-green-100 text-green-800" },
+  { value: "inactive", label: "Inactive", color: "bg-red-100 text-red-800" },
+  { value: "draft", label: "Draft", color: "bg-yellow-100 text-yellow-800" },
+  { value: "archived", label: "Archived", color: "bg-gray-100 text-gray-800" }
+];
+
 export function PositionsManager() {
   const [editingPosition, setEditingPosition] = useState<Position | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const form = useForm<InsertPosition>({
+  const form = useForm<InsertPosition & { status: string }>({
     resolver: zodResolver(insertPositionSchema),
     defaultValues: {
       title: "",
       description: "",
       active: true,
+      status: "active",
     },
   });
 
@@ -110,10 +119,12 @@ export function PositionsManager() {
 
   const handleEdit = (position: Position) => {
     setEditingPosition(position);
+    const derivedStatus = position.active ? 'active' : 'inactive';
     form.reset({
       title: position.title,
       description: position.description || "",
       active: position.active || true,
+      status: derivedStatus,
     });
     setIsFormOpen(true);
   };
@@ -127,9 +138,14 @@ export function PositionsManager() {
       title: "",
       description: "",
       active: true,
+      status: "active",
     });
     setEditingPosition(null);
     setIsFormOpen(false);
+  };
+
+  const getStatusBadgeColor = (active: boolean) => {
+    return active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800";
   };
 
   if (isLoading) {
@@ -203,17 +219,32 @@ export function PositionsManager() {
 
                 <FormField
                   control={form.control}
-                  name="active"
+                  name="status"
                   render={({ field }) => (
-                    <FormItem className="flex items-center space-x-2">
+                    <FormItem>
+                      <FormLabel>Status</FormLabel>
                       <FormControl>
-                        <Switch
-                          checked={field.value || false}
-                          onCheckedChange={field.onChange}
-                          data-testid="input-position-active"
-                        />
+                        <Select 
+                          value={field.value} 
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                            form.setValue("active", value === "active");
+                          }}
+                          data-testid="select-position-status"
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {STATUS_OPTIONS.map((option) => (
+                              <SelectItem key={option.value} value={option.value}>
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </FormControl>
-                      <FormLabel className="!mt-0">Active</FormLabel>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
@@ -273,30 +304,51 @@ export function PositionsManager() {
                       )}
                     </TableCell>
                     <TableCell className="px-6 py-4" data-testid={`position-status-${position.id}`}>
-                      <Badge variant={position.active ? "default" : "secondary"} className={position.active ? "bg-blue-100 text-blue-800 hover:bg-blue-100" : ""}>
+                      <Badge className={getStatusBadgeColor(position.active)}>
                         {position.active ? "Active" : "Inactive"}
                       </Badge>
                     </TableCell>
                     <TableCell className="px-6 py-4 text-right">
-                      <div className="flex justify-end space-x-2">
+                      <div className="flex justify-end space-x-1">
                         <Button
                           variant="ghost"
                           size="sm"
                           onClick={() => handleEdit(position)}
                           data-testid={`button-edit-${position.id}`}
-                          className="h-8 w-8 p-0 text-gray-400 hover:text-gray-600"
+                          className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDelete(position.id)}
-                          className="h-8 w-8 p-0 text-gray-400 hover:text-red-600"
-                          data-testid={`button-delete-${position.id}`}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                              data-testid={`button-delete-${position.id}`}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent data-testid={`dialog-delete-${position.id}`}>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Position</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{position.title}"? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel data-testid="button-cancel-delete">Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(position.id)}
+                                className="bg-red-600 hover:bg-red-700"
+                                data-testid="button-confirm-delete"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </TableCell>
                   </TableRow>
