@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FileUpload } from "@/components/ui/file-upload";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { 
@@ -267,14 +268,27 @@ export function GalleryItemsManager() {
               </div>
               
               <div>
-                <Label htmlFor="create-imageUrl">Image URL</Label>
-                <Input
-                  id="create-imageUrl"
+                <FileUpload
+                  label="Gallery Image"
                   value={formData.imageUrl}
-                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                  placeholder="Image URL"
-                  data-testid="input-create-image"
+                  onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+                  type="image"
+                  placeholder="Enter image URL or upload file"
+                  testId="input-create-image"
                 />
+                {formData.imageUrl && (
+                  <div className="mt-2">
+                    <img
+                      src={formData.imageUrl}
+                      alt="Gallery Image Preview"
+                      className="h-20 w-20 object-cover rounded-lg border"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                )}
               </div>
 
               <div>
@@ -479,14 +493,27 @@ export function GalleryItemsManager() {
             </div>
             
             <div>
-              <Label htmlFor="edit-imageUrl">Image URL</Label>
-              <Input
-                id="edit-imageUrl"
+              <FileUpload
+                label="Gallery Image"
                 value={formData.imageUrl}
-                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                placeholder="Image URL"
-                data-testid="input-edit-image"
+                onChange={(url) => setFormData({ ...formData, imageUrl: url })}
+                type="image"
+                placeholder="Enter image URL or upload file"
+                testId="input-edit-image"
               />
+              {formData.imageUrl && (
+                <div className="mt-2">
+                  <img
+                    src={formData.imageUrl}
+                    alt="Gallery Image Preview"
+                    className="h-20 w-20 object-cover rounded-lg border"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                    }}
+                  />
+                </div>
+              )}
             </div>
 
             <div>

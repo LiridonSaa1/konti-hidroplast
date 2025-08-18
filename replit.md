@@ -18,8 +18,10 @@ Preferred communication style: Simple, everyday language.
 - Fixed login error display to show proper red error messages instead of runtime error overlay
 - Enhanced error handling in AuthContext to prevent unhandled promise rejections
 - Enhanced Gallery Categories Manager with FileUpload component for both create and edit operations
-- Added image preview functionality with drag-and-drop support for gallery category management
+- Enhanced Gallery Items Manager with FileUpload component for both create and edit operations
+- Added image preview functionality with drag-and-drop support for both gallery managers
 - Improved user experience with visual image previews and better error handling
+- Both gallery management components now support URL input and file upload with drag-and-drop functionality
 
 ## Enhanced Projects Management (August 18, 2025)
 - Added sortOrder field to projects database schema and form
