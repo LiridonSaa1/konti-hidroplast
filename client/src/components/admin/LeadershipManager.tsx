@@ -126,9 +126,11 @@ export function LeadershipManager() {
 
   const handleSubmit = async (data: InsertCompanyInfo) => {
     try {
+      console.log("Leadership form submission started with data:", data);
       let imageUrl = "";
       
       if (selectedImage) {
+        console.log("Uploading new image...");
         imageUrl = await handleImageUpload(selectedImage);
       } else if (leadershipData && typeof leadershipData === 'object' && 'value' in leadershipData) {
         const currentData = JSON.parse(leadershipData.value);
@@ -138,13 +140,21 @@ export function LeadershipManager() {
       const leadershipContent = JSON.parse(data.value);
       leadershipContent.leaderImage = imageUrl;
 
-      updateLeadershipMutation.mutate({
+      const submitData = {
         key: "leadership_message",
         category: "branding",
         value: JSON.stringify(leadershipContent)
-      });
+      };
+      
+      console.log("Submitting leadership data:", submitData);
+      updateLeadershipMutation.mutate(submitData);
     } catch (error) {
-      // Error already handled in handleImageUpload
+      console.error("Error in handleSubmit:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit leadership data",
+        variant: "destructive",
+      });
     }
   };
 

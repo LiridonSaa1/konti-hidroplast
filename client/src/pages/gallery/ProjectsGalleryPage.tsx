@@ -12,7 +12,7 @@ function ProjectsGalleryPage() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [displayCount, setDisplayCount] = useState(8);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
-  
+
   // Fetch gallery categories to get the category ID
   const { data: categories = [] } = useQuery<GalleryCategory[]>({
     queryKey: ["/api/gallery-categories"],
@@ -24,14 +24,17 @@ function ProjectsGalleryPage() {
   });
 
   // Find the current category (PROJECTS)
-  const currentCategory = categories.find(cat => 
-    cat.title.toLowerCase() === 'projects'
+  const currentCategory = categories.find(
+    (cat) => cat.title.toLowerCase() === "projects",
   );
 
   // Filter items for projects category
-  const allCategoryItems = galleryItems.filter(item => 
-    item.categoryId === currentCategory?.id && item.status === 'active'
-  ).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  const allCategoryItems = galleryItems
+    .filter(
+      (item) =>
+        item.categoryId === currentCategory?.id && item.status === "active",
+    )
+    .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
   // Get items to display based on current display count
   const categoryItems = allCategoryItems.slice(0, displayCount);
@@ -40,8 +43,8 @@ function ProjectsGalleryPage() {
   const handleLoadMore = async () => {
     setIsLoadingMore(true);
     // Add a small delay for smooth animation
-    await new Promise(resolve => setTimeout(resolve, 300));
-    setDisplayCount(prev => prev + 8);
+    await new Promise((resolve) => setTimeout(resolve, 300));
+    setDisplayCount((prev) => prev + 8);
     setIsLoadingMore(false);
   };
 
@@ -52,7 +55,7 @@ function ProjectsGalleryPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
-      
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white pt-32 pb-20">
         <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
@@ -67,7 +70,7 @@ function ProjectsGalleryPage() {
               <Button
                 variant="ghost"
                 onClick={() => window.history.back()}
-                className="inline-flex items-center text-white hover:text-gray-200"
+                className="inline-flex items-center text-white hover:text-[#1c2d56]"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to About Us
@@ -87,8 +90,9 @@ function ProjectsGalleryPage() {
               </span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Major infrastructure projects demonstrating the reliability and performance 
-              of our PE and PP pipe systems across diverse applications and environments.
+              Major infrastructure projects demonstrating the reliability and
+              performance of our PE and PP pipe systems across diverse
+              applications and environments.
             </p>
             <div className="flex justify-center flex-wrap gap-4">
               <div className="flex items-center gap-2 text-blue-300">
@@ -124,7 +128,10 @@ function ProjectsGalleryPage() {
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[...Array(8)].map((_, index) => (
-                <div key={index} className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
+                <div
+                  key={index}
+                  className="aspect-square bg-gray-200 rounded-lg animate-pulse"
+                ></div>
               ))}
             </div>
           ) : categoryItems.length > 0 ? (
@@ -133,11 +140,14 @@ function ProjectsGalleryPage() {
                 <div
                   key={item.id}
                   className={`group cursor-pointer transform transition-all duration-500 ${
-                    index >= displayCount - 8 ? 'animate-fadeIn' : ''
+                    index >= displayCount - 8 ? "animate-fadeIn" : ""
                   }`}
                   onClick={() => setSelectedImage(item.imageUrl)}
                   style={{
-                    animationDelay: index >= displayCount - 8 ? `${(index - (displayCount - 8)) * 100}ms` : '0ms'
+                    animationDelay:
+                      index >= displayCount - 8
+                        ? `${(index - (displayCount - 8)) * 100}ms`
+                        : "0ms",
                   }}
                 >
                   <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
@@ -169,7 +179,7 @@ function ProjectsGalleryPage() {
               </p>
             </div>
           )}
-          
+
           {/* Load More Button */}
           {hasMoreItems && (
             <div className="text-center mt-12">
@@ -184,7 +194,7 @@ function ProjectsGalleryPage() {
                     Loading...
                   </div>
                 ) : (
-                  'Load More Images'
+                  "Load More Images"
                 )}
               </Button>
             </div>
@@ -194,7 +204,7 @@ function ProjectsGalleryPage() {
 
       {/* Image Modal */}
       {selectedImage && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
           onClick={() => setSelectedImage(null)}
         >
@@ -208,8 +218,18 @@ function ProjectsGalleryPage() {
               onClick={() => setSelectedImage(null)}
               className="absolute top-4 right-4 text-white bg-black/50 rounded-full p-2 hover:bg-black/70 transition-colors"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
