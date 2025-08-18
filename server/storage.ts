@@ -21,6 +21,10 @@ import {
   type InsertTeam,
   type Position,
   type InsertPosition,
+  type GalleryCategory,
+  type InsertGalleryCategory,
+  type GalleryItem,
+  type InsertGalleryItem,
   users,
   products,
   media,
@@ -32,6 +36,8 @@ import {
   projects,
   teams,
   positions,
+  galleryCategories,
+  galleryItems,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, asc } from "drizzle-orm";
@@ -111,6 +117,21 @@ export interface IStorage {
   createPosition(position: InsertPosition): Promise<Position>;
   updatePosition(id: number, position: Partial<InsertPosition>): Promise<Position>;
   deletePosition(id: number): Promise<void>;
+  
+  // Gallery category methods
+  getAllGalleryCategories(): Promise<GalleryCategory[]>;
+  getGalleryCategory(id: number): Promise<GalleryCategory | undefined>;
+  createGalleryCategory(category: InsertGalleryCategory): Promise<GalleryCategory>;
+  updateGalleryCategory(id: number, category: Partial<InsertGalleryCategory>): Promise<GalleryCategory>;
+  deleteGalleryCategory(id: number): Promise<void>;
+  
+  // Gallery item methods
+  getAllGalleryItems(): Promise<GalleryItem[]>;
+  getGalleryItem(id: number): Promise<GalleryItem | undefined>;
+  getGalleryItemsByCategory(categoryId: number): Promise<GalleryItem[]>;
+  createGalleryItem(item: InsertGalleryItem): Promise<GalleryItem>;
+  updateGalleryItem(id: number, item: Partial<InsertGalleryItem>): Promise<GalleryItem>;
+  deleteGalleryItem(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -508,6 +529,85 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     await db.delete(positions).where(eq(positions.id, id));
   }
+
+  // Gallery category methods
+  async getAllGalleryCategories(): Promise<GalleryCategory[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(galleryCategories).orderBy(asc(galleryCategories.sortOrder));
+  }
+
+  async getGalleryCategory(id: number): Promise<GalleryCategory | undefined> {
+    if (!db) throw new Error('Database not available');
+    const [category] = await db.select().from(galleryCategories).where(eq(galleryCategories.id, id));
+    return category || undefined;
+  }
+
+  async createGalleryCategory(insertCategory: InsertGalleryCategory): Promise<GalleryCategory> {
+    if (!db) throw new Error('Database not available');
+    const [category] = await db
+      .insert(galleryCategories)
+      .values(insertCategory)
+      .returning();
+    return category;
+  }
+
+  async updateGalleryCategory(id: number, category: Partial<InsertGalleryCategory>): Promise<GalleryCategory> {
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(galleryCategories)
+      .set({ ...category, updatedAt: new Date() })
+      .where(eq(galleryCategories.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteGalleryCategory(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(galleryCategories).where(eq(galleryCategories.id, id));
+  }
+
+  // Gallery item methods
+  async getAllGalleryItems(): Promise<GalleryItem[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(galleryItems).orderBy(asc(galleryItems.sortOrder));
+  }
+
+  async getGalleryItem(id: number): Promise<GalleryItem | undefined> {
+    if (!db) throw new Error('Database not available');
+    const [item] = await db.select().from(galleryItems).where(eq(galleryItems.id, id));
+    return item || undefined;
+  }
+
+  async getGalleryItemsByCategory(categoryId: number): Promise<GalleryItem[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(galleryItems)
+      .where(eq(galleryItems.categoryId, categoryId))
+      .orderBy(asc(galleryItems.sortOrder));
+  }
+
+  async createGalleryItem(insertItem: InsertGalleryItem): Promise<GalleryItem> {
+    if (!db) throw new Error('Database not available');
+    const [item] = await db
+      .insert(galleryItems)
+      .values(insertItem)
+      .returning();
+    return item;
+  }
+
+  async updateGalleryItem(id: number, item: Partial<InsertGalleryItem>): Promise<GalleryItem> {
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(galleryItems)
+      .set({ ...item, updatedAt: new Date() })
+      .where(eq(galleryItems.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteGalleryItem(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(galleryItems).where(eq(galleryItems.id, id));
+  }
 }
 
 // In-memory storage implementation for development
@@ -523,6 +623,8 @@ export class MemStorage implements IStorage {
   private projectsData: Project[] = [];
   private teamsData: Team[] = [];
   private positionsData: Position[] = [];
+  private galleryCategoriesData: GalleryCategory[] = [];
+  private galleryItemsData: GalleryItem[] = [];
 
   // User methods
   async getUser(id: string): Promise<User | undefined> {
@@ -1031,6 +1133,95 @@ export class MemStorage implements IStorage {
     const index = this.positionsData.findIndex(p => p.id === id);
     if (index !== -1) {
       this.positionsData.splice(index, 1);
+    }
+  }
+
+  // Gallery category methods
+  async getAllGalleryCategories(): Promise<GalleryCategory[]> {
+    return this.galleryCategoriesData.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  }
+
+  async getGalleryCategory(id: number): Promise<GalleryCategory | undefined> {
+    return this.galleryCategoriesData.find(category => category.id === id);
+  }
+
+  async createGalleryCategory(category: InsertGalleryCategory): Promise<GalleryCategory> {
+    const newCategory: GalleryCategory = {
+      ...category,
+      id: Date.now(),
+      imageUrl: category.imageUrl || null,
+      status: category.status || "active",
+      sortOrder: category.sortOrder || 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.galleryCategoriesData.push(newCategory);
+    return newCategory;
+  }
+
+  async updateGalleryCategory(id: number, category: Partial<InsertGalleryCategory>): Promise<GalleryCategory> {
+    const index = this.galleryCategoriesData.findIndex(c => c.id === id);
+    if (index === -1) throw new Error('Gallery category not found');
+    
+    this.galleryCategoriesData[index] = {
+      ...this.galleryCategoriesData[index],
+      ...category,
+      updatedAt: new Date()
+    };
+    return this.galleryCategoriesData[index];
+  }
+
+  async deleteGalleryCategory(id: number): Promise<void> {
+    const index = this.galleryCategoriesData.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.galleryCategoriesData.splice(index, 1);
+    }
+  }
+
+  // Gallery item methods
+  async getAllGalleryItems(): Promise<GalleryItem[]> {
+    return this.galleryItemsData.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  }
+
+  async getGalleryItem(id: number): Promise<GalleryItem | undefined> {
+    return this.galleryItemsData.find(item => item.id === id);
+  }
+
+  async getGalleryItemsByCategory(categoryId: number): Promise<GalleryItem[]> {
+    return this.galleryItemsData
+      .filter(item => item.categoryId === categoryId)
+      .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  }
+
+  async createGalleryItem(item: InsertGalleryItem): Promise<GalleryItem> {
+    const newItem: GalleryItem = {
+      ...item,
+      id: Date.now(),
+      status: item.status || "active",
+      sortOrder: item.sortOrder || 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.galleryItemsData.push(newItem);
+    return newItem;
+  }
+
+  async updateGalleryItem(id: number, item: Partial<InsertGalleryItem>): Promise<GalleryItem> {
+    const index = this.galleryItemsData.findIndex(i => i.id === id);
+    if (index === -1) throw new Error('Gallery item not found');
+    
+    this.galleryItemsData[index] = {
+      ...this.galleryItemsData[index],
+      ...item,
+      updatedAt: new Date()
+    };
+    return this.galleryItemsData[index];
+  }
+
+  async deleteGalleryItem(id: number): Promise<void> {
+    const index = this.galleryItemsData.findIndex(i => i.id === id);
+    if (index !== -1) {
+      this.galleryItemsData.splice(index, 1);
     }
   }
 }

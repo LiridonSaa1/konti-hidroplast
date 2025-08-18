@@ -19,6 +19,8 @@ import {
   insertProjectSchema,
   insertTeamSchema,
   insertPositionSchema,
+  insertGalleryCategorySchema,
+  insertGalleryItemSchema,
   loginSchema,
   updateUserSchema,
   insertUserSchema,
@@ -705,6 +707,117 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting position:", error);
       res.status(500).json({ error: "Failed to delete position" });
+    }
+  });
+
+  // Gallery Categories routes
+  app.get('/api/admin/gallery-categories', requireAuth, async (req, res) => {
+    try {
+      const categories = await storage.getAllGalleryCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error('Error fetching gallery categories:', error);
+      res.status(500).json({ error: 'Failed to fetch gallery categories' });
+    }
+  });
+
+  app.post('/api/admin/gallery-categories', requireAuth, async (req, res) => {
+    try {
+      const validatedData = insertGalleryCategorySchema.parse(req.body);
+      const category = await storage.createGalleryCategory(validatedData);
+      res.status(201).json(category);
+    } catch (error: any) {
+      console.error('Error creating gallery category:', error);
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ error: 'Invalid data', details: error.errors });
+      }
+      res.status(500).json({ error: 'Failed to create gallery category' });
+    }
+  });
+
+  app.patch('/api/admin/gallery-categories/:id', requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = insertGalleryCategorySchema.partial().parse(req.body);
+      const category = await storage.updateGalleryCategory(id, validatedData);
+      res.json(category);
+    } catch (error: any) {
+      console.error('Error updating gallery category:', error);
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ error: 'Invalid data', details: error.errors });
+      }
+      if (error.message.includes('not found')) {
+        return res.status(404).json({ error: 'Gallery category not found' });
+      }
+      res.status(500).json({ error: 'Failed to update gallery category' });
+    }
+  });
+
+  app.delete('/api/admin/gallery-categories/:id', requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteGalleryCategory(id);
+      res.status(204).send();
+    } catch (error) {
+      console.error('Error deleting gallery category:', error);
+      res.status(500).json({ error: 'Failed to delete gallery category' });
+    }
+  });
+
+  // Gallery Items routes
+  app.get('/api/admin/gallery-items', requireAuth, async (req, res) => {
+    try {
+      const categoryId = req.query.categoryId ? parseInt(req.query.categoryId as string) : null;
+      const items = categoryId 
+        ? await storage.getGalleryItemsByCategory(categoryId)
+        : await storage.getAllGalleryItems();
+      res.json(items);
+    } catch (error) {
+      console.error('Error fetching gallery items:', error);
+      res.status(500).json({ error: 'Failed to fetch gallery items' });
+    }
+  });
+
+  app.post('/api/admin/gallery-items', requireAuth, async (req, res) => {
+    try {
+      const validatedData = insertGalleryItemSchema.parse(req.body);
+      const item = await storage.createGalleryItem(validatedData);
+      res.status(201).json(item);
+    } catch (error: any) {
+      console.error('Error creating gallery item:', error);
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ error: 'Invalid data', details: error.errors });
+      }
+      res.status(500).json({ error: 'Failed to create gallery item' });
+    }
+  });
+
+  app.patch('/api/admin/gallery-items/:id', requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = insertGalleryItemSchema.partial().parse(req.body);
+      const item = await storage.updateGalleryItem(id, validatedData);
+      res.json(item);
+    } catch (error: any) {
+      console.error('Error updating gallery item:', error);
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ error: 'Invalid data', details: error.errors });
+      }
+      if (error.message.includes('not found')) {
+        return res.status(404).json({ error: 'Gallery item not found' });
+      }
+      res.status(500).json({ error: 'Failed to update gallery item' });
+    }
+  });
+
+  app.delete('/api/admin/gallery-items/:id', requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteGalleryItem(id);
+      res.status(204).send();
+    } catch (error) {
+      console.error('Error deleting gallery item:', error);
+      res.status(500).json({ error: 'Failed to delete gallery item' });
     }
   });
 

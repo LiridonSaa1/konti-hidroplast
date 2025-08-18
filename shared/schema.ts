@@ -220,11 +220,51 @@ export const projects = pgTable("projects", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Gallery categories table
+export const galleryCategories = pgTable("gallery_categories", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  imageUrl: varchar("image_url", { length: 500 }),
+  status: varchar("status", { length: 50 }).default("active"),
+  sortOrder: integer("sort_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Gallery items table
+export const galleryItems = pgTable("gallery_items", {
+  id: serial("id").primaryKey(),
+  categoryId: integer("category_id").references(() => galleryCategories.id).notNull(),
+  imageUrl: varchar("image_url", { length: 500 }).notNull(),
+  status: varchar("status", { length: 50 }).default("active"),
+  sortOrder: integer("sort_order").default(0),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const insertProjectSchema = createInsertSchema(projects).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
 });
+
+export const insertGalleryCategorySchema = createInsertSchema(galleryCategories).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertGalleryItemSchema = createInsertSchema(galleryItems).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type InsertGalleryCategory = z.infer<typeof insertGalleryCategorySchema>;
+export type GalleryCategory = typeof galleryCategories.$inferSelect;
+
+export type InsertGalleryItem = z.infer<typeof insertGalleryItemSchema>;
+export type GalleryItem = typeof galleryItems.$inferSelect;
 
 export type InsertProject = z.infer<typeof insertProjectSchema>;
 export type Project = typeof projects.$inferSelect;

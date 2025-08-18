@@ -38,12 +38,15 @@ import { TeamsManager } from "@/components/admin/TeamsManager";
 import { PositionsManager } from "@/components/admin/PositionsManager";
 import { LeadershipManager } from "@/components/admin/LeadershipManager";
 import { BrochureCategoriesManager } from "@/components/admin/BrochureCategoriesManager";
+import { GalleryCategoriesManager } from "@/components/admin/GalleryCategoriesManager";
+import { GalleryItemsManager } from "@/components/admin/GalleryItemsManager";
 
 export default function AdminPanel() {
   const { isAuthenticated, isLoading } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
   const [isTeamDropdownOpen, setIsTeamDropdownOpen] = useState(false);
   const [isBrochuresDropdownOpen, setIsBrochuresDropdownOpen] = useState(false);
+  const [isGalleryDropdownOpen, setIsGalleryDropdownOpen] = useState(false);
 
   // Always declare hooks at the top level, before any conditional returns
   const { data: productsCount = 0 } = useQuery({
@@ -82,6 +85,18 @@ export default function AdminPanel() {
     enabled: isAuthenticated,
   });
 
+  const { data: galleryCategoriesCount = 0 } = useQuery({
+    queryKey: ["/api/admin/gallery-categories"],
+    select: (data: any) => data?.length || 0,
+    enabled: isAuthenticated,
+  });
+
+  const { data: galleryItemsCount = 0 } = useQuery({
+    queryKey: ["/api/admin/gallery-items"],
+    select: (data: any) => data?.length || 0,
+    enabled: isAuthenticated,
+  });
+
   // Show loading spinner while checking auth
   if (isLoading) {
     return (
@@ -109,6 +124,12 @@ export default function AdminPanel() {
   const brochureTabsActive = activeTab === "brochures" || activeTab === "enhanced-brochures" || activeTab === "brochure-categories";
   if (brochureTabsActive && !isBrochuresDropdownOpen) {
     setIsBrochuresDropdownOpen(true);
+  }
+
+  // Auto-open gallery dropdown when gallery-categories or gallery-items tab is active
+  const galleryTabsActive = activeTab === "gallery-categories" || activeTab === "gallery-items";
+  if (galleryTabsActive && !isGalleryDropdownOpen) {
+    setIsGalleryDropdownOpen(true);
   }
 
 
@@ -285,6 +306,49 @@ export default function AdminPanel() {
                 </Button>
               </CollapsibleContent>
             </Collapsible>
+
+            <Collapsible 
+              open={isGalleryDropdownOpen} 
+              onOpenChange={setIsGalleryDropdownOpen}
+              className="w-full"
+            >
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant={galleryTabsActive ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  data-testid="nav-gallery"
+                >
+                  <Image className="h-4 w-4 mr-2" />
+                  Gallery
+                  {isGalleryDropdownOpen ? (
+                    <ChevronDown className="h-4 w-4 ml-auto" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 ml-auto" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pl-6 space-y-1">
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "gallery-categories" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("gallery-categories")}
+                  data-testid="nav-gallery-categories"
+                >
+                  <FolderOpen className={`h-3 w-3 mr-2 ${activeTab === "gallery-categories" ? "text-blue-600" : ""}`} />
+                  Categories
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "gallery-items" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("gallery-items")}
+                  data-testid="nav-gallery-items"
+                >
+                  <Image className={`h-3 w-3 mr-2 ${activeTab === "gallery-items" ? "text-blue-600" : ""}`} />
+                  Gallery Items
+                </Button>
+              </CollapsibleContent>
+            </Collapsible>
             
             <Separator className="my-4" />
             
@@ -370,6 +434,30 @@ export default function AdminPanel() {
                     <CardContent>
                       <div className="text-2xl font-bold" data-testid="positions-count">{positionsCount}</div>
                       <p className="text-xs text-slate-600">Available positions</p>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                  <Card data-testid="card-gallery-categories-count">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">Gallery Categories</CardTitle>
+                      <FolderOpen className="h-4 w-4 text-cyan-600" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold" data-testid="gallery-categories-count">{galleryCategoriesCount}</div>
+                      <p className="text-xs text-slate-600">Gallery categories</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card data-testid="card-gallery-items-count">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">Gallery Items</CardTitle>
+                      <Image className="h-4 w-4 text-rose-600" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold" data-testid="gallery-items-count">{galleryItemsCount}</div>
+                      <p className="text-xs text-slate-600">Gallery images</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -488,6 +576,18 @@ export default function AdminPanel() {
           {activeTab === "company-info" && (
             <div data-testid="company-info-manager">
               <CompanyInfoManager />
+            </div>
+          )}
+
+          {activeTab === "gallery-categories" && (
+            <div data-testid="gallery-categories-manager">
+              <GalleryCategoriesManager />
+            </div>
+          )}
+
+          {activeTab === "gallery-items" && (
+            <div data-testid="gallery-items-manager">
+              <GalleryItemsManager />
             </div>
           )}
         </div>
