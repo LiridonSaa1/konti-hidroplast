@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
+
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
@@ -147,10 +147,12 @@ export function BrochureCategoriesManager() {
 
   const handleEdit = (category: BrochureCategory) => {
     setSelectedCategory(category);
+    // Derive status from active field if status is not properly set
+    const derivedStatus = category.status || (category.active ? 'active' : 'inactive');
     setFormData({
       title: category.title,
       description: category.description || "",
-      status: category.status,
+      status: derivedStatus,
       active: category.active || true,
       sortOrder: category.sortOrder || 0
     });
@@ -271,7 +273,14 @@ export function BrochureCategoriesManager() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="status">Status</Label>
-                  <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
+                  <Select 
+                    value={formData.status} 
+                    onValueChange={(value) => setFormData({ 
+                      ...formData, 
+                      status: value,
+                      active: value === 'active'
+                    })}
+                  >
                     <SelectTrigger data-testid="select-status">
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
@@ -295,16 +304,6 @@ export function BrochureCategoriesManager() {
                     data-testid="input-sort-order"
                   />
                 </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Switch
-                  id="active"
-                  checked={formData.active}
-                  onCheckedChange={(checked) => setFormData({ ...formData, active: checked })}
-                  data-testid="switch-active"
-                />
-                <Label htmlFor="active">Active</Label>
               </div>
 
               <div className="flex justify-end gap-2">
@@ -571,7 +570,14 @@ export function BrochureCategoriesManager() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="edit-status">Status</Label>
-                <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
+                <Select 
+                  value={formData.status} 
+                  onValueChange={(value) => setFormData({ 
+                    ...formData, 
+                    status: value,
+                    active: value === 'active'
+                  })}
+                >
                   <SelectTrigger data-testid="select-edit-status">
                     <SelectValue placeholder="Select status" />
                   </SelectTrigger>
@@ -595,16 +601,6 @@ export function BrochureCategoriesManager() {
                   data-testid="input-edit-sort-order"
                 />
               </div>
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="edit-active"
-                checked={formData.active}
-                onCheckedChange={(checked) => setFormData({ ...formData, active: checked })}
-                data-testid="switch-edit-active"
-              />
-              <Label htmlFor="edit-active">Active</Label>
             </div>
 
             <div className="flex justify-end gap-2">
