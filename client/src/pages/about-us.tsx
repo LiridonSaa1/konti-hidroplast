@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { type Team, type Project } from "@shared/schema";
+import { type Team, type Project, type GalleryCategory } from "@shared/schema";
 import {
   ChevronRight,
   ChevronLeft,
@@ -25,6 +25,7 @@ import {
   Settings,
   Wrench,
   FileText,
+  Image,
 } from "lucide-react";
 
 const timelineData = [
@@ -197,6 +198,11 @@ export default function AboutUs() {
   // Fetch projects
   const { data: projects = [], isLoading: isProjectsLoading } = useQuery<Project[]>({
     queryKey: ["/api/admin/projects"],
+  });
+
+  // Fetch gallery categories
+  const { data: galleryCategories = [], isLoading: isGalleryLoading } = useQuery<GalleryCategory[]>({
+    queryKey: ["/api/admin/gallery-categories"],
   });
 
   // Fetch leadership data
@@ -1063,180 +1069,73 @@ export default function AboutUs() {
             </div>
           </div>
 
-          {/* Gallery Grid - Same Style as Products */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-            {/* Production Gallery Item */}
-            <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
-              {/* Gallery Image - Top */}
-              <div className="h-64 relative overflow-hidden">
-                <img
-                  src="/attached_assets/Konti-Hidroplast-Proizvodstvo-27-1_1755115099243.jpg"
-                  alt="Production Facility"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
-              </div>
-
-              {/* Gallery Content - Bottom */}
-              <div className="p-8 relative">
-                {/* Decorative accent */}
-                <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
-
-                <div className="mt-4">
-                  <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    PRODUCTION
-                  </h3>
-
-                  {/* Learn More Button */}
-                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
-                    <span>View Gallery</span>
-                    <svg
-                      className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
+          {/* Dynamic Gallery Grid */}
+          {isGalleryLoading ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+              {[...Array(4)].map((_, index) => (
+                <div key={index} className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100">
+                  <div className="h-64 bg-gray-200 animate-pulse"></div>
+                  <div className="p-8">
+                    <div className="h-6 bg-gray-200 rounded animate-pulse mb-4"></div>
+                    <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-
-            {/* Quality Control Gallery Item */}
-            <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
-              {/* Gallery Image - Top */}
-              <div className="h-64 relative overflow-hidden">
-                <img
-                  src="/attached_assets/image_1755201104056.png"
-                  alt="Quality Control Laboratory"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
-              </div>
-
-              {/* Gallery Content - Bottom */}
-              <div className="p-8 relative">
-                {/* Decorative accent */}
-                <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
-
-                <div className="mt-4">
-                  <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    QUALITY CONTROL
-                  </h3>
-
-                  {/* Learn More Button */}
-                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
-                    <span>View Gallery</span>
-                    <svg
-                      className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
+          ) : galleryCategories.length > 0 ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
+              {galleryCategories
+                .filter(category => category.status === 'active')
+                .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
+                .map((category) => (
+                <div key={category.id} className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
+                  {/* Gallery Image - Top */}
+                  <div className="h-64 relative overflow-hidden">
+                    {category.imageUrl ? (
+                      <img
+                        src={category.imageUrl}
+                        alt={category.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
-                    </svg>
-                  </button>
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
+                        <Image className="h-16 w-16 text-slate-400" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
+                  </div>
+
+                  {/* Gallery Content - Bottom */}
+                  <div className="p-8 relative">
+                    {/* Decorative accent */}
+                    <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
+
+                    <div className="mt-4">
+                      <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                        {category.title}
+                      </h3>
+
+                      {/* View Gallery Button */}
+                      <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                        <span>View Gallery</span>
+                        <ChevronRight className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" />
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-
-            {/* Storage Gallery Item */}
-            <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
-              {/* Gallery Image - Top */}
-              <div className="h-64 relative overflow-hidden">
-                <img
-                  src="/attached_assets/image_1755091852060.png"
-                  alt="Storage Facilities"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
-              </div>
-
-              {/* Gallery Content - Bottom */}
-              <div className="p-8 relative">
-                {/* Decorative accent */}
-                <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
-
-                <div className="mt-4">
-                  <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    STORAGE
-                  </h3>
-
-                  {/* Learn More Button */}
-                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
-                    <span>View Gallery</span>
-                    <svg
-                      className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
+          ) : (
+            <div className="text-center py-12">
+              <Image className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                No Gallery Categories
+              </h3>
+              <p className="text-gray-500">
+                Gallery categories will appear here once they are added.
+              </p>
             </div>
-
-            {/* Projects Gallery Item */}
-            <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
-              {/* Gallery Image - Top */}
-              <div className="h-64 relative overflow-hidden">
-                <img
-                  src="/attached_assets/Projects-1-min-800x407_1755198231060.jpg"
-                  alt="Infrastructure Projects"
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
-              </div>
-
-              {/* Gallery Content - Bottom */}
-              <div className="p-8 relative">
-                {/* Decorative accent */}
-                <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
-
-                <div className="mt-4">
-                  <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    PROJECTS
-                  </h3>
-
-                  {/* Learn More Button */}
-                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
-                    <span>View Gallery</span>
-                    <svg
-                      className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+          )}
         </div>
       </section>
       <section className="py-20 bg-[#ffffff]">
