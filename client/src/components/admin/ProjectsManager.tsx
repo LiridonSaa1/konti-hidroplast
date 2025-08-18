@@ -23,7 +23,7 @@ export function ProjectsManager() {
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortField, setSortField] = useState<keyof Project>("title");
+  const [sortField, setSortField] = useState<keyof Project>("sortOrder");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -57,8 +57,30 @@ export function ProjectsManager() {
       let bValue = b[sortField];
 
       // Handle null/undefined values
-      if (aValue == null) aValue = "";
-      if (bValue == null) bValue = "";
+      if (aValue == null) aValue = sortField === "sortOrder" ? 0 : "";
+      if (bValue == null) bValue = sortField === "sortOrder" ? 0 : "";
+
+      // Special handling for numeric fields
+      if (sortField === "sortOrder" || sortField === "id") {
+        const aNum = Number(aValue);
+        const bNum = Number(bValue);
+        if (sortDirection === "asc") {
+          return aNum - bNum;
+        } else {
+          return bNum - aNum;
+        }
+      }
+
+      // Special handling for dates
+      if (sortField === "createdAt") {
+        const aDate = new Date(aValue as string).getTime();
+        const bDate = new Date(bValue as string).getTime();
+        if (sortDirection === "asc") {
+          return aDate - bDate;
+        } else {
+          return bDate - aDate;
+        }
+      }
 
       // Convert to string for comparison
       const aStr = String(aValue).toLowerCase();

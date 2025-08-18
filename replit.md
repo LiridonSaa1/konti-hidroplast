@@ -18,6 +18,15 @@ Preferred communication style: Simple, everyday language.
 - Fixed login error display to show proper red error messages instead of runtime error overlay
 - Enhanced error handling in AuthContext to prevent unhandled promise rejections
 
+## Enhanced Projects Management (August 18, 2025)
+- Added sortOrder field to projects database schema and form
+- Implemented search functionality to filter projects by title and description
+- Added clickable sortable table headers for Title, Status, Order, and Created columns
+- Updated action buttons to match Enhanced Brochures Management style (ghost buttons)
+- Projects now default to sorting by Order column in ascending order
+- Improved numeric and date sorting with proper type handling
+- Added empty state message with search context and quick action button
+
 # System Architecture
 
 ## Frontend Architecture
