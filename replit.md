@@ -15,6 +15,7 @@ Preferred communication style: Simple, everyday language.
 - All API endpoints functioning properly (teams, projects, gallery, etc.)
 - Added titles with red line styling to all gallery pages (PRODUCTION, QUALITY CONTROL, STORAGE, PROJECTS)
 - Fixed and verified Leadership Management functionality - data saving, image uploads, and form submissions working correctly
+- Updated About Us page product section "Learn More" buttons to redirect to correct product pages
 - Project fully operational and ready for continued development
 
 ## Migration and Authentication Security Fix (August 18, 2025)
