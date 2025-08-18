@@ -111,6 +111,16 @@ function ProjectsGalleryPage() {
       {/* Gallery Grid */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Title with Red Line */}
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-4">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
+                PROJECTS
+              </h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+          </div>
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[...Array(8)].map((_, index) => (
