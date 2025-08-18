@@ -1116,10 +1116,13 @@ export default function AboutUs() {
                       </h3>
 
                       {/* View Gallery Button */}
-                      <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                      <a
+                        href={`/gallery/${category.title.toLowerCase().replace(/\s+/g, '-')}`}
+                        className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
+                      >
                         <span>View Gallery</span>
                         <ChevronRight className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" />
-                      </button>
+                      </a>
                     </div>
                   </div>
                 </div>

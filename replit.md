@@ -45,6 +45,16 @@ Preferred communication style: Simple, everyday language.
 - Gallery Items include: category assignment, image URL, sort order, and status fields
 - Both components follow consistent admin panel design patterns with table views and ghost buttons
 
+## Dynamic Gallery Display Implementation (August 18, 2025)
+- Added dynamic gallery categories display to About Us page with same design as reference image
+- Created public API endpoints (/api/gallery-categories and /api/gallery-items) for non-authenticated access
+- Fixed authentication issues by separating public and admin gallery endpoints
+- Implemented dynamic gallery page component (/gallery/:category) for displaying gallery items by category
+- Added image modal functionality with click-to-view larger images
+- Gallery buttons on About Us page now link to specific category pages (production, quality-control, storage, projects)
+- Gallery pages automatically filter items by category and display in responsive grid layout
+- Added proper URL slug handling (spaces to hyphens) for clean gallery category URLs
+
 # System Architecture
 
 ## Frontend Architecture

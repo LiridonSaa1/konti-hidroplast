@@ -723,6 +723,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get('/api/gallery-items', async (req, res) => {
+    try {
+      const items = await storage.getAllGalleryItems();
+      // Only return active items for public use
+      const activeItems = items.filter(item => item.status === 'active');
+      res.json(activeItems);
+    } catch (error) {
+      console.error('Error fetching public gallery items:', error);
+      res.status(500).json({ error: 'Failed to fetch gallery items' });
+    }
+  });
+
   // Gallery Categories routes
   app.get('/api/admin/gallery-categories', requireAuth, async (req, res) => {
     try {
