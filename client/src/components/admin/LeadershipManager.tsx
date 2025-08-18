@@ -45,7 +45,7 @@ export function LeadershipManager() {
         console.log("Fetched leadership data:", result);
         return result;
       } catch (error) {
-        console.log("Leadership data not found, using default");
+        console.log("Leadership data not found, using default", error);
         // Return default data if not found
         return {
           id: "",
@@ -63,6 +63,8 @@ export function LeadershipManager() {
         };
       }
     },
+    staleTime: 0, // Always fetch fresh data
+    gcTime: 0, // Don't cache the data
   });
 
   // Fetch positions for dropdown
@@ -79,6 +81,9 @@ export function LeadershipManager() {
       
       // Invalidate and refetch the specific query
       await queryClient.invalidateQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
+      
+      // Force a manual refetch to ensure fresh data
+      await refetch();
       
       // Update UI states
       setIsFormOpen(false);
@@ -407,7 +412,7 @@ export function LeadershipManager() {
       </div>
 
       {/* Leadership Message Display */}
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="leadership-display">
+      <div key={leadershipData?.id || 'default'} className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="leadership-display">
         <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <div>
@@ -429,7 +434,7 @@ export function LeadershipManager() {
                   <div className="w-64 h-80 rounded-xl overflow-hidden bg-white p-4">
                     <img 
                       src={leadershipContent.leaderImage} 
-                      alt={leadershipContent.leaderName}
+                      alt={leadershipContent.leaderName || 'Leader'}
                       className="w-full h-full object-cover rounded-lg"
                     />
                   </div>
