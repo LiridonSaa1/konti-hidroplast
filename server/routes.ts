@@ -93,7 +93,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize admin user if none exists
   async function initializeAdminUser() {
     try {
-      const existingAdmin = await storage.getUserByUsername('admin');
+      // Check if any admin user exists (regardless of username)
+      const existingAdmin = await storage.getAdminUser();
       if (!existingAdmin) {
         const hashedPassword = await bcrypt.hash('admin123', 10);
         await storage.createUser({
@@ -103,6 +104,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           role: 'admin'
         });
         console.log('Default admin user created: admin/admin123');
+      } else {
+        console.log(`Admin user already exists: ${existingAdmin.username}`);
       }
     } catch (error) {
       console.error('Error initializing admin user:', error);
@@ -184,6 +187,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
       sessions.delete(sessionToken);
     }
     res.json({ message: 'Logged out successfully' });
+  });
+
+  // Admin route to clean up duplicate users (emergency use only)
+  app.post('/api/auth/cleanup-users', requireAuth, async (req: any, res) => {
+    try {
+      const allUsers = await storage.getAllUsers();
+      const adminUsers = allUsers.filter(user => user.role === 'admin');
+      
+      if (adminUsers.length <= 1) {
+        return res.json({ message: 'No duplicate admin users found', adminCount: adminUsers.length });
+      }
+
+      // Keep the most recently updated admin user, delete the rest
+      const sortedAdmins = adminUsers.sort((a, b) => {
+        const aTime = a.updatedAt?.getTime() || 0;
+        const bTime = b.updatedAt?.getTime() || 0;
+        return bTime - aTime;
+      });
+
+      const keepUser = sortedAdmins[0];
+      const deleteUsers = sortedAdmins.slice(1);
+
+      for (const user of deleteUsers) {
+        await storage.deleteUser(user.id);
+      }
+
+      res.json({ 
+        message: `Cleaned up ${deleteUsers.length} duplicate admin users`, 
+        keptUser: keepUser.username,
+        deletedCount: deleteUsers.length
+      });
+    } catch (error) {
+      console.error('User cleanup error:', error);
+      res.status(500).json({ error: 'Failed to cleanup users' });
+    }
   });
 
   // File upload endpoint

@@ -6,6 +6,15 @@ This is a modern full-stack web application for Konti Hidroplast, a Macedonian m
 
 Preferred communication style: Simple, everyday language.
 
+# Recent Changes
+
+## Authentication Security Fix (August 18, 2025)
+- Fixed duplicate admin user authentication issue
+- Implemented single admin user enforcement in both DatabaseStorage and MemStorage
+- Added user cleanup API endpoint to remove duplicate admin accounts
+- Updated storage interface with new methods: getAllUsers(), getAdminUser(), deleteUser()
+- System now prevents creation of multiple admin users and enforces single admin login
+
 # System Architecture
 
 ## Frontend Architecture

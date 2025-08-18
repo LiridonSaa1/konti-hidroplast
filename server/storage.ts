@@ -40,8 +40,11 @@ export interface IStorage {
   // User methods
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
+  getAllUsers(): Promise<User[]>;
+  getAdminUser(): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: string, user: Partial<InsertUser>): Promise<User>;
+  deleteUser(id: string): Promise<void>;
   
   // Product methods
   getAllProducts(): Promise<Product[]>;
@@ -130,8 +133,28 @@ export class DatabaseStorage implements IStorage {
     return user || undefined;
   }
 
+  async getAllUsers(): Promise<User[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(users);
+  }
+
+  async getAdminUser(): Promise<User | undefined> {
+    if (!db) throw new Error('Database not available');
+    const [user] = await db.select().from(users).where(eq(users.role, 'admin'));
+    return user || undefined;
+  }
+
   async createUser(insertUser: InsertUser): Promise<User> {
     if (!db) throw new Error('Database not available');
+    
+    // Prevent creating multiple admin users
+    if (insertUser.role === 'admin') {
+      const existingAdmin = await this.getAdminUser();
+      if (existingAdmin) {
+        throw new Error('An admin user already exists. Only one admin user is allowed.');
+      }
+    }
+    
     const [user] = await db
       .insert(users)
       .values(insertUser)
@@ -147,6 +170,11 @@ export class DatabaseStorage implements IStorage {
       .where(eq(users.id, id))
       .returning();
     return updated;
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(users).where(eq(users.id, id));
   }
   
   // Product methods
@@ -505,7 +533,22 @@ export class MemStorage implements IStorage {
     return this.users.find(user => user.username === username);
   }
 
+  async getAllUsers(): Promise<User[]> {
+    return this.users;
+  }
+
+  async getAdminUser(): Promise<User | undefined> {
+    return this.users.find(user => user.role === 'admin');
+  }
+
   async createUser(user: InsertUser): Promise<User> {
+    // Prevent creating multiple admin users
+    if (user.role === 'admin') {
+      const existingAdmin = await this.getAdminUser();
+      if (existingAdmin) {
+        throw new Error('An admin user already exists. Only one admin user is allowed.');
+      }
+    }
     const newUser: User = {
       ...user,
       id: `user_${Date.now()}`,
@@ -528,6 +571,13 @@ export class MemStorage implements IStorage {
       updatedAt: new Date()
     };
     return this.users[index];
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    const index = this.users.findIndex(u => u.id === id);
+    if (index !== -1) {
+      this.users.splice(index, 1);
+    }
   }
 
   // Product methods
@@ -757,6 +807,7 @@ export class MemStorage implements IStorage {
       sortOrder: brochure.sortOrder ?? null,
       imageUrl: brochure.imageUrl ?? null,
       translationGroup: brochure.translationGroup ?? null,
+      translationMetadata: brochure.translationMetadata ?? null,
       createdAt: new Date(),
       updatedAt: new Date()
     };
