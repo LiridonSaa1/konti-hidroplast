@@ -71,58 +71,7 @@ function ProductionGalleryPage() {
         </div>
       </section>
 
-      {/* Overview Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-                Manufacturing Capabilities
-              </h2>
-              <div className="space-y-4 text-gray-700">
-                <p>
-                  Our production facilities are equipped with cutting-edge extrusion lines 
-                  and automated systems that ensure consistent quality and precision in every 
-                  pipe manufactured.
-                </p>
-                <p>
-                  We utilize advanced polyethylene and polypropylene processing technology 
-                  to produce pipes ranging from small diameters to large infrastructure 
-                  applications.
-                </p>
-                <p>
-                  Our manufacturing process incorporates real-time quality monitoring 
-                  and testing to guarantee that all products meet or exceed international 
-                  standards and customer specifications.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-                Production Features
-              </h3>
-              <div className="space-y-3">
-                {[
-                  "Multi-layer extrusion technology",
-                  "Automated quality control systems",
-                  "High-speed production lines",
-                  "Custom diameter capabilities",
-                  "Environmentally conscious processes",
-                  "Continuous operation capacity",
-                  "Real-time monitoring systems",
-                  "International standard compliance",
-                ].map((feature, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-gray-700">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Production Processes Section */}
       <section className="py-20 bg-[#1c2d56]">
