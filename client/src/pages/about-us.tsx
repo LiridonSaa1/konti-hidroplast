@@ -157,22 +157,27 @@ function useTeamData() {
 
   // Group team members by position
   const groupedByPosition = teams
-    .filter(team => team.active) // Only show active team members
-    .reduce((acc, member) => {
-      const position = member.position;
-      if (!acc[position]) {
-        acc[position] = [];
-      }
-      acc[position].push(member);
-      return acc;
-    }, {} as Record<string, Team[]>);
+    .filter((team) => team.active) // Only show active team members
+    .reduce(
+      (acc, member) => {
+        const position = member.position;
+        if (!acc[position]) {
+          acc[position] = [];
+        }
+        acc[position].push(member);
+        return acc;
+      },
+      {} as Record<string, Team[]>,
+    );
 
   // Create categories from unique positions
-  const teamCategories = Object.keys(groupedByPosition).map((position, index) => ({
-    id: position.toLowerCase().replace(/\s+/g, '-'),
-    title: position,
-    data: position,
-  }));
+  const teamCategories = Object.keys(groupedByPosition).map(
+    (position, index) => ({
+      id: position.toLowerCase().replace(/\s+/g, "-"),
+      title: position,
+      data: position,
+    }),
+  );
 
   return {
     teamCategories,
@@ -180,8 +185,6 @@ function useTeamData() {
     isLoading,
   };
 }
-
-
 
 export default function AboutUs() {
   const [activeYear, setActiveYear] = useState("1990");
@@ -196,23 +199,28 @@ export default function AboutUs() {
     queryKey: ["/api/admin/company-info", "leadership_message"],
     queryFn: async () => {
       try {
-        const response = await fetch("/api/admin/company-info/leadership_message");
-        if (!response.ok) throw new Error('Not found');
+        const response = await fetch(
+          "/api/admin/company-info/leadership_message",
+        );
+        if (!response.ok) throw new Error("Not found");
         return await response.json();
       } catch (error) {
         // Return default data if not found
         return {
           value: JSON.stringify({
             title: "Building the Future of Infrastructure",
-            description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
-            description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
+            description1:
+              "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
+            description2:
+              "Together, we build not just for today, but for a future our next generations will be proud of.",
             leaderName: "Boris Madjunkov",
             leaderPosition: "General Director",
-            leaderImage: "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg"
-          })
+            leaderImage:
+              "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg",
+          }),
         };
       }
-    }
+    },
   });
 
   const nextTeamTab = () => {
@@ -267,7 +275,9 @@ export default function AboutUs() {
   }, []);
 
   // Parse leadership content
-  const leadershipContent = leadershipData ? JSON.parse(leadershipData.value) : {};
+  const leadershipContent = leadershipData
+    ? JSON.parse(leadershipData.value)
+    : {};
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -558,7 +568,10 @@ export default function AboutUs() {
                 <div className="w-80 h-80 bg-white rounded-2xl p-4 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
                   <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
                     <img
-                      src={leadershipContent.leaderImage || "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg"}
+                      src={
+                        leadershipContent.leaderImage ||
+                        "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg"
+                      }
                       alt={`${leadershipContent.leaderName || "Boris Madjunkov"} - ${leadershipContent.leaderPosition || "General Director"}`}
                       className="w-full h-full object-cover rounded-xl"
                     />
@@ -582,17 +595,20 @@ export default function AboutUs() {
                 </div>
 
                 <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
-                  {leadershipContent.title || "Building the Future of Infrastructure"}
+                  {leadershipContent.title ||
+                    "Building the Future of Infrastructure"}
                 </h2>
               </div>
 
               <div className="space-y-6 text-lg leading-relaxed text-white/90">
                 <p>
-                  {leadershipContent.description1 || "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow."}
+                  {leadershipContent.description1 ||
+                    "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow."}
                 </p>
 
                 <p>
-                  {leadershipContent.description2 || "Together, we build not just for today, but for a future our next generations will be proud of."}
+                  {leadershipContent.description2 ||
+                    "Together, we build not just for today, but for a future our next generations will be proud of."}
                 </p>
               </div>
 
@@ -682,68 +698,76 @@ export default function AboutUs() {
               {[...Array(4)].map((_, index) => (
                 <Card key={index} className="border-0 shadow-lg">
                   <CardContent className="p-6 text-center">
-                    <div className="w-36 h-36 mx-auto mb-4 rounded-lg bg-gray-200 animate-pulse"></div>
+                    <div className="mx-auto mb-4 rounded-lg bg-gray-200 animate-pulse"></div>
                     <div className="h-4 bg-gray-200 rounded animate-pulse mb-4"></div>
                     <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
                   </CardContent>
                 </Card>
               ))}
             </div>
-          ) : teamCategories.length > 0 && teamData[teamCategories[activeTeamTabIndex]?.data] ? (
+          ) : teamCategories.length > 0 &&
+            teamData[teamCategories[activeTeamTabIndex]?.data] ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {teamData[teamCategories[activeTeamTabIndex].data].map((member, index) => (
-                <Card
-                  key={member.id}
-                  className="border-0 shadow-lg hover:shadow-xl transition-shadow"
-                >
-                  <CardContent className="p-6 text-center">
-                    <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
-                      {member.imageUrl ? (
-                        <img
-                          src={member.imageUrl}
-                          alt={member.name}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            // Fallback to placeholder if image fails to load
-                            e.currentTarget.src = `data:image/svg+xml;base64,${btoa(`
+              {teamData[teamCategories[activeTeamTabIndex].data].map(
+                (member, index) => (
+                  <Card
+                    key={member.id}
+                    className="border-0 shadow-lg hover:shadow-xl transition-shadow"
+                  >
+                    <CardContent className="p-6 text-center">
+                      <div className="mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                        {member.imageUrl ? (
+                          <img
+                            src={member.imageUrl}
+                            alt={member.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              // Fallback to placeholder if image fails to load
+                              e.currentTarget.src = `data:image/svg+xml;base64,${btoa(`
                               <svg width="144" height="144" xmlns="http://www.w3.org/2000/svg">
                                 <rect width="144" height="144" fill="#f3f4f6"/>
                                 <text x="72" y="72" text-anchor="middle" dy=".3em" fill="#9ca3af" font-family="system-ui" font-size="16">No Photo</text>
                               </svg>
                             `)}`;
-                          }}
-                        />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
-                          <Users className="h-12 w-12" />
-                        </div>
+                            }}
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-400">
+                            <Users className="h-12 w-12" />
+                          </div>
+                        )}
+                      </div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                        {member.name}
+                      </h3>
+                      {member.email && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full"
+                          onClick={() =>
+                            window.open(`mailto:${member.email}`, "_blank")
+                          }
+                        >
+                          <Mail className="h-4 w-4 mr-2" />
+                          Contact Us
+                        </Button>
                       )}
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                      {member.name}
-                    </h3>
-                    {member.email && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full"
-                        onClick={() =>
-                          window.open(`mailto:${member.email}`, "_blank")
-                        }
-                      >
-                        <Mail className="h-4 w-4 mr-2" />
-                        Contact Us
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ),
+              )}
             </div>
           ) : (
             <div className="text-center py-12">
               <Users className="h-16 w-16 mx-auto text-gray-300 mb-4" />
-              <h3 className="text-xl font-semibold text-gray-600 mb-2">No Team Members Yet</h3>
-              <p className="text-gray-500">Team members will appear here once they are added to the database.</p>
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                No Team Members Yet
+              </h3>
+              <p className="text-gray-500">
+                Team members will appear here once they are added to the
+                database.
+              </p>
             </div>
           )}
         </div>
