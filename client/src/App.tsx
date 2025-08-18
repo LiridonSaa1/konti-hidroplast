@@ -5,6 +5,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { LoadingScreen } from "@/components/loading-screen";
 import { useScrollToTop } from "@/hooks/use-scroll-to-top";
 import Home from "@/pages/home";
@@ -64,11 +65,13 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
-        <TooltipProvider>
-          <Toaster />
-          {isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
-          <Router />
-        </TooltipProvider>
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            {isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
+            <Router />
+          </TooltipProvider>
+        </AuthProvider>
       </LanguageProvider>
     </QueryClientProvider>
   );

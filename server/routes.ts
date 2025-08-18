@@ -4,6 +4,7 @@ import { createServer, type Server } from "http";
 import multer from "multer";
 import path from "path";
 import { promises as fs } from "fs";
+import bcrypt from "bcryptjs";
 import { storage } from "./storage";
 import { translationService } from "./services/translationService";
 import translationRoutes from "./routes/translation";
@@ -18,6 +19,9 @@ import {
   insertProjectSchema,
   insertTeamSchema,
   insertPositionSchema,
+  loginSchema,
+  updateUserSchema,
+  insertUserSchema,
 } from "@shared/schema";
 
 // Configure multer for file uploads
@@ -51,12 +55,136 @@ const upload = multer({
   }
 });
 
+// Session management with simple in-memory store for now
+const sessions = new Map<string, { userId: string; expiresAt: number }>();
+
+// Helper function to generate session token
+function generateSessionToken(): string {
+  return Math.random().toString(36).substring(2) + Date.now().toString(36);
+}
+
+// Middleware to check authentication
+function requireAuth(req: any, res: any, next: any) {
+  const sessionToken = req.headers.authorization?.replace('Bearer ', '');
+  
+  if (!sessionToken) {
+    return res.status(401).json({ error: 'Authentication required' });
+  }
+
+  const session = sessions.get(sessionToken);
+  if (!session || session.expiresAt < Date.now()) {
+    if (session) {
+      sessions.delete(sessionToken);
+    }
+    return res.status(401).json({ error: 'Session expired' });
+  }
+
+  req.userId = session.userId;
+  next();
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
   // Ensure upload directory exists
   await ensureUploadDir();
 
   // Serve uploaded files statically
   app.use('/uploads', express.static(uploadDir));
+
+  // Initialize admin user if none exists
+  async function initializeAdminUser() {
+    try {
+      const existingAdmin = await storage.getUserByUsername('admin');
+      if (!existingAdmin) {
+        const hashedPassword = await bcrypt.hash('admin123', 10);
+        await storage.createUser({
+          username: 'admin',
+          password: hashedPassword,
+          email: 'admin@kontihidroplast.com',
+          role: 'admin'
+        });
+        console.log('Default admin user created: admin/admin123');
+      }
+    } catch (error) {
+      console.error('Error initializing admin user:', error);
+    }
+  }
+
+  await initializeAdminUser();
+
+  // Authentication routes
+  app.post('/api/auth/login', async (req, res) => {
+    try {
+      const { username, password } = loginSchema.parse(req.body);
+      
+      const user = await storage.getUserByUsername(username);
+      if (!user) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
+        return res.status(401).json({ error: 'Invalid credentials' });
+      }
+
+      const sessionToken = generateSessionToken();
+      const expiresAt = Date.now() + (24 * 60 * 60 * 1000); // 24 hours
+
+      sessions.set(sessionToken, { userId: user.id, expiresAt });
+
+      // Don't send password in response
+      const { password: _, ...userWithoutPassword } = user;
+
+      res.json({
+        user: userWithoutPassword,
+        token: sessionToken
+      });
+    } catch (error) {
+      console.error('Login error:', error);
+      res.status(400).json({ error: 'Invalid login data' });
+    }
+  });
+
+  app.get('/api/auth/me', requireAuth, async (req: any, res) => {
+    try {
+      const user = await storage.getUser(req.userId);
+      if (!user) {
+        return res.status(401).json({ error: 'User not found' });
+      }
+
+      const { password: _, ...userWithoutPassword } = user;
+      res.json(userWithoutPassword);
+    } catch (error) {
+      console.error('Auth check error:', error);
+      res.status(500).json({ error: 'Failed to check authentication' });
+    }
+  });
+
+  app.put('/api/auth/profile', requireAuth, async (req: any, res) => {
+    try {
+      const updateData = updateUserSchema.parse(req.body);
+      
+      // Hash password if provided
+      if (updateData.password) {
+        updateData.password = await bcrypt.hash(updateData.password, 10);
+      }
+
+      const updatedUser = await storage.updateUser(req.userId, updateData);
+      const { password: _, ...userWithoutPassword } = updatedUser;
+
+      res.json({ user: userWithoutPassword });
+    } catch (error) {
+      console.error('Profile update error:', error);
+      res.status(400).json({ error: 'Failed to update profile' });
+    }
+  });
+
+  app.post('/api/auth/logout', requireAuth, (req: any, res) => {
+    const sessionToken = req.headers.authorization?.replace('Bearer ', '');
+    if (sessionToken) {
+      sessions.delete(sessionToken);
+    }
+    res.json({ message: 'Logged out successfully' });
+  });
 
   // File upload endpoint
   app.post("/api/upload", upload.single('file'), async (req, res) => {

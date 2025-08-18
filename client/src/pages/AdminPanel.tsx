@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/contexts/AuthContext";
+import { UserDropdown } from "@/components/auth/UserDropdown";
+import { LoginForm } from "@/components/auth/LoginForm";
 import { 
   Settings, 
   Package, 
@@ -37,9 +40,27 @@ import { LeadershipManager } from "@/components/admin/LeadershipManager";
 import { BrochureCategoriesManager } from "@/components/admin/BrochureCategoriesManager";
 
 export default function AdminPanel() {
+  const { isAuthenticated, isLoading } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
   const [isTeamDropdownOpen, setIsTeamDropdownOpen] = useState(false);
   const [isBrochuresDropdownOpen, setIsBrochuresDropdownOpen] = useState(false);
+
+  // Show loading spinner while checking auth
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return <LoginForm />;
+  }
 
   // Auto-open team dropdown when teams, positions, or leadership tab is active
   const teamTabsActive = activeTab === "teams" || activeTab === "positions" || activeTab === "leadership";
@@ -98,10 +119,7 @@ export default function AdminPanel() {
                 Manage your website content and data
               </p>
             </div>
-            <Button variant="outline" data-testid="button-logout">
-              <Users className="h-4 w-4 mr-2" />
-              Admin User
-            </Button>
+            <UserDropdown />
           </div>
         </div>
       </div>

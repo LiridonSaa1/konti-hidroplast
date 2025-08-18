@@ -41,6 +41,7 @@ export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateUser(id: string, user: Partial<InsertUser>): Promise<User>;
   
   // Product methods
   getAllProducts(): Promise<Product[]>;
@@ -136,6 +137,16 @@ export class DatabaseStorage implements IStorage {
       .values(insertUser)
       .returning();
     return user;
+  }
+
+  async updateUser(id: string, user: Partial<InsertUser>): Promise<User> {
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(users)
+      .set({ ...user, updatedAt: new Date() })
+      .where(eq(users.id, id))
+      .returning();
+    return updated;
   }
   
   // Product methods
@@ -497,10 +508,26 @@ export class MemStorage implements IStorage {
   async createUser(user: InsertUser): Promise<User> {
     const newUser: User = {
       ...user,
-      id: `user_${Date.now()}`
+      id: `user_${Date.now()}`,
+      email: user.email ?? null,
+      role: user.role ?? "admin",
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
     this.users.push(newUser);
     return newUser;
+  }
+
+  async updateUser(id: string, user: Partial<InsertUser>): Promise<User> {
+    const index = this.users.findIndex(u => u.id === id);
+    if (index === -1) throw new Error('User not found');
+    
+    this.users[index] = {
+      ...this.users[index],
+      ...user,
+      updatedAt: new Date()
+    };
+    return this.users[index];
   }
 
   // Product methods

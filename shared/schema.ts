@@ -8,6 +8,10 @@ export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
+  email: text("email"),
+  role: text("role").notNull().default("admin"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Products table for managing all products
@@ -109,9 +113,23 @@ export const brochureCategories = pgTable("brochure_categories", {
 });
 
 // Insert schemas
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
+export const insertUserSchema = createInsertSchema(users).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Login schema for authentication
+export const loginSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(1, "Password is required"),
+});
+
+// Update user profile schema
+export const updateUserSchema = z.object({
+  username: z.string().min(1, "Username is required").optional(),
+  email: z.string().email("Invalid email").optional(),
+  password: z.string().min(6, "Password must be at least 6 characters").optional(),
 });
 
 export const insertProductSchema = createInsertSchema(products).omit({
