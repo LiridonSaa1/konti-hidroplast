@@ -777,7 +777,6 @@ export default function AboutUs() {
           )}
         </div>
       </section>
-
       {/* Certifications */}
       <CertificationsSection />
       {/* Projects Section */}
@@ -828,7 +827,7 @@ export default function AboutUs() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                   </div>
                   <CardContent className="p-6 bg-white">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    <h3 className="font-bold text-gray-900 mb-2 text-[15px]">
                       {project.title}
                     </h3>
                     {project.description && (
