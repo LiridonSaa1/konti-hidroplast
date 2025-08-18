@@ -145,7 +145,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, [userData, authError, queryLoading]);
 
   const login = async (username: string, password: string) => {
-    await loginMutation.mutateAsync({ username, password });
+    try {
+      await loginMutation.mutateAsync({ username, password });
+    } catch (error) {
+      // Error is already handled by the mutation's onError callback
+      // Just swallow the error here to prevent runtime error overlay
+    }
   };
 
   const logout = () => {
@@ -160,7 +165,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const updateProfile = async (data: { username?: string; email?: string; password?: string }) => {
-    await updateProfileMutation.mutateAsync(data);
+    try {
+      await updateProfileMutation.mutateAsync(data);
+    } catch (error) {
+      // Error is already handled by the mutation's onError callback
+      // Just swallow the error here to prevent runtime error overlay
+    }
   };
 
   const value = {

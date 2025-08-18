@@ -8,12 +8,15 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
-## Authentication Security Fix (August 18, 2025)
-- Fixed duplicate admin user authentication issue
+## Migration and Authentication Security Fix (August 18, 2025)
+- Successfully migrated project from Replit Agent to standard Replit environment
+- Fixed critical authentication security issue with duplicate admin users
 - Implemented single admin user enforcement in both DatabaseStorage and MemStorage
-- Added user cleanup API endpoint to remove duplicate admin accounts
+- Added user cleanup API endpoint (`/api/auth/cleanup-users`) to remove duplicate admin accounts
 - Updated storage interface with new methods: getAllUsers(), getAdminUser(), deleteUser()
 - System now prevents creation of multiple admin users and enforces single admin login
+- Fixed login error display to show proper red error messages instead of runtime error overlay
+- Enhanced error handling in AuthContext to prevent unhandled promise rejections
 
 # System Architecture
 
