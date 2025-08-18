@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 function ProjectsGalleryPage() {
   const { t } = useLanguage();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [displayCount, setDisplayCount] = useState(8);
   
   // Fetch gallery categories to get the category ID
   const { data: categories = [] } = useQuery<GalleryCategory[]>({
@@ -27,9 +28,17 @@ function ProjectsGalleryPage() {
   );
 
   // Filter items for projects category
-  const categoryItems = galleryItems.filter(item => 
+  const allCategoryItems = galleryItems.filter(item => 
     item.categoryId === currentCategory?.id && item.status === 'active'
   ).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+
+  // Get items to display based on current display count
+  const categoryItems = allCategoryItems.slice(0, displayCount);
+  const hasMoreItems = allCategoryItems.length > displayCount;
+
+  const handleLoadMore = () => {
+    setDisplayCount(prev => prev + 8);
+  };
 
   useEffect(() => {
     document.title = "Projects Gallery - Konti Hidroplast";
@@ -138,6 +147,18 @@ function ProjectsGalleryPage() {
               <p className="text-gray-500">
                 This gallery category doesn't have any images yet.
               </p>
+            </div>
+          )}
+          
+          {/* Load More Button */}
+          {hasMoreItems && (
+            <div className="text-center mt-12">
+              <Button
+                onClick={handleLoadMore}
+                className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-8 py-3 text-lg"
+              >
+                Load More Images
+              </Button>
             </div>
           )}
         </div>

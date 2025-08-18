@@ -58,6 +58,8 @@ Preferred communication style: Simple, everyday language.
 - Removed all extra content sections from gallery pages and focused on hero + gallery display functionality
 - Gallery pages now load images from database by category with loading states, empty states, and responsive grid layout
 - Implemented click-to-enlarge modal functionality for all gallery images across all category pages
+- Added pagination functionality: displays 8 images by default with "Load More Images" button to load 8 additional images at a time
+- Load More button automatically hides when all available images have been displayed
 
 # System Architecture
 
