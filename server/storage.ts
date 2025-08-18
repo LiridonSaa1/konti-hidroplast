@@ -728,7 +728,10 @@ export class MemStorage implements IStorage {
       description: brochure.description ?? null,
       active: brochure.active ?? null,
       sortOrder: brochure.sortOrder ?? null,
-      createdAt: new Date()
+      imageUrl: brochure.imageUrl ?? null,
+      translationGroup: brochure.translationGroup ?? null,
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
     this.brochuresData.push(newBrochure);
     return newBrochure;
@@ -781,7 +784,8 @@ export class MemStorage implements IStorage {
       active: category.active ?? null,
       sortOrder: category.sortOrder ?? null,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      status: category.status ?? "active"
     };
     this.brochureCategoriesData.push(newCategory);
     return newCategory;
