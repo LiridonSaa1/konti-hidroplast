@@ -11,6 +11,7 @@ function ProjectsGalleryPage() {
   const { t } = useLanguage();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [displayCount, setDisplayCount] = useState(8);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   
   // Fetch gallery categories to get the category ID
   const { data: categories = [] } = useQuery<GalleryCategory[]>({
@@ -36,8 +37,12 @@ function ProjectsGalleryPage() {
   const categoryItems = allCategoryItems.slice(0, displayCount);
   const hasMoreItems = allCategoryItems.length > displayCount;
 
-  const handleLoadMore = () => {
+  const handleLoadMore = async () => {
+    setIsLoadingMore(true);
+    // Add a small delay for smooth animation
+    await new Promise(resolve => setTimeout(resolve, 300));
     setDisplayCount(prev => prev + 8);
+    setIsLoadingMore(false);
   };
 
   useEffect(() => {
@@ -114,11 +119,16 @@ function ProjectsGalleryPage() {
             </div>
           ) : categoryItems.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {categoryItems.map((item) => (
+              {categoryItems.map((item, index) => (
                 <div
                   key={item.id}
-                  className="group cursor-pointer"
+                  className={`group cursor-pointer transform transition-all duration-500 ${
+                    index >= displayCount - 8 ? 'animate-fadeIn' : ''
+                  }`}
                   onClick={() => setSelectedImage(item.imageUrl)}
+                  style={{
+                    animationDelay: index >= displayCount - 8 ? `${(index - (displayCount - 8)) * 100}ms` : '0ms'
+                  }}
                 >
                   <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
                     {item.imageUrl ? (
@@ -155,9 +165,17 @@ function ProjectsGalleryPage() {
             <div className="text-center mt-12">
               <Button
                 onClick={handleLoadMore}
-                className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-8 py-3 text-lg"
+                disabled={isLoadingMore}
+                className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-8 py-3 text-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
-                Load More Images
+                {isLoadingMore ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Loading...
+                  </div>
+                ) : (
+                  'Load More Images'
+                )}
               </Button>
             </div>
           )}
