@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { type Team } from "@shared/schema";
 import {
   ChevronRight,
   ChevronLeft,
@@ -148,146 +149,47 @@ const timelineData = [
   },
 ];
 
-const teamCategories = [
-  { id: "commerce", title: "Commerce", data: "commerce" },
-  { id: "legal", title: "Legal Department", data: "legal" },
-  { id: "technical", title: "Technical Service", data: "technical" },
-  { id: "laboratory", title: "Laboratory", data: "laboratory" },
-  { id: "accounting", title: "Accounting", data: "accounting" },
-  {
-    id: "public-relations",
-    title: "Public Relations",
-    data: "publicRelations",
-  },
-  { id: "human-resources", title: "Human Resources", data: "humanResources" },
-];
+// Fetch team members from database
+function useTeamData() {
+  const { data: teams = [], isLoading } = useQuery<Team[]>({
+    queryKey: ["/api/admin/teams"],
+  });
 
-const teamData = {
-  commerce: [
-    {
-      name: "Lazar Vacev",
-      email: "lazev@konti-hidroplast.com.mk",
-      photo: "image_1755184862581.png",
-    },
-    {
-      name: "Angel Stojanov",
-      email: "astojanov@konti-hidroplast.com.mk",
-      photo: "image_1755184862581.png",
-    },
-    {
-      name: "Dijana Chochkova",
-      email: "dijanac@konti-hidroplast.com.mk",
-      photo: "image_1755184862581.png",
-    },
-    {
-      name: "Zafir Brzilov",
-      email: "zbrzilov@konti-hidroplast.com.mk",
-      photo: "image_1755184862581.png",
-    },
-    {
-      name: "Dusko Dojranliev",
-      email: "duled@konti-hidroplast.com.mk",
-      photo: "image_1755184862581.png",
-    },
-    {
-      name: "Vasko Sepetovski",
-      email: "vaskos@konti-hidroplast.com.mk",
-      photo: "image_1755184862581.png",
-    },
-    {
-      name: "David Rizov",
-      email: "rizovd@konti-hidroplast.com.mk",
-      photo: "image_1755184862581.png",
-    },
-    {
-      name: "Dimitar Madzunkov",
-      email: "dimitar.madzunkov@gmail.com",
-      photo: "image_1755184862581.png",
-    },
-  ],
-  legal: [
-    {
-      name: "Zorica Lozanovska",
-      email: "zorical@konti-hidroplast.com.mk",
-      photo: "image_1755184884122.png",
-    },
-  ],
-  technical: [
-    {
-      name: "Gordana Manoleva",
-      email: "gordanam@konti-hidroplast.com.mk",
-      photo: "image_1755184899407.png",
-    },
-    {
-      name: "Kostadin Linkov",
-      email: "dinel@konti-hidroplast.com.mk",
-      photo: "image_1755184899407.png",
-    },
-    {
-      name: "Bojan Georgiev",
-      email: "bojang@konti-hidroplast.com.mk",
-      photo: "image_1755184899407.png",
-    },
-  ],
-  laboratory: [
-    {
-      name: "Zafir Stardelov",
-      email: "lab@konti-hidroplast.com.mk",
-      photo: "image_1755184912785.png",
-    },
-    {
-      name: "Dimitar Tanov",
-      email: "dimitart@konti-hidroplast.com.mk",
-      photo: "image_1755184912785.png",
-    },
-  ],
-  accounting: [
-    {
-      name: "Risto Varela",
-      email: "icev@konti-hidroplast.com.mk",
-      photo: "image_1755184926804.png",
-    },
-    {
-      name: "Ana Varela",
-      email: "avarela@konti-hidroplast.com.mk",
-      photo: "image_1755184926804.png",
-    },
-    {
-      name: "Pepica Kostova",
-      email: "pepicak@konti-hidroplast.com.mk",
-      photo: "image_1755184926804.png",
-    },
-    {
-      name: "Sanja Vaceva",
-      email: "sanjam@konti-hidroplast.com.mk",
-      photo: "image_1755184926804.png",
-    },
-    {
-      name: "Mimi Stojanova",
-      email: "mimis@konti-hidroplast.com.mk",
-      photo: "image_1755184926804.png",
-    },
-  ],
-  publicRelations: [
-    {
-      name: "Marija Spanakova",
-      email: "marijas@konti-hidroplast.com.mk",
-      photo: "image_1755184936830.png",
-    },
-  ],
-  humanResources: [
-    {
-      name: "Aleksandar Stojchev",
-      email: "hr@konti-hidroplast.com.mk",
-      photo: "image_1755184954816.png",
-    },
-  ],
-};
+  // Group team members by position
+  const groupedByPosition = teams
+    .filter(team => team.active) // Only show active team members
+    .reduce((acc, member) => {
+      const position = member.position;
+      if (!acc[position]) {
+        acc[position] = [];
+      }
+      acc[position].push(member);
+      return acc;
+    }, {} as Record<string, Team[]>);
+
+  // Create categories from unique positions
+  const teamCategories = Object.keys(groupedByPosition).map((position, index) => ({
+    id: position.toLowerCase().replace(/\s+/g, '-'),
+    title: position,
+    data: position,
+  }));
+
+  return {
+    teamCategories,
+    teamData: groupedByPosition,
+    isLoading,
+  };
+}
+
+
 
 export default function AboutUs() {
   const [activeYear, setActiveYear] = useState("1990");
   const [sliderValue, setSliderValue] = useState([0]);
   const [activeTeamTabIndex, setActiveTeamTabIndex] = useState(0);
+
+  // Use the dynamic team data hook
+  const { teamCategories, teamData, isLoading: isTeamLoading } = useTeamData();
 
   // Fetch leadership data
   const { data: leadershipData } = useQuery({
@@ -732,79 +634,118 @@ export default function AboutUs() {
           </div>
 
           {/* Team Tab Slider - matching certificates page design */}
-          <div className="flex items-center justify-center mb-12">
-            <button
-              onClick={prevTeamTab}
-              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors mr-4"
-              data-testid="team-tab-prev"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
+          {teamCategories.length > 0 && (
+            <div className="flex items-center justify-center mb-12">
+              <button
+                onClick={prevTeamTab}
+                className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors mr-4"
+                data-testid="team-tab-prev"
+                disabled={teamCategories.length <= 1}
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
 
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
-              <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
-                {teamCategories[activeTeamTabIndex].title}
-              </h3>
-              <div className="flex justify-center space-x-1 mt-3">
-                {teamCategories.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setActiveTeamTabIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      index === activeTeamTabIndex
-                        ? "bg-[#1c2d56]"
-                        : "bg-gray-300 hover:bg-gray-400"
-                    }`}
-                    data-testid={`team-tab-dot-${index}`}
-                  />
-                ))}
+              <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
+                <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
+                  {teamCategories[activeTeamTabIndex]?.title || "Loading..."}
+                </h3>
+                <div className="flex justify-center space-x-1 mt-3">
+                  {teamCategories.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setActiveTeamTabIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all ${
+                        index === activeTeamTabIndex
+                          ? "bg-[#1c2d56]"
+                          : "bg-gray-300 hover:bg-gray-400"
+                      }`}
+                      data-testid={`team-tab-dot-${index}`}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <button
-              onClick={nextTeamTab}
-              className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors ml-4"
-              data-testid="team-tab-next"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+              <button
+                onClick={nextTeamTab}
+                className="p-2 rounded-full bg-[#1c2d56] text-white hover:bg-blue-900 transition-colors ml-4"
+                data-testid="team-tab-next"
+                disabled={teamCategories.length <= 1}
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          )}
 
           {/* Team Content - showing active team category */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {teamData[
-              teamCategories[activeTeamTabIndex].data as keyof typeof teamData
-            ].map((member, index) => (
-              <Card
-                key={index}
-                className="border-0 shadow-lg hover:shadow-xl transition-shadow"
-              >
-                <CardContent className="p-6 text-center">
-                  <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
-                    <img
-                      src={`/attached_assets/${member.photo}`}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    {member.name}
-                  </h3>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                    onClick={() =>
-                      window.open(`mailto:${member.email}`, "_blank")
-                    }
-                  >
-                    <Mail className="h-4 w-4 mr-2" />
-                    Contact Us
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {isTeamLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[...Array(4)].map((_, index) => (
+                <Card key={index} className="border-0 shadow-lg">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-36 h-36 mx-auto mb-4 rounded-lg bg-gray-200 animate-pulse"></div>
+                    <div className="h-4 bg-gray-200 rounded animate-pulse mb-4"></div>
+                    <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : teamCategories.length > 0 && teamData[teamCategories[activeTeamTabIndex]?.data] ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {teamData[teamCategories[activeTeamTabIndex].data].map((member, index) => (
+                <Card
+                  key={member.id}
+                  className="border-0 shadow-lg hover:shadow-xl transition-shadow"
+                >
+                  <CardContent className="p-6 text-center">
+                    <div className="w-36 h-36 mx-auto mb-4 rounded-lg overflow-hidden bg-gray-100 border">
+                      {member.imageUrl ? (
+                        <img
+                          src={member.imageUrl}
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            // Fallback to placeholder if image fails to load
+                            e.currentTarget.src = `data:image/svg+xml;base64,${btoa(`
+                              <svg width="144" height="144" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="144" height="144" fill="#f3f4f6"/>
+                                <text x="72" y="72" text-anchor="middle" dy=".3em" fill="#9ca3af" font-family="system-ui" font-size="16">No Photo</text>
+                              </svg>
+                            `)}`;
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                          <Users className="h-12 w-12" />
+                        </div>
+                      )}
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                      {member.name}
+                    </h3>
+                    {member.email && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full"
+                        onClick={() =>
+                          window.open(`mailto:${member.email}`, "_blank")
+                        }
+                      >
+                        <Mail className="h-4 w-4 mr-2" />
+                        Contact Us
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <Users className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">No Team Members Yet</h3>
+              <p className="text-gray-500">Team members will appear here once they are added to the database.</p>
+            </div>
+          )}
         </div>
       </section>
 
