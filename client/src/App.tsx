@@ -26,6 +26,10 @@ import PPHMPipesAndFittingsPage from "@/pages/pp-hm-pipes-and-fittings";
 import PPHMSmoothODPage from "@/pages/pp-hm-smooth-od";
 import AdminPanel from "@/pages/AdminPanel";
 import GalleryPage from "@/pages/gallery/GalleryPage";
+import ProductionGalleryPage from "@/pages/gallery/ProductionGalleryPage";
+import QualityControlGalleryPage from "@/pages/gallery/QualityControlGalleryPage";
+import StorageGalleryPage from "@/pages/gallery/StorageGalleryPage";
+import ProjectsGalleryPage from "@/pages/gallery/ProjectsGalleryPage";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -51,6 +55,10 @@ function Router() {
       <Route path="/pp-hm-pipes-and-fittings" component={PPHMPipesAndFittingsPage} />
       <Route path="/pp-hm-smooth-od" component={PPHMSmoothODPage} />
       <Route path="/admin-panel" component={AdminPanel} />
+      <Route path="/gallery/production" component={ProductionGalleryPage} />
+      <Route path="/gallery/quality-control" component={QualityControlGalleryPage} />
+      <Route path="/gallery/storage" component={StorageGalleryPage} />
+      <Route path="/gallery/projects" component={ProjectsGalleryPage} />
       <Route path="/gallery/:category" component={GalleryPage} />
       <Route component={NotFound} />
     </Switch>
