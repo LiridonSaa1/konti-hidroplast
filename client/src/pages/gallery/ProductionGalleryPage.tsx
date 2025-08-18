@@ -1,12 +1,35 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Check, ArrowLeft } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { type GalleryItem, type GalleryCategory } from "@shared/schema";
+import { Check, ArrowLeft, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 function ProductionGalleryPage() {
   const { t } = useLanguage();
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  
+  // Fetch gallery categories to get the category ID
+  const { data: categories = [] } = useQuery<GalleryCategory[]>({
+    queryKey: ["/api/gallery-categories"],
+  });
+
+  // Fetch gallery items
+  const { data: galleryItems = [], isLoading } = useQuery<GalleryItem[]>({
+    queryKey: ["/api/gallery-items"],
+  });
+
+  // Find the current category (PRODUCTION)
+  const currentCategory = categories.find(cat => 
+    cat.title.toLowerCase() === 'production'
+  );
+
+  // Filter items for production category
+  const categoryItems = galleryItems.filter(item => 
+    item.categoryId === currentCategory?.id && item.status === 'active'
+  ).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
   useEffect(() => {
     document.title = "Production Gallery - Konti Hidroplast";
@@ -73,72 +96,78 @@ function ProductionGalleryPage() {
 
       
 
-      {/* Production Processes Section */}
-      <section className="py-20 bg-[#1c2d56]">
+      {/* Gallery Grid */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-6">
-              Our Production Process
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              From raw material processing to final product inspection, 
-              every step is carefully controlled and monitored.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                step: "01",
-                title: "Material Preparation",
-                description: "High-grade PE and PP raw materials are prepared and tested for quality standards."
-              },
-              {
-                step: "02", 
-                title: "Extrusion Process",
-                description: "Advanced extrusion lines shape materials into precise pipe specifications."
-              },
-              {
-                step: "03",
-                title: "Cooling & Sizing",
-                description: "Controlled cooling ensures proper dimensional stability and strength."
-              },
-              {
-                step: "04",
-                title: "Quality Testing",
-                description: "Comprehensive testing including pressure, dimensional, and material property checks."
-              }
-            ].map((process, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6">
-                <div className="text-3xl font-bold text-red-500 mb-4">{process.step}</div>
-                <h3 className="text-xl font-bold text-[#1c2d56] mb-3">{process.title}</h3>
-                <p className="text-gray-600">{process.description}</p>
-              </div>
-            ))}
-          </div>
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[...Array(8)].map((_, index) => (
+                <div key={index} className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
+              ))}
+            </div>
+          ) : categoryItems.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {categoryItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="group cursor-pointer"
+                  onClick={() => setSelectedImage(item.imageUrl)}
+                >
+                  <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                    {item.imageUrl ? (
+                      <img
+                        src={item.imageUrl}
+                        alt={`Gallery item ${item.id}`}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Image className="h-16 w-16 text-gray-400" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 rounded-lg"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <Image className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                No Images Found
+              </h3>
+              <p className="text-gray-500">
+                This gallery category doesn't have any images yet.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-cyan-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-white rounded-2xl p-12 shadow-lg">
-            <h2 className="text-3xl font-bold text-[#1c2d56] mb-6">
-              Interested in Our Production Capabilities?
-            </h2>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Contact us to learn more about our manufacturing processes and 
-              how we can meet your specific pipe requirements.
-            </p>
-            <Button 
-              className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-8 py-3 text-lg"
-              onClick={() => window.location.href = '/contact'}
+      {/* Image Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <img
+              src={selectedImage}
+              alt="Gallery image"
+              className="max-w-full max-h-full object-contain rounded-lg"
+            />
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 text-white bg-black/50 rounded-full p-2 hover:bg-black/70 transition-colors"
             >
-              Get in Touch
-            </Button>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
-      </section>
+      )}
 
       <Footer />
     </div>

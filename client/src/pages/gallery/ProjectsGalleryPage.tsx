@@ -1,12 +1,35 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Check, ArrowLeft } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { type GalleryItem, type GalleryCategory } from "@shared/schema";
+import { Check, ArrowLeft, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 function ProjectsGalleryPage() {
   const { t } = useLanguage();
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  
+  // Fetch gallery categories to get the category ID
+  const { data: categories = [] } = useQuery<GalleryCategory[]>({
+    queryKey: ["/api/gallery-categories"],
+  });
+
+  // Fetch gallery items
+  const { data: galleryItems = [], isLoading } = useQuery<GalleryItem[]>({
+    queryKey: ["/api/gallery-items"],
+  });
+
+  // Find the current category (PROJECTS)
+  const currentCategory = categories.find(cat => 
+    cat.title.toLowerCase() === 'projects'
+  );
+
+  // Filter items for projects category
+  const categoryItems = galleryItems.filter(item => 
+    item.categoryId === currentCategory?.id && item.status === 'active'
+  ).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
   useEffect(() => {
     document.title = "Projects Gallery - Konti Hidroplast";
@@ -71,228 +94,78 @@ function ProjectsGalleryPage() {
         </div>
       </section>
 
-      {/* Overview Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-                Project Excellence
-              </h2>
-              <div className="space-y-4 text-gray-700">
-                <p>
-                  Our pipes and systems have been successfully implemented in 
-                  major infrastructure projects across Europe, demonstrating 
-                  exceptional performance in demanding applications.
-                </p>
-                <p>
-                  From municipal water supply networks to industrial gas distribution 
-                  systems, our products have proven their reliability in diverse 
-                  environmental conditions and operational requirements.
-                </p>
-                <p>
-                  Each project represents our commitment to quality, innovation, 
-                  and long-term partnership with clients seeking dependable 
-                  piping solutions for critical infrastructure.
-                </p>
-              </div>
-            </div>
-
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-                Project Capabilities
-              </h3>
-              <div className="space-y-3">
-                {[
-                  "Custom engineering solutions",
-                  "Large-scale installations",
-                  "Multi-phase project delivery",
-                  "Technical consultation",
-                  "On-site support services",
-                  "Post-installation monitoring",
-                  "Warranty and maintenance",
-                  "Compliance certification",
-                ].map((capability, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-gray-700">{capability}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Project Types Section */}
-      <section className="py-20 bg-[#1c2d56]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-6">
-              Project Categories
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Our diverse project portfolio spans multiple sectors and 
-              applications across various industries.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Municipal Water Systems",
-                description: "Large-scale water distribution networks for cities and municipalities across Europe."
-              },
-              {
-                title: "Gas Distribution Networks",
-                description: "High-pressure gas pipeline systems for urban and industrial applications."
-              },
-              {
-                title: "Industrial Projects",
-                description: "Custom piping solutions for manufacturing facilities and chemical plants."
-              },
-              {
-                title: "Infrastructure Development",
-                description: "Cable protection and telecommunications infrastructure projects."
-              },
-              {
-                title: "Sewage Systems",
-                description: "Wastewater management and sewage treatment facility installations."
-              },
-              {
-                title: "Mining Applications",
-                description: "Specialized piping systems for mining operations and tailings management."
-              }
-            ].map((project, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6">
-                <h3 className="text-xl font-bold text-[#1c2d56] mb-3">{project.title}</h3>
-                <p className="text-gray-600">{project.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Success Metrics Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-              Project Success Metrics
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our track record demonstrates consistent project success and 
-              customer satisfaction across all applications.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                number: "500+",
-                label: "Completed Projects",
-                description: "Successfully delivered"
-              },
-              {
-                number: "25+",
-                label: "Countries",
-                description: "International presence"
-              },
-              {
-                number: "99.2%",
-                label: "Success Rate",
-                description: "On-time delivery"
-              },
-              {
-                number: "50+",
-                label: "Years Experience",
-                description: "Industry expertise"
-              }
-            ].map((metric, index) => (
-              <div key={index} className="text-center">
-                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6">
-                  <div className="text-3xl font-bold text-[#1c2d56] mb-2">{metric.number}</div>
-                  <div className="text-lg font-semibold text-gray-700 mb-1">{metric.label}</div>
-                  <div className="text-sm text-gray-600">{metric.description}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Notable Projects Section */}
+      {/* Gallery Grid */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-              Notable Achievements
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Highlighting some of our most significant project contributions 
-              to infrastructure development.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[
-              {
-                title: "European Gas Network Expansion",
-                details: "500km of PE100 gas distribution pipes",
-                impact: "Serving 200,000+ households across multiple regions"
-              },
-              {
-                title: "Smart City Water Infrastructure",
-                details: "Advanced monitoring and distribution system",
-                impact: "IoT-enabled network serving 150,000 residents"
-              },
-              {
-                title: "Industrial Complex Upgrade",
-                details: "Complete piping system overhaul",
-                impact: "Improved efficiency by 40% and reduced maintenance costs"
-              },
-              {
-                title: "Cross-Border Pipeline Project",
-                details: "International gas transmission system",
-                impact: "Enhanced energy security for three countries"
-              }
-            ].map((achievement, index) => (
-              <div key={index} className="bg-white rounded-2xl p-8 shadow-lg">
-                <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">{achievement.title}</h3>
-                <div className="mb-3">
-                  <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Project Scope</span>
-                  <p className="text-gray-700 mt-1">{achievement.details}</p>
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[...Array(8)].map((_, index) => (
+                <div key={index} className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
+              ))}
+            </div>
+          ) : categoryItems.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {categoryItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="group cursor-pointer"
+                  onClick={() => setSelectedImage(item.imageUrl)}
+                >
+                  <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                    {item.imageUrl ? (
+                      <img
+                        src={item.imageUrl}
+                        alt={`Gallery item ${item.id}`}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Image className="h-16 w-16 text-gray-400" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 rounded-lg"></div>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Impact</span>
-                  <p className="text-gray-700 mt-1">{achievement.impact}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <Image className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                No Images Found
+              </h3>
+              <p className="text-gray-500">
+                This gallery category doesn't have any images yet.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-cyan-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-white rounded-2xl p-12 shadow-lg">
-            <h2 className="text-3xl font-bold text-[#1c2d56] mb-6">
-              Ready for Your Next Project?
-            </h2>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Partner with us for your infrastructure projects and benefit 
-              from our expertise and proven track record.
-            </p>
-            <Button 
-              className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-8 py-3 text-lg"
-              onClick={() => window.location.href = '/contact'}
+      {/* Image Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <img
+              src={selectedImage}
+              alt="Gallery image"
+              className="max-w-full max-h-full object-contain rounded-lg"
+            />
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 text-white bg-black/50 rounded-full p-2 hover:bg-black/70 transition-colors"
             >
-              Start Your Project
-            </Button>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
-      </section>
+      )}
 
       <Footer />
     </div>

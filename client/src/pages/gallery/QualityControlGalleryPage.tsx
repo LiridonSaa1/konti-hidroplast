@@ -1,12 +1,35 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Check, ArrowLeft } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { type GalleryItem, type GalleryCategory } from "@shared/schema";
+import { Check, ArrowLeft, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 function QualityControlGalleryPage() {
   const { t } = useLanguage();
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  
+  // Fetch gallery categories to get the category ID
+  const { data: categories = [] } = useQuery<GalleryCategory[]>({
+    queryKey: ["/api/gallery-categories"],
+  });
+
+  // Fetch gallery items
+  const { data: galleryItems = [], isLoading } = useQuery<GalleryItem[]>({
+    queryKey: ["/api/gallery-items"],
+  });
+
+  // Find the current category (QUALITY CONTROL)
+  const currentCategory = categories.find(cat => 
+    cat.title.toLowerCase().includes('quality') || cat.title.toLowerCase().includes('control')
+  );
+
+  // Filter items for quality control category
+  const categoryItems = galleryItems.filter(item => 
+    item.categoryId === currentCategory?.id && item.status === 'active'
+  ).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
   useEffect(() => {
     document.title = "Quality Control Gallery - Konti Hidroplast";
@@ -71,162 +94,78 @@ function QualityControlGalleryPage() {
         </div>
       </section>
 
-      {/* Overview Section */}
-      <section className="py-20 bg-white">
+      {/* Gallery Grid */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-                Testing & Validation
-              </h2>
-              <div className="space-y-4 text-gray-700">
-                <p>
-                  Our comprehensive quality control system includes rigorous testing 
-                  at every stage of production, from raw material inspection to 
-                  final product validation.
-                </p>
-                <p>
-                  State-of-the-art laboratory equipment enables us to perform 
-                  mechanical, physical, and chemical tests according to 
-                  international standards including EN, ISO, and DVGW.
-                </p>
-                <p>
-                  Continuous monitoring and documentation ensure full traceability 
-                  and compliance with customer specifications and regulatory requirements.
-                </p>
-              </div>
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[...Array(8)].map((_, index) => (
+                <div key={index} className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
+              ))}
             </div>
-
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-                Quality Standards
-              </h3>
-              <div className="space-y-3">
-                {[
-                  "ISO 9001:2015 Quality Management",
-                  "EN 1555 Gas Pipeline Standards",
-                  "ISO 4437 Polyethylene Systems",
-                  "DVGW Certification",
-                  "Pressure testing up to 16 bar",
-                  "Material property validation",
-                  "Dimensional accuracy verification",
-                  "Long-term performance testing",
-                ].map((standard, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-gray-700">{standard}</span>
+          ) : categoryItems.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {categoryItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="group cursor-pointer"
+                  onClick={() => setSelectedImage(item.imageUrl)}
+                >
+                  <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                    {item.imageUrl ? (
+                      <img
+                        src={item.imageUrl}
+                        alt={`Gallery item ${item.id}`}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Image className="h-16 w-16 text-gray-400" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 rounded-lg"></div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testing Procedures Section */}
-      <section className="py-20 bg-[#1c2d56]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-6">
-              Our Testing Procedures
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Comprehensive testing protocols ensure product reliability and performance 
-              throughout the entire product lifecycle.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Material Testing",
-                description: "Chemical composition analysis, density measurement, and thermal properties validation."
-              },
-              {
-                title: "Pressure Testing",
-                description: "Hydrostatic pressure tests to verify pipe integrity and working pressure limits."
-              },
-              {
-                title: "Dimensional Control",
-                description: "Precise measurement of wall thickness, outer diameter, and ovality specifications."
-              },
-              {
-                title: "Impact Resistance",
-                description: "Charpy and Izod impact tests to ensure durability under stress conditions."
-              },
-              {
-                title: "Environmental Testing",
-                description: "UV resistance, temperature cycling, and chemical compatibility assessments."
-              },
-              {
-                title: "Long-term Testing",
-                description: "Accelerated aging and stress crack resistance tests for lifetime prediction."
-              }
-            ].map((test, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6">
-                <h3 className="text-xl font-bold text-[#1c2d56] mb-3">{test.title}</h3>
-                <p className="text-gray-600">{test.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Certifications Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-              Certifications & Compliance
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our commitment to quality is recognized through various international 
-              certifications and compliance with industry standards.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              "ISO 9001:2015",
-              "EN 1555-2",
-              "ISO 4437",
-              "DVGW",
-              "CE Marking",
-              "WRAS Approval",
-              "BSI Kitemark",
-              "Local Certifications"
-            ].map((cert, index) => (
-              <div key={index} className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-6 text-center">
-                <div className="w-16 h-16 bg-[#1c2d56] rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Check className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-[#1c2d56]">{cert}</h3>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <Image className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                No Images Found
+              </h3>
+              <p className="text-gray-500">
+                This gallery category doesn't have any images yet.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-cyan-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-white rounded-2xl p-12 shadow-lg">
-            <h2 className="text-3xl font-bold text-[#1c2d56] mb-6">
-              Need Quality Documentation?
-            </h2>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Request test certificates, compliance documentation, or 
-              schedule a quality audit of our facilities.
-            </p>
-            <Button 
-              className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-8 py-3 text-lg"
-              onClick={() => window.location.href = '/contact'}
+      {/* Image Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <img
+              src={selectedImage}
+              alt="Gallery image"
+              className="max-w-full max-h-full object-contain rounded-lg"
+            />
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 text-white bg-black/50 rounded-full p-2 hover:bg-black/70 transition-colors"
             >
-              Contact Quality Team
-            </Button>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
-      </section>
+      )}
 
       <Footer />
     </div>

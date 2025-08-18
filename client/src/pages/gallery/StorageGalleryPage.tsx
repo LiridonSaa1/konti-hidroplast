@@ -1,12 +1,35 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Check, ArrowLeft } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { type GalleryItem, type GalleryCategory } from "@shared/schema";
+import { Check, ArrowLeft, Image } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 function StorageGalleryPage() {
   const { t } = useLanguage();
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  
+  // Fetch gallery categories to get the category ID
+  const { data: categories = [] } = useQuery<GalleryCategory[]>({
+    queryKey: ["/api/gallery-categories"],
+  });
+
+  // Fetch gallery items
+  const { data: galleryItems = [], isLoading } = useQuery<GalleryItem[]>({
+    queryKey: ["/api/gallery-items"],
+  });
+
+  // Find the current category (STORAGE)
+  const currentCategory = categories.find(cat => 
+    cat.title.toLowerCase() === 'storage'
+  );
+
+  // Filter items for storage category
+  const categoryItems = galleryItems.filter(item => 
+    item.categoryId === currentCategory?.id && item.status === 'active'
+  ).sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
   useEffect(() => {
     document.title = "Storage Gallery - Konti Hidroplast";
@@ -71,176 +94,78 @@ function StorageGalleryPage() {
         </div>
       </section>
 
-      {/* Overview Section */}
-      <section className="py-20 bg-white">
+      {/* Gallery Grid */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-                Warehouse Operations
-              </h2>
-              <div className="space-y-4 text-gray-700">
-                <p>
-                  Our strategically located storage facilities provide optimal 
-                  conditions for maintaining product integrity while ensuring 
-                  rapid distribution across regional and international markets.
-                </p>
-                <p>
-                  Advanced warehouse management systems track inventory in real-time, 
-                  enabling efficient order processing and minimizing delivery times 
-                  to construction sites and distribution partners.
-                </p>
-                <p>
-                  Climate-controlled environments protect pipes from UV exposure 
-                  and temperature variations, preserving material properties 
-                  throughout the storage period.
-                </p>
-              </div>
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[...Array(8)].map((_, index) => (
+                <div key={index} className="aspect-square bg-gray-200 rounded-lg animate-pulse"></div>
+              ))}
             </div>
-
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-                Storage Features
-              </h3>
-              <div className="space-y-3">
-                {[
-                  "Temperature-controlled environments",
-                  "UV protection systems",
-                  "Automated inventory tracking",
-                  "Loading dock efficiency",
-                  "Security monitoring 24/7",
-                  "Organized racking systems",
-                  "Quick order fulfillment",
-                  "Multiple facility locations",
-                ].map((feature, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-gray-700">{feature}</span>
+          ) : categoryItems.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {categoryItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="group cursor-pointer"
+                  onClick={() => setSelectedImage(item.imageUrl)}
+                >
+                  <div className="aspect-square rounded-lg overflow-hidden bg-gray-100 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2">
+                    {item.imageUrl ? (
+                      <img
+                        src={item.imageUrl}
+                        alt={`Gallery item ${item.id}`}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <Image className="h-16 w-16 text-gray-400" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 rounded-lg"></div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Storage Areas Section */}
-      <section className="py-20 bg-[#1c2d56]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-6">
-              Specialized Storage Areas
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Different product types require specific storage conditions to 
-              maintain quality and performance characteristics.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Pipe Storage",
-                description: "Large diameter pipes stored horizontally in specialized racks with proper support systems."
-              },
-              {
-                title: "Fitting Warehouse",
-                description: "Climate-controlled storage for fittings and accessories with organized shelving systems."
-              },
-              {
-                title: "Raw Material Storage",
-                description: "Dedicated areas for PE and PP raw materials with temperature and humidity control."
-              },
-              {
-                title: "Quality Hold Area",
-                description: "Separate area for products undergoing quality verification before release."
-              },
-              {
-                title: "Shipping Preparation",
-                description: "Staging area for order consolidation and shipping preparation activities."
-              },
-              {
-                title: "Special Products",
-                description: "Dedicated storage for custom orders and specialized pipe systems."
-              }
-            ].map((area, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6">
-                <h3 className="text-xl font-bold text-[#1c2d56] mb-3">{area.title}</h3>
-                <p className="text-gray-600">{area.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Logistics Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-              Distribution Network
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Efficient logistics network ensures timely delivery to customers 
-              across Europe and beyond.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                number: "15,000m²",
-                label: "Storage Space",
-                description: "Total warehouse capacity"
-              },
-              {
-                number: "48hrs",
-                label: "Order Processing",
-                description: "Average fulfillment time"
-              },
-              {
-                number: "500+",
-                label: "Daily Shipments",
-                description: "Peak capacity"
-              },
-              {
-                number: "99.8%",
-                label: "Accuracy Rate",
-                description: "Order fulfillment precision"
-              }
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-6">
-                  <div className="text-3xl font-bold text-[#1c2d56] mb-2">{stat.number}</div>
-                  <div className="text-lg font-semibold text-gray-700 mb-1">{stat.label}</div>
-                  <div className="text-sm text-gray-600">{stat.description}</div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <Image className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                No Images Found
+              </h3>
+              <p className="text-gray-500">
+                This gallery category doesn't have any images yet.
+              </p>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-cyan-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-white rounded-2xl p-12 shadow-lg">
-            <h2 className="text-3xl font-bold text-[#1c2d56] mb-6">
-              Need Logistics Information?
-            </h2>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Contact our logistics team for delivery schedules, inventory 
-              availability, or custom storage solutions.
-            </p>
-            <Button 
-              className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-8 py-3 text-lg"
-              onClick={() => window.location.href = '/contact'}
+      {/* Image Modal */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-full">
+            <img
+              src={selectedImage}
+              alt="Gallery image"
+              className="max-w-full max-h-full object-contain rounded-lg"
+            />
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 text-white bg-black/50 rounded-full p-2 hover:bg-black/70 transition-colors"
             >
-              Contact Logistics
-            </Button>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
         </div>
-      </section>
+      )}
 
       <Footer />
     </div>
