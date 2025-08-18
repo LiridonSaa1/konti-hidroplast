@@ -45,6 +45,43 @@ export default function AdminPanel() {
   const [isTeamDropdownOpen, setIsTeamDropdownOpen] = useState(false);
   const [isBrochuresDropdownOpen, setIsBrochuresDropdownOpen] = useState(false);
 
+  // Always declare hooks at the top level, before any conditional returns
+  const { data: productsCount = 0 } = useQuery({
+    queryKey: ["/api/admin/products"],
+    select: (data: any) => data?.length || 0,
+    enabled: isAuthenticated,
+  });
+
+  const { data: mediaCount = 0 } = useQuery({
+    queryKey: ["/api/admin/media"],
+    select: (data: any) => data?.length || 0,
+    enabled: isAuthenticated,
+  });
+
+  const { data: newsCount = 0 } = useQuery({
+    queryKey: ["/api/admin/news"],
+    select: (data: any) => data?.length || 0,
+    enabled: isAuthenticated,
+  });
+
+  const { data: certificatesCount = 0 } = useQuery({
+    queryKey: ["/api/admin/certificates"],
+    select: (data: any) => data?.length || 0,
+    enabled: isAuthenticated,
+  });
+
+  const { data: teamsCount = 0 } = useQuery({
+    queryKey: ["/api/admin/teams"],
+    select: (data: any) => data?.length || 0,
+    enabled: isAuthenticated,
+  });
+
+  const { data: positionsCount = 0 } = useQuery({
+    queryKey: ["/api/admin/positions"],
+    select: (data: any) => data?.length || 0,
+    enabled: isAuthenticated,
+  });
+
   // Show loading spinner while checking auth
   if (isLoading) {
     return (
@@ -74,36 +111,7 @@ export default function AdminPanel() {
     setIsBrochuresDropdownOpen(true);
   }
 
-  // Fetch basic stats for overview
-  const { data: productsCount = 0 } = useQuery({
-    queryKey: ["/api/admin/products"],
-    select: (data: any) => data?.length || 0
-  });
 
-  const { data: mediaCount = 0 } = useQuery({
-    queryKey: ["/api/admin/media"],
-    select: (data: any) => data?.length || 0
-  });
-
-  const { data: newsCount = 0 } = useQuery({
-    queryKey: ["/api/admin/news"],
-    select: (data: any) => data?.length || 0
-  });
-
-  const { data: certificatesCount = 0 } = useQuery({
-    queryKey: ["/api/admin/certificates"],
-    select: (data: any) => data?.length || 0
-  });
-
-  const { data: teamsCount = 0 } = useQuery({
-    queryKey: ["/api/admin/teams"],
-    select: (data: any) => data?.length || 0
-  });
-
-  const { data: positionsCount = 0 } = useQuery({
-    queryKey: ["/api/admin/positions"],
-    select: (data: any) => data?.length || 0
-  });
 
   return (
     <div className="min-h-screen bg-slate-50" data-testid="admin-panel">

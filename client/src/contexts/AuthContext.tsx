@@ -61,7 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Check if user is authenticated on mount
-  const { data: userData, error: authError } = useQuery({
+  const { data: userData, error: authError, isLoading: queryLoading } = useQuery({
     queryKey: ['/api/auth/me'],
     queryFn: () => apiRequestWithAuth('/api/auth/me'),
     retry: false,
@@ -128,13 +128,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     if (userData) {
       setUser(userData);
+      setIsLoading(false);
     } else if (authError) {
       // Token might be invalid
       removeStoredToken();
       setUser(null);
+      setIsLoading(false);
+    } else if (!getStoredToken()) {
+      // No token, not authenticated
+      setUser(null);
+      setIsLoading(false);
+    } else if (!queryLoading) {
+      // Query finished but no data or error
+      setIsLoading(false);
     }
-    setIsLoading(false);
-  }, [userData, authError]);
+  }, [userData, authError, queryLoading]);
 
   const login = async (username: string, password: string) => {
     await loginMutation.mutateAsync({ username, password });
