@@ -14,6 +14,8 @@ import {
   insertCompanyInfoSchema,
   insertNewsArticleSchema,
   insertCertificateSchema,
+  insertCertificateCategorySchema,
+  insertCertificateSubcategorySchema,
   insertBrochureSchema,
   insertBrochureCategorySchema,
   insertProjectSchema,
@@ -439,14 +441,155 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Certificate Categories routes
+  app.get("/api/admin/certificate-categories", async (req, res) => {
+    try {
+      const categories = await storage.getAllCertificateCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error("Error fetching certificate categories:", error);
+      res.status(500).json({ error: "Failed to fetch certificate categories" });
+    }
+  });
+
+  app.get("/api/admin/certificate-categories/:id", async (req, res) => {
+    try {
+      const category = await storage.getCertificateCategory(parseInt(req.params.id));
+      if (!category) {
+        return res.status(404).json({ error: "Certificate category not found" });
+      }
+      res.json(category);
+    } catch (error) {
+      console.error("Error fetching certificate category:", error);
+      res.status(500).json({ error: "Failed to fetch certificate category" });
+    }
+  });
+
+  app.post("/api/admin/certificate-categories", async (req, res) => {
+    try {
+      const categoryData = insertCertificateCategorySchema.parse(req.body);
+      const category = await storage.createCertificateCategory(categoryData);
+      res.status(201).json(category);
+    } catch (error) {
+      console.error("Error creating certificate category:", error);
+      res.status(400).json({ error: "Invalid certificate category data" });
+    }
+  });
+
+  app.put("/api/admin/certificate-categories/:id", async (req, res) => {
+    try {
+      const categoryData = insertCertificateCategorySchema.partial().parse(req.body);
+      const category = await storage.updateCertificateCategory(parseInt(req.params.id), categoryData);
+      res.json(category);
+    } catch (error) {
+      console.error("Error updating certificate category:", error);
+      res.status(400).json({ error: "Invalid certificate category data" });
+    }
+  });
+
+  app.delete("/api/admin/certificate-categories/:id", async (req, res) => {
+    try {
+      await storage.deleteCertificateCategory(parseInt(req.params.id));
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting certificate category:", error);
+      res.status(500).json({ error: "Failed to delete certificate category" });
+    }
+  });
+
+  // Certificate Subcategories routes
+  app.get("/api/admin/certificate-subcategories", async (req, res) => {
+    try {
+      const categoryId = req.query.categoryId as string;
+      if (categoryId) {
+        const subcategories = await storage.getCertificateSubcategoriesByCategory(parseInt(categoryId));
+        res.json(subcategories);
+      } else {
+        const subcategories = await storage.getAllCertificateSubcategories();
+        res.json(subcategories);
+      }
+    } catch (error) {
+      console.error("Error fetching certificate subcategories:", error);
+      res.status(500).json({ error: "Failed to fetch certificate subcategories" });
+    }
+  });
+
+  app.get("/api/admin/certificate-subcategories/:id", async (req, res) => {
+    try {
+      const subcategory = await storage.getCertificateSubcategory(parseInt(req.params.id));
+      if (!subcategory) {
+        return res.status(404).json({ error: "Certificate subcategory not found" });
+      }
+      res.json(subcategory);
+    } catch (error) {
+      console.error("Error fetching certificate subcategory:", error);
+      res.status(500).json({ error: "Failed to fetch certificate subcategory" });
+    }
+  });
+
+  app.post("/api/admin/certificate-subcategories", async (req, res) => {
+    try {
+      const subcategoryData = insertCertificateSubcategorySchema.parse(req.body);
+      const subcategory = await storage.createCertificateSubcategory(subcategoryData);
+      res.status(201).json(subcategory);
+    } catch (error) {
+      console.error("Error creating certificate subcategory:", error);
+      res.status(400).json({ error: "Invalid certificate subcategory data" });
+    }
+  });
+
+  app.put("/api/admin/certificate-subcategories/:id", async (req, res) => {
+    try {
+      const subcategoryData = insertCertificateSubcategorySchema.partial().parse(req.body);
+      const subcategory = await storage.updateCertificateSubcategory(parseInt(req.params.id), subcategoryData);
+      res.json(subcategory);
+    } catch (error) {
+      console.error("Error updating certificate subcategory:", error);
+      res.status(400).json({ error: "Invalid certificate subcategory data" });
+    }
+  });
+
+  app.delete("/api/admin/certificate-subcategories/:id", async (req, res) => {
+    try {
+      await storage.deleteCertificateSubcategory(parseInt(req.params.id));
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting certificate subcategory:", error);
+      res.status(500).json({ error: "Failed to delete certificate subcategory" });
+    }
+  });
+
   // Certificates routes
   app.get("/api/admin/certificates", async (req, res) => {
     try {
-      const certificates = await storage.getAllCertificates();
+      const categoryId = req.query.categoryId as string;
+      const subcategoryId = req.query.subcategoryId as string;
+      
+      let certificates;
+      if (subcategoryId) {
+        certificates = await storage.getCertificatesBySubcategory(parseInt(subcategoryId));
+      } else if (categoryId) {
+        certificates = await storage.getCertificatesByCategory(parseInt(categoryId));
+      } else {
+        certificates = await storage.getAllCertificates();
+      }
       res.json(certificates);
     } catch (error) {
       console.error("Error fetching certificates:", error);
       res.status(500).json({ error: "Failed to fetch certificates" });
+    }
+  });
+
+  app.get("/api/admin/certificates/:id", async (req, res) => {
+    try {
+      const certificate = await storage.getCertificate(parseInt(req.params.id));
+      if (!certificate) {
+        return res.status(404).json({ error: "Certificate not found" });
+      }
+      res.json(certificate);
+    } catch (error) {
+      console.error("Error fetching certificate:", error);
+      res.status(500).json({ error: "Failed to fetch certificate" });
     }
   });
 
@@ -464,7 +607,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.put("/api/admin/certificates/:id", async (req, res) => {
     try {
       const certificateData = insertCertificateSchema.partial().parse(req.body);
-      const certificate = await storage.updateCertificate(req.params.id, certificateData);
+      const certificate = await storage.updateCertificate(parseInt(req.params.id), certificateData);
       res.json(certificate);
     } catch (error) {
       console.error("Error updating certificate:", error);
@@ -474,7 +617,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.delete("/api/admin/certificates/:id", async (req, res) => {
     try {
-      await storage.deleteCertificate(req.params.id);
+      await storage.deleteCertificate(parseInt(req.params.id));
       res.status(204).send();
     } catch (error) {
       console.error("Error deleting certificate:", error);

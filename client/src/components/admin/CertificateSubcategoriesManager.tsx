@@ -33,17 +33,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Plus, Edit, Trash2, Search, ArrowUpDown, Image as ImageIcon } from "lucide-react";
+import { Plus, Edit, Trash2, Search, ArrowUpDown } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { FileUpload } from "@/components/ui/file-upload";
 
 type CertificateCategory = {
   id: number;
   title: string;
+  description: string | null;
+  sortOrder: number;
   status: string;
 };
 
@@ -51,104 +53,90 @@ type CertificateSubcategory = {
   id: number;
   categoryId: number;
   title: string;
-  status: string;
-};
-
-type Certificate = {
-  id: number;
-  categoryId: number;
-  subcategoryId: number;
-  imageUrl: string;
+  description: string | null;
   sortOrder: number;
   status: string;
   createdAt: Date;
   updatedAt: Date;
 };
 
-const certificateSchema = z.object({
+const certificateSubcategorySchema = z.object({
   categoryId: z.number().min(1, "Category is required"),
-  subcategoryId: z.number().min(1, "Subcategory is required"),
-  imageUrl: z.string().min(1, "Image is required"),
+  title: z.string().min(1, "Title is required"),
+  description: z.string().optional(),
   sortOrder: z.number().int().min(0).default(0),
   status: z.enum(["active", "inactive"]).default("active"),
 });
 
-type CertificateForm = z.infer<typeof certificateSchema>;
+type CertificateSubcategoryForm = z.infer<typeof certificateSubcategorySchema>;
 
-export function CertificatesManager() {
+export function CertificateSubcategoriesManager() {
   const [isOpen, setIsOpen] = useState(false);
-  const [editingCertificate, setEditingCertificate] = useState<Certificate | null>(null);
+  const [editingSubcategory, setEditingSubcategory] = useState<CertificateSubcategory | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("");
-  const [subcategoryFilter, setSubcategoryFilter] = useState<string>("");
-  const [sortField, setSortField] = useState<keyof Certificate>("sortOrder");
+  const [sortField, setSortField] = useState<keyof CertificateSubcategory>("sortOrder");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const form = useForm<CertificateForm>({
-    resolver: zodResolver(certificateSchema),
+  const form = useForm<CertificateSubcategoryForm>({
+    resolver: zodResolver(certificateSubcategorySchema),
     defaultValues: {
       categoryId: 0,
-      subcategoryId: 0,
-      imageUrl: "",
+      title: "",
+      description: "",
       sortOrder: 0,
       status: "active",
     },
   });
 
-  const selectedCategoryId = form.watch("categoryId");
-
   const { data: categories = [] } = useQuery({
     queryKey: ["/api/admin/certificate-categories"],
   });
 
-  const { data: subcategories = [] } = useQuery({
+  const { data: subcategories = [], isLoading } = useQuery({
     queryKey: ["/api/admin/certificate-subcategories"],
   });
 
-  const { data: certificates = [], isLoading } = useQuery({
-    queryKey: ["/api/admin/certificates"],
-  });
-
   const createMutation = useMutation({
-    mutationFn: (data: CertificateForm) =>
-      apiRequest("/api/admin/certificates", "POST", data),
+    mutationFn: (data: CertificateSubcategoryForm) =>
+      apiRequest("/api/admin/certificate-subcategories", "POST", data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/certificates"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/certificate-subcategories"] });
       setIsOpen(false);
       form.reset();
-      toast({ title: "Certificate created successfully" });
+      toast({ title: "Certificate subcategory created successfully" });
     },
     onError: () => {
-      toast({ title: "Failed to create certificate", variant: "destructive" });
+      toast({ title: "Failed to create certificate subcategory", variant: "destructive" });
     },
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: CertificateForm }) =>
-      apiRequest(`/api/admin/certificates/${id}`, "PUT", data),
+    mutationFn: ({ id, data }: { id: number; data: CertificateSubcategoryForm }) =>
+      apiRequest(`/api/admin/certificate-subcategories/${id}`, "PUT", data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/certificates"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/certificate-subcategories"] });
       setIsOpen(false);
-      setEditingCertificate(null);
+      setEditingSubcategory(null);
       form.reset();
-      toast({ title: "Certificate updated successfully" });
+      toast({ title: "Certificate subcategory updated successfully" });
     },
     onError: () => {
-      toast({ title: "Failed to update certificate", variant: "destructive" });
+      toast({ title: "Failed to update certificate subcategory", variant: "destructive" });
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: (id: number) =>
-      apiRequest(`/api/admin/certificates/${id}`, "DELETE"),
+      apiRequest(`/api/admin/certificate-subcategories/${id}`, "DELETE"),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/certificates"] });
-      toast({ title: "Certificate deleted successfully" });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/certificate-subcategories"] });
+      toast({ title: "Certificate subcategory deleted successfully" });
     },
     onError: () => {
-      toast({ title: "Failed to delete certificate", variant: "destructive" });
+      toast({ title: "Failed to delete certificate subcategory", variant: "destructive" });
     },
   });
 
@@ -157,30 +145,15 @@ export function CertificatesManager() {
     return category?.title || "Unknown";
   };
 
-  const getSubcategoryName = (subcategoryId: number) => {
-    const subcategory = (subcategories as CertificateSubcategory[]).find((s: CertificateSubcategory) => s.id === subcategoryId);
-    return subcategory?.title || "Unknown";
-  };
-
-  const getFilteredSubcategories = () => {
-    if (!selectedCategoryId) return [];
-    return (subcategories as CertificateSubcategory[]).filter((s: CertificateSubcategory) => s.categoryId === selectedCategoryId);
-  };
-
-  const filteredCertificates = (certificates as Certificate[])
-    .filter((certificate: Certificate) => {
-      const categoryName = getCategoryName(certificate.categoryId);
-      const subcategoryName = getSubcategoryName(certificate.subcategoryId);
-      const matchesSearch = 
-        categoryName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        subcategoryName.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = !categoryFilter || certificate.categoryId.toString() === categoryFilter;
-      const matchesSubcategory = !subcategoryFilter || certificate.subcategoryId.toString() === subcategoryFilter;
-      return matchesSearch && matchesCategory && matchesSubcategory;
+  const filteredSubcategories = (subcategories as CertificateSubcategory[])
+    .filter((subcategory: CertificateSubcategory) => {
+      const matchesSearch = subcategory.title.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = !categoryFilter || subcategory.categoryId.toString() === categoryFilter;
+      return matchesSearch && matchesCategory;
     })
-    .sort((a: Certificate, b: Certificate) => {
-      let aValue = a[sortField];
-      let bValue = b[sortField];
+    .sort((a: CertificateSubcategory, b: CertificateSubcategory) => {
+      let aValue = a[sortField] || "";
+      let bValue = b[sortField] || "";
 
       if (typeof aValue === "string") aValue = aValue.toLowerCase();
       if (typeof bValue === "string") bValue = bValue.toLowerCase();
@@ -192,7 +165,7 @@ export function CertificatesManager() {
       }
     });
 
-  const handleSort = (field: keyof Certificate) => {
+  const handleSort = (field: keyof CertificateSubcategory) => {
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
@@ -201,27 +174,27 @@ export function CertificatesManager() {
     }
   };
 
-  const handleEdit = (certificate: Certificate) => {
-    setEditingCertificate(certificate);
+  const handleEdit = (subcategory: CertificateSubcategory) => {
+    setEditingSubcategory(subcategory);
     form.reset({
-      categoryId: certificate.categoryId,
-      subcategoryId: certificate.subcategoryId,
-      imageUrl: certificate.imageUrl,
-      sortOrder: certificate.sortOrder,
-      status: certificate.status as "active" | "inactive",
+      categoryId: subcategory.categoryId,
+      title: subcategory.title,
+      description: subcategory.description || "",
+      sortOrder: subcategory.sortOrder,
+      status: subcategory.status as "active" | "inactive",
     });
     setIsOpen(true);
   };
 
   const handleDelete = (id: number) => {
-    if (confirm("Are you sure you want to delete this certificate?")) {
+    if (confirm("Are you sure you want to delete this certificate subcategory?")) {
       deleteMutation.mutate(id);
     }
   };
 
-  const onSubmit = (data: CertificateForm) => {
-    if (editingCertificate) {
-      updateMutation.mutate({ id: editingCertificate.id, data });
+  const onSubmit = (data: CertificateSubcategoryForm) => {
+    if (editingSubcategory) {
+      updateMutation.mutate({ id: editingSubcategory.id, data });
     } else {
       createMutation.mutate(data);
     }
@@ -229,33 +202,29 @@ export function CertificatesManager() {
 
   const handleDialogClose = () => {
     setIsOpen(false);
-    setEditingCertificate(null);
+    setEditingSubcategory(null);
     form.reset();
   };
 
-  const handleImageUpload = (imageUrl: string) => {
-    form.setValue("imageUrl", imageUrl);
-  };
-
   if (isLoading) {
-    return <div data-testid="loading">Loading certificates...</div>;
+    return <div data-testid="loading">Loading certificate subcategories...</div>;
   }
 
   return (
-    <div className="space-y-6" data-testid="certificates-manager">
+    <div className="space-y-6" data-testid="certificate-subcategories-manager">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Certificates</h2>
+        <h2 className="text-2xl font-bold">Certificate Subcategories</h2>
         <Dialog open={isOpen} onOpenChange={handleDialogClose}>
           <DialogTrigger asChild>
-            <Button data-testid="button-add-certificate">
+            <Button data-testid="button-add-subcategory">
               <Plus className="w-4 h-4 mr-2" />
-              Add Certificate
+              Add Subcategory
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-md">
             <DialogHeader>
               <DialogTitle>
-                {editingCertificate ? "Edit Certificate" : "Add Certificate"}
+                {editingSubcategory ? "Edit Certificate Subcategory" : "Add Certificate Subcategory"}
               </DialogTitle>
             </DialogHeader>
             <Form {...form}>
@@ -267,11 +236,7 @@ export function CertificatesManager() {
                     <FormItem>
                       <FormLabel>Category</FormLabel>
                       <Select 
-                        onValueChange={(value) => {
-                          const categoryId = parseInt(value);
-                          field.onChange(categoryId);
-                          form.setValue("subcategoryId", 0); // Reset subcategory when category changes
-                        }}
+                        onValueChange={(value) => field.onChange(parseInt(value))} 
                         defaultValue={field.value?.toString()}
                       >
                         <FormControl>
@@ -293,47 +258,25 @@ export function CertificatesManager() {
                 />
                 <FormField
                   control={form.control}
-                  name="subcategoryId"
+                  name="title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Subcategory</FormLabel>
-                      <Select 
-                        onValueChange={(value) => field.onChange(parseInt(value))} 
-                        defaultValue={field.value?.toString()}
-                        disabled={!selectedCategoryId}
-                      >
-                        <FormControl>
-                          <SelectTrigger data-testid="select-subcategory">
-                            <SelectValue placeholder="Select a subcategory" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {getFilteredSubcategories().map((subcategory: CertificateSubcategory) => (
-                            <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
-                              {subcategory.title}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                      <FormLabel>Title</FormLabel>
+                      <FormControl>
+                        <Input data-testid="input-title" {...field} />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
-                  name="imageUrl"
+                  name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Certificate Image</FormLabel>
+                      <FormLabel>Description</FormLabel>
                       <FormControl>
-                        <FileUpload
-                          label=""
-                          value={field.value}
-                          onChange={handleImageUpload}
-                          accept="image/*"
-                          placeholder="Upload certificate image or enter URL"
-                          data-testid="file-upload-image"
-                        />
+                        <Textarea data-testid="input-description" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -392,7 +335,7 @@ export function CertificatesManager() {
                     disabled={createMutation.isPending || updateMutation.isPending}
                     data-testid="button-submit"
                   >
-                    {editingCertificate ? "Update" : "Create"}
+                    {editingSubcategory ? "Update" : "Create"}
                   </Button>
                 </div>
               </form>
@@ -406,7 +349,7 @@ export function CertificatesManager() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
           <Input
             data-testid="input-search"
-            placeholder="Search certificates..."
+            placeholder="Search subcategories..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -425,33 +368,20 @@ export function CertificatesManager() {
             ))}
           </SelectContent>
         </Select>
-        <Select value={subcategoryFilter} onValueChange={setSubcategoryFilter}>
-          <SelectTrigger className="w-48" data-testid="select-subcategory-filter">
-            <SelectValue placeholder="Filter by subcategory" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="">All Subcategories</SelectItem>
-            {(subcategories as CertificateSubcategory[]).map((subcategory: CertificateSubcategory) => (
-              <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
-                {subcategory.title}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
       </div>
 
-      {filteredCertificates.length === 0 ? (
+      {filteredSubcategories.length === 0 ? (
         <div className="text-center py-8 text-gray-500" data-testid="empty-state">
-          {searchTerm || categoryFilter || subcategoryFilter ? "No certificates found matching your filters." : "No certificates yet."}
-          {!searchTerm && !categoryFilter && !subcategoryFilter && (
+          {searchTerm || categoryFilter ? "No subcategories found matching your filters." : "No certificate subcategories yet."}
+          {!searchTerm && !categoryFilter && (
             <div className="mt-2">
               <Button
                 variant="outline"
                 onClick={() => setIsOpen(true)}
-                data-testid="button-add-first-certificate"
+                data-testid="button-add-first-subcategory"
               >
                 <Plus className="w-4 h-4 mr-2" />
-                Add First Certificate
+                Add First Subcategory
               </Button>
             </div>
           )}
@@ -461,9 +391,18 @@ export function CertificatesManager() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Image</TableHead>
                 <TableHead>Category</TableHead>
-                <TableHead>Subcategory</TableHead>
+                <TableHead
+                  className="cursor-pointer hover:bg-gray-50"
+                  onClick={() => handleSort("title")}
+                  data-testid="header-title"
+                >
+                  <div className="flex items-center gap-2">
+                    Title
+                    <ArrowUpDown className="w-4 h-4" />
+                  </div>
+                </TableHead>
+                <TableHead>Description</TableHead>
                 <TableHead
                   className="cursor-pointer hover:bg-gray-50"
                   onClick={() => handleSort("sortOrder")}
@@ -488,33 +427,23 @@ export function CertificatesManager() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredCertificates.map((certificate: Certificate) => (
-                <TableRow key={certificate.id} data-testid={`row-certificate-${certificate.id}`}>
-                  <TableCell data-testid={`image-${certificate.id}`}>
-                    {certificate.imageUrl ? (
-                      <img
-                        src={certificate.imageUrl}
-                        alt="Certificate"
-                        className="w-12 h-12 object-cover rounded"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
-                        <ImageIcon className="w-6 h-6 text-gray-400" />
-                      </div>
-                    )}
+              {filteredSubcategories.map((subcategory: CertificateSubcategory) => (
+                <TableRow key={subcategory.id} data-testid={`row-subcategory-${subcategory.id}`}>
+                  <TableCell data-testid={`text-category-${subcategory.id}`}>
+                    {getCategoryName(subcategory.categoryId)}
                   </TableCell>
-                  <TableCell data-testid={`text-category-${certificate.id}`}>
-                    {getCategoryName(certificate.categoryId)}
+                  <TableCell className="font-medium" data-testid={`text-title-${subcategory.id}`}>
+                    {subcategory.title}
                   </TableCell>
-                  <TableCell data-testid={`text-subcategory-${certificate.id}`}>
-                    {getSubcategoryName(certificate.subcategoryId)}
+                  <TableCell data-testid={`text-description-${subcategory.id}`}>
+                    {subcategory.description || "—"}
                   </TableCell>
-                  <TableCell data-testid={`text-order-${certificate.id}`}>
-                    {certificate.sortOrder}
+                  <TableCell data-testid={`text-order-${subcategory.id}`}>
+                    {subcategory.sortOrder}
                   </TableCell>
-                  <TableCell data-testid={`text-status-${certificate.id}`}>
-                    <Badge variant={certificate.status === "active" ? "default" : "secondary"}>
-                      {certificate.status}
+                  <TableCell data-testid={`text-status-${subcategory.id}`}>
+                    <Badge variant={subcategory.status === "active" ? "default" : "secondary"}>
+                      {subcategory.status}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -522,16 +451,16 @@ export function CertificatesManager() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleEdit(certificate)}
-                        data-testid={`button-edit-${certificate.id}`}
+                        onClick={() => handleEdit(subcategory)}
+                        data-testid={`button-edit-${subcategory.id}`}
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => handleDelete(certificate.id)}
-                        data-testid={`button-delete-${certificate.id}`}
+                        onClick={() => handleDelete(subcategory.id)}
+                        data-testid={`button-delete-${subcategory.id}`}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

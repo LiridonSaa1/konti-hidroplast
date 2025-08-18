@@ -40,6 +40,8 @@ import { LeadershipManager } from "@/components/admin/LeadershipManager";
 import { BrochureCategoriesManager } from "@/components/admin/BrochureCategoriesManager";
 import { GalleryCategoriesManager } from "@/components/admin/GalleryCategoriesManager";
 import { GalleryItemsManager } from "@/components/admin/GalleryItemsManager";
+import { CertificateCategoriesManager } from "@/components/admin/CertificateCategoriesManager";
+import { CertificateSubcategoriesManager } from "@/components/admin/CertificateSubcategoriesManager";
 
 export default function AdminPanel() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -47,6 +49,7 @@ export default function AdminPanel() {
   const [isTeamDropdownOpen, setIsTeamDropdownOpen] = useState(false);
   const [isBrochuresDropdownOpen, setIsBrochuresDropdownOpen] = useState(false);
   const [isGalleryDropdownOpen, setIsGalleryDropdownOpen] = useState(false);
+  const [isCertificatesDropdownOpen, setIsCertificatesDropdownOpen] = useState(false);
 
   // Always declare hooks at the top level, before any conditional returns
   const { data: productsCount = 0 } = useQuery({
@@ -132,6 +135,12 @@ export default function AdminPanel() {
     setIsGalleryDropdownOpen(true);
   }
 
+  // Auto-open certificates dropdown when certificates tabs are active
+  const certificateTabsActive = activeTab === "certificate-categories" || activeTab === "certificate-subcategories" || activeTab === "certificates";
+  if (certificateTabsActive && !isCertificatesDropdownOpen) {
+    setIsCertificatesDropdownOpen(true);
+  }
+
 
 
   return (
@@ -199,15 +208,58 @@ export default function AdminPanel() {
               News & Articles
             </Button>
             
-            <Button
-              variant={activeTab === "certificates" ? "default" : "ghost"}
-              className="w-full justify-start"
-              onClick={() => setActiveTab("certificates")}
-              data-testid="nav-certificates"
+            <Collapsible 
+              open={isCertificatesDropdownOpen} 
+              onOpenChange={setIsCertificatesDropdownOpen}
+              className="w-full"
             >
-              <Award className="h-4 w-4 mr-2" />
-              Certificates
-            </Button>
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant={certificateTabsActive ? "default" : "ghost"}
+                  className="w-full justify-start"
+                  data-testid="nav-certificates"
+                >
+                  <Award className="h-4 w-4 mr-2" />
+                  Certificates
+                  {isCertificatesDropdownOpen ? (
+                    <ChevronDown className="h-4 w-4 ml-auto" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 ml-auto" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pl-6 space-y-1">
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "certificate-categories" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("certificate-categories")}
+                  data-testid="nav-certificate-categories"
+                >
+                  <FolderOpen className={`h-3 w-3 mr-2 ${activeTab === "certificate-categories" ? "text-blue-600" : ""}`} />
+                  Categories
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "certificate-subcategories" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("certificate-subcategories")}
+                  data-testid="nav-certificate-subcategories"
+                >
+                  <FolderOpen className={`h-3 w-3 mr-2 ${activeTab === "certificate-subcategories" ? "text-blue-600" : ""}`} />
+                  Subcategories
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "certificates" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("certificates")}
+                  data-testid="nav-certificates-items"
+                >
+                  <Award className={`h-3 w-3 mr-2 ${activeTab === "certificates" ? "text-blue-600" : ""}`} />
+                  Certificates
+                </Button>
+              </CollapsibleContent>
+            </Collapsible>
             
             <Collapsible 
               open={isBrochuresDropdownOpen} 
@@ -526,6 +578,18 @@ export default function AdminPanel() {
           {activeTab === "news" && (
             <div data-testid="news-manager">
               <NewsManager />
+            </div>
+          )}
+
+          {activeTab === "certificate-categories" && (
+            <div data-testid="certificate-categories-manager">
+              <CertificateCategoriesManager />
+            </div>
+          )}
+
+          {activeTab === "certificate-subcategories" && (
+            <div data-testid="certificate-subcategories-manager">
+              <CertificateSubcategoriesManager />
             </div>
           )}
 

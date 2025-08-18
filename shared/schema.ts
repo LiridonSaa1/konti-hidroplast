@@ -67,18 +67,39 @@ export const newsArticles = pgTable("news_articles", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Certificate Categories table
+export const certificateCategories = pgTable("certificate_categories", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  sortOrder: integer("sort_order").default(0),
+  status: text("status").notNull().default("active"), // active, inactive
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Certificate Subcategories table
+export const certificateSubcategories = pgTable("certificate_subcategories", {
+  id: serial("id").primaryKey(),
+  categoryId: integer("category_id").references(() => certificateCategories.id),
+  title: text("title").notNull(),
+  description: text("description"),
+  sortOrder: integer("sort_order").default(0),
+  status: text("status").notNull().default("active"), // active, inactive
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Certificates table
 export const certificates = pgTable("certificates", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  name: text("name").notNull(),
-  category: text("category").notNull(),
-  imageUrl: text("image_url"),
-  pdfUrl: text("pdf_url"),
-  validFrom: timestamp("valid_from"),
-  validUntil: timestamp("valid_until"),
-  active: boolean("active").default(true),
+  id: serial("id").primaryKey(),
+  categoryId: integer("category_id").references(() => certificateCategories.id),
+  subcategoryId: integer("subcategory_id").references(() => certificateSubcategories.id),
+  imageUrl: text("image_url").notNull(),
   sortOrder: integer("sort_order").default(0),
+  status: text("status").notNull().default("active"), // active, inactive
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Brochures table
@@ -154,9 +175,22 @@ export const insertNewsArticleSchema = createInsertSchema(newsArticles).omit({
   updatedAt: true,
 });
 
+export const insertCertificateCategorySchema = createInsertSchema(certificateCategories).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertCertificateSubcategorySchema = createInsertSchema(certificateSubcategories).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export const insertCertificateSchema = createInsertSchema(certificates).omit({
   id: true,
   createdAt: true,
+  updatedAt: true,
 });
 
 export const insertBrochureSchema = createInsertSchema(brochures, {
@@ -198,6 +232,12 @@ export type CompanyInfo = typeof companyInfo.$inferSelect;
 
 export type InsertNewsArticle = z.infer<typeof insertNewsArticleSchema>;
 export type NewsArticle = typeof newsArticles.$inferSelect;
+
+export type InsertCertificateCategory = z.infer<typeof insertCertificateCategorySchema>;
+export type CertificateCategory = typeof certificateCategories.$inferSelect;
+
+export type InsertCertificateSubcategory = z.infer<typeof insertCertificateSubcategorySchema>;
+export type CertificateSubcategory = typeof certificateSubcategories.$inferSelect;
 
 export type InsertCertificate = z.infer<typeof insertCertificateSchema>;
 export type Certificate = typeof certificates.$inferSelect;

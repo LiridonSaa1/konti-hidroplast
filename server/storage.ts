@@ -11,6 +11,10 @@ import {
   type InsertNewsArticle,
   type Certificate,
   type InsertCertificate,
+  type CertificateCategory,
+  type InsertCertificateCategory,
+  type CertificateSubcategory,
+  type InsertCertificateSubcategory,
   type Brochure,
   type InsertBrochure,
   type BrochureCategory,
@@ -31,6 +35,8 @@ import {
   companyInfo,
   newsArticles,
   certificates,
+  certificateCategories,
+  certificateSubcategories,
   brochures,
   brochureCategories,
   projects,
@@ -77,11 +83,29 @@ export interface IStorage {
   updateNews(id: string, news: Partial<InsertNewsArticle>): Promise<NewsArticle>;
   deleteNews(id: string): Promise<void>;
   
+  // Certificate Category methods
+  getAllCertificateCategories(): Promise<CertificateCategory[]>;
+  getCertificateCategory(id: number): Promise<CertificateCategory | undefined>;
+  createCertificateCategory(category: InsertCertificateCategory): Promise<CertificateCategory>;
+  updateCertificateCategory(id: number, category: Partial<InsertCertificateCategory>): Promise<CertificateCategory>;
+  deleteCertificateCategory(id: number): Promise<void>;
+
+  // Certificate Subcategory methods
+  getAllCertificateSubcategories(): Promise<CertificateSubcategory[]>;
+  getCertificateSubcategoriesByCategory(categoryId: number): Promise<CertificateSubcategory[]>;
+  getCertificateSubcategory(id: number): Promise<CertificateSubcategory | undefined>;
+  createCertificateSubcategory(subcategory: InsertCertificateSubcategory): Promise<CertificateSubcategory>;
+  updateCertificateSubcategory(id: number, subcategory: Partial<InsertCertificateSubcategory>): Promise<CertificateSubcategory>;
+  deleteCertificateSubcategory(id: number): Promise<void>;
+
   // Certificate methods
   getAllCertificates(): Promise<Certificate[]>;
+  getCertificatesByCategory(categoryId: number): Promise<Certificate[]>;
+  getCertificatesBySubcategory(subcategoryId: number): Promise<Certificate[]>;
+  getCertificate(id: number): Promise<Certificate | undefined>;
   createCertificate(certificate: InsertCertificate): Promise<Certificate>;
-  updateCertificate(id: string, certificate: Partial<InsertCertificate>): Promise<Certificate>;
-  deleteCertificate(id: string): Promise<void>;
+  updateCertificate(id: number, certificate: Partial<InsertCertificate>): Promise<Certificate>;
+  deleteCertificate(id: number): Promise<void>;
   
   // Brochure methods
   getAllBrochures(): Promise<Brochure[]>;
@@ -320,10 +344,109 @@ export class DatabaseStorage implements IStorage {
     await db.delete(newsArticles).where(eq(newsArticles.id, id));
   }
   
+  // Certificate Category methods
+  async getAllCertificateCategories(): Promise<CertificateCategory[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(certificateCategories).orderBy(certificateCategories.sortOrder);
+  }
+
+  async getCertificateCategory(id: number): Promise<CertificateCategory | undefined> {
+    if (!db) throw new Error('Database not available');
+    const result = await db.select().from(certificateCategories).where(eq(certificateCategories.id, id));
+    return result[0];
+  }
+
+  async createCertificateCategory(category: InsertCertificateCategory): Promise<CertificateCategory> {
+    if (!db) throw new Error('Database not available');
+    const [newCategory] = await db
+      .insert(certificateCategories)
+      .values(category)
+      .returning();
+    return newCategory;
+  }
+
+  async updateCertificateCategory(id: number, category: Partial<InsertCertificateCategory>): Promise<CertificateCategory> {
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(certificateCategories)
+      .set(category)
+      .where(eq(certificateCategories.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteCertificateCategory(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(certificateCategories).where(eq(certificateCategories.id, id));
+  }
+
+  // Certificate Subcategory methods
+  async getAllCertificateSubcategories(): Promise<CertificateSubcategory[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(certificateSubcategories).orderBy(certificateSubcategories.sortOrder);
+  }
+
+  async getCertificateSubcategoriesByCategory(categoryId: number): Promise<CertificateSubcategory[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(certificateSubcategories)
+      .where(eq(certificateSubcategories.categoryId, categoryId))
+      .orderBy(certificateSubcategories.sortOrder);
+  }
+
+  async getCertificateSubcategory(id: number): Promise<CertificateSubcategory | undefined> {
+    if (!db) throw new Error('Database not available');
+    const result = await db.select().from(certificateSubcategories).where(eq(certificateSubcategories.id, id));
+    return result[0];
+  }
+
+  async createCertificateSubcategory(subcategory: InsertCertificateSubcategory): Promise<CertificateSubcategory> {
+    if (!db) throw new Error('Database not available');
+    const [newSubcategory] = await db
+      .insert(certificateSubcategories)
+      .values(subcategory)
+      .returning();
+    return newSubcategory;
+  }
+
+  async updateCertificateSubcategory(id: number, subcategory: Partial<InsertCertificateSubcategory>): Promise<CertificateSubcategory> {
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(certificateSubcategories)
+      .set(subcategory)
+      .where(eq(certificateSubcategories.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteCertificateSubcategory(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(certificateSubcategories).where(eq(certificateSubcategories.id, id));
+  }
+
   // Certificate methods
   async getAllCertificates(): Promise<Certificate[]> {
     if (!db) throw new Error('Database not available');
-    return await db.select().from(certificates).orderBy(desc(certificates.createdAt));
+    return await db.select().from(certificates).orderBy(certificates.sortOrder);
+  }
+
+  async getCertificatesByCategory(categoryId: number): Promise<Certificate[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(certificates)
+      .where(eq(certificates.categoryId, categoryId))
+      .orderBy(certificates.sortOrder);
+  }
+
+  async getCertificatesBySubcategory(subcategoryId: number): Promise<Certificate[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(certificates)
+      .where(eq(certificates.subcategoryId, subcategoryId))
+      .orderBy(certificates.sortOrder);
+  }
+
+  async getCertificate(id: number): Promise<Certificate | undefined> {
+    if (!db) throw new Error('Database not available');
+    const result = await db.select().from(certificates).where(eq(certificates.id, id));
+    return result[0];
   }
 
   async createCertificate(certificate: InsertCertificate): Promise<Certificate> {
@@ -335,7 +458,7 @@ export class DatabaseStorage implements IStorage {
     return newCertificate;
   }
 
-  async updateCertificate(id: string, certificate: Partial<InsertCertificate>): Promise<Certificate> {
+  async updateCertificate(id: number, certificate: Partial<InsertCertificate>): Promise<Certificate> {
     if (!db) throw new Error('Database not available');
     const [updated] = await db
       .update(certificates)
@@ -345,7 +468,7 @@ export class DatabaseStorage implements IStorage {
     return updated;
   }
 
-  async deleteCertificate(id: string): Promise<void> {
+  async deleteCertificate(id: number): Promise<void> {
     if (!db) throw new Error('Database not available');
     await db.delete(certificates).where(eq(certificates.id, id));
   }
@@ -617,6 +740,8 @@ export class MemStorage implements IStorage {
   private mediaData: Media[] = [];
   private companyInfoData: CompanyInfo[] = [];
   private newsData: NewsArticle[] = [];
+  private certificateCategoriesData: CertificateCategory[] = [];
+  private certificateSubcategoriesData: CertificateSubcategory[] = [];
   private certificatesData: Certificate[] = [];
   private brochuresData: Brochure[] = [];
   private brochureCategoriesData: BrochureCategory[] = [];
@@ -845,42 +970,135 @@ export class MemStorage implements IStorage {
   }
 
   // Certificate methods
+  // Certificate Category methods
+  async getAllCertificateCategories(): Promise<CertificateCategory[]> {
+    return this.certificateCategoriesData.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  }
+
+  async getCertificateCategory(id: number): Promise<CertificateCategory | undefined> {
+    return this.certificateCategoriesData.find(c => c.id === id);
+  }
+
+  async createCertificateCategory(category: InsertCertificateCategory): Promise<CertificateCategory> {
+    const newCategory: CertificateCategory = {
+      ...category,
+      id: Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.certificateCategoriesData.push(newCategory);
+    return newCategory;
+  }
+
+  async updateCertificateCategory(id: number, category: Partial<InsertCertificateCategory>): Promise<CertificateCategory> {
+    const index = this.certificateCategoriesData.findIndex(c => c.id === id);
+    if (index === -1) throw new Error('Certificate category not found');
+    
+    this.certificateCategoriesData[index] = {
+      ...this.certificateCategoriesData[index],
+      ...category,
+      updatedAt: new Date()
+    };
+    return this.certificateCategoriesData[index];
+  }
+
+  async deleteCertificateCategory(id: number): Promise<void> {
+    const index = this.certificateCategoriesData.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.certificateCategoriesData.splice(index, 1);
+    }
+  }
+
+  // Certificate Subcategory methods
+  async getAllCertificateSubcategories(): Promise<CertificateSubcategory[]> {
+    return this.certificateSubcategoriesData.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  }
+
+  async getCertificateSubcategoriesByCategory(categoryId: number): Promise<CertificateSubcategory[]> {
+    return this.certificateSubcategoriesData
+      .filter(s => s.categoryId === categoryId)
+      .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  }
+
+  async getCertificateSubcategory(id: number): Promise<CertificateSubcategory | undefined> {
+    return this.certificateSubcategoriesData.find(s => s.id === id);
+  }
+
+  async createCertificateSubcategory(subcategory: InsertCertificateSubcategory): Promise<CertificateSubcategory> {
+    const newSubcategory: CertificateSubcategory = {
+      ...subcategory,
+      id: Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.certificateSubcategoriesData.push(newSubcategory);
+    return newSubcategory;
+  }
+
+  async updateCertificateSubcategory(id: number, subcategory: Partial<InsertCertificateSubcategory>): Promise<CertificateSubcategory> {
+    const index = this.certificateSubcategoriesData.findIndex(s => s.id === id);
+    if (index === -1) throw new Error('Certificate subcategory not found');
+    
+    this.certificateSubcategoriesData[index] = {
+      ...this.certificateSubcategoriesData[index],
+      ...subcategory,
+      updatedAt: new Date()
+    };
+    return this.certificateSubcategoriesData[index];
+  }
+
+  async deleteCertificateSubcategory(id: number): Promise<void> {
+    const index = this.certificateSubcategoriesData.findIndex(s => s.id === id);
+    if (index !== -1) {
+      this.certificateSubcategoriesData.splice(index, 1);
+    }
+  }
+
+  // Certificate methods
   async getAllCertificates(): Promise<Certificate[]> {
-    return this.certificatesData.sort((a, b) => {
-      const aTime = a.createdAt?.getTime() || 0;
-      const bTime = b.createdAt?.getTime() || 0;
-      return bTime - aTime;
-    });
+    return this.certificatesData.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  }
+
+  async getCertificatesByCategory(categoryId: number): Promise<Certificate[]> {
+    return this.certificatesData
+      .filter(c => c.categoryId === categoryId)
+      .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  }
+
+  async getCertificatesBySubcategory(subcategoryId: number): Promise<Certificate[]> {
+    return this.certificatesData
+      .filter(c => c.subcategoryId === subcategoryId)
+      .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  }
+
+  async getCertificate(id: number): Promise<Certificate | undefined> {
+    return this.certificatesData.find(c => c.id === id);
   }
 
   async createCertificate(certificate: InsertCertificate): Promise<Certificate> {
     const newCertificate: Certificate = {
       ...certificate,
-      id: `cert_${Date.now()}`,
-      imageUrl: certificate.imageUrl ?? null,
-      pdfUrl: certificate.pdfUrl ?? null,
-      validFrom: certificate.validFrom ?? null,
-      validUntil: certificate.validUntil ?? null,
-      active: certificate.active ?? null,
-      sortOrder: certificate.sortOrder ?? null,
-      createdAt: new Date()
+      id: Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
     };
     this.certificatesData.push(newCertificate);
     return newCertificate;
   }
 
-  async updateCertificate(id: string, certificate: Partial<InsertCertificate>): Promise<Certificate> {
+  async updateCertificate(id: number, certificate: Partial<InsertCertificate>): Promise<Certificate> {
     const index = this.certificatesData.findIndex(c => c.id === id);
     if (index === -1) throw new Error('Certificate not found');
     
     this.certificatesData[index] = {
       ...this.certificatesData[index],
-      ...certificate
+      ...certificate,
+      updatedAt: new Date()
     };
     return this.certificatesData[index];
   }
 
-  async deleteCertificate(id: string): Promise<void> {
+  async deleteCertificate(id: number): Promise<void> {
     const index = this.certificatesData.findIndex(c => c.id === id);
     if (index !== -1) {
       this.certificatesData.splice(index, 1);
