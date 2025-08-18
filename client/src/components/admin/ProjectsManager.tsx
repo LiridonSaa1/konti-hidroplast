@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, FileUp, Image as ImageIcon, Eye } from "lucide-react";
+import { Plus, Edit, Trash2, FileUp, Image as ImageIcon, Eye, Search, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -22,6 +22,9 @@ import { apiRequest } from "@/lib/queryClient";
 export function ProjectsManager() {
   const [editingProject, setEditingProject] = useState<Project | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortField, setSortField] = useState<keyof Project>("title");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -33,12 +36,43 @@ export function ProjectsManager() {
       imageUrl: "",
       pdfUrl: "",
       status: "active",
+      sortOrder: 0,
     },
   });
 
   const { data: projects = [], isLoading } = useQuery<Project[]>({
     queryKey: ["/api/admin/projects"],
   });
+
+  // Filter and sort projects
+  const filteredAndSortedProjects = useMemo(() => {
+    let filtered = projects.filter((project) =>
+      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (project.description && project.description.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
+    // Sort projects
+    filtered.sort((a, b) => {
+      let aValue = a[sortField];
+      let bValue = b[sortField];
+
+      // Handle null/undefined values
+      if (aValue == null) aValue = "";
+      if (bValue == null) bValue = "";
+
+      // Convert to string for comparison
+      const aStr = String(aValue).toLowerCase();
+      const bStr = String(bValue).toLowerCase();
+
+      if (sortDirection === "asc") {
+        return aStr.localeCompare(bStr);
+      } else {
+        return bStr.localeCompare(aStr);
+      }
+    });
+
+    return filtered;
+  }, [projects, searchTerm, sortField, sortDirection]);
 
   const createProjectMutation = useMutation({
     mutationFn: async (projectData: InsertProject) => {
@@ -121,8 +155,25 @@ export function ProjectsManager() {
       imageUrl: project.imageUrl || "",
       pdfUrl: project.pdfUrl || "",
       status: (project.status as "active" | "completed" | "on-hold" | "cancelled") || "active",
+      sortOrder: project.sortOrder || 0,
     });
     setIsFormOpen(true);
+  };
+
+  const handleSort = (field: keyof Project) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const getSortIcon = (field: keyof Project) => {
+    if (sortField !== field) {
+      return <ArrowUpDown className="h-4 w-4" />;
+    }
+    return sortDirection === 'asc' ? <ArrowUp className="h-4 w-4" /> : <ArrowDown className="h-4 w-4" />;
   };
 
   const handleDelete = (id: number) => {
@@ -136,6 +187,7 @@ export function ProjectsManager() {
       imageUrl: "",
       pdfUrl: "",
       status: "active",
+      sortOrder: 0,
     });
     setEditingProject(null);
     setIsFormOpen(false);
@@ -250,29 +302,52 @@ export function ProjectsManager() {
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Status</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value || "active"}>
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Status</FormLabel>
+                        <Select onValueChange={field.onChange} value={field.value || "active"}>
+                          <FormControl>
+                            <SelectTrigger data-testid="select-project-status">
+                              <SelectValue placeholder="Select status" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="active">Active</SelectItem>
+                            <SelectItem value="completed">Completed</SelectItem>
+                            <SelectItem value="on-hold">On Hold</SelectItem>
+                            <SelectItem value="cancelled">Cancelled</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="sortOrder"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Sort Order</FormLabel>
                         <FormControl>
-                          <SelectTrigger data-testid="select-project-status">
-                            <SelectValue placeholder="Select status" />
-                          </SelectTrigger>
+                          <Input 
+                            type="number" 
+                            placeholder="0" 
+                            {...field}
+                            value={field.value || 0}
+                            onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                            data-testid="input-project-sort-order"
+                          />
                         </FormControl>
-                        <SelectContent>
-                          <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="completed">Completed</SelectItem>
-                          <SelectItem value="on-hold">On Hold</SelectItem>
-                          <SelectItem value="cancelled">Cancelled</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
                 <DialogFooter>
                   <Button 
@@ -300,32 +375,85 @@ export function ProjectsManager() {
         </Dialog>
       </div>
 
-      <Card data-testid="projects-list-card">
-        <CardHeader>
-          <CardTitle>Projects ({projects.length})</CardTitle>
-          <CardDescription>All projects in your database</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {projects.length === 0 ? (
-            <div className="text-center py-8" data-testid="no-projects-message">
-              <FileUp className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-              <p className="text-slate-600">No projects found. Create your first project to get started.</p>
+      {/* Search Filter */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+                <Input
+                  placeholder="Search projects..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                  data-testid="search-projects"
+                />
+              </div>
             </div>
-          ) : (
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Projects Table */}
+      {filteredAndSortedProjects.length > 0 && (
+        <Card data-testid="projects-list-card">
+          <CardHeader>
+            <CardTitle>Projects ({filteredAndSortedProjects.length})</CardTitle>
+            <CardDescription>All projects in your database</CardDescription>
+          </CardHeader>
+          <CardContent>
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Title</TableHead>
-                    <TableHead>Status</TableHead>
+                    <TableHead>
+                      <Button
+                        variant="ghost"
+                        className="h-auto p-0 font-medium"
+                        onClick={() => handleSort("title")}
+                      >
+                        Title
+                        {getSortIcon("title")}
+                      </Button>
+                    </TableHead>
+                    <TableHead>
+                      <Button
+                        variant="ghost"
+                        className="h-auto p-0 font-medium"
+                        onClick={() => handleSort("status")}
+                      >
+                        Status
+                        {getSortIcon("status")}
+                      </Button>
+                    </TableHead>
                     <TableHead>Image</TableHead>
                     <TableHead>PDF</TableHead>
-                    <TableHead>Created</TableHead>
+                    <TableHead>
+                      <Button
+                        variant="ghost"
+                        className="h-auto p-0 font-medium"
+                        onClick={() => handleSort("sortOrder")}
+                      >
+                        Order
+                        {getSortIcon("sortOrder")}
+                      </Button>
+                    </TableHead>
+                    <TableHead>
+                      <Button
+                        variant="ghost"
+                        className="h-auto p-0 font-medium"
+                        onClick={() => handleSort("createdAt")}
+                      >
+                        Created
+                        {getSortIcon("createdAt")}
+                      </Button>
+                    </TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {projects.map((project: Project) => (
+                  {filteredAndSortedProjects.map((project: Project) => (
                     <TableRow key={project.id} data-testid={`project-row-${project.id}`}>
                       <TableCell>
                         <div>
@@ -353,47 +481,51 @@ export function ProjectsManager() {
                       </TableCell>
                       <TableCell>
                         {project.imageUrl ? (
-                          <div className="flex items-center space-x-2">
-                            <ImageIcon className="h-4 w-4 text-green-600" />
-                            <a 
-                              href={project.imageUrl} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="text-blue-600 hover:underline text-sm"
+                          <div className="flex items-center gap-1">
+                            <img 
+                              src={project.imageUrl} 
+                              alt={project.title}
+                              className="h-8 w-8 object-cover rounded"
+                            />
+                            <Button
+                              variant="link"
+                              size="sm"
+                              onClick={() => project.imageUrl && window.open(project.imageUrl, '_blank')}
                               data-testid={`project-image-link-${project.id}`}
                             >
-                              View Image
-                            </a>
+                              <Eye className="h-4 w-4 mr-1" />
+                              View
+                            </Button>
                           </div>
                         ) : (
-                          <span className="text-slate-400 text-sm">No image</span>
+                          <span className="text-slate-400 text-sm">No Image</span>
                         )}
                       </TableCell>
                       <TableCell>
                         {project.pdfUrl ? (
-                          <div className="flex items-center space-x-2">
-                            <FileUp className="h-4 w-4 text-blue-600" />
-                            <a 
-                              href={project.pdfUrl} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="text-blue-600 hover:underline text-sm"
-                              data-testid={`project-pdf-link-${project.id}`}
-                            >
-                              View PDF
-                            </a>
-                          </div>
+                          <Button
+                            variant="link"
+                            size="sm"
+                            onClick={() => project.pdfUrl && window.open(project.pdfUrl, '_blank')}
+                            data-testid={`project-pdf-link-${project.id}`}
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            View PDF
+                          </Button>
                         ) : (
                           <span className="text-slate-400 text-sm">No PDF</span>
                         )}
+                      </TableCell>
+                      <TableCell>
+                        {project.sortOrder || 0}
                       </TableCell>
                       <TableCell className="text-sm text-slate-600" data-testid={`project-date-${project.id}`}>
                         {project.createdAt ? new Date(project.createdAt).toLocaleDateString() : 'N/A'}
                       </TableCell>
                       <TableCell className="text-right">
-                        <div className="flex items-center justify-end space-x-2">
+                        <div className="flex justify-end space-x-1">
                           <Button
-                            variant="outline"
+                            variant="ghost"
                             size="sm"
                             onClick={() => handleEdit(project)}
                             data-testid={`button-edit-project-${project.id}`}
@@ -403,11 +535,12 @@ export function ProjectsManager() {
                           <AlertDialog>
                             <AlertDialogTrigger asChild>
                               <Button 
-                                variant="outline" 
+                                variant="ghost" 
                                 size="sm"
+                                className="text-red-600 hover:text-red-700"
                                 data-testid={`button-delete-project-${project.id}`}
                               >
-                                <Trash2 className="h-4 w-4 text-red-600" />
+                                <Trash2 className="h-4 w-4" />
                               </Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>
@@ -436,9 +569,28 @@ export function ProjectsManager() {
                 </TableBody>
               </Table>
             </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {filteredAndSortedProjects.length === 0 && (
+        <Card className="p-8 text-center">
+          <FileUp className="h-12 w-12 mx-auto text-slate-400 mb-4" />
+          <h3 className="text-lg font-medium text-slate-900 mb-2">No projects found</h3>
+          <p className="text-slate-600 mb-4">
+            {searchTerm 
+              ? "No projects match your search criteria"
+              : "Get started by adding your first project"
+            }
+          </p>
+          {!searchTerm && (
+            <Button onClick={() => setIsFormOpen(true)}>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Your First Project
+            </Button>
           )}
-        </CardContent>
-      </Card>
+        </Card>
+      )}
     </div>
   );
 }

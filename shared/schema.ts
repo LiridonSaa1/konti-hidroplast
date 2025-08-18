@@ -215,6 +215,7 @@ export const projects = pgTable("projects", {
   imageUrl: varchar("image_url", { length: 500 }),
   pdfUrl: varchar("pdf_url", { length: 500 }),
   status: varchar("status", { length: 50 }).default("active"),
+  sortOrder: integer("sort_order").default(0),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
