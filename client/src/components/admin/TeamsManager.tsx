@@ -5,8 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Trash2, Edit, Plus, Users, Mail, User, Eye } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
@@ -17,13 +17,20 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { insertTeamSchema, type Team, type InsertTeam, type Position } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 
+const STATUS_OPTIONS = [
+  { value: "active", label: "Active", color: "bg-green-100 text-green-800" },
+  { value: "inactive", label: "Inactive", color: "bg-red-100 text-red-800" },
+  { value: "draft", label: "Draft", color: "bg-yellow-100 text-yellow-800" },
+  { value: "archived", label: "Archived", color: "bg-gray-100 text-gray-800" }
+];
+
 export function TeamsManager() {
   const [editingTeam, setEditingTeam] = useState<Team | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const form = useForm<InsertTeam>({
+  const form = useForm<InsertTeam & { status: string }>({
     resolver: zodResolver(insertTeamSchema),
     defaultValues: {
       name: "",
@@ -32,6 +39,7 @@ export function TeamsManager() {
       imageUrl: "",
       active: true,
       sortOrder: 0,
+      status: "active",
     },
   });
 
@@ -118,6 +126,7 @@ export function TeamsManager() {
 
   const handleEdit = (team: Team) => {
     setEditingTeam(team);
+    const derivedStatus = team.active ? 'active' : 'inactive';
     form.reset({
       name: team.name,
       position: team.position,
@@ -125,6 +134,7 @@ export function TeamsManager() {
       imageUrl: team.imageUrl || "",
       active: team.active || true,
       sortOrder: team.sortOrder || 0,
+      status: derivedStatus,
     });
     setIsFormOpen(true);
   };
@@ -141,9 +151,14 @@ export function TeamsManager() {
       imageUrl: "",
       active: true,
       sortOrder: 0,
+      status: "active",
     });
     setEditingTeam(null);
     setIsFormOpen(false);
+  };
+
+  const getStatusBadgeColor = (active: boolean) => {
+    return active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800";
   };
 
   if (isLoading || isLoadingPositions) {
@@ -290,17 +305,32 @@ export function TeamsManager() {
 
                   <FormField
                     control={form.control}
-                    name="active"
+                    name="status"
                     render={({ field }) => (
-                      <FormItem className="flex items-center space-x-2 pt-8">
+                      <FormItem>
+                        <FormLabel>Status</FormLabel>
                         <FormControl>
-                          <Switch
-                            checked={field.value || false}
-                            onCheckedChange={field.onChange}
-                            data-testid="input-team-active"
-                          />
+                          <Select 
+                            value={field.value} 
+                            onValueChange={(value) => {
+                              field.onChange(value);
+                              form.setValue("active", value === "active");
+                            }}
+                            data-testid="select-team-status"
+                          >
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {STATUS_OPTIONS.map((option) => (
+                                <SelectItem key={option.value} value={option.value}>
+                                  {option.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         </FormControl>
-                        <FormLabel className="!mt-0">Active</FormLabel>
+                        <FormMessage />
                       </FormItem>
                     )}
                   />
@@ -357,7 +387,7 @@ export function TeamsManager() {
                     </TableCell>
                     <TableCell>
                       <Badge 
-                        variant={team.active ? "default" : "secondary"} 
+                        className={getStatusBadgeColor(team.active)}
                         data-testid={`team-status-${team.id}`}
                       >
                         {team.active ? "Active" : "Inactive"}
@@ -388,18 +418,40 @@ export function TeamsManager() {
                           size="sm"
                           onClick={() => handleEdit(team)}
                           data-testid={`button-edit-${team.id}`}
+                          className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleDelete(team.id)}
-                          className="text-red-600 hover:text-red-700"
-                          data-testid={`button-delete-${team.id}`}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                              data-testid={`button-delete-${team.id}`}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent data-testid={`dialog-delete-${team.id}`}>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Team Member</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{team.name}"? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel data-testid="button-cancel-delete">Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDelete(team.id)}
+                                className="bg-red-600 hover:bg-red-700"
+                                data-testid="button-confirm-delete"
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
                       </div>
                     </TableCell>
                   </TableRow>
