@@ -65,6 +65,8 @@ export function LeadershipManager() {
     },
     staleTime: 0, // Always fetch fresh data
     gcTime: 0, // Don't cache the data
+    refetchOnMount: true, // Always refetch when component mounts
+    refetchOnWindowFocus: true, // Refetch when window gains focus
   });
 
   // Fetch positions for dropdown
@@ -79,10 +81,10 @@ export function LeadershipManager() {
     onSuccess: async (result) => {
       console.log("Leadership message save successful:", result);
       
-      // Invalidate and refetch the specific query
-      await queryClient.invalidateQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
+      // Clear all related cache first
+      await queryClient.removeQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
       
-      // Force a manual refetch to ensure fresh data
+      // Force a fresh fetch with no cache
       await refetch();
       
       // Update UI states
@@ -206,6 +208,16 @@ export function LeadershipManager() {
       }
     }
   }, [leadershipData, isFormOpen, imagePreview]);
+
+  // Auto-refetch when component mounts or when returning to admin panel
+  useEffect(() => {
+    const handleFocus = () => {
+      refetch();
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [refetch]);
 
   if (isLoading) {
     return (
