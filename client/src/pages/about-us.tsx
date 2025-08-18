@@ -200,9 +200,9 @@ export default function AboutUs() {
     queryKey: ["/api/admin/projects"],
   });
 
-  // Fetch gallery categories
+  // Fetch gallery categories (public endpoint)
   const { data: galleryCategories = [], isLoading: isGalleryLoading } = useQuery<GalleryCategory[]>({
-    queryKey: ["/api/admin/gallery-categories"],
+    queryKey: ["/api/gallery-categories"],
   });
 
   // Fetch leadership data

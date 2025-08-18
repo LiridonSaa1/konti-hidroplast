@@ -710,6 +710,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Public Gallery routes (no authentication required)
+  app.get('/api/gallery-categories', async (req, res) => {
+    try {
+      const categories = await storage.getAllGalleryCategories();
+      // Only return active categories for public use
+      const activeCategories = categories.filter(category => category.status === 'active');
+      res.json(activeCategories);
+    } catch (error) {
+      console.error('Error fetching public gallery categories:', error);
+      res.status(500).json({ error: 'Failed to fetch gallery categories' });
+    }
+  });
+
   // Gallery Categories routes
   app.get('/api/admin/gallery-categories', requireAuth, async (req, res) => {
     try {
