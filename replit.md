@@ -17,6 +17,9 @@ Preferred communication style: Simple, everyday language.
 - System now prevents creation of multiple admin users and enforces single admin login
 - Fixed login error display to show proper red error messages instead of runtime error overlay
 - Enhanced error handling in AuthContext to prevent unhandled promise rejections
+- Enhanced Gallery Categories Manager with FileUpload component for both create and edit operations
+- Added image preview functionality with drag-and-drop support for gallery category management
+- Improved user experience with visual image previews and better error handling
 
 ## Enhanced Projects Management (August 18, 2025)
 - Added sortOrder field to projects database schema and form
