@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { type Team } from "@shared/schema";
+import { type Team, type Project } from "@shared/schema";
 import {
   ChevronRight,
   ChevronLeft,
@@ -193,6 +193,11 @@ export default function AboutUs() {
 
   // Use the dynamic team data hook
   const { teamCategories, teamData, isLoading: isTeamLoading } = useTeamData();
+
+  // Fetch projects
+  const { data: projects = [], isLoading: isProjectsLoading } = useQuery<Project[]>({
+    queryKey: ["/api/admin/projects"],
+  });
 
   // Fetch leadership data
   const { data: leadershipData } = useQuery({
@@ -788,106 +793,75 @@ export default function AboutUs() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {/* Project 1 - Testing Equipment */}
-            <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="relative h-80 overflow-hidden">
-                <img
-                  src="/src/assets/Projects-1-min-800x407_1755198231060.jpg"
-                  alt="Quality Control Systems - Testing Equipment"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-              </div>
-              <CardContent className="p-6 bg-white">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Quality Control Systems
-                </h3>
+          {/* Dynamic Projects Grid */}
+          {isProjectsLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {[...Array(4)].map((_, index) => (
+                <Card key={index} className="group overflow-hidden border-0 shadow-xl">
+                  <div className="relative h-80 overflow-hidden bg-gray-200 animate-pulse"></div>
+                  <CardContent className="p-6 bg-white">
+                    <div className="h-6 bg-gray-200 rounded animate-pulse mb-4"></div>
+                    <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : projects.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {projects
+                .filter(project => project.status === 'active')
+                .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
+                .map((project) => (
+                <Card key={project.id} className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+                  <div className="relative h-80 overflow-hidden">
+                    {project.imageUrl ? (
+                      <img
+                        src={project.imageUrl}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
+                        <FileText className="h-16 w-16 text-slate-400" />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  </div>
+                  <CardContent className="p-6 bg-white">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      {project.title}
+                    </h3>
+                    {project.description && (
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                        {project.description}
+                      </p>
+                    )}
 
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
-                >
-                  Download PDF
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Project 2 - European Infrastructure */}
-            <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="relative h-80 overflow-hidden">
-                <img
-                  src="/src/assets/Projects-2-min-800x407_1755198239171.jpg"
-                  alt="European Infrastructure Projects - Pipeline Installation"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-              </div>
-              <CardContent className="p-6 bg-white">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  European Infrastructure Projects
-                </h3>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
-                >
-                  Download PDF
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Project 3 - Advanced Piping Systems */}
-            <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="relative h-80 overflow-hidden">
-                <img
-                  src="/src/assets/Projects-3-min-800x407_1755198241265.jpg"
-                  alt="Advanced Piping Systems - Large Diameter Pipes"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-              </div>
-              <CardContent className="p-6 bg-white">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Advanced Piping Systems
-                </h3>
-
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
-                >
-                  Download PDF
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Project 4 - Installation Services */}
-            <Card className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-              <div className="relative h-80 overflow-hidden">
-                <img
-                  src="/src/assets/Projects-4-min-800x407_1755198243537.jpg"
-                  alt="Professional Installation Services - Field Operations"
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-              </div>
-              <CardContent className="p-6 bg-white">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Professional Installation Services
-                </h3>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
-                >
-                  Download PDF
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+                    {project.pdfUrl && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
+                        onClick={() => window.open(project.pdfUrl, '_blank')}
+                      >
+                        Download PDF
+                      </Button>
+                    )}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <FileText className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+              <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                No Projects Available
+              </h3>
+              <p className="text-gray-500">
+                Projects will appear here once they are added to the database.
+              </p>
+            </div>
+          )}
         </div>
       </section>
       {/* Products Section */}
