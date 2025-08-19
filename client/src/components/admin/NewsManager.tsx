@@ -1,23 +1,23 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Search, FileText, Eye, Calendar, User } from "lucide-react";
+import { Plus, Edit, Trash2, Search, FileText, Calendar, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
+import { FileUpload } from "@/components/ui/file-upload";
 import type { NewsArticle, InsertNewsArticle } from "@shared/schema";
 
 interface NewsFormData {
   title: string;
-  content: string;
-  excerpt: string;
+  description: string;
   imageUrl: string;
   author: string;
   published: boolean;
@@ -31,8 +31,7 @@ export function NewsManager() {
   const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
   const [formData, setFormData] = useState<NewsFormData>({
     title: "",
-    content: "",
-    excerpt: "",
+    description: "",
     imageUrl: "",
     author: "",
     published: false
@@ -71,16 +70,15 @@ export function NewsManager() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: async ({ id, data }: { id: string; data: Partial<InsertNewsArticle> }) => {
-      return apiRequest("PUT", `/api/admin/news/${id}`, {
-        ...data,
-        publishedAt: data.published ? new Date().toISOString() : null
+    mutationFn: async (data: { id: string; article: InsertNewsArticle }) => {
+      return apiRequest("PUT", `/api/admin/news/${data.id}`, {
+        ...data.article,
+        publishedAt: data.article.published ? new Date().toISOString() : null
       });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/news"] });
       setIsEditDialogOpen(false);
-      setSelectedArticle(null);
       resetForm();
       toast({
         title: "Success",
@@ -116,10 +114,11 @@ export function NewsManager() {
     },
   });
 
-  const filteredNews = news.filter(article => {
+  const filteredNews = news.filter((article) => {
     const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.content?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || 
+                         article.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (article.author && article.author.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesStatus = statusFilter === "all" ||
                          (statusFilter === "published" && article.published) ||
                          (statusFilter === "draft" && !article.published);
     return matchesSearch && matchesStatus;
@@ -128,84 +127,77 @@ export function NewsManager() {
   const resetForm = () => {
     setFormData({
       title: "",
-      content: "",
-      excerpt: "",
+      description: "",
       imageUrl: "",
       author: "",
       published: false
     });
+    setSelectedArticle(null);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.title.trim() || !formData.description.trim()) {
+      toast({
+        title: "Error",
+        description: "Title and description are required",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const articleData: InsertNewsArticle = {
+      title: formData.title.trim(),
+      description: formData.description.trim(),
+      imageUrl: formData.imageUrl || null,
+      author: formData.author || null,
+      published: formData.published,
+    };
+
+    if (selectedArticle) {
+      updateMutation.mutate({ id: selectedArticle.id, article: articleData });
+    } else {
+      createMutation.mutate(articleData);
+    }
   };
 
   const handleEdit = (article: NewsArticle) => {
     setSelectedArticle(article);
     setFormData({
       title: article.title,
-      content: article.content,
-      excerpt: article.excerpt || "",
+      description: article.description,
       imageUrl: article.imageUrl || "",
       author: article.author || "",
-      published: article.published || false
+      published: article.published
     });
     setIsEditDialogOpen(true);
   };
 
-  const handleSubmit = () => {
-    if (selectedArticle) {
-      updateMutation.mutate({ id: selectedArticle.id, data: formData });
-    } else {
-      createMutation.mutate(formData);
-    }
-  };
-
-  const formatDate = (dateString: string | Date | null) => {
+  const formatDate = (dateString: string | null) => {
     if (!dateString) return "Not published";
     return new Date(dateString).toLocaleDateString();
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-64" data-testid="news-loading">
-        <div className="text-slate-600">Loading news articles...</div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6" data-testid="news-manager">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-slate-900" data-testid="news-title">News Management</h2>
-          <p className="text-slate-600" data-testid="news-description">
-            Create, edit, and publish news articles and announcements
-          </p>
-        </div>
-        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-          <DialogTrigger asChild>
-            <Button data-testid="button-create-news">
-              <Plus className="h-4 w-4 mr-2" />
-              Create Article
-            </Button>
-          </DialogTrigger>
-          <NewsFormDialog
-            isOpen={isCreateDialogOpen}
-            title="Create New Article"
-            formData={formData}
-            setFormData={setFormData}
-            onSubmit={handleSubmit}
-            onCancel={() => setIsCreateDialogOpen(false)}
-            isLoading={createMutation.isPending}
-          />
-        </Dialog>
-      </div>
-
-      {/* Filters */}
-      <Card data-testid="news-filters">
-        <CardContent className="p-4">
+    <div className="space-y-6">
+      {/* Header Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <FileText className="h-5 w-5" />
+            News Management
+          </CardTitle>
+          <CardDescription>
+            Create and manage news articles with rich text content and images
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
           <div className="flex flex-col sm:flex-row gap-4">
+            {/* Search */}
             <div className="flex-1">
               <div className="relative">
-                <Search className="h-4 w-4 absolute left-3 top-3 text-slate-400" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   placeholder="Search articles..."
                   value={searchTerm}
@@ -215,66 +207,58 @@ export function NewsManager() {
                 />
               </div>
             </div>
-            <div className="flex gap-2">
-              <Button
-                variant={statusFilter === "all" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setStatusFilter("all")}
-                data-testid="filter-all-news"
+            
+            {/* Status Filter */}
+            <div className="sm:w-48">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                data-testid="select-status-filter"
               >
-                All
-              </Button>
-              <Button
-                variant={statusFilter === "published" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setStatusFilter("published")}
-                data-testid="filter-published-news"
-              >
-                Published
-              </Button>
-              <Button
-                variant={statusFilter === "draft" ? "default" : "outline"}
-                size="sm"
-                onClick={() => setStatusFilter("draft")}
-                data-testid="filter-draft-news"
-              >
-                Drafts
-              </Button>
+                <option value="all">All Articles</option>
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+              </select>
             </div>
+            
+            {/* Create Button */}
+            <Button onClick={() => setIsCreateDialogOpen(true)} data-testid="button-create-news">
+              <Plus className="h-4 w-4 mr-2" />
+              Create Article
+            </Button>
           </div>
         </CardContent>
       </Card>
 
-      {/* News List */}
-      <div className="space-y-4" data-testid="news-list">
+      {/* Articles Grid */}
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {filteredNews.map((article) => (
-          <Card key={article.id} className="hover:shadow-md transition-shadow" data-testid={`news-card-${article.id}`}>
-            <CardHeader>
-              <div className="flex items-start justify-between">
+          <Card key={article.id} className="flex flex-col" data-testid={`news-card-${article.id}`}>
+            <CardHeader className="pb-3">
+              <div className="flex items-start justify-between gap-2">
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <CardTitle className="text-lg" data-testid={`news-title-${article.id}`}>
-                      {article.title}
-                    </CardTitle>
-                    <Badge variant={article.published ? "default" : "secondary"} data-testid={`news-status-${article.id}`}>
+                  <CardTitle className="text-lg line-clamp-2" data-testid={`news-title-${article.id}`}>
+                    {article.title}
+                  </CardTitle>
+                  <div className="flex items-center gap-2 mt-2">
+                    <Badge 
+                      variant={article.published ? "default" : "secondary"}
+                      data-testid={`news-status-${article.id}`}
+                    >
                       {article.published ? "Published" : "Draft"}
                     </Badge>
                   </div>
-                  {article.excerpt && (
-                    <CardDescription data-testid={`news-excerpt-${article.id}`}>
-                      {article.excerpt}
-                    </CardDescription>
-                  )}
                 </div>
                 {article.imageUrl && (
-                  <div className="w-24 h-16 bg-slate-100 rounded-lg overflow-hidden ml-4">
+                  <div className="flex-shrink-0">
                     <img
                       src={article.imageUrl}
                       alt={article.title}
-                      className="w-full h-full object-cover"
+                      className="w-16 h-16 object-cover rounded-lg border"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
-                        target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60' viewBox='0 0 100 60'%3E%3Crect width='100' height='60' fill='%23f1f5f9'/%3E%3Ctext x='50' y='30' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='10'%3ENo Image%3C/text%3E%3C/svg%3E";
+                        target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f1f5f9'/%3E%3Ctext x='32' y='32' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='10'%3ENo Image%3C/text%3E%3C/svg%3E";
                       }}
                       data-testid={`news-image-${article.id}`}
                     />
@@ -282,9 +266,12 @@ export function NewsManager() {
                 )}
               </div>
             </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4 text-sm text-slate-500">
+            <CardContent className="flex-1 flex flex-col">
+              <p className="text-sm text-gray-600 flex-1 line-clamp-3" data-testid={`news-description-${article.id}`}>
+                {article.description}
+              </p>
+              <div className="flex items-center justify-between mt-4 pt-4 border-t">
+                <div className="flex items-center gap-4 text-sm text-gray-500">
                   {article.author && (
                     <div className="flex items-center gap-1">
                       <User className="h-4 w-4" />
@@ -300,7 +287,7 @@ export function NewsManager() {
                 </div>
                 <div className="flex items-center gap-1">
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
                     onClick={() => handleEdit(article)}
                     data-testid={`button-edit-news-${article.id}`}
@@ -310,7 +297,7 @@ export function NewsManager() {
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button
-                        variant="outline"
+                        variant="ghost"
                         size="sm"
                         data-testid={`button-delete-news-${article.id}`}
                       >
@@ -342,12 +329,13 @@ export function NewsManager() {
         ))}
       </div>
 
+      {/* Empty State */}
       {filteredNews.length === 0 && (
         <Card data-testid="news-empty-state">
           <CardContent className="p-8 text-center">
-            <FileText className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-slate-900 mb-2">No articles found</h3>
-            <p className="text-slate-600 mb-4">
+            <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No articles found</h3>
+            <p className="text-gray-600 mb-4">
               {searchTerm || statusFilter !== "all" 
                 ? "Try adjusting your search or filter criteria"
                 : "Get started by creating your first news article"
@@ -363,130 +351,179 @@ export function NewsManager() {
         </Card>
       )}
 
+      {/* Create Dialog */}
+      <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Create News Article</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="title">Title *</Label>
+                  <Input
+                    id="title"
+                    value={formData.title}
+                    onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                    placeholder="Enter article title"
+                    data-testid="input-title"
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="author">Author</Label>
+                  <Input
+                    id="author"
+                    value={formData.author}
+                    onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
+                    placeholder="Enter author name"
+                    data-testid="input-author"
+                  />
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="published"
+                    checked={formData.published}
+                    onCheckedChange={(checked) => setFormData(prev => ({ ...prev, published: checked }))}
+                    data-testid="switch-published"
+                  />
+                  <Label htmlFor="published">Publish immediately</Label>
+                </div>
+              </div>
+
+              <div>
+                <FileUpload
+                  value={formData.imageUrl}
+                  onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+                  label="Article Image"
+                  placeholder="Enter image URL or upload file"
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label>Description *</Label>
+              <RichTextEditor
+                value={formData.description}
+                onChange={(value) => setFormData(prev => ({ ...prev, description: value }))}
+                placeholder="Enter article content with rich text formatting..."
+                className="mt-2"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setIsCreateDialogOpen(false);
+                  resetForm();
+                }}
+                data-testid="button-cancel-create"
+              >
+                Cancel
+              </Button>
+              <Button 
+                type="submit" 
+                disabled={createMutation.isPending}
+                data-testid="button-submit-create"
+              >
+                {createMutation.isPending ? "Creating..." : "Create Article"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
+
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <NewsFormDialog
-          isOpen={isEditDialogOpen}
-          title="Edit Article"
-          formData={formData}
-          setFormData={setFormData}
-          onSubmit={handleSubmit}
-          onCancel={() => {
-            setIsEditDialogOpen(false);
-            setSelectedArticle(null);
-            resetForm();
-          }}
-          isLoading={updateMutation.isPending}
-        />
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit News Article</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="edit-title">Title *</Label>
+                  <Input
+                    id="edit-title"
+                    value={formData.title}
+                    onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                    placeholder="Enter article title"
+                    data-testid="input-edit-title"
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="edit-author">Author</Label>
+                  <Input
+                    id="edit-author"
+                    value={formData.author}
+                    onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
+                    placeholder="Enter author name"
+                    data-testid="input-edit-author"
+                  />
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    id="edit-published"
+                    checked={formData.published}
+                    onCheckedChange={(checked) => setFormData(prev => ({ ...prev, published: checked }))}
+                    data-testid="switch-edit-published"
+                  />
+                  <Label htmlFor="edit-published">Publish immediately</Label>
+                </div>
+              </div>
+
+              <div>
+                <FileUpload
+                  value={formData.imageUrl}
+                  onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+                  label="Article Image"
+                  placeholder="Enter image URL or upload file"
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label>Description *</Label>
+              <RichTextEditor
+                value={formData.description}
+                onChange={(value) => setFormData(prev => ({ ...prev, description: value }))}
+                placeholder="Enter article content with rich text formatting..."
+                className="mt-2"
+              />
+            </div>
+
+            <div className="flex justify-end gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => {
+                  setIsEditDialogOpen(false);
+                  resetForm();
+                }}
+                data-testid="button-cancel-edit"
+              >
+                Cancel
+              </Button>
+              <Button 
+                type="submit" 
+                disabled={updateMutation.isPending}
+                data-testid="button-submit-edit"
+              >
+                {updateMutation.isPending ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
+          </form>
+        </DialogContent>
       </Dialog>
     </div>
-  );
-}
-
-function NewsFormDialog({
-  isOpen,
-  title,
-  formData,
-  setFormData,
-  onSubmit,
-  onCancel,
-  isLoading
-}: {
-  isOpen: boolean;
-  title: string;
-  formData: NewsFormData;
-  setFormData: (data: NewsFormData) => void;
-  onSubmit: () => void;
-  onCancel: () => void;
-  isLoading: boolean;
-}) {
-  return (
-    <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" data-testid="news-form-dialog">
-      <DialogHeader>
-        <DialogTitle data-testid="news-form-title">{title}</DialogTitle>
-      </DialogHeader>
-      <div className="space-y-4 py-4">
-        <div className="space-y-2">
-          <Label htmlFor="title">Article Title *</Label>
-          <Input
-            id="title"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            placeholder="Enter article title"
-            data-testid="input-news-title"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="excerpt">Excerpt</Label>
-          <Textarea
-            id="excerpt"
-            value={formData.excerpt}
-            onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-            placeholder="Brief summary of the article"
-            rows={2}
-            data-testid="textarea-news-excerpt"
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="content">Content *</Label>
-          <Textarea
-            id="content"
-            value={formData.content}
-            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-            placeholder="Write your article content here..."
-            rows={8}
-            data-testid="textarea-news-content"
-          />
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="imageUrl">Featured Image URL</Label>
-            <Input
-              id="imageUrl"
-              value={formData.imageUrl}
-              onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-              placeholder="Enter image URL"
-              data-testid="input-news-image-url"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="author">Author</Label>
-            <Input
-              id="author"
-              value={formData.author}
-              onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-              placeholder="Author name"
-              data-testid="input-news-author"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <Switch
-            id="published"
-            checked={formData.published}
-            onCheckedChange={(checked) => setFormData({ ...formData, published: checked })}
-            data-testid="switch-news-published"
-          />
-          <Label htmlFor="published">Publish immediately</Label>
-        </div>
-      </div>
-
-      <div className="flex justify-end space-x-2 pt-4">
-        <Button variant="outline" onClick={onCancel} data-testid="button-cancel-news">
-          Cancel
-        </Button>
-        <Button 
-          onClick={onSubmit} 
-          disabled={isLoading || !formData.title || !formData.content}
-          data-testid="button-save-news"
-        >
-          {isLoading ? "Saving..." : formData.published ? "Publish Article" : "Save Draft"}
-        </Button>
-      </div>
-    </DialogContent>
   );
 }

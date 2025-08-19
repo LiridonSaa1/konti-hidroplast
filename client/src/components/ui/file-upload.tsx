@@ -1,71 +1,49 @@
-import { useState, useRef } from "react";
-import { Upload, X, FileText, Image as ImageIcon } from "lucide-react";
+import { useState, useRef, DragEvent } from "react";
+import { Upload, X, FileImage } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 
 interface FileUploadProps {
-  label: string;
-  value?: string;
+  value: string;
   onChange: (url: string) => void;
   accept?: string;
+  label?: string;
   placeholder?: string;
-  testId?: string;
-  type?: "image" | "pdf" | "any";
+  className?: string;
 }
 
 export function FileUpload({ 
-  label, 
-  value = "", 
+  value, 
   onChange, 
-  accept, 
-  placeholder = "Enter URL or upload file",
-  testId,
-  type = "any"
+  accept = "image/*", 
+  label = "Upload Image",
+  placeholder = "Enter image URL or upload file",
+  className 
 }: FileUploadProps) {
+  const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
-  const getAcceptTypes = () => {
-    if (accept) return accept;
-    if (type === "image") return "image/*";
-    if (type === "pdf") return ".pdf";
-    return "image/*,.pdf";
-  };
+  const handleUpload = async (file: File) => {
+    if (!file) return;
 
-  const getFileIcon = () => {
-    if (type === "image") return <ImageIcon className="h-4 w-4" />;
-    if (type === "pdf") return <FileText className="h-4 w-4" />;
-    return <Upload className="h-4 w-4" />;
-  };
-
-  const uploadFile = async (file: File) => {
     setIsUploading(true);
     try {
       const formData = new FormData();
-      formData.append('file', file);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Upload failed');
-      }
-
-      const result = await response.json();
-      onChange(result.url);
+      formData.append("file", file);
+      
+      const response = await apiRequest("POST", "/api/upload", formData);
+      onChange(response.url);
       
       toast({
         title: "Success",
-        description: `File "${result.originalName}" uploaded successfully`,
+        description: "File uploaded successfully",
       });
     } catch (error) {
-      console.error('Upload error:', error);
       toast({
         title: "Error",
         description: "Failed to upload file",
@@ -76,149 +54,120 @@ export function FileUpload({
     }
   };
 
-  const handleFileSelect = (file: File) => {
-    // Validate file type
-    const isValidType = () => {
-      if (type === "image") return file.type.startsWith('image/');
-      if (type === "pdf") return file.type === 'application/pdf';
-      return file.type.startsWith('image/') || file.type === 'application/pdf';
-    };
-
-    if (!isValidType()) {
-      toast({
-        title: "Invalid file type",
-        description: `Please select a ${type === "any" ? "valid image or PDF" : type} file`,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Validate file size (10MB limit)
-    if (file.size > 10 * 1024 * 1024) {
-      toast({
-        title: "File too large",
-        description: "Please select a file smaller than 10MB",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    uploadFile(file);
-  };
-
-  const handleDrag = (e: React.DragEvent) => {
+  const handleDragOver = (e: DragEvent) => {
     e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
+    setIsDragging(true);
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDragLeave = (e: DragEvent) => {
     e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
+    setIsDragging(false);
+  };
 
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFileSelect(e.dataTransfer.files[0]);
+  const handleDrop = (e: DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    const files = Array.from(e.dataTransfer.files);
+    if (files.length > 0) {
+      handleUpload(files[0]);
     }
   };
 
-  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      handleFileSelect(e.target.files[0]);
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      handleUpload(files[0]);
     }
-  };
-
-  const clearFile = () => {
-    onChange("");
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
-  const openFileDialog = () => {
-    fileInputRef.current?.click();
   };
 
   return (
-    <div className="space-y-2">
+    <div className={className}>
       <Label>{label}</Label>
       
       {/* URL Input */}
-      <div className="flex gap-2">
+      <div className="mt-2 space-y-3">
         <Input
+          type="url"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          data-testid={testId}
-          className="flex-1"
+          data-testid="input-image-url"
         />
+        
+        {/* Upload Area */}
+        <div
+          className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+            isDragging
+              ? "border-primary bg-primary/5"
+              : "border-gray-300 hover:border-gray-400"
+          }`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept={accept}
+            onChange={handleFileSelect}
+            className="hidden"
+            data-testid="input-file-upload"
+          />
+          
+          <div className="space-y-3">
+            <Upload className="h-8 w-8 text-gray-400 mx-auto" />
+            <div>
+              <p className="text-sm text-gray-600">
+                Drag and drop an image here, or{" "}
+                <Button
+                  type="button"
+                  variant="link"
+                  className="p-0 h-auto text-primary"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isUploading}
+                  data-testid="button-browse-files"
+                >
+                  browse files
+                </Button>
+              </p>
+              <p className="text-xs text-gray-500 mt-1">
+                PNG, JPG, GIF up to 10MB
+              </p>
+            </div>
+          </div>
+          
+          {isUploading && (
+            <div className="text-sm text-primary mt-2">Uploading...</div>
+          )}
+        </div>
+        
+        {/* Image Preview */}
         {value && (
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={clearFile}
-            data-testid={`${testId}-clear`}
-          >
-            <X className="h-4 w-4" />
-          </Button>
+          <div className="relative inline-block">
+            <img
+              src={value}
+              alt="Preview"
+              className="h-24 w-24 object-cover rounded-lg border"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' fill='%23f1f5f9'/%3E%3Ctext x='48' y='48' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='12'%3EInvalid Image%3C/text%3E%3C/svg%3E";
+              }}
+              data-testid="image-preview"
+            />
+            <Button
+              type="button"
+              variant="destructive"
+              size="sm"
+              className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+              onClick={() => onChange("")}
+              data-testid="button-remove-image"
+            >
+              <X className="h-3 w-3" />
+            </Button>
+          </div>
         )}
       </div>
-
-      {/* Upload Area */}
-      <div
-        className={`
-          border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors
-          ${dragActive ? 'border-primary bg-primary/5' : 'border-gray-300 hover:border-gray-400'}
-          ${isUploading ? 'opacity-50 pointer-events-none' : ''}
-        `}
-        onDragEnter={handleDrag}
-        onDragLeave={handleDrag}
-        onDragOver={handleDrag}
-        onDrop={handleDrop}
-        onClick={openFileDialog}
-        data-testid={`${testId}-upload-area`}
-      >
-        <div className="flex flex-col items-center gap-2">
-          {getFileIcon()}
-          <div className="text-sm text-gray-600">
-            {isUploading ? (
-              "Uploading..."
-            ) : (
-              <>
-                <span className="font-medium">Click to upload</span> or drag and drop
-                <br />
-                <span className="text-xs">
-                  {type === "image" ? "Images only" : 
-                   type === "pdf" ? "PDF files only" : 
-                   "Images and PDFs"} (max 10MB)
-                </span>
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Hidden file input */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept={getAcceptTypes()}
-        onChange={handleFileInputChange}
-        className="hidden"
-        data-testid={`${testId}-file-input`}
-      />
-
-      {/* Current file preview */}
-      {value && (
-        <div className="text-xs text-gray-500 mt-1">
-          Current: {value.split('/').pop()}
-        </div>
-      )}
     </div>
   );
 }
