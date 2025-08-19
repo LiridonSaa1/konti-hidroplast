@@ -43,7 +43,6 @@ interface JobApplicationWithActions extends JobApplication {
 export function JobApplicationsManager() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [positionFilter, setPositionFilter] = useState("all");
   const [selectedApplication, setSelectedApplication] = useState<JobApplication | null>(null);
   const [viewModalOpen, setViewModalOpen] = useState(false);
 
@@ -106,16 +105,13 @@ export function JobApplicationsManager() {
   const filteredApplications = applications.filter(app => {
     const matchesSearch = 
       app.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      app.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      app.position.toLowerCase().includes(searchTerm.toLowerCase());
+      app.email.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesStatus = statusFilter === "all" || app.status === statusFilter;
-    const matchesPosition = positionFilter === "all" || app.position.toLowerCase().includes(positionFilter.toLowerCase());
     
-    return matchesSearch && matchesStatus && matchesPosition;
+    return matchesSearch && matchesStatus;
   });
 
-  const uniquePositions = Array.from(new Set(applications.map(app => app.position)));
 
   const getStatusBadgeVariant = (status: string) => {
     switch (status) {
@@ -174,48 +170,34 @@ export function JobApplicationsManager() {
 
   return (
     <div className="space-y-6">
+      {/* Search and Filter Card */}
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle className="flex items-center gap-2">
-                <Briefcase className="h-5 w-5" />
-                Job Applications Management
-              </CardTitle>
-              <CardDescription>
-                Manage job applications and track candidate progress
-              </CardDescription>
-            </div>
-            <Badge variant="secondary" className="bg-blue-50 text-blue-700">
-              {applications.length} Applications
-            </Badge>
-          </div>
+          <CardTitle className="flex items-center gap-2">
+            <Briefcase className="h-5 w-5" />
+            Job Applications Management
+          </CardTitle>
+          <CardDescription>
+            Manage job applications and track candidate progress
+          </CardDescription>
         </CardHeader>
-
-        <CardContent className="space-y-6">
-          {/* Filters */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="search" className="text-sm font-medium">
-                Search Applications
-              </Label>
+        <CardContent>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                 <Input
-                  id="search"
-                  placeholder="Search by name, email, or position..."
+                  placeholder="Search applications..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10"
                 />
               </div>
             </div>
-
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">Status Filter</Label>
+            <div className="w-48">
               <Select value={statusFilter} onValueChange={setStatusFilter}>
                 <SelectTrigger>
-                  <SelectValue placeholder="All statuses" />
+                  <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Statuses</SelectItem>
@@ -227,149 +209,150 @@ export function JobApplicationsManager() {
                 </SelectContent>
               </Select>
             </div>
-
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">Position Filter</Label>
-              <Select value={positionFilter} onValueChange={setPositionFilter}>
-                <SelectTrigger>
-                  <SelectValue placeholder="All positions" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Positions</SelectItem>
-                  {uniquePositions.map(position => (
-                    <SelectItem key={position} value={position.toLowerCase()}>
-                      {position}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
           </div>
+        </CardContent>
+      </Card>
 
-          {/* Applications Table */}
-          <div className="border rounded-lg">
+      {/* Applications Table */}
+      {filteredApplications.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Job Applications ({filteredApplications.length})</CardTitle>
+            <CardDescription>All applications in your database</CardDescription>
+          </CardHeader>
+          <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Candidate</TableHead>
-                  <TableHead>Position</TableHead>
-                  <TableHead>Experience</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Applied</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredApplications.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={6} className="text-center py-8 text-gray-500">
-                      {searchTerm || statusFilter !== "all" || positionFilter !== "all" 
-                        ? "No applications match your filters"
-                        : "No job applications submitted yet"
-                      }
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredApplications.map((application) => (
-                    <TableRow key={application.id}>
-                      <TableCell>
-                        <div className="space-y-1">
-                          <div className="font-medium flex items-center gap-2">
-                            <User className="h-4 w-4 text-gray-400" />
-                            {application.fullName}
-                          </div>
-                          <div className="text-sm text-gray-500 flex items-center gap-2">
-                            <Mail className="h-3 w-3" />
-                            {application.email}
-                          </div>
-                          {application.phoneNumber && (
-                            <div className="text-sm text-gray-500 flex items-center gap-2">
-                              <Phone className="h-3 w-3" />
-                              {application.phoneNumber}
-                            </div>
-                          )}
+                {filteredApplications.map((application) => (
+                  <TableRow key={application.id}>
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="font-medium flex items-center gap-2">
+                          <User className="h-4 w-4 text-gray-400" />
+                          {application.fullName}
                         </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="font-medium">
-                          {application.position}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-sm">
-                          {application.experience || "Not specified"}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <Select
-                          value={application.status}
-                          onValueChange={(value) => handleStatusChange(application.id, value)}
-                        >
-                          <SelectTrigger className="w-32">
-                            <Badge 
-                              variant={getStatusBadgeVariant(application.status)}
-                              className={getStatusColor(application.status)}
-                            >
-                              {application.status}
-                            </Badge>
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="pending">Pending</SelectItem>
-                            <SelectItem value="reviewed">Reviewed</SelectItem>
-                            <SelectItem value="shortlisted">Shortlisted</SelectItem>
-                            <SelectItem value="hired">Hired</SelectItem>
-                            <SelectItem value="rejected">Rejected</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                      <TableCell>
                         <div className="text-sm text-gray-500 flex items-center gap-2">
-                          <Calendar className="h-3 w-3" />
-                          {application.createdAt ? new Date(application.createdAt).toLocaleDateString() : "Unknown"}
+                          <Mail className="h-3 w-3" />
+                          {application.email}
                         </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2">
+                        {application.phoneNumber && (
+                          <div className="text-sm text-gray-500 flex items-center gap-2">
+                            <Phone className="h-3 w-3" />
+                            {application.phoneNumber}
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Select
+                        value={application.status}
+                        onValueChange={(value) => handleStatusChange(application.id, value)}
+                      >
+                        <SelectTrigger className="w-32">
+                          <Badge 
+                            variant={getStatusBadgeVariant(application.status)}
+                            className={getStatusColor(application.status)}
+                          >
+                            {application.status}
+                          </Badge>
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="reviewed">Reviewed</SelectItem>
+                          <SelectItem value="shortlisted">Shortlisted</SelectItem>
+                          <SelectItem value="hired">Hired</SelectItem>
+                          <SelectItem value="rejected">Rejected</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </TableCell>
+                    <TableCell>
+                      <div className="text-sm text-gray-500 flex items-center gap-2">
+                        <Calendar className="h-3 w-3" />
+                        {application.createdAt ? new Date(application.createdAt).toLocaleDateString() : "Unknown"}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedApplication(application);
+                            setViewModalOpen(true);
+                          }}
+                          className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        {application.resumeUrl && application.resumeUrl.trim() !== "" && (
                           <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => {
-                              setSelectedApplication(application);
-                              setViewModalOpen(true);
+                              // Handle resume display - if it's a file name, show it in modal
+                              if (application.resumeUrl && !application.resumeUrl.startsWith('http')) {
+                                alert(`Resume: ${application.resumeUrl}`);
+                              } else {
+                                window.open(application.resumeUrl || "", "_blank");
+                              }
                             }}
-                            className="text-blue-600 hover:text-blue-800 hover:bg-blue-50"
+                            className="text-green-600 hover:text-green-800 hover:bg-green-50"
                           >
-                            <Eye className="h-4 w-4" />
+                            <FileText className="h-4 w-4" />
                           </Button>
-                          {application.resumeUrl && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => window.open(application.resumeUrl || "", "_blank")}
-                              className="text-green-600 hover:text-green-800 hover:bg-green-50"
-                            >
-                              <FileText className="h-4 w-4" />
-                            </Button>
-                          )}
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteApplication(application.id)}
-                            className="text-red-600 hover:text-red-800 hover:bg-red-50"
-                            disabled={deleteApplicationMutation.isPending}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
+                        )}
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteApplication(application.id)}
+                          className="text-red-600 hover:text-red-800 hover:bg-red-50"
+                          disabled={deleteApplicationMutation.isPending}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
+      
+      {/* Empty State */}
+      {filteredApplications.length === 0 && (
+        <Card>
+          <CardContent className="text-center py-8">
+            <Briefcase className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No Applications Found</h3>
+            <p className="text-gray-500 mb-4">
+              {searchTerm || statusFilter !== "all" 
+                ? "No applications match your current filters."
+                : "No job applications have been submitted yet."}
+            </p>
+            {(searchTerm || statusFilter !== "all") && (
+              <Button 
+                variant="outline" 
+                onClick={() => {
+                  setSearchTerm("");
+                  setStatusFilter("all");
+                }}
+              >
+                Clear Filters
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Application Details Modal */}
       {viewModalOpen && selectedApplication && (
@@ -396,14 +379,6 @@ export function JobApplicationsManager() {
                   <p className="text-sm text-gray-600 mt-1">{selectedApplication.phoneNumber || "Not provided"}</p>
                 </div>
                 <div>
-                  <Label className="text-sm font-medium">Position</Label>
-                  <p className="text-sm text-gray-600 mt-1">{selectedApplication.position}</p>
-                </div>
-                <div>
-                  <Label className="text-sm font-medium">Experience</Label>
-                  <p className="text-sm text-gray-600 mt-1">{selectedApplication.experience || "Not provided"}</p>
-                </div>
-                <div>
                   <Label className="text-sm font-medium">Application Date</Label>
                   <p className="text-sm text-gray-600 mt-1">
                     {selectedApplication.createdAt ? new Date(selectedApplication.createdAt).toLocaleDateString() : "Unknown"}
@@ -422,18 +397,25 @@ export function JobApplicationsManager() {
                 </div>
               )}
 
-              {selectedApplication.resumeUrl && (
+              {selectedApplication.resumeUrl && selectedApplication.resumeUrl.trim() !== "" && (
                 <div>
                   <Label className="text-sm font-medium">Resume</Label>
                   <div className="mt-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => window.open(selectedApplication.resumeUrl || "", "_blank")}
-                      className="flex items-center gap-2"
-                    >
-                      <FileText className="h-4 w-4" />
-                      View Resume
-                    </Button>
+                    {selectedApplication.resumeUrl.startsWith('http') ? (
+                      <Button
+                        variant="outline"
+                        onClick={() => window.open(selectedApplication.resumeUrl || "", "_blank")}
+                        className="flex items-center gap-2"
+                      >
+                        <FileText className="h-4 w-4" />
+                        View Resume
+                      </Button>
+                    ) : (
+                      <div className="p-3 bg-gray-50 rounded-lg flex items-center gap-2">
+                        <FileText className="h-4 w-4 text-gray-500" />
+                        <span className="text-sm text-gray-700">{selectedApplication.resumeUrl}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
