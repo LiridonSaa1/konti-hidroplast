@@ -198,15 +198,7 @@ export default function AdminPanel() {
               Projects
             </Button>
             
-            <Button
-              variant={activeTab === "media" ? "default" : "ghost"}
-              className="w-full justify-start"
-              onClick={() => setActiveTab("media")}
-              data-testid="nav-media"
-            >
-              <Image className="h-4 w-4 mr-2" />
-              Media & Photos
-            </Button>
+            
             
             <Button
               variant={activeTab === "news" ? "default" : "ghost"}
@@ -651,11 +643,7 @@ export default function AdminPanel() {
             </div>
           )}
 
-          {activeTab === "media" && (
-            <div data-testid="media-manager">
-              <MediaManager />
-            </div>
-          )}
+          
 
           {activeTab === "news" && (
             <div data-testid="news-manager">
