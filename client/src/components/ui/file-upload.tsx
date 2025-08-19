@@ -106,17 +106,8 @@ export function FileUpload({
     <div className={className}>
       <Label>{label}</Label>
       
-      {/* URL Input */}
+      {/* Upload Area */}
       <div className="mt-2 space-y-3">
-        <Input
-          type="url"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          placeholder={placeholder}
-          data-testid="input-image-url"
-        />
-        
-        {/* Upload Area */}
         <div
           className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
             isDragging
