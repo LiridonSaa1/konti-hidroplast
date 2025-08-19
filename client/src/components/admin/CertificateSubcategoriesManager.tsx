@@ -206,6 +206,14 @@ export function CertificateSubcategoriesManager() {
     form.reset();
   };
 
+  const handleDialogOpenChange = (open: boolean) => {
+    if (!open) {
+      handleDialogClose();
+    } else {
+      setIsOpen(true);
+    }
+  };
+
   if (isLoading) {
     return <div data-testid="loading">Loading certificate subcategories...</div>;
   }
@@ -214,7 +222,7 @@ export function CertificateSubcategoriesManager() {
     <div className="space-y-6" data-testid="certificate-subcategories-manager">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Certificate Subcategories</h2>
-        <Dialog open={isOpen} onOpenChange={handleDialogClose}>
+        <Dialog open={isOpen} onOpenChange={handleDialogOpenChange}>
           <DialogTrigger asChild>
             <Button data-testid="button-add-subcategory">
               <Plus className="w-4 h-4 mr-2" />
