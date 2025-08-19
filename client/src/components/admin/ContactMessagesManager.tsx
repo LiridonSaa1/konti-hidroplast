@@ -23,11 +23,16 @@ export function ContactMessagesManager() {
 
   const { data: messages = [], isLoading } = useQuery({
     queryKey: ["/api/admin/contact-messages"],
-    queryFn: () => apiRequest("/api/admin/contact-messages") as Promise<ContactMessage[]>,
+    queryFn: async (): Promise<ContactMessage[]> => {
+      const response = await apiRequest("/api/admin/contact-messages", "GET");
+      return await response.json();
+    },
   });
 
   const deleteMessageMutation = useMutation({
-    mutationFn: (id: number) => apiRequest(`/api/admin/contact-messages/${id}`, { method: "DELETE" }),
+    mutationFn: async (id: number): Promise<void> => {
+      await apiRequest(`/api/admin/contact-messages/${id}`, "DELETE");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/contact-messages"] });
       toast({ title: "Success", description: "Contact message deleted successfully." });
@@ -42,11 +47,10 @@ export function ContactMessagesManager() {
   });
 
   const markAsReadMutation = useMutation({
-    mutationFn: (id: number) => 
-      apiRequest(`/api/admin/contact-messages/${id}`, {
-        method: "PATCH",
-        body: JSON.stringify({ status: "read" }),
-      }),
+    mutationFn: async (id: number): Promise<ContactMessage> => {
+      const response = await apiRequest(`/api/admin/contact-messages/${id}`, "PATCH", { status: "read" });
+      return await response.json();
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/contact-messages"] });
       toast({ title: "Success", description: "Message marked as read." });

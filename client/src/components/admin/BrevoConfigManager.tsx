@@ -39,7 +39,10 @@ export function BrevoConfigManager() {
 
   const { data: config, isLoading } = useQuery({
     queryKey: ["/api/admin/brevo-config"],
-    queryFn: () => apiRequest("/api/admin/brevo-config") as Promise<BrevoConfigWithStatus | null>,
+    queryFn: async (): Promise<BrevoConfigWithStatus | null> => {
+      const response = await apiRequest("/api/admin/brevo-config", "GET");
+      return await response.json();
+    },
   });
 
   const form = useForm<BrevoConfigForm>({
@@ -68,14 +71,13 @@ export function BrevoConfigManager() {
   }, [config, form]);
 
   const createConfigMutation = useMutation({
-    mutationFn: (data: BrevoConfigForm) => 
-      apiRequest("/api/admin/brevo-config", {
-        method: "POST",
-        body: JSON.stringify(data),
-      }),
+    mutationFn: async (data: BrevoConfigForm): Promise<BrevoConfigWithStatus> => {
+      const response = await apiRequest("/api/admin/brevo-config", "POST", data);
+      return await response.json();
+    },
     onSuccess: (data: BrevoConfigWithStatus) => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/brevo-config"] });
-      setConnectionStatus(data.connectionTest ?? null);
+      setConnectionStatus(data.connectionTest ?? false);
       toast({ 
         title: "Success", 
         description: "Brevo configuration created successfully.",
@@ -92,14 +94,13 @@ export function BrevoConfigManager() {
   });
 
   const updateConfigMutation = useMutation({
-    mutationFn: (data: BrevoConfigForm) => 
-      apiRequest(`/api/admin/brevo-config/${config!.id}`, {
-        method: "PATCH",
-        body: JSON.stringify(data),
-      }),
+    mutationFn: async (data: BrevoConfigForm): Promise<BrevoConfigWithStatus> => {
+      const response = await apiRequest(`/api/admin/brevo-config/${config!.id}`, "PATCH", data);
+      return await response.json();
+    },
     onSuccess: (data: BrevoConfigWithStatus) => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/brevo-config"] });
-      setConnectionStatus(data.connectionTest ?? null);
+      setConnectionStatus(data.connectionTest ?? false);
       toast({ 
         title: "Success", 
         description: "Brevo configuration updated successfully.",
@@ -116,7 +117,10 @@ export function BrevoConfigManager() {
   });
 
   const testConnectionMutation = useMutation({
-    mutationFn: () => apiRequest("/api/admin/brevo-config/test", { method: "POST" }),
+    mutationFn: async (): Promise<{ success: boolean }> => {
+      const response = await apiRequest("/api/admin/brevo-config/test", "POST");
+      return await response.json();
+    },
     onSuccess: (data: { success: boolean }) => {
       setConnectionStatus(data.success);
       toast({ 
