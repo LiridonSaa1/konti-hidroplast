@@ -8,6 +8,13 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
+## Enhanced Certificate Display with Dynamic Filtering (August 19, 2025)
+- Updated certificates page to filter out categories and subcategories that don't contain certificates
+- Enhanced organizeData function to only display categories/subcategories with actual certificate content
+- Improved "Certificate Only" button functionality to open certificate images in new tabs when clicked
+- Fixed all TypeScript errors with proper type annotations for useQuery hooks
+- Certificates page now dynamically shows only populated categories/subcategories from admin panel data
+
 ## Project Migration and Certificate Display Enhancement (August 19, 2025)
 - Successfully completed migration from Replit Agent to standard Replit environment
 - Fixed authentication and security issues with user management

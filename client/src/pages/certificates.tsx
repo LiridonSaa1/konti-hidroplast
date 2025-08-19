@@ -27,15 +27,15 @@ interface OrganizedCategory {
 
 // Fetch certificate data from API
 function useCertificateData() {
-  const categories = useQuery({
+  const categories = useQuery<CertificateCategory[]>({
     queryKey: ['/api/certificate-categories'],
   });
 
-  const subcategories = useQuery({
+  const subcategories = useQuery<CertificateSubcategory[]>({
     queryKey: ['/api/certificate-subcategories'],
   });
 
-  const certificates = useQuery({
+  const certificates = useQuery<Certificate[]>({
     queryKey: ['/api/certificates'],
   });
 
@@ -54,43 +54,43 @@ function organizeData(
   subcategories: CertificateSubcategory[],
   certificates: Certificate[]
 ): OrganizedCategory[] {
-  return categories
-    .map(category => {
-      const categorySubcategories = subcategories.filter(sub => sub.categoryId === category.id);
-      const categoryCertificates = certificates.filter(cert => cert.categoryId === category.id && !cert.subcategoryId);
+  const organizedCategories: OrganizedCategory[] = [];
+  
+  for (const category of categories) {
+    const categorySubcategories = subcategories.filter(sub => sub.categoryId === category.id);
+    const categoryCertificates = certificates.filter(cert => cert.categoryId === category.id && !cert.subcategoryId);
 
-      if (categorySubcategories.length > 0) {
-        // Has subcategories - filter out subcategories with no certificates
-        const subsections = categorySubcategories
-          .map(subcategory => ({
-            id: subcategory.id,
-            title: subcategory.title,
-            certificates: certificates.filter(cert => cert.subcategoryId === subcategory.id),
-          }))
-          .filter(subsection => subsection.certificates.length > 0); // Only include subcategories with certificates
+    if (categorySubcategories.length > 0) {
+      // Has subcategories - filter out subcategories with no certificates
+      const subsections = categorySubcategories
+        .map(subcategory => ({
+          id: subcategory.id,
+          title: subcategory.title,
+          certificates: certificates.filter(cert => cert.subcategoryId === subcategory.id),
+        }))
+        .filter(subsection => subsection.certificates.length > 0); // Only include subcategories with certificates
 
-        // Only return category if it has subcategories with certificates
-        if (subsections.length > 0) {
-          return {
-            id: category.id,
-            title: category.title,
-            subsections,
-          };
-        }
-        return null; // Category has subcategories but none have certificates
-      } else {
-        // No subcategories, check if category has direct certificates
-        if (categoryCertificates.length > 0) {
-          return {
-            id: category.id,
-            title: category.title,
-            certificates: categoryCertificates,
-          };
-        }
-        return null; // Category has no certificates
+      // Only add category if it has subcategories with certificates
+      if (subsections.length > 0) {
+        organizedCategories.push({
+          id: category.id,
+          title: category.title,
+          subsections,
+        });
       }
-    })
-    .filter((category): category is OrganizedCategory => category !== null); // Remove null categories
+    } else {
+      // No subcategories, check if category has direct certificates
+      if (categoryCertificates.length > 0) {
+        organizedCategories.push({
+          id: category.id,
+          title: category.title,
+          certificates: categoryCertificates,
+        });
+      }
+    }
+  }
+  
+  return organizedCategories;
 }
 
 // Legacy hardcoded data as fallback
@@ -751,10 +751,19 @@ function CertificatesPage() {
             Download
           </a>
         ) : (
-          <div className="inline-flex items-center w-full justify-center px-3 py-2 bg-gray-300 text-gray-500 text-sm rounded-lg cursor-not-allowed">
+          <button
+            onClick={() => {
+              const imageUrl = 'image' in certificate ? certificate.image : certificate.imageUrl;
+              if (imageUrl) {
+                window.open(imageUrl, '_blank', 'noopener,noreferrer');
+              }
+            }}
+            className="inline-flex items-center w-full justify-center px-3 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm rounded-lg transition-colors"
+            data-testid={`certificate-${categoryId}-${index}`}
+          >
             <Shield className="w-3 h-3 mr-2" />
             Certificate Only
-          </div>
+          </button>
         )}
       </div>
     </div>
