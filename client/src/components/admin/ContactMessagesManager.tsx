@@ -128,12 +128,15 @@ export function ContactMessagesManager() {
   if (selectedMessage) {
     return (
       <Card className="w-full max-w-4xl mx-auto">
-        <CardHeader className="border-b bg-gradient-to-r from-gray-50 to-white">
+        <CardHeader className="border-b bg-gradient-to-r from-blue-50 to-white">
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="text-2xl text-gray-800">Contact Message Details</CardTitle>
-              <CardDescription className="text-gray-600">
-                View and manage contact message from {selectedMessage.fullName}
+              <CardTitle className="text-2xl text-blue-900 flex items-center">
+                <MessageSquare className="h-6 w-6 mr-3 text-blue-600" />
+                Contact Message Details
+              </CardTitle>
+              <CardDescription className="text-blue-700 mt-1">
+                Viewing message from {selectedMessage.fullName} • Received {format(new Date(selectedMessage.createdAt!), 'PPP')}
               </CardDescription>
             </div>
             <Button 
@@ -237,15 +240,24 @@ export function ContactMessagesManager() {
           <MessageSquare className="h-6 w-6 mr-3 text-blue-600" />
           Contact Messages
         </CardTitle>
-        <CardDescription className="text-blue-700">
-          Manage and respond to customer inquiries and contact form submissions
+        <CardDescription className="text-blue-700 mt-1">
+          View and manage customer inquiries submitted through the contact form. Track message status and respond to customer needs.
         </CardDescription>
       </CardHeader>
 
       <CardContent className="p-6">
         {/* Enhanced Filter Section */}
-        <Card className="mb-6 border-gray-200 shadow-sm">
-          <CardContent className="p-4">
+        <Card className="mb-6 border-gray-200 shadow-sm bg-gray-50/50">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg text-gray-800 flex items-center">
+              <Search className="h-5 w-5 mr-2 text-gray-600" />
+              Search & Filter Messages
+            </CardTitle>
+            <CardDescription className="text-gray-600">
+              Find specific messages by name, email, or content, and filter by status
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-0">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -253,13 +265,13 @@ export function ContactMessagesManager() {
                   placeholder="Search messages, names, emails..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                  className="pl-9 border-gray-300 focus:border-blue-500 focus:ring-blue-500 bg-white"
                   data-testid="input-search-messages"
                 />
               </div>
               
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="border-gray-300 focus:border-blue-500 focus:ring-blue-500" data-testid="select-status-filter">
+                <SelectTrigger className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 bg-white" data-testid="select-status-filter">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -270,8 +282,10 @@ export function ContactMessagesManager() {
                 </SelectContent>
               </Select>
 
-              <div className="text-sm text-gray-500 flex items-center justify-end">
-                {filteredMessages.length} of {messages.length} messages
+              <div className="flex items-center justify-end space-x-2">
+                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+                  {filteredMessages.length} of {messages.length} messages
+                </Badge>
               </div>
             </div>
           </CardContent>
@@ -285,19 +299,33 @@ export function ContactMessagesManager() {
               <p className="mt-4 text-gray-500">Loading contact messages...</p>
             </div>
           ) : filteredMessages.length === 0 ? (
-            <div className="p-8 text-center">
-              <MessageSquare className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No messages found</h3>
-              <p className="text-gray-500">
+            <div className="p-12 text-center">
+              <div className="bg-gray-100 rounded-full h-16 w-16 flex items-center justify-center mx-auto mb-4">
+                <MessageSquare className="h-8 w-8 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No contact messages found</h3>
+              <p className="text-gray-500 max-w-sm mx-auto">
                 {searchQuery || statusFilter !== "all" 
-                  ? "Try adjusting your search criteria" 
-                  : "Contact messages will appear here when customers submit the contact form"}
+                  ? "No messages match your current search criteria. Try adjusting your filters or search terms." 
+                  : "Contact messages will appear here when customers submit the contact form through your website."}
               </p>
+              {(searchQuery || statusFilter !== "all") && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setSearchQuery("");
+                    setStatusFilter("all");
+                  }}
+                  className="mt-4"
+                >
+                  Clear Filters
+                </Button>
+              )}
             </div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
+                <thead className="bg-gray-50/80 border-b border-gray-200">
                   <tr>
                     <th 
                       className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase cursor-pointer hover:bg-gray-100 transition-colors"
@@ -385,30 +413,44 @@ export function ContactMessagesManager() {
                           {format(new Date(message.createdAt!), 'MMM dd, yyyy')}
                         </div>
                       </td>
-                      <td className="px-4 py-4 text-right space-x-2">
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => setSelectedMessage(message)}
-                          className="hover:bg-blue-100 hover:text-blue-700"
-                          data-testid={`button-view-${message.id}`}
-                        >
-                          <Eye className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() => {
-                            if (confirm("Are you sure you want to delete this message?")) {
-                              deleteMessageMutation.mutate(message.id);
-                            }
-                          }}
-                          disabled={deleteMessageMutation.isPending}
-                          className="hover:bg-red-100 hover:text-red-700"
-                          data-testid={`button-delete-${message.id}`}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                      <td className="px-4 py-4 text-right">
+                        <div className="flex items-center justify-end space-x-1">
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => setSelectedMessage(message)}
+                            className="hover:bg-blue-100 hover:text-blue-700 h-8 w-8 p-0"
+                            data-testid={`button-view-${message.id}`}
+                          >
+                            <Eye className="h-4 w-4" />
+                          </Button>
+                          {message.status === "unread" && (
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() => markAsReadMutation.mutate(message.id)}
+                              disabled={markAsReadMutation.isPending}
+                              className="hover:bg-green-100 hover:text-green-700 h-8 w-8 p-0"
+                              data-testid={`button-mark-read-${message.id}`}
+                            >
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                          )}
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            onClick={() => {
+                              if (confirm("Are you sure you want to delete this message?")) {
+                                deleteMessageMutation.mutate(message.id);
+                              }
+                            }}
+                            disabled={deleteMessageMutation.isPending}
+                            className="hover:bg-red-100 hover:text-red-700 h-8 w-8 p-0"
+                            data-testid={`button-delete-${message.id}`}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
                       </td>
                     </tr>
                   ))}
