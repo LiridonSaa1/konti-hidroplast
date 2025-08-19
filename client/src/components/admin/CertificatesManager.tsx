@@ -228,10 +228,12 @@ export function CertificatesManager() {
     }
   };
 
-  const handleDialogClose = () => {
-    setIsOpen(false);
-    setEditingCertificate(null);
-    form.reset();
+  const handleDialogOpenChange = (open: boolean) => {
+    setIsOpen(open);
+    if (!open) {
+      setEditingCertificate(null);
+      form.reset();
+    }
   };
 
   const handleImageUpload = (imageUrl: string) => {
@@ -252,7 +254,7 @@ export function CertificatesManager() {
             Manage certificate documents and images for your organization
           </p>
         </div>
-        <Dialog open={isOpen} onOpenChange={handleDialogClose}>
+        <Dialog open={isOpen} onOpenChange={handleDialogOpenChange}>
           <DialogTrigger asChild>
             <Button data-testid="button-add-certificate">
               <Plus className="w-4 h-4 mr-2" />
@@ -389,7 +391,7 @@ export function CertificatesManager() {
                   <Button
                     type="button"
                     variant="outline"
-                    onClick={handleDialogClose}
+                    onClick={() => handleDialogOpenChange(false)}
                     data-testid="button-cancel"
                   >
                     Cancel
