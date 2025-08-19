@@ -415,12 +415,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/news", async (req, res) => {
     try {
+      console.log("Received news data:", JSON.stringify(req.body, null, 2));
       const newsData = insertNewsArticleSchema.parse(req.body);
+      console.log("Parsed news data:", JSON.stringify(newsData, null, 2));
       const article = await storage.createNews(newsData);
+      console.log("Created article:", JSON.stringify(article, null, 2));
       res.status(201).json(article);
     } catch (error) {
       console.error("Error creating news article:", error);
-      res.status(400).json({ error: "Invalid news data" });
+      if (error instanceof Error) {
+        console.error("Error message:", error.message);
+        console.error("Error stack:", error.stack);
+      }
+      res.status(400).json({ error: "Invalid news data", details: error instanceof Error ? error.message : String(error) });
     }
   });
 
