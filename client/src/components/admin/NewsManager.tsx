@@ -453,27 +453,7 @@ export function NewsManager() {
                   />
                 </div>
 
-                <div>
-                  <Label htmlFor="subtitle">Subtitle</Label>
-                  <Input
-                    id="subtitle"
-                    value={formData.subtitle}
-                    onChange={(e) => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
-                    placeholder="Enter article subtitle (optional)"
-                    data-testid="input-subtitle"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="author">Author</Label>
-                  <Input
-                    id="author"
-                    value={formData.author}
-                    onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
-                    placeholder="Enter author name"
-                    data-testid="input-author"
-                  />
-                </div>
+
 
                 <div className="flex items-center space-x-2">
                   <Switch
@@ -693,27 +673,7 @@ export function NewsManager() {
                   />
                 </div>
 
-                <div>
-                  <Label htmlFor="edit-subtitle">Subtitle</Label>
-                  <Input
-                    id="edit-subtitle"
-                    value={formData.subtitle}
-                    onChange={(e) => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
-                    placeholder="Enter article subtitle (optional)"
-                    data-testid="input-edit-subtitle"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="edit-author">Author</Label>
-                  <Input
-                    id="edit-author"
-                    value={formData.author}
-                    onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
-                    placeholder="Enter author name"
-                    data-testid="input-edit-author"
-                  />
-                </div>
+
 
                 <div className="flex items-center space-x-2">
                   <Switch
