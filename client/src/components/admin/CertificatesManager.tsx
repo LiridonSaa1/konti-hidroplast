@@ -42,6 +42,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { FileUpload } from "@/components/ui/file-upload";
 
+
 type CertificateCategory = {
   id: number;
   title: string;
@@ -66,15 +67,16 @@ type Certificate = {
   updatedAt: Date;
 };
 
-const certificateSchema = z.object({
+// Local form schema with custom validation
+const certificateFormSchema = z.object({
   categoryId: z.number().min(1, "Category is required"),
-  subcategoryId: z.number().min(1, "Subcategory is required"),
+  subcategoryId: z.number().optional(), // Make subcategory optional
   imageUrl: z.string().min(1, "Image is required"),
   sortOrder: z.number().int().min(0).default(0),
   status: z.enum(["active", "inactive"]).default("active"),
 });
 
-type CertificateForm = z.infer<typeof certificateSchema>;
+type CertificateForm = z.infer<typeof certificateFormSchema>;
 
 export function CertificatesManager() {
   const [isOpen, setIsOpen] = useState(false);
@@ -88,10 +90,10 @@ export function CertificatesManager() {
   const queryClient = useQueryClient();
 
   const form = useForm<CertificateForm>({
-    resolver: zodResolver(certificateSchema),
+    resolver: zodResolver(certificateFormSchema),
     defaultValues: {
       categoryId: 0,
-      subcategoryId: 0,
+      subcategoryId: undefined,
       imageUrl: "",
       sortOrder: 0,
       status: "active",
@@ -206,7 +208,7 @@ export function CertificatesManager() {
     setEditingCertificate(certificate);
     form.reset({
       categoryId: certificate.categoryId,
-      subcategoryId: certificate.subcategoryId,
+      subcategoryId: certificate.subcategoryId || undefined,
       imageUrl: certificate.imageUrl,
       sortOrder: certificate.sortOrder,
       status: certificate.status as "active" | "inactive",
@@ -279,7 +281,7 @@ export function CertificatesManager() {
                         onValueChange={(value) => {
                           const categoryId = parseInt(value);
                           field.onChange(categoryId);
-                          form.setValue("subcategoryId", 0); // Reset subcategory when category changes
+                          form.setValue("subcategoryId", undefined); // Reset subcategory when category changes
                         }}
                         defaultValue={field.value?.toString()}
                       >
@@ -307,8 +309,14 @@ export function CertificatesManager() {
                     <FormItem>
                       <FormLabel>Subcategory</FormLabel>
                       <Select 
-                        onValueChange={(value) => field.onChange(parseInt(value))} 
-                        defaultValue={field.value?.toString()}
+                        onValueChange={(value) => {
+                          if (value === "none") {
+                            field.onChange(undefined);
+                          } else {
+                            field.onChange(parseInt(value));
+                          }
+                        }} 
+                        defaultValue={field.value?.toString() || "none"}
                         disabled={!selectedCategoryId}
                       >
                         <FormControl>
@@ -317,6 +325,7 @@ export function CertificatesManager() {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
+                          <SelectItem value="none">None (No subcategory)</SelectItem>
                           {getFilteredSubcategories().map((subcategory: CertificateSubcategory) => (
                             <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
                               {subcategory.title}
