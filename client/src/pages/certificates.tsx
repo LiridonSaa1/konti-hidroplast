@@ -54,32 +54,43 @@ function organizeData(
   subcategories: CertificateSubcategory[],
   certificates: Certificate[]
 ): OrganizedCategory[] {
-  return categories.map(category => {
-    const categorySubcategories = subcategories.filter(sub => sub.categoryId === category.id);
-    const categoryCertificates = certificates.filter(cert => cert.categoryId === category.id);
+  return categories
+    .map(category => {
+      const categorySubcategories = subcategories.filter(sub => sub.categoryId === category.id);
+      const categoryCertificates = certificates.filter(cert => cert.categoryId === category.id && !cert.subcategoryId);
 
-    if (categorySubcategories.length > 0) {
-      // Has subcategories
-      const subsections = categorySubcategories.map(subcategory => ({
-        id: subcategory.id,
-        title: subcategory.title,
-        certificates: certificates.filter(cert => cert.subcategoryId === subcategory.id),
-      }));
+      if (categorySubcategories.length > 0) {
+        // Has subcategories - filter out subcategories with no certificates
+        const subsections = categorySubcategories
+          .map(subcategory => ({
+            id: subcategory.id,
+            title: subcategory.title,
+            certificates: certificates.filter(cert => cert.subcategoryId === subcategory.id),
+          }))
+          .filter(subsection => subsection.certificates.length > 0); // Only include subcategories with certificates
 
-      return {
-        id: category.id,
-        title: category.title,
-        subsections,
-      };
-    } else {
-      // No subcategories, direct certificates
-      return {
-        id: category.id,
-        title: category.title,
-        certificates: categoryCertificates,
-      };
-    }
-  });
+        // Only return category if it has subcategories with certificates
+        if (subsections.length > 0) {
+          return {
+            id: category.id,
+            title: category.title,
+            subsections,
+          };
+        }
+        return null; // Category has subcategories but none have certificates
+      } else {
+        // No subcategories, check if category has direct certificates
+        if (categoryCertificates.length > 0) {
+          return {
+            id: category.id,
+            title: category.title,
+            certificates: categoryCertificates,
+          };
+        }
+        return null; // Category has no certificates
+      }
+    })
+    .filter((category): category is OrganizedCategory => category !== null); // Remove null categories
 }
 
 // Legacy hardcoded data as fallback
