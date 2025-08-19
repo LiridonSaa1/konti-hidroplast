@@ -59,7 +59,7 @@ class BrevoService {
       
       const mailOptions = {
         from: `"${config.senderName}" <${config.senderEmail}>`,
-        to: config.senderEmail, // Send to admin
+        to: config.recipientEmail || config.senderEmail, // Send to recipient email or fallback to sender email
         subject: `New Contact Form Submission - ${contactData.fullName}`,
         html: this.generateNotificationEmailHTML(contactData),
         text: this.generateNotificationEmailText(contactData)

@@ -16,9 +16,10 @@ import { apiRequest } from "@/lib/queryClient";
 import type { BrevoConfig } from "@shared/schema";
 
 const brevoConfigSchema = z.object({
-  apiKey: z.string().min(1, "API key is required"),
+  apiKey: z.string().min(1, "SMTP key is required"),
   senderEmail: z.string().email("Invalid email address"),
   senderName: z.string().min(1, "Sender name is required"),
+  recipientEmail: z.string().email("Invalid recipient email address"),
   templateId: z.number().optional(),
   isActive: z.boolean(),
 });
@@ -51,6 +52,7 @@ export function BrevoConfigManager() {
       apiKey: "",
       senderEmail: "",
       senderName: "Konti Hidroplast",
+      recipientEmail: "",
       templateId: undefined,
       isActive: true,
     },
@@ -63,6 +65,7 @@ export function BrevoConfigManager() {
         apiKey: "", // Never populate the API key for security
         senderEmail: config.senderEmail,
         senderName: config.senderName,
+        recipientEmail: config.recipientEmail || "",
         templateId: config.templateId || undefined,
         isActive: config.isActive ?? true,
       });
@@ -268,7 +271,7 @@ export function BrevoConfigManager() {
 
           <Separator />
 
-          {/* Sender Configuration */}
+          {/* Email Configuration */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="senderEmail" className="text-sm font-semibold text-gray-700">
@@ -285,6 +288,9 @@ export function BrevoConfigManager() {
               {form.formState.errors.senderEmail && (
                 <p className="text-sm text-red-600">{form.formState.errors.senderEmail.message}</p>
               )}
+              <p className="text-xs text-gray-500">
+                Use your SMTP login email from Brevo SMTP tab
+              </p>
             </div>
 
             <div className="space-y-2">
@@ -302,6 +308,29 @@ export function BrevoConfigManager() {
                 <p className="text-sm text-red-600">{form.formState.errors.senderName.message}</p>
               )}
             </div>
+          </div>
+
+          <Separator />
+
+          {/* Notification Configuration */}
+          <div className="space-y-2">
+            <Label htmlFor="recipientEmail" className="text-sm font-semibold text-gray-700">
+              Notification Recipient Email *
+            </Label>
+            <Input
+              id="recipientEmail"
+              type="email"
+              placeholder="admin@kontihidroplast.com"
+              {...form.register("recipientEmail")}
+              className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              data-testid="input-recipient-email"
+            />
+            {form.formState.errors.recipientEmail && (
+              <p className="text-sm text-red-600">{form.formState.errors.recipientEmail.message}</p>
+            )}
+            <p className="text-xs text-gray-500">
+              Contact form notifications will be sent to this email address
+            </p>
           </div>
 
           <Separator />

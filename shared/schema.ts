@@ -153,6 +153,7 @@ export const brevoConfig = pgTable("brevo_config", {
   apiKey: text("api_key").notNull(), // SMTP key (not API key)
   senderEmail: text("sender_email").notNull(),
   senderName: text("sender_name").notNull(),
+  recipientEmail: text("recipient_email").notNull().default("admin@kontihidroplast.com"), // Where to send contact form notifications
   templateId: integer("template_id"),
   isActive: boolean("is_active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
