@@ -45,25 +45,25 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
     label: t("nav.products"),
     type: "dropdown",
     items: [
-      { label: "All Products", href: "/products" },
-      { label: "Water Supply Systems", href: "/products/water-supply-systems" },
+      { label: t("nav.products.all"), href: "/products" },
+      { label: t("nav.products.waterSupply"), href: "/products/water-supply-systems" },
       {
-        label: "Sewerage Systems",
+        label: t("nav.products.sewerage"),
         href: "/products#sewerage",
         items: [
-          { label: "HDPE Konti Kan OD", href: "/konti-kan-pipes-and-fittings" },
-          { label: "PPHM Konti Kan ID", href: "/pp-hm-pipes-and-fittings" },
+          { label: t("nav.products.hdpeKontiKan"), href: "/konti-kan-pipes-and-fittings" },
+          { label: t("nav.products.pphmKontiKan"), href: "/pp-hm-pipes-and-fittings" },
           {
-            label: "Konti kan spiral HDPE/ID",
+            label: t("nav.products.spiralKontiKan"),
             href: "/konti-kan-spiral-pipes",
           },
-          { label: "PP ML Compact Pipe OD", href: "/pp-hm-smooth-od" },
-          { label: "Manholes", href: "/manholes" },
-          { label: "Konti Kan Drainage", href: "/konti-kan-drainage" },
+          { label: t("nav.products.ppMlCompact"), href: "/pp-hm-smooth-od" },
+          { label: t("nav.products.manholes"), href: "/manholes" },
+          { label: t("nav.products.drainage"), href: "/konti-kan-drainage" },
         ],
       },
-      { label: "Gas Pipeline System", href: "/products/gas-pipeline-systems" },
-      { label: "Cable Protection", href: "/products/cable-protection" },
+      { label: t("nav.products.gasPipeline"), href: "/products/gas-pipeline-systems" },
+      { label: t("nav.products.cableProtection"), href: "/products/cable-protection" },
       // { label: "Full Catalog", href: "https://konti-hidroplast.com.mk/products/", external: true },
     ],
   },
@@ -72,11 +72,11 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
     type: "dropdown",
     items: [
       {
-        label: "Brochures",
+        label: t("nav.downloads.brochures"),
         href: "/brochures",
       },
       {
-        label: "Certificates",
+        label: t("nav.downloads.certificates"),
         href: "/certificates",
       },
     ],
@@ -85,7 +85,7 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
   {
     label: t("nav.contact"),
     type: "dropdown",
-    items: [{ label: "Career", href: "/career" }],
+    items: [{ label: t("nav.contact.career"), href: "/career" }],
   },
 ];
 
