@@ -21,7 +21,7 @@ const jobApplicationSchema = z.object({
   fullName: z.string().min(1, "Full name is required"),
   email: z.string().email("Invalid email address"),
   phoneNumber: z.string().min(1, "Phone number is required"),
-  position: z.string().min(1, "Position is required"),
+  position: z.string().default("General Application"),
   experience: z.string().optional(),
   coverLetter: z.string().optional(),
   resumeUrl: z.string().optional(),
@@ -34,6 +34,7 @@ function CareerPage() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [isDragOver, setIsDragOver] = useState(false);
   
   const form = useForm<JobApplicationForm>({
     resolver: zodResolver(jobApplicationSchema),
@@ -53,6 +54,25 @@ function CareerPage() {
     if (file) {
       setResumeFile(file);
     }
+  };
+  
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragOver(false);
+    const file = event.dataTransfer.files[0];
+    if (file && (file.type === 'application/pdf' || file.name.endsWith('.doc') || file.name.endsWith('.docx'))) {
+      setResumeFile(file);
+    }
+  };
+  
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragOver(true);
+  };
+  
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setIsDragOver(false);
   };
   
   const onSubmit = async (data: JobApplicationForm) => {
@@ -187,131 +207,106 @@ function CareerPage() {
 
           <div className="bg-white rounded-xl p-8 shadow-lg">
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div>
-                <label
-                  htmlFor="fullName"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  id="fullName"
-                  {...form.register("fullName")}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
-                  data-testid="input-full-name"
-                />
-                {form.formState.errors.fullName && (
-                  <p className="mt-1 text-sm text-red-600">{form.formState.errors.fullName.message}</p>
-                )}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-6">
+                  <div>
+                    <input
+                      type="text"
+                      id="fullName"
+                      {...form.register("fullName")}
+                      placeholder="Full Name*"
+                      className="w-full px-4 py-4 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56]"
+                      data-testid="input-full-name"
+                    />
+                    {form.formState.errors.fullName && (
+                      <p className="mt-1 text-sm text-red-600">{form.formState.errors.fullName.message}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <input
+                      type="email"
+                      id="email"
+                      {...form.register("email")}
+                      placeholder="E-mail*"
+                      className="w-full px-4 py-4 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56]"
+                      data-testid="input-email"
+                    />
+                    {form.formState.errors.email && (
+                      <p className="mt-1 text-sm text-red-600">{form.formState.errors.email.message}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <input
+                      type="tel"
+                      id="phoneNumber"
+                      {...form.register("phoneNumber")}
+                      placeholder="Phone number*"
+                      className="w-full px-4 py-4 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56]"
+                      data-testid="input-phone"
+                    />
+                    {form.formState.errors.phoneNumber && (
+                      <p className="mt-1 text-sm text-red-600">{form.formState.errors.phoneNumber.message}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div>
+                  <div 
+                    className={`relative border-2 border-dashed rounded-md h-48 flex flex-col items-center justify-center cursor-pointer transition-colors ${
+                      isDragOver 
+                        ? 'border-[#1c2d56] bg-blue-50' 
+                        : resumeFile 
+                        ? 'border-green-400 bg-green-50'
+                        : 'border-gray-300 hover:border-gray-400'
+                    }`}
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onClick={() => document.getElementById('resume')?.click()}
+                  >
+                    <input
+                      type="file"
+                      id="resume"
+                      accept=".pdf,.doc,.docx"
+                      onChange={handleFileChange}
+                      className="hidden"
+                      data-testid="input-resume"
+                    />
+                    
+                    {resumeFile ? (
+                      <div className="text-center">
+                        <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center bg-green-100 rounded-full">
+                          <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <p className="text-sm font-medium text-green-600">{resumeFile.name}</p>
+                        <p className="text-xs text-gray-500 mt-1">Click to change file</p>
+                      </div>
+                    ) : (
+                      <div className="text-center">
+                        <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center bg-gray-100 rounded-full">
+                          <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                          </svg>
+                        </div>
+                        <p className="text-sm text-gray-600">Click or drag a file to this area to upload *</p>
+                        <p className="text-xs text-gray-400 mt-1">PDF, DOC, DOCX (Max 10MB)</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
 
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  E-mail *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  {...form.register("email")}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
-                  data-testid="input-email"
-                />
-                {form.formState.errors.email && (
-                  <p className="mt-1 text-sm text-red-600">{form.formState.errors.email.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="phoneNumber"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Phone Number *
-                </label>
-                <input
-                  type="tel"
-                  id="phoneNumber"
-                  {...form.register("phoneNumber")}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
-                  data-testid="input-phone"
-                />
-                {form.formState.errors.phoneNumber && (
-                  <p className="mt-1 text-sm text-red-600">{form.formState.errors.phoneNumber.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="position"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Position of Interest *
-                </label>
-                <input
-                  type="text"
-                  id="position"
-                  {...form.register("position")}
-                  placeholder="e.g., Production Manager, Quality Control, Engineering"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
-                  data-testid="input-position"
-                />
-                {form.formState.errors.position && (
-                  <p className="mt-1 text-sm text-red-600">{form.formState.errors.position.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label
-                  htmlFor="experience"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Years of Experience
-                </label>
-                <input
-                  type="text"
-                  id="experience"
-                  {...form.register("experience")}
-                  placeholder="e.g., 5 years in manufacturing"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
-                  data-testid="input-experience"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="resume"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Resume/CV *
-                </label>
-                <input
-                  type="file"
-                  id="resume"
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleFileChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#1c2d56] file:text-white hover:file:bg-[#1c2d56]"
-                  data-testid="input-resume"
-                />
-                <p className="mt-1 text-sm text-gray-500">Accepted formats: PDF, DOC, DOCX (Max 10MB)</p>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="coverLetter"
-                  className="block text-sm font-medium text-gray-700 mb-2"
-                >
-                  Cover Letter / Message
-                </label>
                 <textarea
                   id="coverLetter"
                   {...form.register("coverLetter")}
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
-                  placeholder="Tell us about yourself and why you'd like to join our team..."
+                  placeholder="Message"
+                  className="w-full px-4 py-4 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56] resize-none"
                   data-testid="textarea-message"
                 />
               </div>
@@ -320,11 +315,11 @@ function CareerPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-semibold text-lg"
+                  className="inline-flex items-center px-12 py-3 bg-red-500 hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-md transition-colors font-semibold"
                   data-testid="submit-button"
                 >
                   {isSubmitting && <Loader2 className="w-5 h-5 mr-2 animate-spin" />}
-                  {isSubmitting ? "Submitting..." : "Submit Application"}
+                  {isSubmitting ? "Submitting..." : "Submit"}
                 </button>
               </div>
             </form>
