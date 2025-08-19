@@ -65,8 +65,15 @@ class BrevoService {
         text: this.generateNotificationEmailText(contactData)
       };
       
-      await transporter.sendMail(mailOptions);
+      const result = await transporter.sendMail(mailOptions);
       console.log('Contact notification email sent successfully');
+      console.log('Email sent to:', config.recipientEmail || config.senderEmail);
+      console.log('Email details:', {
+        from: mailOptions.from,
+        to: mailOptions.to,
+        subject: mailOptions.subject,
+        messageId: result.messageId
+      });
       return true;
     } catch (error) {
       console.error('Failed to send contact notification:', error);
@@ -90,8 +97,15 @@ class BrevoService {
         text: this.generateAutoReplyEmailText(contactData)
       };
       
-      await transporter.sendMail(mailOptions);
+      const result = await transporter.sendMail(mailOptions);
       console.log('Auto-reply email sent successfully');
+      console.log('Auto-reply sent to:', contactData.email);
+      console.log('Auto-reply details:', {
+        from: mailOptions.from,
+        to: mailOptions.to,
+        subject: mailOptions.subject,
+        messageId: result.messageId
+      });
       return true;
     } catch (error) {
       console.error('Failed to send auto-reply email:', error);

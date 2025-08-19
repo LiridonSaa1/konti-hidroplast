@@ -1211,6 +1211,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Test email sending endpoint
+  app.post('/api/admin/brevo-config/test-email', requireAuth, async (req, res) => {
+    try {
+      const config = await storage.getBrevoConfig();
+      if (!config) {
+        return res.status(404).json({ error: 'Brevo config not found' });
+      }
+
+      console.log('Testing email with config:', {
+        senderEmail: config.senderEmail,
+        senderName: config.senderName,
+        recipientEmail: config.recipientEmail,
+        isActive: config.isActive
+      });
+
+      // Send a test contact notification
+      const testContactData = {
+        fullName: "Email Test User",
+        email: "test@example.com",
+        phoneNumber: "123-456-7890",
+        subject: "Brevo Configuration Test",
+        message: "This is a test email to verify your recipient email configuration is working correctly.",
+        createdAt: new Date()
+      };
+
+      const success = await brevoService.sendContactNotification(testContactData);
+      
+      res.json({ 
+        success,
+        recipientEmail: config.recipientEmail,
+        senderEmail: config.senderEmail,
+        senderName: config.senderName,
+        message: success ? 'Test email sent successfully! Check your recipient email inbox (including spam folder).' : 'Failed to send test email.'
+      });
+    } catch (error: any) {
+      console.error('Test email error:', error);
+      res.status(500).json({ error: 'Test email failed', details: error?.message || 'Unknown error' });
+    }
+  });
+
   // Register translation routes
   app.use(translationRoutes);
 

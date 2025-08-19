@@ -34,6 +34,8 @@ interface BrevoConfigWithStatus extends Omit<BrevoConfig, 'apiKey'> {
 export function BrevoConfigManager() {
   const [isTestingConnection, setIsTestingConnection] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<boolean | null>(null);
+  const [isTestingEmail, setIsTestingEmail] = useState(false);
+  const [emailTestResult, setEmailTestResult] = useState<string | null>(null);
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -145,6 +147,30 @@ export function BrevoConfigManager() {
     },
   });
 
+  const testEmailMutation = useMutation({
+    mutationFn: async (): Promise<{ success: boolean; recipientEmail: string; message: string }> => {
+      const response = await apiRequest("/api/admin/brevo-config/test-email", "POST");
+      return await response.json();
+    },
+    onSuccess: (data: { success: boolean; recipientEmail: string; message: string }) => {
+      setEmailTestResult(data.message);
+      toast({
+        title: data.success ? "Email Sent" : "Email Failed",
+        description: `${data.message} Recipient: ${data.recipientEmail}`,
+        duration: 8000,
+      });
+    },
+    onError: (error: any) => {
+      setEmailTestResult("Email test failed. Please check your configuration.");
+      toast({
+        title: "Error",
+        description: "Email test failed. Please check your configuration.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    },
+  });
+
   const onSubmit = (data: BrevoConfigForm) => {
     if (config) {
       updateConfigMutation.mutate(data);
@@ -159,6 +185,15 @@ export function BrevoConfigManager() {
       await testConnectionMutation.mutateAsync();
     } finally {
       setIsTestingConnection(false);
+    }
+  };
+
+  const testEmail = async () => {
+    setIsTestingEmail(true);
+    try {
+      await testEmailMutation.mutateAsync();
+    } finally {
+      setIsTestingEmail(false);
     }
   };
 
@@ -390,17 +425,31 @@ export function BrevoConfigManager() {
             </Button>
 
             {config && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={testConnection}
-                disabled={isTestingConnection || testConnectionMutation.isPending}
-                className="border-blue-300 text-blue-700 hover:bg-blue-50"
-                data-testid="button-test-connection"
-              >
-                <TestTube className="h-4 w-4 mr-2" />
-                {isTestingConnection || testConnectionMutation.isPending ? "Testing..." : "Test Connection"}
-              </Button>
+              <>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={testConnection}
+                  disabled={isTestingConnection || testConnectionMutation.isPending}
+                  className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                  data-testid="button-test-connection"
+                >
+                  <TestTube className="h-4 w-4 mr-2" />
+                  {isTestingConnection || testConnectionMutation.isPending ? "Testing..." : "Test Connection"}
+                </Button>
+                
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={testEmail}
+                  disabled={isTestingEmail || testEmailMutation.isPending}
+                  className="border-green-300 text-green-700 hover:bg-green-50"
+                  data-testid="button-test-email"
+                >
+                  <Mail className="h-4 w-4 mr-2" />
+                  {isTestingEmail || testEmailMutation.isPending ? "Sending..." : "Test Email"}
+                </Button>
+              </>
             )}
           </div>
         </form>
