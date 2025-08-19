@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Search, FileText, Calendar, User } from "lucide-react";
+import { Plus, Edit, Trash2, Search, FileText, Calendar, User, X, MoveUp, MoveDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -13,14 +13,26 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { FileUpload } from "@/components/ui/file-upload";
+import { Textarea } from "@/components/ui/textarea";
 import type { NewsArticle, InsertNewsArticle } from "@shared/schema";
+
+interface ArticleSection {
+  id: string;
+  type: 'text' | 'image' | 'text-with-image';
+  title: string;
+  content: string;
+  imageUrl?: string;
+  imagePosition?: 'left' | 'right';
+}
 
 interface NewsFormData {
   title: string;
+  subtitle: string;
   description: string;
   imageUrl: string;
   author: string;
   published: boolean;
+  sections: ArticleSection[];
 }
 
 export function NewsManager() {
@@ -31,10 +43,12 @@ export function NewsManager() {
   const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
   const [formData, setFormData] = useState<NewsFormData>({
     title: "",
+    subtitle: "",
     description: "",
     imageUrl: "",
     author: "",
-    published: false
+    published: false,
+    sections: []
   });
 
   const { toast } = useToast();
@@ -127,12 +141,71 @@ export function NewsManager() {
   const resetForm = () => {
     setFormData({
       title: "",
+      subtitle: "",
       description: "",
       imageUrl: "",
       author: "",
-      published: false
+      published: false,
+      sections: []
     });
     setSelectedArticle(null);
+  };
+
+  const addSection = (type: ArticleSection['type']) => {
+    const newSection: ArticleSection = {
+      id: `section-${Date.now()}`,
+      type,
+      title: "",
+      content: "",
+      imageUrl: "",
+      imagePosition: 'right'
+    };
+    setFormData(prev => ({
+      ...prev,
+      sections: [...prev.sections, newSection]
+    }));
+  };
+
+  const updateSection = (sectionId: string, updates: Partial<ArticleSection>) => {
+    setFormData(prev => ({
+      ...prev,
+      sections: prev.sections.map(section =>
+        section.id === sectionId ? { ...section, ...updates } : section
+      )
+    }));
+  };
+
+  const removeSection = (sectionId: string) => {
+    setFormData(prev => ({
+      ...prev,
+      sections: prev.sections.filter(section => section.id !== sectionId)
+    }));
+  };
+
+  const moveSectionUp = (sectionId: string) => {
+    setFormData(prev => {
+      const currentIndex = prev.sections.findIndex(s => s.id === sectionId);
+      if (currentIndex > 0) {
+        const newSections = [...prev.sections];
+        [newSections[currentIndex - 1], newSections[currentIndex]] = 
+        [newSections[currentIndex], newSections[currentIndex - 1]];
+        return { ...prev, sections: newSections };
+      }
+      return prev;
+    });
+  };
+
+  const moveSectionDown = (sectionId: string) => {
+    setFormData(prev => {
+      const currentIndex = prev.sections.findIndex(s => s.id === sectionId);
+      if (currentIndex < prev.sections.length - 1) {
+        const newSections = [...prev.sections];
+        [newSections[currentIndex], newSections[currentIndex + 1]] = 
+        [newSections[currentIndex + 1], newSections[currentIndex]];
+        return { ...prev, sections: newSections };
+      }
+      return prev;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -149,10 +222,12 @@ export function NewsManager() {
 
     const articleData: InsertNewsArticle = {
       title: formData.title.trim(),
+      subtitle: formData.subtitle.trim() || null,
       description: formData.description.trim(),
       imageUrl: formData.imageUrl || null,
       author: formData.author || null,
       published: formData.published,
+      sections: formData.sections
     };
 
     if (selectedArticle) {
@@ -166,16 +241,21 @@ export function NewsManager() {
     setSelectedArticle(article);
     setFormData({
       title: article.title,
+      subtitle: article.subtitle || "",
       description: article.description,
       imageUrl: article.imageUrl || "",
       author: article.author || "",
-      published: article.published
+      published: article.published || false,
+      sections: (article.sections as ArticleSection[]) || []
     });
     setIsEditDialogOpen(true);
   };
 
-  const formatDate = (dateString: string | null) => {
+  const formatDate = (dateString: string | Date | null) => {
     if (!dateString) return "Not published";
+    if (dateString instanceof Date) {
+      return dateString.toLocaleDateString();
+    }
     return new Date(dateString).toLocaleDateString();
   };
 
@@ -353,11 +433,12 @@ export function NewsManager() {
 
       {/* Create Dialog */}
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create News Article</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Basic Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
@@ -369,6 +450,17 @@ export function NewsManager() {
                     placeholder="Enter article title"
                     data-testid="input-title"
                     required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="subtitle">Subtitle</Label>
+                  <Input
+                    id="subtitle"
+                    value={formData.subtitle}
+                    onChange={(e) => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
+                    placeholder="Enter article subtitle (optional)"
+                    data-testid="input-subtitle"
                   />
                 </div>
                 
@@ -398,20 +490,161 @@ export function NewsManager() {
                 <FileUpload
                   value={formData.imageUrl}
                   onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
-                  label="Article Image"
+                  label="Main Article Image"
                   placeholder="Enter image URL or upload file"
                 />
               </div>
             </div>
 
+            {/* Introduction/Description */}
             <div>
-              <Label>Description *</Label>
+              <Label>Introduction *</Label>
               <RichTextEditor
                 value={formData.description}
                 onChange={(value) => setFormData(prev => ({ ...prev, description: value }))}
-                placeholder="Enter article content with rich text formatting..."
+                placeholder="Enter article introduction with rich text formatting..."
                 className="mt-2"
               />
+            </div>
+
+            {/* Article Sections */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="text-lg font-medium">Article Sections</Label>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addSection('text')}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Text Section
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addSection('image')}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Image Section
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addSection('text-with-image')}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Text + Image
+                  </Button>
+                </div>
+              </div>
+
+              {formData.sections.map((section, index) => (
+                <Card key={section.id} className="p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <Badge variant="outline" className="capitalize">
+                      {section.type.replace('-', ' + ')}
+                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => moveSectionUp(section.id)}
+                        disabled={index === 0}
+                      >
+                        <MoveUp className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => moveSectionDown(section.id)}
+                        disabled={index === formData.sections.length - 1}
+                      >
+                        <MoveDown className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeSection(section.id)}
+                      >
+                        <X className="h-4 w-4 text-red-500" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <Label>Section Title</Label>
+                      <Input
+                        value={section.title}
+                        onChange={(e) => updateSection(section.id, { title: e.target.value })}
+                        placeholder="Enter section title"
+                      />
+                    </div>
+
+                    {(section.type === 'text' || section.type === 'text-with-image') && (
+                      <div>
+                        <Label>Content</Label>
+                        <Textarea
+                          value={section.content}
+                          onChange={(e) => updateSection(section.id, { content: e.target.value })}
+                          placeholder="Enter section content"
+                          rows={4}
+                        />
+                      </div>
+                    )}
+
+                    {(section.type === 'image' || section.type === 'text-with-image') && (
+                      <div className={section.type === 'text-with-image' ? "grid grid-cols-1 md:grid-cols-2 gap-4" : ""}>
+                        <div>
+                          <FileUpload
+                            value={section.imageUrl || ""}
+                            onChange={(url) => updateSection(section.id, { imageUrl: url })}
+                            label="Section Image"
+                            placeholder="Enter image URL or upload file"
+                          />
+                        </div>
+                        {section.type === 'text-with-image' && (
+                          <div>
+                            <Label>Image Position</Label>
+                            <div className="flex gap-2 mt-2">
+                              <Button
+                                type="button"
+                                variant={section.imagePosition === 'left' ? 'default' : 'outline'}
+                                size="sm"
+                                onClick={() => updateSection(section.id, { imagePosition: 'left' })}
+                              >
+                                Image Left
+                              </Button>
+                              <Button
+                                type="button"
+                                variant={section.imagePosition === 'right' ? 'default' : 'outline'}
+                                size="sm"
+                                onClick={() => updateSection(section.id, { imagePosition: 'right' })}
+                              >
+                                Image Right
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              ))}
+
+              {formData.sections.length === 0 && (
+                <Card className="p-8 text-center border-dashed">
+                  <p className="text-gray-500 mb-4">No sections added yet</p>
+                  <p className="text-sm text-gray-400">Add sections above to create rich article content like "Introduction", "Key Technologies", "Challenges", etc.</p>
+                </Card>
+              )}
             </div>
 
             <div className="flex justify-end gap-2">
@@ -440,11 +673,12 @@ export function NewsManager() {
 
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit News Article</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Basic Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div>
@@ -456,6 +690,17 @@ export function NewsManager() {
                     placeholder="Enter article title"
                     data-testid="input-edit-title"
                     required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="edit-subtitle">Subtitle</Label>
+                  <Input
+                    id="edit-subtitle"
+                    value={formData.subtitle}
+                    onChange={(e) => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
+                    placeholder="Enter article subtitle (optional)"
+                    data-testid="input-edit-subtitle"
                   />
                 </div>
                 
@@ -485,20 +730,161 @@ export function NewsManager() {
                 <FileUpload
                   value={formData.imageUrl}
                   onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
-                  label="Article Image"
+                  label="Main Article Image"
                   placeholder="Enter image URL or upload file"
                 />
               </div>
             </div>
 
+            {/* Introduction/Description */}
             <div>
-              <Label>Description *</Label>
+              <Label>Introduction *</Label>
               <RichTextEditor
                 value={formData.description}
                 onChange={(value) => setFormData(prev => ({ ...prev, description: value }))}
-                placeholder="Enter article content with rich text formatting..."
+                placeholder="Enter article introduction with rich text formatting..."
                 className="mt-2"
               />
+            </div>
+
+            {/* Article Sections */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="text-lg font-medium">Article Sections</Label>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addSection('text')}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Text Section
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addSection('image')}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Image Section
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => addSection('text-with-image')}
+                  >
+                    <Plus className="h-4 w-4 mr-2" />
+                    Add Text + Image
+                  </Button>
+                </div>
+              </div>
+
+              {formData.sections.map((section, index) => (
+                <Card key={section.id} className="p-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <Badge variant="outline" className="capitalize">
+                      {section.type.replace('-', ' + ')}
+                    </Badge>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => moveSectionUp(section.id)}
+                        disabled={index === 0}
+                      >
+                        <MoveUp className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => moveSectionDown(section.id)}
+                        disabled={index === formData.sections.length - 1}
+                      >
+                        <MoveDown className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => removeSection(section.id)}
+                      >
+                        <X className="h-4 w-4 text-red-500" />
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <Label>Section Title</Label>
+                      <Input
+                        value={section.title}
+                        onChange={(e) => updateSection(section.id, { title: e.target.value })}
+                        placeholder="Enter section title"
+                      />
+                    </div>
+
+                    {(section.type === 'text' || section.type === 'text-with-image') && (
+                      <div>
+                        <Label>Content</Label>
+                        <Textarea
+                          value={section.content}
+                          onChange={(e) => updateSection(section.id, { content: e.target.value })}
+                          placeholder="Enter section content"
+                          rows={4}
+                        />
+                      </div>
+                    )}
+
+                    {(section.type === 'image' || section.type === 'text-with-image') && (
+                      <div className={section.type === 'text-with-image' ? "grid grid-cols-1 md:grid-cols-2 gap-4" : ""}>
+                        <div>
+                          <FileUpload
+                            value={section.imageUrl || ""}
+                            onChange={(url) => updateSection(section.id, { imageUrl: url })}
+                            label="Section Image"
+                            placeholder="Enter image URL or upload file"
+                          />
+                        </div>
+                        {section.type === 'text-with-image' && (
+                          <div>
+                            <Label>Image Position</Label>
+                            <div className="flex gap-2 mt-2">
+                              <Button
+                                type="button"
+                                variant={section.imagePosition === 'left' ? 'default' : 'outline'}
+                                size="sm"
+                                onClick={() => updateSection(section.id, { imagePosition: 'left' })}
+                              >
+                                Image Left
+                              </Button>
+                              <Button
+                                type="button"
+                                variant={section.imagePosition === 'right' ? 'default' : 'outline'}
+                                size="sm"
+                                onClick={() => updateSection(section.id, { imagePosition: 'right' })}
+                              >
+                                Image Right
+                              </Button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              ))}
+
+              {formData.sections.length === 0 && (
+                <Card className="p-8 text-center border-dashed">
+                  <p className="text-gray-500 mb-4">No sections added yet</p>
+                  <p className="text-sm text-gray-400">Add sections above to create rich article content like "Introduction", "Key Technologies", "Challenges", etc.</p>
+                </Card>
+              )}
             </div>
 
             <div className="flex justify-end gap-2">

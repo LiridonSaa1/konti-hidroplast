@@ -57,11 +57,13 @@ export const companyInfo = pgTable("company_info", {
 export const newsArticles = pgTable("news_articles", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   title: text("title").notNull(),
+  subtitle: text("subtitle"),
   description: text("description").notNull(), // Rich text content
   imageUrl: text("image_url"),
   author: text("author"),
   published: boolean("published").default(false),
   publishedAt: timestamp("published_at"),
+  sections: jsonb("sections").default('[]'), // Array of article sections
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

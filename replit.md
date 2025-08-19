@@ -1,124 +1,10 @@
 # Overview
 
-This is a modern full-stack web application for Konti Hidroplast, a Macedonian manufacturer of PE and PP pipes. The application serves as a corporate website showcasing the company's products, services, certifications, and news. It features a single-page application (SPA) architecture with a React frontend and Express.js backend, designed for both informational display and potential future expansion with interactive features.
+This is a modern full-stack web application for Konti Hidroplast, a Macedonian manufacturer of PE and PP pipes. The application serves as a corporate website showcasing the company's products, services, certifications, and news. It features a single-page application (SPA) architecture designed for both informational display and future expansion with interactive features. Key capabilities include dynamic product displays, news management with rich article structures, comprehensive gallery displays, and advanced document and certificate management.
 
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
-
-# Recent Changes
-
-## Brevo Email Sender Validation Fix (August 19, 2025)
-- Fixed critical Brevo email sending issue by separating SMTP authentication from sender validation
-- Added new `validatedSenderEmail` field to brevoConfig database schema for proper sender verification
-- Updated Brevo service to use validated sender email for "from" field instead of SMTP login email
-- Enhanced admin panel with new "Validated Sender Email" field and clear setup instructions
-- Improved email delivery reliability by properly handling Brevo's sender verification requirements
-- System now falls back to SMTP login email if no validated sender email is provided
-- All email functionality tested and working correctly with proper sender validation
-
-## Project Migration Completion with Brevo Email Service Fix (August 19, 2025)
-- Successfully completed migration from Replit Agent to standard Replit environment
-- Fixed critical Brevo email service bug: corrected `nodemailer.createTransporter` to `nodemailer.createTransport`
-- All API endpoints functioning properly and project fully operational
-- Email configuration now working correctly for contact form notifications
-- Project ready for continued development with full functionality
-
-## Enhanced Certificate Display with Dynamic Filtering (August 19, 2025)
-- Updated certificates page to filter out categories and subcategories that don't contain certificates
-- Enhanced organizeData function to only display categories/subcategories with actual certificate content
-- Improved "Certificate Only" button functionality to open certificate images in new tabs when clicked
-- Fixed all TypeScript errors with proper type annotations for useQuery hooks
-- Certificates page now dynamically shows only populated categories/subcategories from admin panel data
-
-## Project Migration and Certificate Display Enhancement (August 19, 2025)
-- Successfully completed migration from Replit Agent to standard Replit environment
-- Fixed authentication and security issues with user management
-- Enhanced certificates page to dynamically fetch data from admin panel
-- Added public API endpoints for certificates, categories, and subcategories
-- Updated organizeData function to filter out empty categories and subcategories (only shows categories/subcategories that contain certificates)
-- All functionality verified working: authentication, database connectivity, API endpoints, and dynamic certificate display
-- Project fully operational in Replit environment with proper client/server separation
-
-## Enhanced Brochures Management Design Pattern Application (August 19, 2025)
-- Successfully applied Enhanced Brochures Management design pattern to all certificate management components
-- Updated Certificate Categories Manager with Card layout, proper headers with descriptions, enhanced filter sections, and improved table styling
-- Updated Certificate Subcategories Manager with same design pattern including Card-based filters and table presentation
-- Updated Certificates Manager with comprehensive Card layout, enhanced filters with category/subcategory dropdowns, and professional table styling
-- All certificate management components now follow consistent design patterns with:
-  - Card-based layout with proper CardHeader, CardTitle, and CardDescription
-  - Enhanced filter sections with search functionality and dropdown filters
-  - Professional table styling with right-aligned action buttons and ghost button variants
-  - Improved empty state handling and descriptive text
-  - Consistent spacing and color schemes matching the Enhanced Brochures Management pattern
-- Fixed all syntax errors and proper JSX structure across all certificate management components
-- Project maintains full functionality while providing a more professional and consistent admin panel experience
-
-## Project Migration Completion (August 19, 2025)
-- Successfully completed migration from Replit Agent to standard Replit environment
-- Fixed Select component errors in Certificate Subcategories Manager and CertificatesManager (empty value prop issues)
-- Updated all empty string SelectItem values to "all" and adjusted filtering logic accordingly
-- All dependencies properly installed and configured
-- Application server running correctly on port 5000
-- All API endpoints functioning properly (teams, projects, gallery, etc.)
-- Added titles with red line styling to all gallery pages (PRODUCTION, QUALITY CONTROL, STORAGE, PROJECTS)
-- Fixed and verified Leadership Management functionality - data saving, image uploads, and form submissions working correctly
-- Updated About Us page product section "Learn More" buttons to redirect to correct product pages
-- Project fully operational and ready for continued development
-
-## Migration and Authentication Security Fix (August 18, 2025)
-- Successfully migrated project from Replit Agent to standard Replit environment
-- Fixed critical authentication security issue with duplicate admin users
-- Implemented single admin user enforcement in both DatabaseStorage and MemStorage
-- Added user cleanup API endpoint (`/api/auth/cleanup-users`) to remove duplicate admin accounts
-- Updated storage interface with new methods: getAllUsers(), getAdminUser(), deleteUser()
-- System now prevents creation of multiple admin users and enforces single admin login
-- Fixed login error display to show proper red error messages instead of runtime error overlay
-- Enhanced error handling in AuthContext to prevent unhandled promise rejections
-- Enhanced Gallery Categories Manager with FileUpload component for both create and edit operations
-- Enhanced Gallery Items Manager with FileUpload component for both create and edit operations
-- Added image preview functionality with drag-and-drop support for both gallery managers
-- Improved user experience with visual image previews and better error handling
-- Both gallery management components now support URL input and file upload with drag-and-drop functionality
-
-## Enhanced Projects Management (August 18, 2025)
-- Added sortOrder field to projects database schema and form
-- Implemented search functionality to filter projects by title and description
-- Added clickable sortable table headers for Title, Status, Order, and Created columns
-- Updated action buttons to match Enhanced Brochures Management style (ghost buttons)
-- Projects now default to sorting by Order column in ascending order
-- Improved numeric and date sorting with proper type handling
-- Added empty state message with search context and quick action button
-
-## Comprehensive Gallery Management System (August 18, 2025)
-- Created complete gallery database schema with galleryCategories and galleryItems tables
-- Built full-stack implementation with PostgreSQL/Drizzle backend and React frontend
-- Added API routes for gallery categories and items with complete CRUD operations
-- Implemented storage methods in both DatabaseStorage and MemStorage classes
-- Created GalleryCategoriesManager with search, sorting, and status filtering functionality
-- Created GalleryItemsManager with category filtering and image management capabilities
-- Integrated Gallery dropdown navigation structure in AdminPanel with auto-opening logic
-- Added gallery count cards to overview dashboard with proper styling
-- Gallery Categories include: image, title, sort order, and status fields
-- Gallery Items include: category assignment, image URL, sort order, and status fields
-- Both components follow consistent admin panel design patterns with table views and ghost buttons
-
-## Dynamic Gallery Display Implementation (August 18, 2025)
-- Added dynamic gallery categories display to About Us page with same design as reference image
-- Created public API endpoints (/api/gallery-categories and /api/gallery-items) for non-authenticated access
-- Fixed authentication issues by separating public and admin gallery endpoints
-- Implemented dynamic gallery page component (/gallery/:category) for displaying gallery items by category
-- Added image modal functionality with click-to-view larger images
-- Gallery buttons on About Us page now link to specific category pages (production, quality-control, storage, projects)
-- Gallery pages automatically filter items by category and display in responsive grid layout
-- Added proper URL slug handling (spaces to hyphens) for clean gallery category URLs
-- Updated gallery pages to display only hero sections (matching gas pipeline systems design) followed by database-driven image galleries
-- Removed all extra content sections from gallery pages and focused on hero + gallery display functionality
-- Gallery pages now load images from database by category with loading states, empty states, and responsive grid layout
-- Implemented click-to-enlarge modal functionality for all gallery images across all category pages
-- Added pagination functionality: displays 8 images by default with "Load More Images" button to load 8 additional images at a time
-- Load More button automatically hides when all available images have been displayed
-- Enhanced Load More functionality with smooth animations: newly loaded images fade in with staggered timing, button shows loading spinner and scales on hover, disabled state during loading
 
 # System Architecture
 
@@ -126,7 +12,7 @@ Preferred communication style: Simple, everyday language.
 - **Framework**: React 18 with TypeScript using Vite.
 - **Routing**: Wouter for client-side routing.
 - **UI Components**: Design system built on Radix UI primitives with shadcn/ui components.
-- **Styling**: Tailwind CSS with custom brand colors and CSS variables.
+- **Styling**: Tailwind CSS with custom brand colors and CSS variables. Mobile-first approach.
 - **State Management**: React Query (TanStack Query) for server state.
 - **Forms**: React Hook Form with Zod validation.
 - **Animations**: Custom CSS animations and Intersection Observer.
@@ -134,16 +20,14 @@ Preferred communication style: Simple, everyday language.
 ## Backend Architecture
 - **Framework**: Express.js with TypeScript.
 - **Database Layer**: Drizzle ORM configured for PostgreSQL.
-- **Storage Interface**: Abstract storage interface with in-memory implementation for development.
+- **Storage Interface**: Abstract storage interface with in-memory implementation for development and PostgreSQL for production.
 - **API Structure**: RESTful API design with `/api` prefix.
 
 ## Component Structure
 The frontend follows a modular component architecture: Pages, Sections, UI Components, and Custom Hooks.
 
 ## Data Management
-- **Database Schema**: User management with Drizzle ORM and Zod validation.
-- **Development Storage**: In-memory storage for rapid development.
-- **Production Ready**: Configured for PostgreSQL with Neon database adapter.
+- **Database Schema**: User management, news articles, product information, certificates, gallery categories/items, team members, positions, brochures, and documents managed with Drizzle ORM.
 - **Type Safety**: Full TypeScript integration across frontend, backend, and shared schemas.
 
 ## Styling and Design
@@ -151,18 +35,20 @@ The frontend follows a modular component architecture: Pages, Sections, UI Compo
 - **Responsive Design**: Mobile-first approach with Tailwind CSS.
 - **Accessibility**: Radix UI primitives ensure WCAG compliance.
 - **Typography**: Inter font family.
-- **Admin Panel UI**: Grouped navigation for "Our Team" (Team Members and Positions) and "Brochures" (Brochures and Categories), with consistent table designs and dropdown structures.
+- **Admin Panel UI**: Consistent table designs, dropdown structures, and card-based layouts across all management interfaces (e.g., Team, Brochures, Certificates, Gallery).
 
 ## Feature Specifications
-- **Product Pages**: Slider-style navigation for product sections (e.g., PP HM Fittings, Gas Pipeline Systems, Brochures).
+- **Product Pages**: Slider-style navigation for product sections.
 - **Navigation**: Active URL highlighting and parent dropdown highlighting.
 - **Language Support**: US, MK, and DE with comprehensive German translations.
 - **Content Pages**: Dedicated pages for KONTI KAN DRAINAGE, Manholes, Career, News (with "Load More"), and Certificates (categorized with downloadable PDFs).
-- **About Us Section**: Includes a professional gallery (Production, Quality Control, Storage, Projects), a timeline, leadership message, and updated color schemes.
-- **News Page**: Text truncation for article titles.
-- **Team and Position Management**: CRUD systems for team members and organizational positions, with database and in-memory storage support, accessible via admin panel.
-- **Brochures Management**: Enhanced brochures system with dropdown navigation structure featuring separate management for brochures and categories, both with title, description, and status fields with full CRUD operations.
-- **Enhanced Document Management**: Advanced multilingual document management system with table-style interface, "Add More" functionality for multiple language entries, dynamic PDF/image upload capabilities, language switching with automatic content display, and local storage for data persistence. Fixed issue where only first language entry was being saved - now properly saves all language versions with separate database entries linked by translation groups.
+- **About Us Section**: Includes a professional gallery (Production, Quality Control, Storage, Projects), a timeline, and leadership message.
+- **News Management**: Supports rich, multi-section articles with subtitles, dynamic sections (text-only, image-only, text-with-image), and section reordering.
+- **Team and Position Management**: CRUD systems for team members and organizational positions via admin panel.
+- **Brochures Management**: Enhanced system with separate management for brochures and categories, featuring title, description, status fields, and full CRUD operations.
+- **Certificate Management**: Dynamic filtering of categories/subcategories, public API endpoints, and enhanced admin panel management with consistent design patterns.
+- **Gallery Management**: Comprehensive system with `galleryCategories` and `galleryItems` tables, full CRUD operations via API, and dynamic display on frontend with image modals and pagination. Supports image uploads with drag-and-drop.
+- **Document Management**: Advanced multilingual document management with table-style interface, "Add More" functionality for multiple language entries, dynamic PDF/image upload capabilities, and language switching.
 
 # External Dependencies
 
@@ -181,8 +67,8 @@ The frontend follows a modular component architecture: Pages, Sections, UI Compo
 - **ESBuild**: Fast JavaScript bundler.
 
 ## Third-party Services
+- **Brevo**: Email sending service for contact forms.
 - **YouTube**: Corporate video embedding.
-- **External Links**: Integration with company's existing website, social media (LinkedIn, Facebook, Instagram).
 - **Google Fonts**: Web font loading.
 
 ## Runtime Dependencies
