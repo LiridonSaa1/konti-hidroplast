@@ -19,6 +19,7 @@ const brevoConfigSchema = z.object({
   apiKey: z.string().min(1, "SMTP key is required"),
   brevoApiKey: z.string().optional(),
   senderEmail: z.string().email("Invalid email address"),
+  validatedSenderEmail: z.string().email("Invalid validated sender email address").optional(),
   senderName: z.string().min(1, "Sender name is required"),
   recipientEmail: z.string().email("Invalid recipient email address"),
   templateId: z.number().optional(),
@@ -56,6 +57,7 @@ export function BrevoConfigManager() {
       apiKey: "",
       brevoApiKey: "",
       senderEmail: "",
+      validatedSenderEmail: "",
       senderName: "Konti Hidroplast",
       recipientEmail: "",
       templateId: undefined,
@@ -70,6 +72,7 @@ export function BrevoConfigManager() {
         apiKey: "", // Never populate the API key for security
         brevoApiKey: "", // Never populate the Brevo API key for security
         senderEmail: config.senderEmail,
+        validatedSenderEmail: config.validatedSenderEmail || "",
         senderName: config.senderName,
         recipientEmail: config.recipientEmail || "",
         templateId: config.templateId || undefined,
@@ -271,10 +274,11 @@ export function BrevoConfigManager() {
                 <h4 className="font-medium text-blue-900 mb-2">Setup Instructions</h4>
                 <ul className="text-sm text-blue-800 space-y-1">
                   <li>• Go to Brevo dashboard → <strong>SMTP & API</strong> → <strong>SMTP tab</strong> (not API Keys tab)</li>
-                  <li>• Copy your <strong>SMTP Login</strong> email and put it in "Sender Email" field below</li>
+                  <li>• Copy your <strong>SMTP Login</strong> email and put it in "SMTP Login Email" field below</li>
                   <li>• Copy your <strong>SMTP Key</strong> and put it in "SMTP Key" field below</li>
-                  <li>• Your sender email must be verified in Brevo for sending to work</li>
-                  <li>• Test the connection after saving your configuration</li>
+                  <li>• <strong>Important:</strong> Add a verified sender email from your Brevo Senders list in the "Validated Sender Email" field</li>
+                  <li>• The SMTP login is for authentication, the validated sender email is what recipients will see as the sender</li>
+                  <li>• Test the connection and email sending after saving your configuration</li>
                 </ul>
               </div>
             </div>
@@ -372,6 +376,31 @@ export function BrevoConfigManager() {
               {form.formState.errors.senderName && (
                 <p className="text-sm text-red-600">{form.formState.errors.senderName.message}</p>
               )}
+            </div>
+          </div>
+
+          {/* Validated Sender Email */}
+          <div className="space-y-2">
+            <Label htmlFor="validatedSenderEmail" className="text-sm font-semibold text-gray-700">
+              Validated Sender Email (Optional)
+            </Label>
+            <Input
+              id="validatedSenderEmail"
+              type="email"
+              placeholder="info@kontihidroplast.com"
+              {...form.register("validatedSenderEmail")}
+              className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              data-testid="input-validated-sender-email"
+            />
+            {form.formState.errors.validatedSenderEmail && (
+              <p className="text-sm text-red-600">{form.formState.errors.validatedSenderEmail.message}</p>
+            )}
+            <div className="bg-yellow-50 border border-yellow-200 rounded p-3">
+              <p className="text-sm text-yellow-800">
+                <strong>Important:</strong> This email address must be verified in your Brevo account as a sender. 
+                If left empty, the SMTP login email above will be used. To fix sending issues, add a verified 
+                email address from your Brevo Senders list here.
+              </p>
             </div>
           </div>
 

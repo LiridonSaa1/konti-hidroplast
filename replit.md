@@ -8,6 +8,15 @@ Preferred communication style: Simple, everyday language.
 
 # Recent Changes
 
+## Brevo Email Sender Validation Fix (August 19, 2025)
+- Fixed critical Brevo email sending issue by separating SMTP authentication from sender validation
+- Added new `validatedSenderEmail` field to brevoConfig database schema for proper sender verification
+- Updated Brevo service to use validated sender email for "from" field instead of SMTP login email
+- Enhanced admin panel with new "Validated Sender Email" field and clear setup instructions
+- Improved email delivery reliability by properly handling Brevo's sender verification requirements
+- System now falls back to SMTP login email if no validated sender email is provided
+- All email functionality tested and working correctly with proper sender validation
+
 ## Project Migration Completion with Brevo Email Service Fix (August 19, 2025)
 - Successfully completed migration from Replit Agent to standard Replit environment
 - Fixed critical Brevo email service bug: corrected `nodemailer.createTransporter` to `nodemailer.createTransport`

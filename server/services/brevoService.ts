@@ -57,9 +57,12 @@ class BrevoService {
       const transporter = await this.createTransporter();
       if (!transporter) return false;
       
+      const fromEmail = config.validatedSenderEmail || config.senderEmail;
+      const toEmail = config.recipientEmail || fromEmail;
+      
       const mailOptions = {
-        from: `"${config.senderName}" <${config.senderEmail}>`,
-        to: config.recipientEmail || config.senderEmail, // Send to recipient email or fallback to sender email
+        from: `"${config.senderName}" <${fromEmail}>`,
+        to: toEmail,
         subject: `New Contact Form Submission - ${contactData.fullName}`,
         html: this.generateNotificationEmailHTML(contactData),
         text: this.generateNotificationEmailText(contactData)
@@ -67,7 +70,7 @@ class BrevoService {
       
       const result = await transporter.sendMail(mailOptions);
       console.log('Contact notification email sent successfully');
-      console.log('Email sent to:', config.recipientEmail || config.senderEmail);
+      console.log('Email sent to:', toEmail);
       console.log('Email details:', {
         from: mailOptions.from,
         to: mailOptions.to,
@@ -89,8 +92,10 @@ class BrevoService {
       const transporter = await this.createTransporter();
       if (!transporter) return false;
       
+      const fromEmail = config.validatedSenderEmail || config.senderEmail;
+      
       const mailOptions = {
-        from: `"${config.senderName}" <${config.senderEmail}>`,
+        from: `"${config.senderName}" <${fromEmail}>`,
         to: contactData.email,
         subject: 'Thank you for contacting Konti Hidroplast',
         html: this.generateAutoReplyEmailHTML(contactData),

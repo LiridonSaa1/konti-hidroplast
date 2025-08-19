@@ -168,7 +168,8 @@ export const brevoConfig = pgTable("brevo_config", {
   id: serial("id").primaryKey(),
   apiKey: text("api_key").notNull(), // SMTP key for email sending
   brevoApiKey: text("brevo_api_key"), // Brevo API key for API operations (optional)
-  senderEmail: text("sender_email").notNull(),
+  senderEmail: text("sender_email").notNull(), // SMTP login email for authentication
+  validatedSenderEmail: text("validated_sender_email"), // Validated email for "from" field
   senderName: text("sender_name").notNull(),
   recipientEmail: text("recipient_email").notNull().default("admin@kontihidroplast.com"), // Where to send contact form notifications
   templateId: integer("template_id"),
