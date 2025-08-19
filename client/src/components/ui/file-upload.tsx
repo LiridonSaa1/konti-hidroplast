@@ -36,17 +36,38 @@ export function FileUpload({
       const formData = new FormData();
       formData.append("file", file);
       
-      const response = await apiRequest("POST", "/api/upload", formData);
-      onChange(response.url);
+      // Use fetch directly for file uploads to avoid JSON conversion
+      const token = localStorage.getItem('authToken');
+      const headers: Record<string, string> = {};
+      
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        headers,
+        body: formData,
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `HTTP ${response.status}`);
+      }
+
+      const result = await response.json();
+      onChange(result.url);
       
       toast({
         title: "Success",
         description: "File uploaded successfully",
       });
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Upload error:", error);
       toast({
         title: "Error",
-        description: "Failed to upload file",
+        description: error.message || "Failed to upload file",
         variant: "destructive",
       });
     } finally {
