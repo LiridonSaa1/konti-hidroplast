@@ -195,9 +195,7 @@ function NewsPage() {
           {truncateText(article.excerpt, 70)}
         </p>
         <a
-          href={article.url}
-          target={article.url.startsWith("http") ? "_blank" : "_self"}
-          rel={article.url.startsWith("http") ? "noopener noreferrer" : ""}
+          href={`/news/${article.slug}`}
           className="inline-flex items-center px-4 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm font-medium rounded transition-colors"
           data-testid={`read-more-${article.id}`}
         >

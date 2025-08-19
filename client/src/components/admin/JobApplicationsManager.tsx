@@ -296,9 +296,18 @@ export function JobApplicationsManager() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => window.open(application.resumeUrl || "", "_blank")}
+                            onClick={() => {
+                              // Create download link for resume
+                              const link = document.createElement('a');
+                              link.href = application.resumeUrl || "";
+                              link.download = `${application.fullName.replace(/\s+/g, '_')}_Resume.pdf`;
+                              link.target = '_blank';
+                              document.body.appendChild(link);
+                              link.click();
+                              document.body.removeChild(link);
+                            }}
                             className="text-green-600 hover:text-green-800 hover:bg-green-50"
-                            title="View Resume"
+                            title="Download Resume"
                           >
                             <FileText className="h-4 w-4" />
                           </Button>
@@ -394,7 +403,7 @@ export function JobApplicationsManager() {
               {selectedApplication.resumeUrl && selectedApplication.resumeUrl.trim() !== "" && (
                 <div>
                   <Label className="text-sm font-medium">Resume</Label>
-                  <div className="mt-2">
+                  <div className="mt-2 flex gap-2">
                     <Button
                       variant="outline"
                       onClick={() => window.open(selectedApplication.resumeUrl || "", "_blank")}
@@ -402,6 +411,24 @@ export function JobApplicationsManager() {
                     >
                       <FileText className="h-4 w-4" />
                       View Resume (PDF)
+                    </Button>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        const link = document.createElement('a');
+                        link.href = selectedApplication.resumeUrl || "";
+                        link.download = `${selectedApplication.fullName.replace(/\s+/g, '_')}_Resume.pdf`;
+                        link.target = '_blank';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                      }}
+                      className="flex items-center gap-2"
+                    >
+                      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      Download Resume
                     </Button>
                   </div>
                 </div>

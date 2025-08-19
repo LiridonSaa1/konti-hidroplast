@@ -17,6 +17,7 @@ import CableProtectionPage from "@/pages/cable-protection";
 import BrochuresPage from "@/pages/BrochuresPage";
 import CertificatesPage from "@/pages/certificates";
 import NewsPage from "@/pages/news";
+import NewsArticlePage from "@/pages/NewsArticlePage";
 import CareerPage from "@/pages/career";
 import ManholesPage from "@/pages/manholes";
 import KontiKanDrainagePage from "@/pages/konti-kan-drainage";
@@ -48,6 +49,7 @@ function Router() {
       <Route path="/brochures" component={BrochuresPage} />
       <Route path="/certificates" component={CertificatesPage} />
       <Route path="/news" component={NewsPage} />
+      <Route path="/news/:slug" component={NewsArticlePage} />
       <Route path="/career" component={CareerPage} />
       <Route path="/manholes" component={ManholesPage} />
       <Route path="/konti-kan-drainage" component={KontiKanDrainagePage} />
