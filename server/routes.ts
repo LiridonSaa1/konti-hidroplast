@@ -25,6 +25,7 @@ import {
   insertGalleryCategorySchema,
   insertGalleryItemSchema,
   insertContactMessageSchema,
+  insertJobApplicationSchema,
   insertBrevoConfigSchema,
   loginSchema,
   updateUserSchema,
@@ -1139,9 +1140,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json(null);
       }
       
-      // Don't expose the API key in responses
-      const { apiKey, ...safeConfig } = config;
-      res.json({ ...safeConfig, hasApiKey: !!apiKey });
+      // Don't expose the API keys in responses
+      const { apiKey, brevoApiKey, ...safeConfig } = config;
+      res.json({ 
+        ...safeConfig, 
+        hasApiKey: !!apiKey,
+        hasBrevoApiKey: !!brevoApiKey 
+      });
     } catch (error) {
       console.error('Error fetching Brevo config:', error);
       res.status(500).json({ error: 'Failed to fetch Brevo configuration' });
@@ -1156,10 +1161,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Test the connection
       const isWorking = await brevoService.testConnection();
       
-      const { apiKey, ...safeConfig } = config;
+      const { apiKey, brevoApiKey, ...safeConfig } = config;
       res.status(201).json({ 
         ...safeConfig, 
         hasApiKey: !!apiKey,
+        hasBrevoApiKey: !!brevoApiKey,
         connectionTest: isWorking 
       });
     } catch (error: any) {
@@ -1183,10 +1189,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         connectionTest = await brevoService.testConnection();
       }
       
-      const { apiKey, ...safeConfig } = config;
+      const { apiKey, brevoApiKey, ...safeConfig } = config;
       res.json({ 
         ...safeConfig, 
         hasApiKey: !!apiKey,
+        hasBrevoApiKey: !!brevoApiKey,
         connectionTest 
       });
     } catch (error: any) {
@@ -1248,6 +1255,70 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       console.error('Test email error:', error);
       res.status(500).json({ error: 'Test email failed', details: error?.message || 'Unknown error' });
+    }
+  });
+
+  // Job application routes
+  app.get('/api/admin/job-applications', requireAuth, async (req, res) => {
+    try {
+      const applications = await storage.getAllJobApplications();
+      res.json(applications);
+    } catch (error) {
+      console.error('Error fetching job applications:', error);
+      res.status(500).json({ error: 'Failed to fetch job applications' });
+    }
+  });
+
+  app.get('/api/admin/job-applications/:id', requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const application = await storage.getJobApplication(id);
+      if (!application) {
+        return res.status(404).json({ error: 'Job application not found' });
+      }
+      res.json(application);
+    } catch (error) {
+      console.error('Error fetching job application:', error);
+      res.status(500).json({ error: 'Failed to fetch job application' });
+    }
+  });
+
+  app.post('/api/job-applications', async (req, res) => {
+    try {
+      const validatedData = insertJobApplicationSchema.parse(req.body);
+      const application = await storage.createJobApplication(validatedData);
+      res.status(201).json({ message: 'Job application submitted successfully', id: application.id });
+    } catch (error: any) {
+      console.error('Error creating job application:', error);
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ error: 'Invalid data', details: error.errors });
+      }
+      res.status(500).json({ error: 'Failed to submit job application' });
+    }
+  });
+
+  app.patch('/api/admin/job-applications/:id', requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const application = await storage.updateJobApplication(id, req.body);
+      res.json(application);
+    } catch (error: any) {
+      console.error('Error updating job application:', error);
+      if (error.message.includes('not found')) {
+        return res.status(404).json({ error: 'Job application not found' });
+      }
+      res.status(500).json({ error: 'Failed to update job application' });
+    }
+  });
+
+  app.delete('/api/admin/job-applications/:id', requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteJobApplication(id);
+      res.json({ message: 'Job application deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting job application:', error);
+      res.status(500).json({ error: 'Failed to delete job application' });
     }
   });
 

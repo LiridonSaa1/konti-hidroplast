@@ -17,6 +17,7 @@ import type { BrevoConfig } from "@shared/schema";
 
 const brevoConfigSchema = z.object({
   apiKey: z.string().min(1, "SMTP key is required"),
+  brevoApiKey: z.string().optional(),
   senderEmail: z.string().email("Invalid email address"),
   senderName: z.string().min(1, "Sender name is required"),
   recipientEmail: z.string().email("Invalid recipient email address"),
@@ -26,8 +27,9 @@ const brevoConfigSchema = z.object({
 
 type BrevoConfigForm = z.infer<typeof brevoConfigSchema>;
 
-interface BrevoConfigWithStatus extends Omit<BrevoConfig, 'apiKey'> {
+interface BrevoConfigWithStatus extends Omit<BrevoConfig, 'apiKey' | 'brevoApiKey'> {
   hasApiKey: boolean;
+  hasBrevoApiKey: boolean;
   connectionTest?: boolean;
 }
 
@@ -52,6 +54,7 @@ export function BrevoConfigManager() {
     resolver: zodResolver(brevoConfigSchema),
     defaultValues: {
       apiKey: "",
+      brevoApiKey: "",
       senderEmail: "",
       senderName: "Konti Hidroplast",
       recipientEmail: "",
@@ -65,6 +68,7 @@ export function BrevoConfigManager() {
     if (config) {
       form.reset({
         apiKey: "", // Never populate the API key for security
+        brevoApiKey: "", // Never populate the Brevo API key for security
         senderEmail: config.senderEmail,
         senderName: config.senderName,
         recipientEmail: config.recipientEmail || "",
@@ -301,6 +305,32 @@ export function BrevoConfigManager() {
             )}
             <p className="text-sm text-blue-600">
               Important: Use SMTP Key from SMTP tab, not API Key from API Keys tab
+            </p>
+          </div>
+
+          {/* Brevo API Key (Optional) */}
+          <div className="space-y-2">
+            <Label htmlFor="brevoApiKey" className="text-sm font-semibold text-gray-700">
+              Brevo API Key (Optional)
+            </Label>
+            <Input
+              id="brevoApiKey"
+              type="password"
+              placeholder={config?.hasBrevoApiKey ? "••••••••••••••••" : "Enter your Brevo API key for advanced features"}
+              {...form.register("brevoApiKey")}
+              className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+              data-testid="input-brevo-api-key"
+            />
+            {form.formState.errors.brevoApiKey && (
+              <p className="text-sm text-red-600">{form.formState.errors.brevoApiKey.message}</p>
+            )}
+            {config?.hasBrevoApiKey && (
+              <p className="text-sm text-gray-500">
+                Leave empty to keep the current Brevo API key
+              </p>
+            )}
+            <p className="text-sm text-green-600">
+              This is the API Key from API Keys tab (different from SMTP key above)
             </p>
           </div>
 

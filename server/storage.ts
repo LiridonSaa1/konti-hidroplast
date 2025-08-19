@@ -31,6 +31,8 @@ import {
   type InsertGalleryItem,
   type ContactMessage,
   type InsertContactMessage,
+  type JobApplication,
+  type InsertJobApplication,
   type BrevoConfig,
   type InsertBrevoConfig,
   users,
@@ -49,6 +51,7 @@ import {
   galleryCategories,
   galleryItems,
   contactMessages,
+  jobApplications,
   brevoConfig,
 } from "@shared/schema";
 import { db } from "./db";
@@ -169,6 +172,13 @@ export interface IStorage {
   createContactMessage(message: InsertContactMessage): Promise<ContactMessage>;
   updateContactMessage(id: number, message: Partial<ContactMessage>): Promise<ContactMessage>;
   deleteContactMessage(id: number): Promise<void>;
+  
+  // Job application methods
+  getAllJobApplications(): Promise<JobApplication[]>;
+  getJobApplication(id: number): Promise<JobApplication | undefined>;
+  createJobApplication(application: InsertJobApplication): Promise<JobApplication>;
+  updateJobApplication(id: number, application: Partial<JobApplication>): Promise<JobApplication>;
+  deleteJobApplication(id: number): Promise<void>;
   
   // Brevo configuration methods
   getBrevoConfig(): Promise<BrevoConfig | undefined>;
@@ -785,6 +795,40 @@ export class DatabaseStorage implements IStorage {
     await db.delete(contactMessages).where(eq(contactMessages.id, id));
   }
 
+  // Job application methods
+  async getAllJobApplications(): Promise<JobApplication[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(jobApplications).orderBy(desc(jobApplications.createdAt));
+  }
+
+  async getJobApplication(id: number): Promise<JobApplication | undefined> {
+    if (!db) throw new Error('Database not available');
+    const [application] = await db.select().from(jobApplications).where(eq(jobApplications.id, id));
+    return application || undefined;
+  }
+
+  async createJobApplication(application: InsertJobApplication): Promise<JobApplication> {
+    if (!db) throw new Error('Database not available');
+    const [newApplication] = await db.insert(jobApplications).values(application).returning();
+    return newApplication;
+  }
+
+  async updateJobApplication(id: number, application: Partial<JobApplication>): Promise<JobApplication> {
+    if (!db) throw new Error('Database not available');
+    const [updatedApplication] = await db
+      .update(jobApplications)
+      .set({ ...application, updatedAt: new Date() })
+      .where(eq(jobApplications.id, id))
+      .returning();
+    if (!updatedApplication) throw new Error('Job application not found');
+    return updatedApplication;
+  }
+
+  async deleteJobApplication(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(jobApplications).where(eq(jobApplications.id, id));
+  }
+
   // Brevo configuration methods
   async getBrevoConfig(): Promise<BrevoConfig | undefined> {
     if (!db) throw new Error('Database not available');
@@ -832,6 +876,8 @@ export class MemStorage implements IStorage {
   private positionsData: Position[] = [];
   private galleryCategoriesData: GalleryCategory[] = [];
   private galleryItemsData: GalleryItem[] = [];
+  private contactMessagesData: ContactMessage[] = [];
+  private jobApplicationsData: JobApplication[] = [];
 
   // User methods
   async getUser(id: string): Promise<User | undefined> {
@@ -1526,7 +1572,6 @@ export class MemStorage implements IStorage {
   }
 
   // Contact message methods - in-memory storage for development
-  private contactMessagesData: ContactMessage[] = [];
   
   async getAllContactMessages(): Promise<ContactMessage[]> {
     return this.contactMessagesData.sort((a, b) => {
@@ -1573,6 +1618,55 @@ export class MemStorage implements IStorage {
     }
   }
 
+  // Job application methods - in-memory storage for development
+  async getAllJobApplications(): Promise<JobApplication[]> {
+    return this.jobApplicationsData.sort((a, b) => {
+      const aTime = a.createdAt?.getTime() || 0;
+      const bTime = b.createdAt?.getTime() || 0;
+      return bTime - aTime;
+    });
+  }
+
+  async getJobApplication(id: number): Promise<JobApplication | undefined> {
+    return this.jobApplicationsData.find(application => application.id === id);
+  }
+
+  async createJobApplication(application: InsertJobApplication): Promise<JobApplication> {
+    const newApplication: JobApplication = {
+      ...application,
+      id: Date.now(),
+      phoneNumber: application.phoneNumber ?? null,
+      experience: application.experience ?? null,
+      coverLetter: application.coverLetter ?? null,
+      resumeUrl: application.resumeUrl ?? null,
+      status: "pending",
+      notes: null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.jobApplicationsData.push(newApplication);
+    return newApplication;
+  }
+
+  async updateJobApplication(id: number, application: Partial<JobApplication>): Promise<JobApplication> {
+    const index = this.jobApplicationsData.findIndex(a => a.id === id);
+    if (index === -1) throw new Error('Job application not found');
+    
+    this.jobApplicationsData[index] = {
+      ...this.jobApplicationsData[index],
+      ...application,
+      updatedAt: new Date()
+    };
+    return this.jobApplicationsData[index];
+  }
+
+  async deleteJobApplication(id: number): Promise<void> {
+    const index = this.jobApplicationsData.findIndex(a => a.id === id);
+    if (index !== -1) {
+      this.jobApplicationsData.splice(index, 1);
+    }
+  }
+
   // Brevo configuration methods - in-memory storage for development
   private brevoConfigData: BrevoConfig | null = null;
   
@@ -1584,6 +1678,7 @@ export class MemStorage implements IStorage {
     const newConfig: BrevoConfig = {
       ...config,
       id: 1,
+      recipientEmail: config.recipientEmail || "admin@kontihidroplast.com",
       createdAt: new Date(),
       updatedAt: new Date()
     };

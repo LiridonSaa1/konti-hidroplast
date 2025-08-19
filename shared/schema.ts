@@ -147,10 +147,27 @@ export const contactMessages = pgTable("contact_messages", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Job applications table
+export const jobApplications = pgTable("job_applications", {
+  id: serial("id").primaryKey(),
+  fullName: text("full_name").notNull(),
+  email: text("email").notNull(),
+  phoneNumber: text("phone_number"),
+  position: text("position").notNull(), // What position they're applying for
+  experience: text("experience"), // Years of experience or brief description
+  coverLetter: text("cover_letter"), // Cover letter or motivation
+  resumeUrl: text("resume_url"), // URL to uploaded resume/CV
+  status: text("status").notNull().default("pending"), // pending, reviewed, shortlisted, rejected, hired
+  notes: text("notes"), // Admin notes
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Brevo configuration table
 export const brevoConfig = pgTable("brevo_config", {
   id: serial("id").primaryKey(),
-  apiKey: text("api_key").notNull(), // SMTP key (not API key)
+  apiKey: text("api_key").notNull(), // SMTP key for email sending
+  brevoApiKey: text("brevo_api_key"), // Brevo API key for API operations (optional)
   senderEmail: text("sender_email").notNull(),
   senderName: text("sender_name").notNull(),
   recipientEmail: text("recipient_email").notNull().default("admin@kontihidroplast.com"), // Where to send contact form notifications
@@ -174,6 +191,18 @@ export const insertContactMessageSchema = createInsertSchema(contactMessages).om
   createdAt: true,
   updatedAt: true,
 });
+
+// Job application schemas
+export const insertJobApplicationSchema = createInsertSchema(jobApplications).omit({
+  id: true,
+  status: true,
+  notes: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export type JobApplication = typeof jobApplications.$inferSelect;
+export type InsertJobApplication = z.infer<typeof insertJobApplicationSchema>;
 
 export const insertBrevoConfigSchema = createInsertSchema(brevoConfig).omit({
   id: true,

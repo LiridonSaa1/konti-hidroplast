@@ -43,6 +43,7 @@ import { GalleryItemsManager } from "@/components/admin/GalleryItemsManager";
 import { CertificateCategoriesManager } from "@/components/admin/CertificateCategoriesManager";
 import { CertificateSubcategoriesManager } from "@/components/admin/CertificateSubcategoriesManager";
 import { ContactMessagesManager } from "@/components/admin/ContactMessagesManager";
+import { JobApplicationsManager } from "@/components/admin/JobApplicationsManager";
 import { BrevoConfigManager } from "@/components/admin/BrevoConfigManager";
 
 export default function AdminPanel() {
@@ -419,7 +420,7 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start ${
-                    activeTab === "contact-messages" || activeTab === "brevo-config"
+                    activeTab === "contact-messages" || activeTab === "job-applications" || activeTab === "brevo-config"
                       ? "text-blue-600" 
                       : "text-slate-700 hover:text-slate-900"
                   }`}
@@ -427,7 +428,7 @@ export default function AdminPanel() {
                   data-testid="nav-contact"
                 >
                   <Mail className={`h-4 w-4 mr-2 ${
-                    activeTab === "contact-messages" || activeTab === "brevo-config" 
+                    activeTab === "contact-messages" || activeTab === "job-applications" || activeTab === "brevo-config" 
                       ? "text-blue-600" 
                       : ""
                   }`} />
@@ -448,6 +449,16 @@ export default function AdminPanel() {
                 >
                   <Mail className={`h-3 w-3 mr-2 ${activeTab === "contact-messages" ? "text-blue-600" : ""}`} />
                   Messages
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "job-applications" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("job-applications")}
+                  data-testid="nav-job-applications"
+                >
+                  <Briefcase className={`h-3 w-3 mr-2 ${activeTab === "job-applications" ? "text-blue-600" : ""}`} />
+                  Applications
                 </Button>
                 
                 <Button
@@ -729,6 +740,12 @@ export default function AdminPanel() {
           {activeTab === "contact-messages" && (
             <div data-testid="contact-messages-manager">
               <ContactMessagesManager />
+            </div>
+          )}
+          
+          {activeTab === "job-applications" && (
+            <div data-testid="job-applications-manager">
+              <JobApplicationsManager />
             </div>
           )}
           

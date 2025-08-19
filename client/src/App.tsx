@@ -25,6 +25,7 @@ import KontiKanSpiralPipesPage from "@/pages/konti-kan-spiral-pipes";
 import PPHMPipesAndFittingsPage from "@/pages/pp-hm-pipes-and-fittings";
 import PPHMSmoothODPage from "@/pages/pp-hm-smooth-od";
 import AdminPanel from "@/pages/AdminPanel";
+import Apply from "@/pages/Apply";
 import GalleryPage from "@/pages/gallery/GalleryPage";
 import ProductionGalleryPage from "@/pages/gallery/ProductionGalleryPage";
 import QualityControlGalleryPage from "@/pages/gallery/QualityControlGalleryPage";
@@ -54,6 +55,7 @@ function Router() {
       <Route path="/konti-kan-spiral-pipes" component={KontiKanSpiralPipesPage} />
       <Route path="/pp-hm-pipes-and-fittings" component={PPHMPipesAndFittingsPage} />
       <Route path="/pp-hm-smooth-od" component={PPHMSmoothODPage} />
+      <Route path="/apply" component={Apply} />
       <Route path="/admin-panel" component={AdminPanel} />
       <Route path="/gallery/production" component={ProductionGalleryPage} />
       <Route path="/gallery/quality-control" component={QualityControlGalleryPage} />
