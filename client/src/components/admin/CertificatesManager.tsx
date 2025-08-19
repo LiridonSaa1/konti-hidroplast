@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -243,8 +244,14 @@ export function CertificatesManager() {
 
   return (
     <div className="space-y-6" data-testid="certificates-manager">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Certificates</h2>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900" data-testid="certificates-title">Certificates</h2>
+          <p className="text-slate-600" data-testid="certificates-description">
+            Manage certificate documents and images for your organization
+          </p>
+        </div>
         <Dialog open={isOpen} onOpenChange={handleDialogClose}>
           <DialogTrigger asChild>
             <Button data-testid="button-add-certificate">
@@ -401,44 +408,55 @@ export function CertificatesManager() {
         </Dialog>
       </div>
 
-      <div className="flex gap-4 items-center">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input
-            data-testid="input-search"
-            placeholder="Search certificates..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-48" data-testid="select-category-filter">
-            <SelectValue placeholder="Filter by category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            {(categories as CertificateCategory[]).map((category: CertificateCategory) => (
-              <SelectItem key={category.id} value={category.id.toString()}>
-                {category.title}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select value={subcategoryFilter} onValueChange={setSubcategoryFilter}>
-          <SelectTrigger className="w-48" data-testid="select-subcategory-filter">
-            <SelectValue placeholder="Filter by subcategory" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Subcategories</SelectItem>
-            {(subcategories as CertificateSubcategory[]).map((subcategory: CertificateSubcategory) => (
-              <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
-                {subcategory.title}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      {/* Filters */}
+      <Card data-testid="certificates-filters">
+        <CardContent className="pt-6">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+                <Input
+                  placeholder="Search certificates..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                  data-testid="input-search-certificates"
+                />
+              </div>
+            </div>
+            <div className="w-full sm:w-48">
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger data-testid="select-category-filter">
+                  <SelectValue placeholder="Filter by category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {(categories as CertificateCategory[]).map((category: CertificateCategory) => (
+                    <SelectItem key={category.id} value={category.id.toString()}>
+                      {category.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="w-full sm:w-48">
+              <Select value={subcategoryFilter} onValueChange={setSubcategoryFilter}>
+                <SelectTrigger data-testid="select-subcategory-filter">
+                  <SelectValue placeholder="Filter by subcategory" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Subcategories</SelectItem>
+                  {(subcategories as CertificateSubcategory[]).map((subcategory: CertificateSubcategory) => (
+                    <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
+                      {subcategory.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {filteredCertificates.length === 0 ? (
         <div className="text-center py-8 text-gray-500" data-testid="empty-state">
@@ -457,36 +475,45 @@ export function CertificatesManager() {
           )}
         </div>
       ) : (
-        <div className="border rounded-lg overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Image</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Subcategory</TableHead>
-                <TableHead
-                  className="cursor-pointer hover:bg-gray-50"
-                  onClick={() => handleSort("sortOrder")}
-                  data-testid="header-sort-order"
-                >
-                  <div className="flex items-center gap-2">
-                    Order
-                    <ArrowUpDown className="w-4 h-4" />
-                  </div>
-                </TableHead>
-                <TableHead
-                  className="cursor-pointer hover:bg-gray-50"
-                  onClick={() => handleSort("status")}
-                  data-testid="header-status"
-                >
-                  <div className="flex items-center gap-2">
-                    Status
-                    <ArrowUpDown className="w-4 h-4" />
-                  </div>
-                </TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
+        <Card>
+          <CardHeader>
+            <CardTitle data-testid="certificates-table-title">
+              Certificates ({filteredCertificates.length})
+            </CardTitle>
+            <CardDescription>
+              All certificate documents in your database
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Image</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>Subcategory</TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-gray-50"
+                    onClick={() => handleSort("sortOrder")}
+                    data-testid="header-sort-order"
+                  >
+                    <div className="flex items-center gap-2">
+                      Order
+                      <ArrowUpDown className="w-4 h-4" />
+                    </div>
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-gray-50"
+                    onClick={() => handleSort("status")}
+                    data-testid="header-status"
+                  >
+                    <div className="flex items-center gap-2">
+                      Status
+                      <ArrowUpDown className="w-4 h-4" />
+                    </div>
+                  </TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
             <TableBody>
               {filteredCertificates.map((certificate: Certificate) => (
                 <TableRow key={certificate.id} data-testid={`row-certificate-${certificate.id}`}>
@@ -517,8 +544,8 @@ export function CertificatesManager() {
                       {certificate.status}
                     </Badge>
                   </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
+                  <TableCell className="text-right">
+                    <div className="flex justify-end space-x-1">
                       <Button
                         variant="ghost"
                         size="sm"
@@ -531,6 +558,7 @@ export function CertificatesManager() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDelete(certificate.id)}
+                        className="text-red-600 hover:text-red-700"
                         data-testid={`button-delete-${certificate.id}`}
                       >
                         <Trash2 className="w-4 h-4" />
@@ -540,8 +568,9 @@ export function CertificatesManager() {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
-        </div>
+            </Table>
+          </CardContent>
+        </Card>
       )}
     </div>
   );

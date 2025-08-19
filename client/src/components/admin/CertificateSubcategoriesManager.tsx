@@ -3,6 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -220,8 +221,14 @@ export function CertificateSubcategoriesManager() {
 
   return (
     <div className="space-y-6" data-testid="certificate-subcategories-manager">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Certificate Subcategories</h2>
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900" data-testid="subcategories-title">Certificate Subcategories</h2>
+          <p className="text-slate-600" data-testid="subcategories-description">
+            Manage certificate subcategories within their parent categories
+          </p>
+        </div>
         <Dialog open={isOpen} onOpenChange={handleDialogOpenChange}>
           <DialogTrigger asChild>
             <Button data-testid="button-add-subcategory">
@@ -352,31 +359,40 @@ export function CertificateSubcategoriesManager() {
         </Dialog>
       </div>
 
-      <div className="flex gap-4 items-center">
-        <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input
-            data-testid="input-search"
-            placeholder="Search subcategories..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
-        </div>
-        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-48" data-testid="select-category-filter">
-            <SelectValue placeholder="Filter by category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            {(categories as CertificateCategory[]).map((category: CertificateCategory) => (
-              <SelectItem key={category.id} value={category.id.toString()}>
-                {category.title}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      {/* Filters */}
+      <Card data-testid="subcategories-filters">
+        <CardContent className="pt-6">
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1">
+              <div className="relative">
+                <Search className="h-4 w-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
+                <Input
+                  placeholder="Search subcategories..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                  data-testid="input-search-subcategories"
+                />
+              </div>
+            </div>
+            <div className="w-full sm:w-48">
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger data-testid="select-category-filter">
+                  <SelectValue placeholder="Filter by category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  {(categories as CertificateCategory[]).map((category: CertificateCategory) => (
+                    <SelectItem key={category.id} value={category.id.toString()}>
+                      {category.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {filteredSubcategories.length === 0 ? (
         <div className="text-center py-8 text-gray-500" data-testid="empty-state">
@@ -395,45 +411,54 @@ export function CertificateSubcategoriesManager() {
           )}
         </div>
       ) : (
-        <div className="border rounded-lg overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Category</TableHead>
-                <TableHead
-                  className="cursor-pointer hover:bg-gray-50"
-                  onClick={() => handleSort("title")}
-                  data-testid="header-title"
-                >
-                  <div className="flex items-center gap-2">
-                    Title
-                    <ArrowUpDown className="w-4 h-4" />
-                  </div>
-                </TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead
-                  className="cursor-pointer hover:bg-gray-50"
-                  onClick={() => handleSort("sortOrder")}
-                  data-testid="header-sort-order"
-                >
-                  <div className="flex items-center gap-2">
-                    Order
-                    <ArrowUpDown className="w-4 h-4" />
-                  </div>
-                </TableHead>
-                <TableHead
-                  className="cursor-pointer hover:bg-gray-50"
-                  onClick={() => handleSort("status")}
-                  data-testid="header-status"
-                >
-                  <div className="flex items-center gap-2">
-                    Status
-                    <ArrowUpDown className="w-4 h-4" />
-                  </div>
-                </TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
+        <Card>
+          <CardHeader>
+            <CardTitle data-testid="subcategories-table-title">
+              Certificate Subcategories ({filteredSubcategories.length})
+            </CardTitle>
+            <CardDescription>
+              All certificate subcategories in your database
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Category</TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-gray-50"
+                    onClick={() => handleSort("title")}
+                    data-testid="header-title"
+                  >
+                    <div className="flex items-center gap-2">
+                      Title
+                      <ArrowUpDown className="w-4 h-4" />
+                    </div>
+                  </TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-gray-50"
+                    onClick={() => handleSort("sortOrder")}
+                    data-testid="header-sort-order"
+                  >
+                    <div className="flex items-center gap-2">
+                      Order
+                      <ArrowUpDown className="w-4 h-4" />
+                    </div>
+                  </TableHead>
+                  <TableHead
+                    className="cursor-pointer hover:bg-gray-50"
+                    onClick={() => handleSort("status")}
+                    data-testid="header-status"
+                  >
+                    <div className="flex items-center gap-2">
+                      Status
+                      <ArrowUpDown className="w-4 h-4" />
+                    </div>
+                  </TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
             <TableBody>
               {filteredSubcategories.map((subcategory: CertificateSubcategory) => (
                 <TableRow key={subcategory.id} data-testid={`row-subcategory-${subcategory.id}`}>
@@ -444,7 +469,13 @@ export function CertificateSubcategoriesManager() {
                     {subcategory.title}
                   </TableCell>
                   <TableCell data-testid={`text-description-${subcategory.id}`}>
-                    {subcategory.description || "—"}
+                    {subcategory.description ? (
+                      <span className="text-sm line-clamp-2 max-w-xs">
+                        {subcategory.description}
+                      </span>
+                    ) : (
+                      <span className="text-slate-400 text-sm">No description</span>
+                    )}
                   </TableCell>
                   <TableCell data-testid={`text-order-${subcategory.id}`}>
                     {subcategory.sortOrder}
@@ -454,8 +485,8 @@ export function CertificateSubcategoriesManager() {
                       {subcategory.status}
                     </Badge>
                   </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
+                  <TableCell className="text-right">
+                    <div className="flex justify-end space-x-1">
                       <Button
                         variant="ghost"
                         size="sm"
@@ -468,6 +499,7 @@ export function CertificateSubcategoriesManager() {
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDelete(subcategory.id)}
+                        className="text-red-600 hover:text-red-700"
                         data-testid={`button-delete-${subcategory.id}`}
                       >
                         <Trash2 className="w-4 h-4" />
@@ -477,8 +509,9 @@ export function CertificateSubcategoriesManager() {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
-        </div>
+            </Table>
+          </CardContent>
+        </Card>
       )}
     </div>
   );
