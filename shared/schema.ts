@@ -150,7 +150,7 @@ export const contactMessages = pgTable("contact_messages", {
 // Brevo configuration table
 export const brevoConfig = pgTable("brevo_config", {
   id: serial("id").primaryKey(),
-  apiKey: text("api_key").notNull(),
+  apiKey: text("api_key").notNull(), // SMTP key (not API key)
   senderEmail: text("sender_email").notNull(),
   senderName: text("sender_name").notNull(),
   templateId: integer("template_id"),

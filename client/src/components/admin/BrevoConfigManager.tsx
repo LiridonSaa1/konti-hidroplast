@@ -64,7 +64,7 @@ export function BrevoConfigManager() {
         senderEmail: config.senderEmail,
         senderName: config.senderName,
         templateId: config.templateId || undefined,
-        isActive: config.isActive,
+        isActive: config.isActive ?? true,
       });
       setConnectionStatus(config.connectionTest ?? null);
     }
@@ -228,9 +228,10 @@ export function BrevoConfigManager() {
               <div>
                 <h4 className="font-medium text-blue-900 mb-2">Setup Instructions</h4>
                 <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Get your API key from Brevo dashboard → SMTP & API → API Keys</li>
-                  <li>• Use an authenticated sender email address</li>
-                  <li>• Template ID is optional (for custom email templates)</li>
+                  <li>• Go to Brevo dashboard → <strong>SMTP & API</strong> → <strong>SMTP tab</strong> (not API Keys tab)</li>
+                  <li>• Copy your <strong>SMTP Login</strong> email and put it in "Sender Email" field below</li>
+                  <li>• Copy your <strong>SMTP Key</strong> and put it in "SMTP Key" field below</li>
+                  <li>• Your sender email must be verified in Brevo for sending to work</li>
                   <li>• Test the connection after saving your configuration</li>
                 </ul>
               </div>
@@ -242,12 +243,12 @@ export function BrevoConfigManager() {
           {/* API Key */}
           <div className="space-y-2">
             <Label htmlFor="apiKey" className="text-sm font-semibold text-gray-700">
-              Brevo API Key *
+              Brevo SMTP Key *
             </Label>
             <Input
               id="apiKey"
               type="password"
-              placeholder={config?.hasApiKey ? "••••••••••••••••" : "Enter your Brevo API key"}
+              placeholder={config?.hasApiKey ? "••••••••••••••••" : "Enter your Brevo SMTP key (not API key)"}
               {...form.register("apiKey")}
               className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
               data-testid="input-api-key"
@@ -257,9 +258,12 @@ export function BrevoConfigManager() {
             )}
             {config?.hasApiKey && (
               <p className="text-sm text-gray-500">
-                Leave empty to keep the current API key
+                Leave empty to keep the current SMTP key
               </p>
             )}
+            <p className="text-sm text-blue-600">
+              Important: Use SMTP Key from SMTP tab, not API Key from API Keys tab
+            </p>
           </div>
 
           <Separator />
@@ -268,12 +272,12 @@ export function BrevoConfigManager() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="senderEmail" className="text-sm font-semibold text-gray-700">
-                Sender Email *
+                SMTP Login Email *
               </Label>
               <Input
                 id="senderEmail"
                 type="email"
-                placeholder="noreply@kontihidroplast.com"
+                placeholder="your-smtp-login@email.com"
                 {...form.register("senderEmail")}
                 className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
                 data-testid="input-sender-email"

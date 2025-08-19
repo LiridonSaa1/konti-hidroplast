@@ -19,12 +19,12 @@ class BrevoService {
     
     try {
       const transporter = nodemailer.createTransport({
-        host: 'smtp-relay.sendinblue.com',
+        host: 'smtp-relay.brevo.com',
         port: 587,
         secure: false,
         auth: {
-          user: config.senderEmail,
-          pass: config.apiKey
+          user: config.senderEmail, // This should be your SMTP login email from Brevo SMTP tab
+          pass: config.apiKey // This should be your SMTP key (not API key)
         },
       });
       
