@@ -120,7 +120,7 @@ function ProductsPage() {
                 className="text-5xl md:text-6xl font-bold mb-8 leading-tight"
                 data-testid="products-hero-title"
               >
-                PRODUCTS <span className="text-red-500">KONTI</span>
+                {t('productsPage.title').toUpperCase()} <span className="text-red-500">KONTI</span>
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
                   HIDROPLAST
@@ -130,7 +130,7 @@ function ProductsPage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="products-hero-description"
               >
-                Global Applications Across Industries and Utilities
+                {t('productsPage.subtitle')}
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">

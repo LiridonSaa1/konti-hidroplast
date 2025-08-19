@@ -223,7 +223,7 @@ function NewsPage() {
               <span className="text-sm font-medium">LATEST UPDATES</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-              NEWS &<span className="text-red-500"> INSIGHTS</span>
+              {t('newsPage.title')}&<span className="text-red-500"> {t('newsPage.insights')}</span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
                 FROM KONTI
@@ -233,9 +233,7 @@ function NewsPage() {
               className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
               data-testid="hero-description"
             >
-              Stay informed with the latest industry developments, company
-              updates, technological innovations, and expert insights from the
-              world of pipe manufacturing.
+              {t('newsPage.subtitle')}
             </p>
           </div>
         </div>
@@ -247,7 +245,7 @@ function NewsPage() {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">News</h2>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">{t('common.news')}</h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
           </div>
@@ -275,7 +273,7 @@ function NewsPage() {
                   </>
                 ) : (
                   <>
-                    Load More Articles
+                    {t('newsPage.loadMore')}
                     <ArrowRight className="w-5 h-5 ml-2" />
                   </>
                 )}
@@ -305,20 +303,19 @@ function NewsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+                {t('contact.getInTouch')}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our cable protection solutions?
-              Contact our team of experts.
+              {t('contact.needMoreInfo')}
             </p>
             <a
               href="/contact"
               className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
-              Contact Us
+              {t('common.contactUs')}
             </a>
           </div>
         </div>

@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { type Team, type Project, type GalleryCategory } from "@shared/schema";
 import { Link } from "wouter";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   ChevronRight,
   ChevronLeft,
@@ -189,6 +190,7 @@ function useTeamData() {
 }
 
 export default function AboutUs() {
+  const { t } = useLanguage();
   const [activeYear, setActiveYear] = useState("1990");
   const [sliderValue, setSliderValue] = useState([0]);
   const [activeTeamTabIndex, setActiveTeamTabIndex] = useState(0);
@@ -308,16 +310,14 @@ export default function AboutUs() {
                 Since 1975
               </Badge>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                ABOUT <span className="text-red-500">KONTI</span>
+                {t('aboutUs.title').toUpperCase()} <span className="text-red-500">KONTI</span>
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
                   HIDROPLAST
                 </span>
               </h1>
               <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                Pioneering pipe solutions for urban development. Export-oriented
-                Macedonian leader in PE and PP pipe manufacturing with 95%
-                international market reach.
+                {t('aboutUs.heroSubtitle')}
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
@@ -358,7 +358,7 @@ export default function AboutUs() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold text-gray-700 mx-8">
-                Our Story
+                {t('aboutUs.heroTitle')}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -367,12 +367,7 @@ export default function AboutUs() {
           <div className="prose prose-lg max-w-none">
             <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 mb-12">
               <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                Konti Hidroplast is an export oriented Macedonian company for
-                production of PE (polyethylene) and PP (polypropylene) pipes.
-                Situated in the southern area of North Macedonia, municipality
-                of Gevgelija, Konti Hidroplast was founded in 1975 as a small
-                plant for production of tools and elements of injection molded
-                plastic.
+                {t('about.text1')}
               </p>
 
               <p className="text-lg leading-relaxed text-gray-700 mb-6">
