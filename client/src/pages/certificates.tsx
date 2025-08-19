@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useQuery } from "@tanstack/react-query";
 import {
   Download,
   Shield,
@@ -10,9 +11,79 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import type { CertificateCategory, CertificateSubcategory, Certificate } from "@shared/schema";
 
-// Certificates data organized by category
-const certificateCategories = [
+// Interface for organized certificate data
+interface OrganizedCategory {
+  id: number;
+  title: string;
+  certificates?: Certificate[];
+  subsections?: {
+    id: number;
+    title: string;
+    certificates: Certificate[];
+  }[];
+}
+
+// Fetch certificate data from API
+function useCertificateData() {
+  const categories = useQuery({
+    queryKey: ['/api/certificate-categories'],
+  });
+
+  const subcategories = useQuery({
+    queryKey: ['/api/certificate-subcategories'],
+  });
+
+  const certificates = useQuery({
+    queryKey: ['/api/certificates'],
+  });
+
+  return {
+    categories,
+    subcategories,
+    certificates,
+    isLoading: categories.isLoading || subcategories.isLoading || certificates.isLoading,
+    error: categories.error || subcategories.error || certificates.error,
+  };
+}
+
+// Organize data into the structure needed for display
+function organizeData(
+  categories: CertificateCategory[],
+  subcategories: CertificateSubcategory[],
+  certificates: Certificate[]
+): OrganizedCategory[] {
+  return categories.map(category => {
+    const categorySubcategories = subcategories.filter(sub => sub.categoryId === category.id);
+    const categoryCertificates = certificates.filter(cert => cert.categoryId === category.id);
+
+    if (categorySubcategories.length > 0) {
+      // Has subcategories
+      const subsections = categorySubcategories.map(subcategory => ({
+        id: subcategory.id,
+        title: subcategory.title,
+        certificates: certificates.filter(cert => cert.subcategoryId === subcategory.id),
+      }));
+
+      return {
+        id: category.id,
+        title: category.title,
+        subsections,
+      };
+    } else {
+      // No subcategories, direct certificates
+      return {
+        id: category.id,
+        title: category.title,
+        certificates: categoryCertificates,
+      };
+    }
+  });
+}
+
+// Legacy hardcoded data as fallback
+const legacyCertificateCategories = [
   {
     id: "epd",
     title: "EPD – Environmental Product Declaration",
@@ -601,16 +672,24 @@ const certificateCategories = [
 function CertificatesPage() {
   const { t } = useLanguage();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  
+  // Fetch dynamic certificate data
+  const { categories, subcategories, certificates, isLoading, error } = useCertificateData();
+  
+  // Organize data for display
+  const organizedData = categories.data && subcategories.data && certificates.data 
+    ? organizeData(categories.data, subcategories.data, certificates.data)
+    : [] as OrganizedCategory[];
 
   const nextTab = () => {
     setActiveTabIndex((prev) =>
-      prev === certificateCategories.length - 1 ? 0 : prev + 1,
+      prev === organizedData.length - 1 ? 0 : prev + 1,
     );
   };
 
   const prevTab = () => {
     setActiveTabIndex((prev) =>
-      prev === 0 ? certificateCategories.length - 1 : prev - 1,
+      prev === 0 ? organizedData.length - 1 : prev - 1,
     );
   };
 
@@ -628,14 +707,18 @@ function CertificatesPage() {
     }
   }, []);
 
-  const CertificateCard = ({ certificate, categoryId, index }: any) => (
+  const CertificateCard = ({ certificate, categoryId, index }: { 
+    certificate: Certificate | { title: string; image?: string; imageUrl?: string; downloadUrl?: string; };
+    categoryId: number | string;
+    index: number;
+  }) => (
     <div
       className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100"
       data-testid={`certificate-${categoryId}-${index}`}
     >
       <div className="aspect-[3/4] bg-gray-100">
         <img
-          src={certificate.image}
+          src={('image' in certificate ? certificate.image : certificate.imageUrl) || '/placeholder-certificate.jpg'}
           alt={certificate.title}
           className="w-full h-full object-cover"
           loading="lazy"
@@ -645,7 +728,7 @@ function CertificatesPage() {
         <h3 className="text-sm font-semibold text-[#1c2d56] mb-3 line-clamp-2 min-h-[2.5rem]">
           {certificate.title}
         </h3>
-        {certificate.downloadUrl !== "#" ? (
+        {certificate.downloadUrl && certificate.downloadUrl !== "#" ? (
           <a
             href={certificate.downloadUrl}
             target="_blank"
@@ -728,8 +811,24 @@ function CertificatesPage() {
             </div>
           </div>
 
+          {/* Loading state */}
+          {isLoading && (
+            <div className="text-center py-12">
+              <div className="animate-spin w-12 h-12 border-4 border-[#1c2d56] border-t-transparent rounded-full mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading certificates...</p>
+            </div>
+          )}
+
+          {/* Error state */}
+          {error && (
+            <div className="text-center py-12">
+              <p className="text-red-600 mb-4">Error loading certificates. Using cached data.</p>
+            </div>
+          )}
+
           {/* Tab Slider */}
-          <div className="flex items-center justify-center mb-12">
+          {!isLoading && organizedData.length > 0 && (
+            <div className="flex items-center justify-center mb-12">
             <button
               onClick={prevTab}
               className="p-2 rounded-full bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white transition-colors mr-4"
@@ -740,10 +839,10 @@ function CertificatesPage() {
 
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
               <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
-                {certificateCategories[activeTabIndex].title}
+                {organizedData[activeTabIndex]?.title || 'Loading...'}
               </h3>
               <div className="flex justify-center space-x-1 mt-3">
-                {certificateCategories.map((_, index) => (
+                {organizedData.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveTabIndex(index)}
@@ -765,10 +864,11 @@ function CertificatesPage() {
             >
               <ChevronRight className="w-5 h-5" />
             </button>
-          </div>
+            </div>
+          )}
 
           {/* Tab Content */}
-          {certificateCategories.map((category, index) => (
+          {!isLoading && organizedData.map((category, index) => (
             <div
               key={category.id}
               className={`${activeTabIndex === index ? "block animate-fadeIn" : "hidden"} transition-all duration-500`}

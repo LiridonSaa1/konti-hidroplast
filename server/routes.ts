@@ -878,6 +878,62 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Public Certificate routes (no authentication required)
+  app.get('/api/certificate-categories', async (req, res) => {
+    try {
+      const categories = await storage.getAllCertificateCategories();
+      // Only return active categories for public use
+      const activeCategories = categories.filter(category => category.status === 'active');
+      res.json(activeCategories);
+    } catch (error) {
+      console.error('Error fetching public certificate categories:', error);
+      res.status(500).json({ error: 'Failed to fetch certificate categories' });
+    }
+  });
+
+  app.get('/api/certificate-subcategories', async (req, res) => {
+    try {
+      const categoryId = req.query.categoryId as string;
+      let subcategories;
+      
+      if (categoryId) {
+        subcategories = await storage.getCertificateSubcategoriesByCategory(parseInt(categoryId));
+      } else {
+        subcategories = await storage.getAllCertificateSubcategories();
+      }
+      
+      // Only return active subcategories for public use
+      const activeSubcategories = subcategories.filter(subcategory => subcategory.status === 'active');
+      res.json(activeSubcategories);
+    } catch (error) {
+      console.error('Error fetching public certificate subcategories:', error);
+      res.status(500).json({ error: 'Failed to fetch certificate subcategories' });
+    }
+  });
+
+  app.get('/api/certificates', async (req, res) => {
+    try {
+      const categoryId = req.query.categoryId as string;
+      const subcategoryId = req.query.subcategoryId as string;
+      
+      let certificates;
+      if (subcategoryId) {
+        certificates = await storage.getCertificatesBySubcategory(parseInt(subcategoryId));
+      } else if (categoryId) {
+        certificates = await storage.getCertificatesByCategory(parseInt(categoryId));
+      } else {
+        certificates = await storage.getAllCertificates();
+      }
+      
+      // Only return active certificates for public use
+      const activeCertificates = certificates.filter(certificate => certificate.status === 'active');
+      res.json(activeCertificates);
+    } catch (error) {
+      console.error('Error fetching public certificates:', error);
+      res.status(500).json({ error: 'Failed to fetch certificates' });
+    }
+  });
+
   // Gallery Categories routes
   app.get('/api/admin/gallery-categories', requireAuth, async (req, res) => {
     try {
