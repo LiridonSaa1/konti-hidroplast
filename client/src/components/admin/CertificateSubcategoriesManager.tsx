@@ -148,7 +148,7 @@ export function CertificateSubcategoriesManager() {
   const filteredSubcategories = (subcategories as CertificateSubcategory[])
     .filter((subcategory: CertificateSubcategory) => {
       const matchesSearch = subcategory.title.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = !categoryFilter || subcategory.categoryId.toString() === categoryFilter;
+      const matchesCategory = !categoryFilter || categoryFilter === "all" || subcategory.categoryId.toString() === categoryFilter;
       return matchesSearch && matchesCategory;
     })
     .sort((a: CertificateSubcategory, b: CertificateSubcategory) => {
@@ -360,7 +360,7 @@ export function CertificateSubcategoriesManager() {
             <SelectValue placeholder="Filter by category" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Categories</SelectItem>
+            <SelectItem value="all">All Categories</SelectItem>
             {(categories as CertificateCategory[]).map((category: CertificateCategory) => (
               <SelectItem key={category.id} value={category.id.toString()}>
                 {category.title}
