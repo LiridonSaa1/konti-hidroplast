@@ -453,8 +453,6 @@ export function NewsManager() {
                   />
                 </div>
 
-
-
                 <div className="flex items-center space-x-2">
                   <Switch
                     id="published"
@@ -474,17 +472,6 @@ export function NewsManager() {
                   placeholder="Enter image URL or upload file"
                 />
               </div>
-            </div>
-
-            {/* Introduction/Description */}
-            <div>
-              <Label>Introduction *</Label>
-              <RichTextEditor
-                value={formData.description}
-                onChange={(value) => setFormData(prev => ({ ...prev, description: value }))}
-                placeholder="Enter article introduction with rich text formatting..."
-                className="mt-2"
-              />
             </div>
 
             {/* Article Sections */}
@@ -673,8 +660,6 @@ export function NewsManager() {
                   />
                 </div>
 
-
-
                 <div className="flex items-center space-x-2">
                   <Switch
                     id="edit-published"
@@ -694,17 +679,6 @@ export function NewsManager() {
                   placeholder="Enter image URL or upload file"
                 />
               </div>
-            </div>
-
-            {/* Introduction/Description */}
-            <div>
-              <Label>Introduction *</Label>
-              <RichTextEditor
-                value={formData.description}
-                onChange={(value) => setFormData(prev => ({ ...prev, description: value }))}
-                placeholder="Enter article introduction with rich text formatting..."
-                className="mt-2"
-              />
             </div>
 
             {/* Article Sections */}
