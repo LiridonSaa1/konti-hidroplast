@@ -1286,8 +1286,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post('/api/job-applications', async (req, res) => {
     try {
       const validatedData = insertJobApplicationSchema.parse(req.body);
+      
+      // Save job application to database
       const application = await storage.createJobApplication(validatedData);
-      res.status(201).json({ message: 'Job application submitted successfully', id: application.id });
+      
+      // Send email notifications via Brevo
+      try {
+        await Promise.all([
+          brevoService.sendJobApplicationNotification(validatedData),
+          brevoService.sendJobApplicationAutoReply(validatedData)
+        ]);
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError);
+        // Still return success since the application was saved
+      }
+      
+      res.status(201).json({ 
+        message: 'Job application submitted successfully', 
+        id: application.id 
+      });
     } catch (error: any) {
       console.error('Error creating job application:', error);
       if (error.name === 'ZodError') {

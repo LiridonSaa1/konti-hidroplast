@@ -1,7 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
 import {
   Users,
   Award,
@@ -10,10 +14,96 @@ import {
   Phone,
   MapPin,
   Building,
+  Loader2,
 } from "lucide-react";
+
+const jobApplicationSchema = z.object({
+  fullName: z.string().min(1, "Full name is required"),
+  email: z.string().email("Invalid email address"),
+  phoneNumber: z.string().min(1, "Phone number is required"),
+  position: z.string().min(1, "Position is required"),
+  experience: z.string().optional(),
+  coverLetter: z.string().optional(),
+  resumeUrl: z.string().optional(),
+});
+
+type JobApplicationForm = z.infer<typeof jobApplicationSchema>;
 
 function CareerPage() {
   const { t } = useLanguage();
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  
+  const form = useForm<JobApplicationForm>({
+    resolver: zodResolver(jobApplicationSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      position: "General Application",
+      experience: "",
+      coverLetter: "",
+      resumeUrl: "",
+    },
+  });
+  
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setResumeFile(file);
+    }
+  };
+  
+  const onSubmit = async (data: JobApplicationForm) => {
+    setIsSubmitting(true);
+    
+    try {
+      // Here you would typically upload the resume file first
+      // For now, we'll just note that a file was provided
+      const applicationData = {
+        ...data,
+        resumeUrl: resumeFile ? `Resume: ${resumeFile.name}` : undefined,
+      };
+      
+      const response = await fetch('/api/job-applications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(applicationData),
+      });
+      
+      if (response.ok) {
+        toast({
+          title: "Application Submitted!",
+          description: "Thank you for your interest. We'll review your application and get back to you soon.",
+          duration: 5000,
+        });
+        
+        // Reset form
+        form.reset();
+        setResumeFile(null);
+        
+        // Reset file input
+        const fileInput = document.getElementById('resume') as HTMLInputElement;
+        if (fileInput) fileInput.value = '';
+        
+      } else {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to submit application');
+      }
+    } catch (error: any) {
+      toast({
+        title: "Submission Failed",
+        description: error.message || "There was an error submitting your application. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     // Set page title
@@ -96,7 +186,7 @@ function CareerPage() {
           </div>
 
           <div className="bg-white rounded-xl p-8 shadow-lg">
-            <form className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div>
                 <label
                   htmlFor="fullName"
@@ -107,10 +197,13 @@ function CareerPage() {
                 <input
                   type="text"
                   id="fullName"
-                  required
+                  {...form.register("fullName")}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
                   data-testid="input-full-name"
                 />
+                {form.formState.errors.fullName && (
+                  <p className="mt-1 text-sm text-red-600">{form.formState.errors.fullName.message}</p>
+                )}
               </div>
 
               <div>
@@ -123,25 +216,68 @@ function CareerPage() {
                 <input
                   type="email"
                   id="email"
-                  required
+                  {...form.register("email")}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
                   data-testid="input-email"
                 />
+                {form.formState.errors.email && (
+                  <p className="mt-1 text-sm text-red-600">{form.formState.errors.email.message}</p>
+                )}
               </div>
 
               <div>
                 <label
-                  htmlFor="phone"
+                  htmlFor="phoneNumber"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
                   Phone Number *
                 </label>
                 <input
                   type="tel"
-                  id="phone"
-                  required
+                  id="phoneNumber"
+                  {...form.register("phoneNumber")}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
                   data-testid="input-phone"
+                />
+                {form.formState.errors.phoneNumber && (
+                  <p className="mt-1 text-sm text-red-600">{form.formState.errors.phoneNumber.message}</p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="position"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Position of Interest *
+                </label>
+                <input
+                  type="text"
+                  id="position"
+                  {...form.register("position")}
+                  placeholder="e.g., Production Manager, Quality Control, Engineering"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
+                  data-testid="input-position"
+                />
+                {form.formState.errors.position && (
+                  <p className="mt-1 text-sm text-red-600">{form.formState.errors.position.message}</p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor="experience"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
+                  Years of Experience
+                </label>
+                <input
+                  type="text"
+                  id="experience"
+                  {...form.register("experience")}
+                  placeholder="e.g., 5 years in manufacturing"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
+                  data-testid="input-experience"
                 />
               </div>
 
@@ -150,41 +286,45 @@ function CareerPage() {
                   htmlFor="resume"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Resume *
+                  Resume/CV *
                 </label>
                 <input
                   type="file"
                   id="resume"
                   accept=".pdf,.doc,.docx"
-                  required
+                  onChange={handleFileChange}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#1c2d56] file:text-white hover:file:bg-[#1c2d56]"
                   data-testid="input-resume"
                 />
+                <p className="mt-1 text-sm text-gray-500">Accepted formats: PDF, DOC, DOCX (Max 10MB)</p>
               </div>
 
               <div>
                 <label
-                  htmlFor="message"
+                  htmlFor="coverLetter"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Message
+                  Cover Letter / Message
                 </label>
                 <textarea
-                  id="message"
+                  id="coverLetter"
+                  {...form.register("coverLetter")}
                   rows={4}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1c2d56] focus:border-transparent"
                   placeholder="Tell us about yourself and why you'd like to join our team..."
                   data-testid="textarea-message"
-                ></textarea>
+                />
               </div>
 
               <div className="text-center pt-4">
                 <button
                   type="submit"
-                  className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors font-semibold text-lg"
+                  disabled={isSubmitting}
+                  className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-semibold text-lg"
                   data-testid="submit-button"
                 >
-                  Submit Application
+                  {isSubmitting && <Loader2 className="w-5 h-5 mr-2 animate-spin" />}
+                  {isSubmitting ? "Submitting..." : "Submit Application"}
                 </button>
               </div>
             </form>
