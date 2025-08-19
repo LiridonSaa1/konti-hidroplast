@@ -296,15 +296,9 @@ export function JobApplicationsManager() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => {
-                              // Handle resume display - if it's a file name, show it in modal
-                              if (application.resumeUrl && !application.resumeUrl.startsWith('http')) {
-                                alert(`Resume: ${application.resumeUrl}`);
-                              } else {
-                                window.open(application.resumeUrl || "", "_blank");
-                              }
-                            }}
+                            onClick={() => window.open(application.resumeUrl || "", "_blank")}
                             className="text-green-600 hover:text-green-800 hover:bg-green-50"
+                            title="View Resume"
                           >
                             <FileText className="h-4 w-4" />
                           </Button>
@@ -401,21 +395,14 @@ export function JobApplicationsManager() {
                 <div>
                   <Label className="text-sm font-medium">Resume</Label>
                   <div className="mt-2">
-                    {selectedApplication.resumeUrl.startsWith('http') ? (
-                      <Button
-                        variant="outline"
-                        onClick={() => window.open(selectedApplication.resumeUrl || "", "_blank")}
-                        className="flex items-center gap-2"
-                      >
-                        <FileText className="h-4 w-4" />
-                        View Resume
-                      </Button>
-                    ) : (
-                      <div className="p-3 bg-gray-50 rounded-lg flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-gray-500" />
-                        <span className="text-sm text-gray-700">{selectedApplication.resumeUrl}</span>
-                      </div>
-                    )}
+                    <Button
+                      variant="outline"
+                      onClick={() => window.open(selectedApplication.resumeUrl || "", "_blank")}
+                      className="flex items-center gap-2"
+                    >
+                      <FileText className="h-4 w-4" />
+                      View Resume (PDF)
+                    </Button>
                   </div>
                 </div>
               )}

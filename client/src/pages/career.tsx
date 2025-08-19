@@ -35,7 +35,7 @@ function CareerPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
-  
+
   const form = useForm<JobApplicationForm>({
     resolver: zodResolver(jobApplicationSchema),
     defaultValues: {
@@ -48,75 +48,100 @@ function CareerPage() {
       resumeUrl: "",
     },
   });
-  
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setResumeFile(file);
     }
   };
-  
+
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsDragOver(false);
     const file = event.dataTransfer.files[0];
-    if (file && (file.type === 'application/pdf' || file.name.endsWith('.doc') || file.name.endsWith('.docx'))) {
+    if (
+      file &&
+      (file.type === "application/pdf" ||
+        file.name.endsWith(".doc") ||
+        file.name.endsWith(".docx"))
+    ) {
       setResumeFile(file);
     }
   };
-  
+
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsDragOver(true);
   };
-  
+
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsDragOver(false);
   };
-  
+
   const onSubmit = async (data: JobApplicationForm) => {
     setIsSubmitting(true);
-    
+
     try {
-      // Here you would typically upload the resume file first
-      // For now, we'll just note that a file was provided
+      let resumeUrl = "";
+      
+      // Upload resume file first if provided
+      if (resumeFile) {
+        const formData = new FormData();
+        formData.append('file', resumeFile);
+
+        const uploadResponse = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!uploadResponse.ok) {
+          throw new Error('Failed to upload resume file');
+        }
+
+        const uploadResult = await uploadResponse.json();
+        resumeUrl = uploadResult.url;
+      }
+
       const applicationData = {
         ...data,
-        resumeUrl: resumeFile ? `Resume: ${resumeFile.name}` : undefined,
+        resumeUrl: resumeUrl || undefined,
       };
-      
-      const response = await fetch('/api/job-applications', {
-        method: 'POST',
+
+      const response = await fetch("/api/job-applications", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(applicationData),
       });
-      
+
       if (response.ok) {
         toast({
           title: "Application Submitted!",
-          description: "Thank you for your interest. We'll review your application and get back to you soon.",
+          description:
+            "Thank you for your interest. We'll review your application and get back to you soon.",
           duration: 5000,
         });
-        
+
         // Reset form
         form.reset();
         setResumeFile(null);
-        
+
         // Reset file input
-        const fileInput = document.getElementById('resume') as HTMLInputElement;
-        if (fileInput) fileInput.value = '';
-        
+        const fileInput = document.getElementById("resume") as HTMLInputElement;
+        if (fileInput) fileInput.value = "";
       } else {
         const error = await response.json();
-        throw new Error(error.error || 'Failed to submit application');
+        throw new Error(error.error || "Failed to submit application");
       }
     } catch (error: any) {
       toast({
         title: "Submission Failed",
-        description: error.message || "There was an error submitting your application. Please try again.",
+        description:
+          error.message ||
+          "There was an error submitting your application. Please try again.",
         variant: "destructive",
         duration: 5000,
       });
@@ -219,7 +244,9 @@ function CareerPage() {
                       data-testid="input-full-name"
                     />
                     {form.formState.errors.fullName && (
-                      <p className="mt-1 text-sm text-red-600">{form.formState.errors.fullName.message}</p>
+                      <p className="mt-1 text-sm text-red-600">
+                        {form.formState.errors.fullName.message}
+                      </p>
                     )}
                   </div>
 
@@ -233,7 +260,9 @@ function CareerPage() {
                       data-testid="input-email"
                     />
                     {form.formState.errors.email && (
-                      <p className="mt-1 text-sm text-red-600">{form.formState.errors.email.message}</p>
+                      <p className="mt-1 text-sm text-red-600">
+                        {form.formState.errors.email.message}
+                      </p>
                     )}
                   </div>
 
@@ -247,24 +276,26 @@ function CareerPage() {
                       data-testid="input-phone"
                     />
                     {form.formState.errors.phoneNumber && (
-                      <p className="mt-1 text-sm text-red-600">{form.formState.errors.phoneNumber.message}</p>
+                      <p className="mt-1 text-sm text-red-600">
+                        {form.formState.errors.phoneNumber.message}
+                      </p>
                     )}
                   </div>
                 </div>
 
                 <div>
-                  <div 
+                  <div
                     className={`relative border-2 border-dashed rounded-md h-48 flex flex-col items-center justify-center cursor-pointer transition-colors ${
-                      isDragOver 
-                        ? 'border-[#1c2d56] bg-blue-50' 
-                        : resumeFile 
-                        ? 'border-green-400 bg-green-50'
-                        : 'border-gray-300 hover:border-gray-400'
+                      isDragOver
+                        ? "border-[#1c2d56] bg-blue-50"
+                        : resumeFile
+                          ? "border-green-400 bg-green-50"
+                          : "border-gray-300 hover:border-gray-400"
                     }`}
                     onDrop={handleDrop}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
-                    onClick={() => document.getElementById('resume')?.click()}
+                    onClick={() => document.getElementById("resume")?.click()}
                   >
                     <input
                       type="file"
@@ -274,26 +305,54 @@ function CareerPage() {
                       className="hidden"
                       data-testid="input-resume"
                     />
-                    
+
                     {resumeFile ? (
                       <div className="text-center">
                         <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center bg-green-100 rounded-full">
-                          <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          <svg
+                            className="w-6 h-6 text-green-600"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
                           </svg>
                         </div>
-                        <p className="text-sm font-medium text-green-600">{resumeFile.name}</p>
-                        <p className="text-xs text-gray-500 mt-1">Click to change file</p>
+                        <p className="text-sm font-medium text-green-600">
+                          {resumeFile.name}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Click to change file
+                        </p>
                       </div>
                     ) : (
                       <div className="text-center">
                         <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center bg-gray-100 rounded-full">
-                          <svg className="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                          <svg
+                            className="w-6 h-6 text-gray-400"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                            />
                           </svg>
                         </div>
-                        <p className="text-sm text-gray-600">Click or drag a file to this area to upload *</p>
-                        <p className="text-xs text-gray-400 mt-1">PDF, DOC, DOCX (Max 10MB)</p>
+                        <p className="text-sm text-gray-600">
+                          Click or drag a file to this area to upload *
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">
+                          PDF, DOC, DOCX (Max 10MB)
+                        </p>
                       </div>
                     )}
                   </div>
@@ -306,7 +365,7 @@ function CareerPage() {
                   {...form.register("coverLetter")}
                   rows={4}
                   placeholder="Message"
-                  className="w-full px-4 py-4 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56] resize-none"
+                  className="w-full px-4 py-4 border-2 border-gray-300 rounded-md focus:ring-[#1c2d56] focus:ring-[#1c2d56] focus:border-[#1c2d56] resize-none"
                   data-testid="textarea-message"
                 />
               </div>
@@ -315,10 +374,12 @@ function CareerPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center px-12 py-3 bg-red-500 hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-md transition-colors font-semibold"
+                  className="inline-flex items-center px-12 py-3 bg-[#1c2d56] hover:bg-[#1c2d56] disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-md transition-colors font-semibold"
                   data-testid="submit-button"
                 >
-                  {isSubmitting && <Loader2 className="w-5 h-5 mr-2 animate-spin" />}
+                  {isSubmitting && (
+                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                  )}
                   {isSubmitting ? "Submitting..." : "Submit"}
                 </button>
               </div>
