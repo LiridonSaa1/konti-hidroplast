@@ -10,7 +10,8 @@ Preferred communication style: Simple, everyday language.
 
 ## Project Migration Completion (August 19, 2025)
 - Successfully completed migration from Replit Agent to standard Replit environment
-- Fixed Select component error in Certificate Subcategories Manager (empty value prop issue)
+- Fixed Select component errors in Certificate Subcategories Manager and CertificatesManager (empty value prop issues)
+- Updated all empty string SelectItem values to "all" and adjusted filtering logic accordingly
 - All dependencies properly installed and configured
 - Application server running correctly on port 5000
 - All API endpoints functioning properly (teams, projects, gallery, etc.)

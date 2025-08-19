@@ -174,8 +174,8 @@ export function CertificatesManager() {
       const matchesSearch = 
         categoryName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         subcategoryName.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = !categoryFilter || certificate.categoryId.toString() === categoryFilter;
-      const matchesSubcategory = !subcategoryFilter || certificate.subcategoryId.toString() === subcategoryFilter;
+      const matchesCategory = !categoryFilter || categoryFilter === "all" || certificate.categoryId.toString() === categoryFilter;
+      const matchesSubcategory = !subcategoryFilter || subcategoryFilter === "all" || certificate.subcategoryId.toString() === subcategoryFilter;
       return matchesSearch && matchesCategory && matchesSubcategory;
     })
     .sort((a: Certificate, b: Certificate) => {
@@ -417,7 +417,7 @@ export function CertificatesManager() {
             <SelectValue placeholder="Filter by category" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Categories</SelectItem>
+            <SelectItem value="all">All Categories</SelectItem>
             {(categories as CertificateCategory[]).map((category: CertificateCategory) => (
               <SelectItem key={category.id} value={category.id.toString()}>
                 {category.title}
@@ -430,7 +430,7 @@ export function CertificatesManager() {
             <SelectValue placeholder="Filter by subcategory" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All Subcategories</SelectItem>
+            <SelectItem value="all">All Subcategories</SelectItem>
             {(subcategories as CertificateSubcategory[]).map((subcategory: CertificateSubcategory) => (
               <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
                 {subcategory.title}
