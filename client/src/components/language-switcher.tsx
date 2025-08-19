@@ -24,9 +24,9 @@ export function LanguageSwitcher() {
   }, []);
 
   const languages = [
-    { code: "en" as Language, flag: "🇺🇸" },
-    { code: "mk" as Language, flag: "🇲🇰" },
-    { code: "de" as Language, flag: "🇩🇪" },
+    { code: "en" as Language, flag: "🇺🇸", name: "English" },
+    { code: "mk" as Language, flag: "🇲🇰", name: "Македонски" },
+    { code: "de" as Language, flag: "🇩🇪", name: "Deutsch" },
   ];
 
   const currentLanguage = languages.find((lang) => lang.code === language);
