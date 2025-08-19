@@ -211,10 +211,10 @@ export function NewsManager() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title.trim() || !formData.description.trim()) {
+    if (!formData.title.trim()) {
       toast({
         title: "Error",
-        description: "Title and description are required",
+        description: "Title is required",
         variant: "destructive",
       });
       return;
@@ -223,7 +223,7 @@ export function NewsManager() {
     const articleData: InsertNewsArticle = {
       title: formData.title.trim(),
       subtitle: formData.subtitle.trim() || null,
-      description: formData.description.trim(),
+      description: "", // No longer used but kept for backend compatibility
       imageUrl: formData.imageUrl || null,
       author: formData.author || null,
       published: formData.published,
