@@ -58,7 +58,7 @@ export const newsArticles = pgTable("news_articles", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   title: text("title").notNull(),
   subtitle: text("subtitle"),
-  description: text("description").notNull(), // Rich text content
+  description: text("description"), // Optional - content is now in sections
   imageUrl: text("image_url"),
   author: text("author"),
   published: boolean("published").default(false),

@@ -223,7 +223,7 @@ export function NewsManager() {
     const articleData: InsertNewsArticle = {
       title: formData.title.trim(),
       subtitle: formData.subtitle.trim() || null,
-      description: "", // No longer used but kept for backend compatibility
+      description: null, // Optional field - content is now in sections
       imageUrl: formData.imageUrl || null,
       author: formData.author || null,
       published: formData.published,
