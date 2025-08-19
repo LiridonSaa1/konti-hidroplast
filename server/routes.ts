@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 import { storage } from "./storage";
 import { translationService } from "./services/translationService";
 import translationRoutes from "./routes/translation";
+import { brevoService } from "./services/brevoService";
 import {
   insertProductSchema,
   insertMediaSchema,
@@ -23,6 +24,8 @@ import {
   insertPositionSchema,
   insertGalleryCategorySchema,
   insertGalleryItemSchema,
+  insertContactMessageSchema,
+  insertBrevoConfigSchema,
   loginSchema,
   updateUserSchema,
   insertUserSchema,
@@ -1042,6 +1045,169 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error deleting gallery item:', error);
       res.status(500).json({ error: 'Failed to delete gallery item' });
+    }
+  });
+
+  // Contact message routes
+  app.post('/api/contact', async (req, res) => {
+    try {
+      const validatedData = insertContactMessageSchema.parse(req.body);
+      
+      // Save contact message to database
+      const contactMessage = await storage.createContactMessage(validatedData);
+      
+      // Send email notifications via Brevo
+      try {
+        await Promise.all([
+          brevoService.sendContactNotification(validatedData),
+          brevoService.sendAutoReply(validatedData)
+        ]);
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError);
+        // Still return success since the message was saved
+      }
+      
+      res.status(201).json({ 
+        message: 'Contact message sent successfully',
+        id: contactMessage.id 
+      });
+    } catch (error: any) {
+      console.error('Error processing contact message:', error);
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ error: 'Invalid data', details: error.errors });
+      }
+      res.status(500).json({ error: 'Failed to process contact message' });
+    }
+  });
+
+  // Admin contact message routes
+  app.get('/api/admin/contact-messages', requireAuth, async (req, res) => {
+    try {
+      const messages = await storage.getAllContactMessages();
+      res.json(messages);
+    } catch (error) {
+      console.error('Error fetching contact messages:', error);
+      res.status(500).json({ error: 'Failed to fetch contact messages' });
+    }
+  });
+
+  app.get('/api/admin/contact-messages/:id', requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const message = await storage.getContactMessage(id);
+      if (!message) {
+        return res.status(404).json({ error: 'Contact message not found' });
+      }
+      res.json(message);
+    } catch (error) {
+      console.error('Error fetching contact message:', error);
+      res.status(500).json({ error: 'Failed to fetch contact message' });
+    }
+  });
+
+  app.patch('/api/admin/contact-messages/:id', requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updates = req.body;
+      const message = await storage.updateContactMessage(id, updates);
+      res.json(message);
+    } catch (error: any) {
+      console.error('Error updating contact message:', error);
+      if (error.message.includes('not found')) {
+        return res.status(404).json({ error: 'Contact message not found' });
+      }
+      res.status(500).json({ error: 'Failed to update contact message' });
+    }
+  });
+
+  app.delete('/api/admin/contact-messages/:id', requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteContactMessage(id);
+      res.status(204).send();
+    } catch (error) {
+      console.error('Error deleting contact message:', error);
+      res.status(500).json({ error: 'Failed to delete contact message' });
+    }
+  });
+
+  // Brevo configuration routes
+  app.get('/api/admin/brevo-config', requireAuth, async (req, res) => {
+    try {
+      const config = await storage.getBrevoConfig();
+      if (!config) {
+        return res.json(null);
+      }
+      
+      // Don't expose the API key in responses
+      const { apiKey, ...safeConfig } = config;
+      res.json({ ...safeConfig, hasApiKey: !!apiKey });
+    } catch (error) {
+      console.error('Error fetching Brevo config:', error);
+      res.status(500).json({ error: 'Failed to fetch Brevo configuration' });
+    }
+  });
+
+  app.post('/api/admin/brevo-config', requireAuth, async (req, res) => {
+    try {
+      const validatedData = insertBrevoConfigSchema.parse(req.body);
+      const config = await storage.createBrevoConfig(validatedData);
+      
+      // Test the connection
+      const isWorking = await brevoService.testConnection();
+      
+      const { apiKey, ...safeConfig } = config;
+      res.status(201).json({ 
+        ...safeConfig, 
+        hasApiKey: !!apiKey,
+        connectionTest: isWorking 
+      });
+    } catch (error: any) {
+      console.error('Error creating Brevo config:', error);
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ error: 'Invalid data', details: error.errors });
+      }
+      res.status(500).json({ error: 'Failed to create Brevo configuration' });
+    }
+  });
+
+  app.patch('/api/admin/brevo-config/:id', requireAuth, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = insertBrevoConfigSchema.partial().parse(req.body);
+      const config = await storage.updateBrevoConfig(id, validatedData);
+      
+      // Test the connection if config is active
+      let connectionTest = false;
+      if (config.isActive) {
+        connectionTest = await brevoService.testConnection();
+      }
+      
+      const { apiKey, ...safeConfig } = config;
+      res.json({ 
+        ...safeConfig, 
+        hasApiKey: !!apiKey,
+        connectionTest 
+      });
+    } catch (error: any) {
+      console.error('Error updating Brevo config:', error);
+      if (error.name === 'ZodError') {
+        return res.status(400).json({ error: 'Invalid data', details: error.errors });
+      }
+      if (error.message.includes('not found')) {
+        return res.status(404).json({ error: 'Brevo configuration not found' });
+      }
+      res.status(500).json({ error: 'Failed to update Brevo configuration' });
+    }
+  });
+
+  app.post('/api/admin/brevo-config/test', requireAuth, async (req, res) => {
+    try {
+      const isWorking = await brevoService.testConnection();
+      res.json({ success: isWorking });
+    } catch (error) {
+      console.error('Error testing Brevo connection:', error);
+      res.status(500).json({ error: 'Failed to test Brevo connection' });
     }
   });
 

@@ -134,8 +134,47 @@ export const brochureCategories = pgTable("brochure_categories", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Contact messages table
+export const contactMessages = pgTable("contact_messages", {
+  id: serial("id").primaryKey(),
+  fullName: text("full_name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  company: text("company"),
+  message: text("message").notNull(),
+  status: text("status").notNull().default("unread"), // unread, read, replied
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Brevo configuration table
+export const brevoConfig = pgTable("brevo_config", {
+  id: serial("id").primaryKey(),
+  apiKey: text("api_key").notNull(),
+  senderEmail: text("sender_email").notNull(),
+  senderName: text("sender_name").notNull(),
+  templateId: integer("template_id"),
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Contact message schemas
+export const insertContactMessageSchema = createInsertSchema(contactMessages).omit({
+  id: true,
+  status: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertBrevoConfigSchema = createInsertSchema(brevoConfig).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
@@ -221,6 +260,12 @@ export const insertBrochureCategorySchema = createInsertSchema(brochureCategorie
 // Types
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+
+export type InsertContactMessage = z.infer<typeof insertContactMessageSchema>;
+export type ContactMessage = typeof contactMessages.$inferSelect;
+
+export type InsertBrevoConfig = z.infer<typeof insertBrevoConfigSchema>;
+export type BrevoConfig = typeof brevoConfig.$inferSelect;
 
 export type InsertProduct = z.infer<typeof insertProductSchema>;
 export type Product = typeof products.$inferSelect;

@@ -10,8 +10,9 @@ import { MapPin, Phone, Share2, ExternalLink } from "lucide-react";
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 
 interface ContactFormData {
-  name: string;
+  fullName: string;
   email: string;
+  phone: string;
   company: string;
   message: string;
 }
@@ -20,8 +21,9 @@ export function ContactSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.1 });
   const { toast } = useToast();
   const [formData, setFormData] = useState<ContactFormData>({
-    name: "",
+    fullName: "",
     email: "",
+    phone: "",
     company: "",
     message: "",
   });
@@ -47,7 +49,7 @@ export function ContactSection() {
     setIsSubmitting(true);
 
     // Basic validation
-    if (!formData.name || !formData.email || !formData.message) {
+    if (!formData.fullName || !formData.email || !formData.message) {
       toast({
         title: "Validation Error",
         description: "Please fill in all required fields.",
@@ -70,8 +72,18 @@ export function ContactSection() {
     }
 
     try {
-      // Simulate form submission
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Submit form data to API
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send message');
+      }
       
       toast({
         title: "Message Sent!",
@@ -80,8 +92,9 @@ export function ContactSection() {
       
       // Reset form
       setFormData({
-        name: "",
+        fullName: "",
         email: "",
+        phone: "",
         company: "",
         message: "",
       });
@@ -167,8 +180,8 @@ export function ContactSection() {
                         <Input
                           id="name"
                           type="text"
-                          value={formData.name}
-                          onChange={(e) => handleInputChange("name", e.target.value)}
+                          value={formData.fullName}
+                          onChange={(e) => handleInputChange("fullName", e.target.value)}
                           className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
                           placeholder="Enter your full name"
                           required
@@ -197,22 +210,41 @@ export function ContactSection() {
                     </div>
                   </div>
 
-                  {/* Company Field */}
-                  <div className="group">
-                    <Label htmlFor="company" className="text-sm font-semibold text-gray-700 mb-3 block">
-                      Company
-                    </Label>
-                    <div className="relative">
-                      <Input
-                        id="company"
-                        type="text"
-                        value={formData.company}
-                        onChange={(e) => handleInputChange("company", e.target.value)}
-                        className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
-                        placeholder="Your company name"
-                        data-testid="input-company"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-konti-blue/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                  {/* Phone and Company Row */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="group">
+                      <Label htmlFor="phone" className="text-sm font-semibold text-gray-700 mb-3 block">
+                        Phone Number
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          id="phone"
+                          type="tel"
+                          value={formData.phone}
+                          onChange={(e) => handleInputChange("phone", e.target.value)}
+                          className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
+                          placeholder="+389 XX XXX XXX"
+                          data-testid="input-phone"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-konti-blue/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                      </div>
+                    </div>
+                    <div className="group">
+                      <Label htmlFor="company" className="text-sm font-semibold text-gray-700 mb-3 block">
+                        Company
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          id="company"
+                          type="text"
+                          value={formData.company}
+                          onChange={(e) => handleInputChange("company", e.target.value)}
+                          className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
+                          placeholder="Your company name"
+                          data-testid="input-company"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-r from-konti-blue/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                      </div>
                     </div>
                   </div>
 

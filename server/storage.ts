@@ -29,6 +29,10 @@ import {
   type InsertGalleryCategory,
   type GalleryItem,
   type InsertGalleryItem,
+  type ContactMessage,
+  type InsertContactMessage,
+  type BrevoConfig,
+  type InsertBrevoConfig,
   users,
   products,
   media,
@@ -44,6 +48,8 @@ import {
   positions,
   galleryCategories,
   galleryItems,
+  contactMessages,
+  brevoConfig,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, asc } from "drizzle-orm";
@@ -156,6 +162,19 @@ export interface IStorage {
   createGalleryItem(item: InsertGalleryItem): Promise<GalleryItem>;
   updateGalleryItem(id: number, item: Partial<InsertGalleryItem>): Promise<GalleryItem>;
   deleteGalleryItem(id: number): Promise<void>;
+  
+  // Contact message methods
+  getAllContactMessages(): Promise<ContactMessage[]>;
+  getContactMessage(id: number): Promise<ContactMessage | undefined>;
+  createContactMessage(message: InsertContactMessage): Promise<ContactMessage>;
+  updateContactMessage(id: number, message: Partial<ContactMessage>): Promise<ContactMessage>;
+  deleteContactMessage(id: number): Promise<void>;
+  
+  // Brevo configuration methods
+  getBrevoConfig(): Promise<BrevoConfig | undefined>;
+  createBrevoConfig(config: InsertBrevoConfig): Promise<BrevoConfig>;
+  updateBrevoConfig(id: number, config: Partial<InsertBrevoConfig>): Promise<BrevoConfig>;
+  deleteBrevoConfig(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -730,6 +749,69 @@ export class DatabaseStorage implements IStorage {
   async deleteGalleryItem(id: number): Promise<void> {
     if (!db) throw new Error('Database not available');
     await db.delete(galleryItems).where(eq(galleryItems.id, id));
+  }
+
+  // Contact message methods
+  async getAllContactMessages(): Promise<ContactMessage[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt));
+  }
+
+  async getContactMessage(id: number): Promise<ContactMessage | undefined> {
+    if (!db) throw new Error('Database not available');
+    const [message] = await db.select().from(contactMessages).where(eq(contactMessages.id, id));
+    return message || undefined;
+  }
+
+  async createContactMessage(message: InsertContactMessage): Promise<ContactMessage> {
+    if (!db) throw new Error('Database not available');
+    const [newMessage] = await db.insert(contactMessages).values(message).returning();
+    return newMessage;
+  }
+
+  async updateContactMessage(id: number, message: Partial<ContactMessage>): Promise<ContactMessage> {
+    if (!db) throw new Error('Database not available');
+    const [updatedMessage] = await db
+      .update(contactMessages)
+      .set({ ...message, updatedAt: new Date() })
+      .where(eq(contactMessages.id, id))
+      .returning();
+    if (!updatedMessage) throw new Error('Contact message not found');
+    return updatedMessage;
+  }
+
+  async deleteContactMessage(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(contactMessages).where(eq(contactMessages.id, id));
+  }
+
+  // Brevo configuration methods
+  async getBrevoConfig(): Promise<BrevoConfig | undefined> {
+    if (!db) throw new Error('Database not available');
+    const [config] = await db.select().from(brevoConfig).limit(1);
+    return config || undefined;
+  }
+
+  async createBrevoConfig(config: InsertBrevoConfig): Promise<BrevoConfig> {
+    if (!db) throw new Error('Database not available');
+    const [newConfig] = await db.insert(brevoConfig).values(config).returning();
+    return newConfig;
+  }
+
+  async updateBrevoConfig(id: number, config: Partial<InsertBrevoConfig>): Promise<BrevoConfig> {
+    if (!db) throw new Error('Database not available');
+    const [updatedConfig] = await db
+      .update(brevoConfig)
+      .set({ ...config, updatedAt: new Date() })
+      .where(eq(brevoConfig.id, id))
+      .returning();
+    if (!updatedConfig) throw new Error('Brevo configuration not found');
+    return updatedConfig;
+  }
+
+  async deleteBrevoConfig(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(brevoConfig).where(eq(brevoConfig.id, id));
   }
 }
 
@@ -1441,6 +1523,87 @@ export class MemStorage implements IStorage {
     if (index !== -1) {
       this.galleryItemsData.splice(index, 1);
     }
+  }
+
+  // Contact message methods - in-memory storage for development
+  private contactMessagesData: ContactMessage[] = [];
+  
+  async getAllContactMessages(): Promise<ContactMessage[]> {
+    return this.contactMessagesData.sort((a, b) => {
+      const aTime = a.createdAt?.getTime() || 0;
+      const bTime = b.createdAt?.getTime() || 0;
+      return bTime - aTime;
+    });
+  }
+
+  async getContactMessage(id: number): Promise<ContactMessage | undefined> {
+    return this.contactMessagesData.find(message => message.id === id);
+  }
+
+  async createContactMessage(message: InsertContactMessage): Promise<ContactMessage> {
+    const newMessage: ContactMessage = {
+      ...message,
+      id: Date.now(),
+      phone: message.phone ?? null,
+      company: message.company ?? null,
+      status: "unread",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.contactMessagesData.push(newMessage);
+    return newMessage;
+  }
+
+  async updateContactMessage(id: number, message: Partial<ContactMessage>): Promise<ContactMessage> {
+    const index = this.contactMessagesData.findIndex(m => m.id === id);
+    if (index === -1) throw new Error('Contact message not found');
+    
+    this.contactMessagesData[index] = {
+      ...this.contactMessagesData[index],
+      ...message,
+      updatedAt: new Date()
+    };
+    return this.contactMessagesData[index];
+  }
+
+  async deleteContactMessage(id: number): Promise<void> {
+    const index = this.contactMessagesData.findIndex(m => m.id === id);
+    if (index !== -1) {
+      this.contactMessagesData.splice(index, 1);
+    }
+  }
+
+  // Brevo configuration methods - in-memory storage for development
+  private brevoConfigData: BrevoConfig | null = null;
+  
+  async getBrevoConfig(): Promise<BrevoConfig | undefined> {
+    return this.brevoConfigData || undefined;
+  }
+
+  async createBrevoConfig(config: InsertBrevoConfig): Promise<BrevoConfig> {
+    const newConfig: BrevoConfig = {
+      ...config,
+      id: 1,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.brevoConfigData = newConfig;
+    return newConfig;
+  }
+
+  async updateBrevoConfig(id: number, config: Partial<InsertBrevoConfig>): Promise<BrevoConfig> {
+    if (!this.brevoConfigData) throw new Error('Brevo configuration not found');
+    
+    this.brevoConfigData = {
+      ...this.brevoConfigData,
+      ...config,
+      updatedAt: new Date()
+    };
+    return this.brevoConfigData;
+  }
+
+  async deleteBrevoConfig(id: number): Promise<void> {
+    this.brevoConfigData = null;
   }
 }
 

@@ -42,6 +42,8 @@ import { GalleryCategoriesManager } from "@/components/admin/GalleryCategoriesMa
 import { GalleryItemsManager } from "@/components/admin/GalleryItemsManager";
 import { CertificateCategoriesManager } from "@/components/admin/CertificateCategoriesManager";
 import { CertificateSubcategoriesManager } from "@/components/admin/CertificateSubcategoriesManager";
+import { ContactMessagesManager } from "@/components/admin/ContactMessagesManager";
+import { BrevoConfigManager } from "@/components/admin/BrevoConfigManager";
 
 export default function AdminPanel() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -50,6 +52,7 @@ export default function AdminPanel() {
   const [isBrochuresDropdownOpen, setIsBrochuresDropdownOpen] = useState(false);
   const [isGalleryDropdownOpen, setIsGalleryDropdownOpen] = useState(false);
   const [isCertificatesDropdownOpen, setIsCertificatesDropdownOpen] = useState(false);
+  const [isContactDropdownOpen, setIsContactDropdownOpen] = useState(false);
 
   // Always declare hooks at the top level, before any conditional returns
   const { data: productsCount = 0 } = useQuery({
@@ -96,6 +99,12 @@ export default function AdminPanel() {
 
   const { data: galleryItemsCount = 0 } = useQuery({
     queryKey: ["/api/admin/gallery-items"],
+    select: (data: any) => data?.length || 0,
+    enabled: isAuthenticated,
+  });
+
+  const { data: contactMessagesCount = 0 } = useQuery({
+    queryKey: ["/api/admin/contact-messages"],
     select: (data: any) => data?.length || 0,
     enabled: isAuthenticated,
   });
@@ -404,6 +413,57 @@ export default function AdminPanel() {
             
             <Separator className="my-4" />
             
+            {/* Contact Management Dropdown */}
+            <Collapsible open={isContactDropdownOpen} onOpenChange={setIsContactDropdownOpen}>
+              <CollapsibleTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start ${
+                    activeTab === "contact-messages" || activeTab === "brevo-config"
+                      ? "text-blue-600" 
+                      : "text-slate-700 hover:text-slate-900"
+                  }`}
+                  onClick={() => setIsContactDropdownOpen(!isContactDropdownOpen)}
+                  data-testid="nav-contact"
+                >
+                  <Mail className={`h-4 w-4 mr-2 ${
+                    activeTab === "contact-messages" || activeTab === "brevo-config" 
+                      ? "text-blue-600" 
+                      : ""
+                  }`} />
+                  Contact Management
+                  {isContactDropdownOpen ? (
+                    <ChevronDown className="h-4 w-4 ml-auto" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 ml-auto" />
+                  )}
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pl-6 space-y-1">
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "contact-messages" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("contact-messages")}
+                  data-testid="nav-contact-messages"
+                >
+                  <Mail className={`h-3 w-3 mr-2 ${activeTab === "contact-messages" ? "text-blue-600" : ""}`} />
+                  Messages
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "brevo-config" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => setActiveTab("brevo-config")}
+                  data-testid="nav-brevo-config"
+                >
+                  <Settings className={`h-3 w-3 mr-2 ${activeTab === "brevo-config" ? "text-blue-600" : ""}`} />
+                  Email Settings
+                </Button>
+              </CollapsibleContent>
+            </Collapsible>
+            
+            <Separator className="my-4" />
+            
             <Button
               variant={activeTab === "company-info" ? "default" : "ghost"}
               className="w-full justify-start"
@@ -490,7 +550,7 @@ export default function AdminPanel() {
                   </Card>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                   <Card data-testid="card-gallery-categories-count">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">Gallery Categories</CardTitle>
@@ -510,6 +570,17 @@ export default function AdminPanel() {
                     <CardContent>
                       <div className="text-2xl font-bold" data-testid="gallery-items-count">{galleryItemsCount}</div>
                       <p className="text-xs text-slate-600">Gallery images</p>
+                    </CardContent>
+                  </Card>
+
+                  <Card data-testid="card-contact-messages-count">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">Contact Messages</CardTitle>
+                      <Mail className="h-4 w-4 text-amber-600" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold" data-testid="contact-messages-count">{contactMessagesCount}</div>
+                      <p className="text-xs text-slate-600">Customer inquiries</p>
                     </CardContent>
                   </Card>
                 </div>
@@ -652,6 +723,18 @@ export default function AdminPanel() {
           {activeTab === "gallery-items" && (
             <div data-testid="gallery-items-manager">
               <GalleryItemsManager />
+            </div>
+          )}
+          
+          {activeTab === "contact-messages" && (
+            <div data-testid="contact-messages-manager">
+              <ContactMessagesManager />
+            </div>
+          )}
+          
+          {activeTab === "brevo-config" && (
+            <div data-testid="brevo-config-manager">
+              <BrevoConfigManager />
             </div>
           )}
         </div>
