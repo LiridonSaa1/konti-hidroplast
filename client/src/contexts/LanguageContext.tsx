@@ -55,10 +55,11 @@ const translations = {
     'about.vision': 'To be the leading manufacturer of PE and PP pipes in the region, known for quality, innovation, and environmental responsibility.',
     
     // Statistics
-    'stats.experience': 'Years of Experience',
-    'stats.products': 'Products Manufactured',
-    'stats.countries': 'Countries Served',
-    'stats.capacity': 'Annual Production Capacity',
+    'stats.years': 'Years',
+    'stats.products': 'Products',
+    'stats.projects': 'Projects',
+    'stats.employees': 'Employees',
+    'stats.turnover': 'Turnover',
     
     // Products
     'products.title': 'Our Products',
@@ -278,10 +279,11 @@ const translations = {
     'about.vision': 'Да бидеме водечки производител на ПЕ и ПП цевки во регионот, познати по квалитет, иновации и еколошка одговорност.',
     
     // Statistics
-    'stats.experience': 'Години искуство',
-    'stats.products': 'Произведени производи',
-    'stats.countries': 'Опслужени земји',
-    'stats.capacity': 'Годишен производствен капацитет',
+    'stats.years': 'Години',
+    'stats.products': 'Производи',
+    'stats.projects': 'Проекти',
+    'stats.employees': 'Вработени',
+    'stats.turnover': 'Промет',
     
     // Products
     'products.title': 'Производи',
@@ -501,10 +503,11 @@ const translations = {
     'about.vision': 'Der führende Hersteller von PE- und PP-Rohren in der Region zu sein, bekannt für Qualität, Innovation und Umweltverantwortung.',
     
     // Statistics
-    'stats.experience': 'Jahre Erfahrung',
-    'stats.products': 'Hergestellte Produkte',
-    'stats.countries': 'Bediente Länder',
-    'stats.capacity': 'Jährliche Produktionskapazität',
+    'stats.years': 'Jahre',
+    'stats.products': 'Produkte',
+    'stats.projects': 'Projekte',
+    'stats.employees': 'Mitarbeiter',
+    'stats.turnover': 'Umsatz',
     
     // Products
     'products.title': 'Unsere Produkte',

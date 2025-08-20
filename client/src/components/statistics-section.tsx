@@ -1,16 +1,18 @@
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useCounterAnimation } from "@/hooks/use-counter-animation";
-
-const statistics = [
-  { value: 35, label: "Years", suffix: "" },
-  { value: 9682, label: "Products", suffix: "+" },
-  { value: 3150, label: "Projects", suffix: "+" },
-  { value: 210, label: "Employees", suffix: "+" },
-  { value: 52000000, label: "Turnover", suffix: "+" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function StatisticsSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.5 });
+  const { t } = useLanguage();
+
+  const statistics = [
+    { value: 35, labelKey: "stats.years", suffix: "" },
+    { value: 9682, labelKey: "stats.products", suffix: "+" },
+    { value: 3150, labelKey: "stats.projects", suffix: "+" },
+    { value: 210, labelKey: "stats.employees", suffix: "+" },
+    { value: 52000000, labelKey: "stats.turnover", suffix: "+" },
+  ];
 
   return (
     <section
@@ -24,9 +26,9 @@ export function StatisticsSection() {
           <div className="grid grid-cols-2 gap-8 mb-8">
             {statistics.slice(0, 4).map((stat, index) => (
               <StatisticCard
-                key={stat.label}
+                key={stat.labelKey}
                 value={stat.value}
-                label={stat.label}
+                label={t(stat.labelKey)}
                 suffix={stat.suffix}
                 isActive={hasIntersected}
                 delay={index * 200}
@@ -36,9 +38,9 @@ export function StatisticsSection() {
           {/* Centered turnover */}
           <div className="flex justify-center">
             <StatisticCard
-              key={statistics[4].label}
+              key={statistics[4].labelKey}
               value={statistics[4].value}
-              label={statistics[4].label}
+              label={t(statistics[4].labelKey)}
               suffix={statistics[4].suffix}
               isActive={hasIntersected}
               delay={4 * 200}
@@ -50,9 +52,9 @@ export function StatisticsSection() {
         <div className="hidden lg:grid lg:grid-cols-5 gap-8">
           {statistics.map((stat, index) => (
             <StatisticCard
-              key={stat.label}
+              key={stat.labelKey}
               value={stat.value}
-              label={stat.label}
+              label={t(stat.labelKey)}
               suffix={stat.suffix}
               isActive={hasIntersected}
               delay={index * 200}
