@@ -159,7 +159,7 @@ function NewsArticlePage() {
                       <img
                         src={section.imageUrl}
                         alt={section.title || `Section ${index + 1}`}
-                        className="w-full h-48 object-cover rounded-lg shadow-md"
+                        className="w-full h-64 object-cover rounded-lg shadow-md"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
                           target.style.display = 'none';
@@ -191,7 +191,7 @@ function NewsArticlePage() {
                           <img
                             src={section.imageUrl}
                             alt={section.title || `Section ${index + 1}`}
-                            className="w-full h-48 object-cover rounded-lg shadow-md"
+                            className="w-full h-64 object-cover rounded-lg shadow-md"
                             onError={(e) => {
                               const target = e.target as HTMLImageElement;
                               target.style.display = 'none';
