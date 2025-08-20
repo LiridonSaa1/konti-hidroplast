@@ -171,10 +171,10 @@ export function TeamsManager() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900" data-testid="teams-title">Teams Management</h2>
-          <p className="text-slate-600" data-testid="teams-description">Manage your team members with photos and contact information</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900" data-testid="teams-title">Teams Management</h2>
+          <p className="text-slate-600 text-sm sm:text-base" data-testid="teams-description">Manage your team members with photos and contact information</p>
         </div>
         
         <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
@@ -184,7 +184,7 @@ export function TeamsManager() {
               Add Team Member
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]" data-testid="team-form-dialog">
+          <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto" data-testid="team-form-dialog">
             <DialogHeader>
               <DialogTitle data-testid="form-title">
                 {editingTeam ? "Edit Team Member" : "Add New Team Member"}
@@ -271,7 +271,6 @@ export function TeamsManager() {
                           label="Profile Photo"
                           value={field.value || ""}
                           onChange={field.onChange}
-                          type="image"
                           placeholder="Upload profile photo or enter image URL"
                           testId="input-team-image"
                         />
@@ -281,7 +280,7 @@ export function TeamsManager() {
                   )}
                 />
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <FormField
                     control={form.control}
                     name="sortOrder"
@@ -361,103 +360,199 @@ export function TeamsManager() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Position</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Photo</TableHead>
-                  <TableHead>Order</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {teams.map((team) => (
-                  <TableRow key={team.id} data-testid={`team-row-${team.id}`}>
-                    <TableCell className="font-medium" data-testid={`team-name-${team.id}`}>
-                      {team.name}
-                    </TableCell>
-                    <TableCell data-testid={`team-position-${team.id}`}>
-                      {team.position}
-                    </TableCell>
-                    <TableCell data-testid={`team-email-${team.id}`}>
-                      {team.email}
-                    </TableCell>
-                    <TableCell>
+            {/* Desktop Table View */}
+            <div className="hidden md:block">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Position</TableHead>
+                    <TableHead>Email</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Photo</TableHead>
+                    <TableHead>Order</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {teams.map((team) => (
+                    <TableRow key={team.id} data-testid={`team-row-${team.id}`}>
+                      <TableCell className="font-medium" data-testid={`team-name-${team.id}`}>
+                        {team.name}
+                      </TableCell>
+                      <TableCell data-testid={`team-position-${team.id}`}>
+                        {team.position}
+                      </TableCell>
+                      <TableCell data-testid={`team-email-${team.id}`}>
+                        {team.email}
+                      </TableCell>
+                      <TableCell>
+                        <Badge 
+                          className={getStatusBadgeColor(team.active ?? false)}
+                          data-testid={`team-status-${team.id}`}
+                        >
+                          {team.active ? "Active" : "Inactive"}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        {team.imageUrl ? (
+                          <Button
+                            variant="link"
+                            size="sm"
+                            onClick={() => team.imageUrl && window.open(team.imageUrl, '_blank')}
+                            data-testid={`button-view-photo-${team.id}`}
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            View Photo
+                          </Button>
+                        ) : (
+                          <span className="text-slate-400 text-sm">No photo</span>
+                        )}
+                      </TableCell>
+                      <TableCell data-testid={`team-order-${team.id}`}>
+                        {team.sortOrder || 0}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end space-x-1">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleEdit(team)}
+                            data-testid={`button-edit-${team.id}`}
+                            className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                          >
+                            <Edit className="h-4 w-4" />
+                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                data-testid={`button-delete-${team.id}`}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent data-testid={`dialog-delete-${team.id}`}>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete Team Member</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to delete "{team.name}"? This action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel data-testid="button-cancel-delete">Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => handleDelete(team.id)}
+                                  className="bg-red-600 hover:bg-red-700"
+                                  data-testid="button-confirm-delete"
+                                >
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+              {teams.map((team) => (
+                <Card key={team.id} className="p-4" data-testid={`team-card-${team.id}`}>
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <h3 className="font-medium text-slate-900" data-testid={`team-name-${team.id}`}>
+                        {team.name}
+                      </h3>
+                      <p className="text-sm text-slate-600 mt-1" data-testid={`team-position-${team.id}`}>
+                        {team.position}
+                      </p>
+                    </div>
+                    <div className="flex space-x-1">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleEdit(team)}
+                        data-testid={`button-edit-${team.id}`}
+                        className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
+                            data-testid={`button-delete-${team.id}`}
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent data-testid={`dialog-delete-${team.id}`}>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Team Member</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete "{team.name}"? This action cannot be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel data-testid="button-cancel-delete">Cancel</AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleDelete(team.id)}
+                              className="bg-red-600 hover:bg-red-700"
+                              data-testid="button-confirm-delete"
+                            >
+                              Delete
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 gap-2 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-600">Email:</span>
+                      <span data-testid={`team-email-${team.id}`}>{team.email}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-600">Status:</span>
                       <Badge 
-                        className={getStatusBadgeColor(team.active)}
+                        className={getStatusBadgeColor(team.active ?? false)}
                         data-testid={`team-status-${team.id}`}
                       >
                         {team.active ? "Active" : "Inactive"}
                       </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {team.imageUrl ? (
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-600">Order:</span>
+                      <span data-testid={`team-order-${team.id}`}>{team.sortOrder || 0}</span>
+                    </div>
+                    {team.imageUrl && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-600">Photo:</span>
                         <Button
                           variant="link"
                           size="sm"
+                          className="h-auto p-0 text-blue-600"
                           onClick={() => team.imageUrl && window.open(team.imageUrl, '_blank')}
                           data-testid={`button-view-photo-${team.id}`}
                         >
-                          <Eye className="h-4 w-4 mr-1" />
-                          View Photo
+                          <Eye className="h-3 w-3 mr-1" />
+                          View
                         </Button>
-                      ) : (
-                        <span className="text-slate-400 text-sm">No photo</span>
-                      )}
-                    </TableCell>
-                    <TableCell data-testid={`team-order-${team.id}`}>
-                      {team.sortOrder || 0}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end space-x-1">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => handleEdit(team)}
-                          data-testid={`button-edit-${team.id}`}
-                          className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 w-8 p-0 text-red-600 hover:text-red-700 hover:bg-red-50"
-                              data-testid={`button-delete-${team.id}`}
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent data-testid={`dialog-delete-${team.id}`}>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>Delete Team Member</AlertDialogTitle>
-                              <AlertDialogDescription>
-                                Are you sure you want to delete "{team.name}"? This action cannot be undone.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel data-testid="button-cancel-delete">Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                onClick={() => handleDelete(team.id)}
-                                className="bg-red-600 hover:bg-red-700"
-                                data-testid="button-confirm-delete"
-                              >
-                                Delete
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
                       </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                    )}
+                  </div>
+                </Card>
+              ))}
+            </div>
           </CardContent>
         </Card>
       )}

@@ -18,7 +18,9 @@ import {
   FolderOpen,
   Briefcase,
   ChevronDown,
-  ChevronRight
+  ChevronRight,
+  Menu,
+  X
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -54,6 +56,7 @@ export default function AdminPanel() {
   const [isGalleryDropdownOpen, setIsGalleryDropdownOpen] = useState(false);
   const [isCertificatesDropdownOpen, setIsCertificatesDropdownOpen] = useState(false);
   const [isContactDropdownOpen, setIsContactDropdownOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Always declare hooks at the top level, before any conditional returns
   const { data: productsCount = 0 } = useQuery({
@@ -157,29 +160,57 @@ export default function AdminPanel() {
     <div className="min-h-screen bg-slate-50" data-testid="admin-panel">
       {/* Header */}
       <div className="bg-white border-b border-slate-200">
-        <div className="px-6 py-4">
+        <div className="px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-slate-900" data-testid="admin-panel-title">
-                Konti Hidroplast - Admin Panel
-              </h1>
-              <p className="text-slate-600 mt-1" data-testid="admin-panel-subtitle">
-                Manage your website content and data
-              </p>
+            <div className="flex items-center">
+              {/* Mobile menu button */}
+              <Button
+                variant="ghost"
+                size="sm"
+                className="lg:hidden mr-2 p-1"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                data-testid="mobile-menu-toggle"
+              >
+                {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              </Button>
+              <div>
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-900" data-testid="admin-panel-title">
+                  Konti Hidroplast - Admin Panel
+                </h1>
+                <p className="text-slate-600 mt-1 text-sm sm:text-base" data-testid="admin-panel-subtitle">
+                  Manage your website content and data
+                </p>
+              </div>
             </div>
             <UserDropdown />
           </div>
         </div>
       </div>
 
-      <div className="flex h-[calc(100vh-80px)]">
+      <div className="flex h-[calc(100vh-80px)] relative">
+        {/* Mobile Overlay */}
+        {isMobileMenuOpen && (
+          <div 
+            className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+            onClick={() => setIsMobileMenuOpen(false)}
+            data-testid="mobile-overlay"
+          />
+        )}
+
         {/* Sidebar Navigation */}
-        <div className="w-64 bg-white border-r border-slate-200 p-4">
+        <div className={`
+          fixed lg:relative lg:translate-x-0 transition-transform duration-200 ease-in-out z-50
+          w-64 sm:w-72 lg:w-64 xl:w-72 bg-white border-r border-slate-200 p-4 h-full overflow-y-auto
+          ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+        `}>
           <nav className="space-y-2" data-testid="admin-navigation">
             <Button
               variant={activeTab === "overview" ? "default" : "ghost"}
               className="w-full justify-start"
-              onClick={() => setActiveTab("overview")}
+              onClick={() => {
+                setActiveTab("overview");
+                setIsMobileMenuOpen(false);
+              }}
               data-testid="nav-overview"
             >
               <Settings className="h-4 w-4 mr-2" />
@@ -191,19 +222,23 @@ export default function AdminPanel() {
             <Button
               variant={activeTab === "projects" ? "default" : "ghost"}
               className="w-full justify-start"
-              onClick={() => setActiveTab("projects")}
+              onClick={() => {
+                setActiveTab("projects");
+                setIsMobileMenuOpen(false);
+              }}
               data-testid="nav-projects"
             >
               <FolderOpen className="h-4 w-4 mr-2" />
               Projects
             </Button>
             
-            
-            
             <Button
               variant={activeTab === "news" ? "default" : "ghost"}
               className="w-full justify-start"
-              onClick={() => setActiveTab("news")}
+              onClick={() => {
+                setActiveTab("news");
+                setIsMobileMenuOpen(false);
+              }}
               data-testid="nav-news"
             >
               <FileText className="h-4 w-4 mr-2" />
@@ -234,7 +269,10 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "certificate-categories" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("certificate-categories")}
+                  onClick={() => {
+                    setActiveTab("certificate-categories");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-certificate-categories"
                 >
                   <FolderOpen className={`h-3 w-3 mr-2 ${activeTab === "certificate-categories" ? "text-blue-600" : ""}`} />
@@ -244,7 +282,10 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "certificate-subcategories" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("certificate-subcategories")}
+                  onClick={() => {
+                    setActiveTab("certificate-subcategories");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-certificate-subcategories"
                 >
                   <FolderOpen className={`h-3 w-3 mr-2 ${activeTab === "certificate-subcategories" ? "text-blue-600" : ""}`} />
@@ -254,7 +295,10 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "certificates" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("certificates")}
+                  onClick={() => {
+                    setActiveTab("certificates");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-certificates-items"
                 >
                   <Award className={`h-3 w-3 mr-2 ${activeTab === "certificates" ? "text-blue-600" : ""}`} />
@@ -287,19 +331,23 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "enhanced-brochures" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("enhanced-brochures")}
+                  onClick={() => {
+                    setActiveTab("enhanced-brochures");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-enhanced-brochures"
                 >
                   <BookOpen className={`h-3 w-3 mr-2 ${activeTab === "enhanced-brochures" ? "text-blue-600" : ""}`} />
                   Enhanced Manager
                 </Button>
                 
-                
-                
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "brochure-categories" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("brochure-categories")}
+                  onClick={() => {
+                    setActiveTab("brochure-categories");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-brochure-categories"
                 >
                   <FolderOpen className={`h-3 w-3 mr-2 ${activeTab === "brochure-categories" ? "text-blue-600" : ""}`} />
@@ -332,7 +380,10 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "teams" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("teams")}
+                  onClick={() => {
+                    setActiveTab("teams");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-teams"
                 >
                   <Users className={`h-3 w-3 mr-2 ${activeTab === "teams" ? "text-blue-600" : ""}`} />
@@ -342,7 +393,10 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "positions" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("positions")}
+                  onClick={() => {
+                    setActiveTab("positions");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-positions"
                 >
                   <Briefcase className={`h-3 w-3 mr-2 ${activeTab === "positions" ? "text-blue-600" : ""}`} />
@@ -352,7 +406,10 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "leadership" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("leadership")}
+                  onClick={() => {
+                    setActiveTab("leadership");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-leadership"
                 >
                   <Building className={`h-3 w-3 mr-2 ${activeTab === "leadership" ? "text-blue-600" : ""}`} />
@@ -385,7 +442,10 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "gallery-categories" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("gallery-categories")}
+                  onClick={() => {
+                    setActiveTab("gallery-categories");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-gallery-categories"
                 >
                   <FolderOpen className={`h-3 w-3 mr-2 ${activeTab === "gallery-categories" ? "text-blue-600" : ""}`} />
@@ -395,7 +455,10 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "gallery-items" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("gallery-items")}
+                  onClick={() => {
+                    setActiveTab("gallery-items");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-gallery-items"
                 >
                   <Image className={`h-3 w-3 mr-2 ${activeTab === "gallery-items" ? "text-blue-600" : ""}`} />
@@ -436,7 +499,10 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "contact-messages" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("contact-messages")}
+                  onClick={() => {
+                    setActiveTab("contact-messages");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-contact-messages"
                 >
                   <Mail className={`h-3 w-3 mr-2 ${activeTab === "contact-messages" ? "text-blue-600" : ""}`} />
@@ -446,7 +512,10 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "job-applications" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("job-applications")}
+                  onClick={() => {
+                    setActiveTab("job-applications");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-job-applications"
                 >
                   <Briefcase className={`h-3 w-3 mr-2 ${activeTab === "job-applications" ? "text-blue-600" : ""}`} />
@@ -456,7 +525,10 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "brevo-config" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => setActiveTab("brevo-config")}
+                  onClick={() => {
+                    setActiveTab("brevo-config");
+                    setIsMobileMenuOpen(false);
+                  }}
                   data-testid="nav-brevo-config"
                 >
                   <Settings className={`h-3 w-3 mr-2 ${activeTab === "brevo-config" ? "text-blue-600" : ""}`} />
@@ -470,7 +542,10 @@ export default function AdminPanel() {
             <Button
               variant={activeTab === "company-info" ? "default" : "ghost"}
               className="w-full justify-start"
-              onClick={() => setActiveTab("company-info")}
+              onClick={() => {
+                setActiveTab("company-info");
+                setIsMobileMenuOpen(false);
+              }}
               data-testid="nav-company-info"
             >
               <Building className="h-4 w-4 mr-2" />
@@ -480,12 +555,12 @@ export default function AdminPanel() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-6 overflow-auto">
+        <div className="flex-1 p-4 sm:p-6 overflow-auto lg:ml-0">
           {activeTab === "overview" && (
             <div className="space-y-6" data-testid="overview-content">
               <div>
-                <h2 className="text-xl font-semibold text-slate-900 mb-4">Dashboard Overview</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+                <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-4">Dashboard Overview</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
                   <Card data-testid="card-products-count">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">Products</CardTitle>
@@ -553,7 +628,7 @@ export default function AdminPanel() {
                   </Card>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                   <Card data-testid="card-gallery-categories-count">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <CardTitle className="text-sm font-medium">Gallery Categories</CardTitle>
@@ -589,22 +664,45 @@ export default function AdminPanel() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                 <Card data-testid="card-quick-actions">
                   <CardHeader>
                     <CardTitle>Quick Actions</CardTitle>
                     <CardDescription>Common management tasks</CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-2">
-                    <Button className="w-full justify-start" onClick={() => setActiveTab("products")} data-testid="button-add-product">
+                    <Button 
+                      className="w-full justify-start text-sm sm:text-base" 
+                      onClick={() => {
+                        setActiveTab("products");
+                        setIsMobileMenuOpen(false);
+                      }} 
+                      data-testid="button-add-product"
+                    >
                       <Package className="h-4 w-4 mr-2" />
                       Add New Product
                     </Button>
-                    <Button className="w-full justify-start" variant="outline" onClick={() => setActiveTab("media")} data-testid="button-upload-media">
+                    <Button 
+                      className="w-full justify-start text-sm sm:text-base" 
+                      variant="outline" 
+                      onClick={() => {
+                        setActiveTab("media");
+                        setIsMobileMenuOpen(false);
+                      }} 
+                      data-testid="button-upload-media"
+                    >
                       <Image className="h-4 w-4 mr-2" />
                       Upload Media
                     </Button>
-                    <Button className="w-full justify-start" variant="outline" onClick={() => setActiveTab("news")} data-testid="button-create-article">
+                    <Button 
+                      className="w-full justify-start text-sm sm:text-base" 
+                      variant="outline" 
+                      onClick={() => {
+                        setActiveTab("news");
+                        setIsMobileMenuOpen(false);
+                      }} 
+                      data-testid="button-create-article"
+                    >
                       <FileText className="h-4 w-4 mr-2" />
                       Create News Article
                     </Button>
