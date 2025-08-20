@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Search, FileText, Calendar, User, X, MoveUp, MoveDown } from "lucide-react";
+import { Plus, Edit, Trash2, Search, FileText, Calendar, User, X, MoveUp, MoveDown, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -282,16 +284,16 @@ export function NewsManager() {
             
             {/* Status Filter */}
             <div className="sm:w-48">
-              <select
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="w-full h-10 px-3 rounded-md border border-input bg-background text-sm ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                data-testid="select-status-filter"
-              >
-                <option value="all">All Articles</option>
-                <option value="published">Published</option>
-                <option value="draft">Draft</option>
-              </select>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger data-testid="select-status-filter">
+                  <SelectValue placeholder="Filter by status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Articles</SelectItem>
+                  <SelectItem value="published">Published</SelectItem>
+                  <SelectItem value="draft">Draft</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             
             {/* Create Button */}
@@ -303,103 +305,140 @@ export function NewsManager() {
         </CardContent>
       </Card>
 
-      {/* Articles Grid */}
-      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredNews.map((article) => (
-          <Card key={article.id} className="flex flex-col" data-testid={`news-card-${article.id}`}>
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1">
-                  <CardTitle className="text-lg line-clamp-2" data-testid={`news-title-${article.id}`}>
-                    {article.title}
-                  </CardTitle>
-                  <div className="flex items-center gap-2 mt-2">
-                    <Badge 
-                      variant={article.published ? "default" : "secondary"}
-                      data-testid={`news-status-${article.id}`}
-                    >
-                      {article.published ? "Published" : "Draft"}
-                    </Badge>
-                  </div>
-                </div>
-                {article.imageUrl && (
-                  <div className="flex-shrink-0">
-                    <img
-                      src={article.imageUrl}
-                      alt={article.title}
-                      className="w-16 h-16 object-cover rounded-lg border"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23f1f5f9'/%3E%3Ctext x='32' y='32' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='10'%3ENo Image%3C/text%3E%3C/svg%3E";
-                      }}
-                      data-testid={`news-image-${article.id}`}
-                    />
-                  </div>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent className="flex-1 flex flex-col">
-              <p className="text-sm text-gray-600 flex-1 line-clamp-3" data-testid={`news-description-${article.id}`}>
-                {article.description}
-              </p>
-              <div className="flex items-center justify-between mt-4 pt-4 border-t">
-                <div className="flex items-center gap-4 text-sm text-gray-500">
-                  {article.author && (
-                    <div className="flex items-center gap-1">
-                      <User className="h-4 w-4" />
-                      <span data-testid={`news-author-${article.id}`}>{article.author}</span>
-                    </div>
-                  )}
-                  <div className="flex items-center gap-1">
-                    <Calendar className="h-4 w-4" />
-                    <span data-testid={`news-date-${article.id}`}>
-                      {formatDate(article.publishedAt)}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleEdit(article)}
-                    data-testid={`button-edit-news-${article.id}`}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        data-testid={`button-delete-news-${article.id}`}
+      {/* Articles Table */}
+      {filteredNews.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle data-testid="news-table-title">
+              News Articles ({filteredNews.length})
+            </CardTitle>
+            <CardDescription>
+              All news articles in your database
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Title</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Published Date</TableHead>
+                  <TableHead>Image</TableHead>
+                  <TableHead>Sections</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredNews.map((article) => (
+                  <TableRow key={article.id} data-testid={`news-row-${article.id}`}>
+                    <TableCell className="font-medium max-w-xs" data-testid={`news-title-${article.id}`}>
+                      <div className="line-clamp-2">
+                        {article.title}
+                      </div>
+                    </TableCell>
+                    <TableCell data-testid={`news-description-${article.id}`}>
+                      {article.description ? (
+                        <span className="text-sm line-clamp-2 max-w-xs">
+                          {article.description}
+                        </span>
+                      ) : (
+                        <span className="text-slate-400 text-sm">No description</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Badge 
+                        variant={article.published ? "default" : "secondary"} 
+                        data-testid={`news-status-${article.id}`}
                       >
-                        <Trash2 className="h-4 w-4 text-red-500" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Delete Article</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          Are you sure you want to delete "{article.title}"? This action cannot be undone.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={() => deleteMutation.mutate(article.id)}
-                          className="bg-red-600 hover:bg-red-700"
+                        {article.published ? "Published" : "Draft"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell data-testid={`news-date-${article.id}`}>
+                      <span className="text-sm">
+                        {formatDate(article.publishedAt)}
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      {article.imageUrl ? (
+                        <div className="flex items-center gap-2">
+                          <img 
+                            src={article.imageUrl} 
+                            alt={article.title}
+                            className="h-8 w-8 object-cover rounded"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f1f5f9'/%3E%3Ctext x='16' y='16' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='8'%3ENo Image%3C/text%3E%3C/svg%3E";
+                            }}
+                          />
+                          <Button
+                            variant="link"
+                            size="sm"
+                            onClick={() => article.imageUrl && window.open(article.imageUrl, '_blank')}
+                            data-testid={`button-view-image-${article.id}`}
+                          >
+                            <Eye className="h-4 w-4 mr-1" />
+                            View
+                          </Button>
+                        </div>
+                      ) : (
+                        <span className="text-slate-400 text-sm">No Image</span>
+                      )}
+                    </TableCell>
+                    <TableCell data-testid={`news-sections-${article.id}`}>
+                      <span className="text-sm">
+                        {Array.isArray(article.sections) ? article.sections.length : 0} sections
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <div className="flex justify-end space-x-1">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEdit(article)}
+                          data-testid={`button-edit-news-${article.id}`}
                         >
-                          Delete
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-red-600 hover:text-red-700"
+                              data-testid={`button-delete-news-${article.id}`}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>Delete Article</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Are you sure you want to delete "{article.title}"? This action cannot be undone.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Cancel</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => deleteMutation.mutate(article.id)}
+                                className="bg-red-600 hover:bg-red-700"
+                                data-testid={`button-confirm-delete-${article.id}`}
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Empty State */}
       {filteredNews.length === 0 && (
