@@ -137,8 +137,12 @@ function NewsArticlePage() {
                 alt={article.title}
                 className="w-full h-96 object-cover"
                 onError={(e) => {
+                  console.error('Failed to load main article image:', article.imageUrl);
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
+                }}
+                onLoad={() => {
+                  console.log('Successfully loaded main article image:', article.imageUrl);
                 }}
               />
             </div>
