@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Calendar, User, ArrowRight, Loader2 } from "lucide-react";
+import type { NewsArticle } from "@shared/schema";
 
 // Utility function to truncate text
 const truncateText = (text: string, maxLength: number) => {
@@ -10,132 +12,28 @@ const truncateText = (text: string, maxLength: number) => {
   return text.substring(0, maxLength - 3) + "...";
 };
 
-// News articles data from the website
-const newsArticles = [
-  {
-    id: 1,
-    title: "Innovations in Pipe Inspection and Maintenance Technologies",
-    excerpt:
-      "The infrastructure of tomorrow demands materials that are sustainable, efficient, and built for longevity.",
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/HDPE-plastic-pipes-installed-in-Dutch-flood-protection-systems-as-a-climate-resilience-solution.-min.png",
-    date: "2025-06-15",
-    author: "Konti Team",
-    category: "Technology",
-    slug: "innovations-in-pipe-inspection-and-maintenance-technologies",
-    url: "https://konti-hidroplast.com.mk/innovations-in-pipe-inspection-and-maintenance-technologies/",
-  },
-  {
-    id: 2,
-    title:
-      "Konti Hidroplast Donated €100,000 to the Public General Hospital in Gevgelija",
-    excerpt:
-      "The Public General Hospital with expanded services in Gevgelija received a donation of €100,000",
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/07/konti-novost.jpg",
-    date: "2025-07-10",
-    author: "Konti Team",
-    category: "Corporate Social Responsibility",
-    slug: "konti-hidroplast-donated-e100000-to-the-public-general-hospital-in-gevgelija",
-    url: "https://konti-hidroplast.com.mk/konti-hidroplast-donated-e100000-to-the-public-general-hospital-in-gevgelija/",
-  },
-  {
-    id: 3,
-    title: "EPD – Environmental Product Declaration",
-    excerpt:
-      "Sustainability and environmental responsibility are key values in our company's operations and development.",
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/EPD-%E2%80%93-Environmental-Product-Declaration.jpg",
-    date: "2025-06-20",
-    author: "Konti Team",
-    category: "Sustainability",
-    slug: "epd-environmental-product-declaration",
-    url: "https://konti-hidroplast.com.mk/epd-environmental-product-declaration/",
-  },
-  {
-    id: 4,
-    title: "Industry Associations Plastic Pipe: Driving Standards & Innovation",
-    excerpt:
-      "Leading industry associations plastic pipe play a pivotal role in ensuring safe, efficient infrastructure.",
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/HDPE-plastic-pipes-installed-in-Dutch-flood-protection-systems-as-a-climate-resilience-solution.-min.png",
-    date: "2025-06-10",
-    author: "Konti Team",
-    category: "Industry",
-    slug: "industry-associations-plastic-pipe-driving-standards-innovation",
-    url: "https://konti-hidroplast.com.mk/industry-associations-plastic-pipe-driving-standards-innovation/",
-  },
-  {
-    id: 5,
-    title: "Maintaining Healthy Pipe Systems: Essential Plumbing Tips",
-    excerpt:
-      "Proactive maintaining healthy pipe systems in your home isn't just about convenience-it's about safety and efficiency.",
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/comparison-of-corroded-and-healthy-copper-pipes-min.png",
-    date: "2025-06-05",
-    author: "Konti Team",
-    category: "Maintenance",
-    slug: "maintaining-healthy-pipe-sustems-essential-plumbing-tips",
-    url: "https://konti-hidroplast.com.mk/maintaining-healthy-pipe-sustems-essential-plumbing-tips/",
-  },
-  {
-    id: 6,
-    title: "Industrial Piping Systems: What You Need to Know",
-    excerpt:
-      "In Scandinavian manufacturing, industrial piping systems form the backbone of essential utilities—handling water, gas, and more.",
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/05/plastic-pipes-industrial-pipe-network-min.png",
-    date: "2025-05-25",
-    author: "Konti Team",
-    category: "Industrial",
-    slug: "industrial-piping-systems-what-you-need-to-know",
-    url: "https://konti-hidroplast.com.mk/industrial-piping-systems-what-you-need-to-know/",
-  },
-  {
-    id: 7,
-    title: "Advanced PE Pipe Manufacturing Techniques",
-    excerpt:
-      "Explore the latest manufacturing techniques that make our PE pipes the most reliable in the industry.",
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/HDPE-plastic-pipes-installed-in-Dutch-flood-protection-systems-as-a-climate-resilience-solution.-min.png",
-    date: "2025-05-15",
-    author: "Konti Team",
-    category: "Manufacturing",
-    slug: "advanced-pe-pipe-manufacturing-techniques",
-    url: "#",
-  },
-  {
-    id: 8,
-    title: "Water Quality Standards and PE Pipe Compliance",
-    excerpt:
-      "Understanding how our PE pipes meet and exceed international water quality standards for safe drinking water systems.",
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/comparison-of-corroded-and-healthy-copper-pipes-min.png",
-    date: "2025-05-10",
-    author: "Konti Team",
-    category: "Standards",
-    slug: "water-quality-standards-and-pe-pipe-compliance",
-    url: "#",
-  },
-  {
-    id: 9,
-    title: "Sustainable Infrastructure Development with HDPE",
-    excerpt:
-      "How HDPE pipes contribute to sustainable infrastructure development and environmental protection initiatives.",
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/05/plastic-pipes-industrial-pipe-network-min.png",
-    date: "2025-05-01",
-    author: "Konti Team",
-    category: "Sustainability",
-    slug: "sustainable-infrastructure-development-with-hdpe",
-    url: "#",
-  },
-];
+// Format date helper
+const formatDate = (dateString: string | Date | null) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+};
+
+
 
 function NewsPage() {
   const { t } = useLanguage();
   const [visibleArticles, setVisibleArticles] = useState(6);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Fetch published news articles from API
+  const { data: newsArticles = [], isLoading: isLoadingNews } = useQuery<NewsArticle[]>({
+    queryKey: ["/api/news"]
+  });
 
   useEffect(() => {
     // Set page title
@@ -160,48 +58,65 @@ function NewsPage() {
     }, 800);
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const NewsCard = ({ article }: { article: (typeof newsArticles)[0] }) => (
+  // New 3-section design NewsCard component matching the mockup
+  const NewsCard = ({ article }: { article: NewsArticle }) => (
     <article
       className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
       data-testid={`news-card-${article.id}`}
     >
+      {/* Section 3: Main Article Image */}
       <div className="aspect-[4/3] overflow-hidden bg-gray-100">
-        <img
-          src={article.image}
-          alt={article.title}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
+        {article.imageUrl ? (
+          <img
+            src={article.imageUrl}
+            alt={article.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            loading="lazy"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f1f5f9'/%3E%3Ctext x='200' y='150' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='16'%3ENo Image%3C/text%3E%3C/svg%3E";
+            }}
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+            <span className="text-gray-400 text-sm">No Image</span>
+          </div>
+        )}
       </div>
+      
       <div className="p-6">
+        {/* News Category Label */}
         <div className="mb-3">
           <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-            News
+            NEWS
           </span>
         </div>
+        
+        {/* Section 1: Title */}
         <h3 className="text-xl font-bold text-[#1c2d56] mb-3 leading-tight">
-          {truncateText(article.title, 40)}
+          {truncateText(article.title, 60)}
         </h3>
+        
+        {/* Section 2: Description */}
         <p className="text-gray-600 mb-6 leading-relaxed">
-          {truncateText(article.excerpt, 70)}
+          {article.description ? truncateText(article.description, 120) : "No description available"}
         </p>
-        <a
-          href={`/news/${article.slug}`}
-          className="inline-flex items-center px-4 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm font-medium rounded transition-colors"
-          data-testid={`read-more-${article.id}`}
-        >
-          Read More
-          <ArrowRight className="w-4 h-4 ml-2" />
-        </a>
+
+        {/* Date and Read More */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm text-gray-500">
+            <Calendar className="h-4 w-4" />
+            <span>{formatDate(article.createdAt)}</span>
+          </div>
+          <a
+            href={`/news/${article.id}`}
+            className="inline-flex items-center px-4 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm font-medium rounded transition-colors"
+            data-testid={`read-more-${article.id}`}
+          >
+            Read More
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </a>
+        </div>
       </div>
     </article>
   );
@@ -250,12 +165,22 @@ function NewsPage() {
             </div>
           </div>
 
-          {/* News Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-            {newsArticles.slice(0, visibleArticles).map((article) => (
-              <NewsCard key={article.id} article={article} />
-            ))}
-          </div>
+          {/* Loading State */}
+          {isLoadingNews ? (
+            <div className="flex items-center justify-center py-20">
+              <Loader2 className="h-8 w-8 animate-spin text-[#1c2d56]" />
+              <span className="ml-3 text-lg text-gray-600">Loading news articles...</span>
+            </div>
+          ) : (
+            <>
+              {/* News Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                {newsArticles.slice(0, visibleArticles).map((article) => (
+                  <NewsCard key={article.id} article={article} />
+                ))}
+              </div>
+            </>
+          )}
 
           {/* Load More Button */}
           {visibleArticles < newsArticles.length && (
@@ -284,7 +209,19 @@ function NewsPage() {
             </div>
           )}
 
-          {visibleArticles >= newsArticles.length && (
+          {/* Empty State */}
+          {!isLoadingNews && newsArticles.length === 0 && (
+            <div className="text-center py-20">
+              <Calendar className="h-16 w-16 text-gray-300 mx-auto mb-6" />
+              <h3 className="text-2xl font-bold text-gray-700 mb-4">No News Articles Yet</h3>
+              <p className="text-gray-500">
+                Check back soon for the latest updates and insights from Konti Hidroplast.
+              </p>
+            </div>
+          )}
+
+          {/* All Articles Shown Message */}
+          {!isLoadingNews && newsArticles.length > 0 && visibleArticles >= newsArticles.length && (
             <div className="text-center">
               <p className="text-lg text-gray-600 mb-4">
                 You've seen all our latest news articles!

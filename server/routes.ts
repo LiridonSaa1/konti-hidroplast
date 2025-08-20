@@ -389,8 +389,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // News routes
-  app.get("/api/admin/news", async (req, res) => {
+  // Public News routes (no authentication required)
+  app.get("/api/news", async (req, res) => {
+    try {
+      const allNews = await storage.getAllNews();
+      // Filter to only show published articles for public consumption
+      const publishedNews = allNews.filter(article => article.published);
+      // Sort by creation date, most recent first
+      const sortedNews = publishedNews.sort((a, b) => 
+        new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
+      );
+      res.json(sortedNews);
+    } catch (error) {
+      console.error("Error fetching published news:", error);
+      res.status(500).json({ error: "Failed to fetch news" });
+    }
+  });
+
+  app.get("/api/news/:id", async (req, res) => {
+    try {
+      const article = await storage.getNews(req.params.id);
+      if (!article) {
+        return res.status(404).json({ error: "News article not found" });
+      }
+      // Only allow access to published articles
+      if (!article.published) {
+        return res.status(404).json({ error: "Article not found or not published" });
+      }
+      res.json(article);
+    } catch (error) {
+      console.error("Error fetching news article:", error);
+      res.status(500).json({ error: "Failed to fetch news article" });
+    }
+  });
+
+  // Admin News routes (authentication required)
+  app.get("/api/admin/news", requireAuth, async (req, res) => {
     try {
       const news = await storage.getAllNews();
       res.json(news);
@@ -400,7 +434,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/news/:id", async (req, res) => {
+  app.get("/api/admin/news/:id", requireAuth, async (req, res) => {
     try {
       const article = await storage.getNews(req.params.id);
       if (!article) {
@@ -413,7 +447,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/news", async (req, res) => {
+  app.post("/api/admin/news", requireAuth, async (req, res) => {
     try {
       console.log("Received news data:", JSON.stringify(req.body, null, 2));
       
@@ -438,7 +472,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/admin/news/:id", async (req, res) => {
+  app.put("/api/admin/news/:id", requireAuth, async (req, res) => {
     try {
       // Convert publishedAt string to Date if it exists
       const requestData = { ...req.body };
@@ -455,7 +489,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/news/:id", async (req, res) => {
+  app.delete("/api/admin/news/:id", requireAuth, async (req, res) => {
     try {
       await storage.deleteNews(req.params.id);
       res.status(204).send();
