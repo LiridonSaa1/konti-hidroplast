@@ -129,10 +129,6 @@ function NewsArticlePage() {
       {/* Article Content */}
       <section className="py-20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          
-          
-          
-          
           {/* Article Content Based on Structured Sections */}
           <div className="space-y-8">
             {article.sections && Array.isArray(article.sections) && article.sections.length > 0 ? (
