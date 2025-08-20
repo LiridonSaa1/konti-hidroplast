@@ -77,9 +77,10 @@ const translations = {
     'products.systems.description': 'Engineered pipeline systems for complex industrial and municipal projects.',
     
     // News
-    'news.title': 'Latest News',
+    'news.title': 'News',
     'news.subtitle': 'Stay updated with our latest developments and industry insights',
-    'news.more': 'Read More News',
+    'news.readMore': 'Read More',
+    'news.viewAll': 'View All News',
     
     // Contact
     'contact.title': 'Contact Us',
@@ -304,9 +305,10 @@ const translations = {
     'products.systems.description': 'Инженерски системи за цевководи за сложени индустриски и општински проекти.',
     
     // News
-    'news.title': 'Најнови вести',
+    'news.title': 'Вести',
     'news.subtitle': 'Останете во тек со нашите најнови развојни активности и индустриски увиди',
-    'news.more': 'Прочитај повеќе вести',
+    'news.readMore': 'Прочитај повеќе',
+    'news.viewAll': 'Види ги сите вести',
     
     // Contact
     'contact.title': 'Контактирајте не',
@@ -531,9 +533,10 @@ const translations = {
     'products.systems.description': 'Entwickelte Rohrleitungssysteme für komplexe industrielle und kommunale Projekte.',
     
     // News
-    'news.title': 'Neueste Nachrichten',
+    'news.title': 'Nachrichten',
     'news.subtitle': 'Bleiben Sie über unsere neuesten Entwicklungen und Brancheneinblicke auf dem Laufenden',
-    'news.more': 'Mehr Nachrichten lesen',
+    'news.readMore': 'Mehr lesen',
+    'news.viewAll': 'Alle Nachrichten ansehen',
     
     // Contact
     'contact.title': 'Kontaktieren Sie uns',

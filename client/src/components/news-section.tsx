@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const newsArticles = [
   {
@@ -32,6 +33,7 @@ const newsArticles = [
 
 export function NewsSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.1 });
+  const { t } = useLanguage();
 
   return (
     <section
@@ -55,7 +57,7 @@ export function NewsSection() {
               className="text-4xl font-bold text-konti-gray"
               data-testid="news-title"
             >
-              News
+              {t('news.title')}
             </h2>
             <div
               className="w-20 h-0.5 ml-4"
@@ -84,7 +86,7 @@ export function NewsSection() {
               </div>
               <CardContent className="p-6">
                 <div className="text-sm text-konti-blue font-medium mb-2">
-                  {article.category}
+                  {t('news.title')}
                 </div>
                 <h3 className="text-xl font-semibold text-konti-gray mb-3 line-clamp-2">
                   {article.title}
@@ -100,7 +102,7 @@ export function NewsSection() {
                   style={{ backgroundColor: "#1c2d56" }}
                   data-testid={`news-read-more-${index}`}
                 >
-                  <span>Read More</span>
+                  <span>{t('news.readMore')}</span>
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </a>
               </CardContent>
@@ -117,7 +119,7 @@ export function NewsSection() {
             style={{ backgroundColor: "#1c2d56" }}
             data-testid="view-all-news"
           >
-            <span>View All News</span>
+            <span>{t('news.viewAll')}</span>
             <ArrowRight className="ml-2 h-4 w-4" />
           </a>
         </div>
