@@ -1,24 +1,25 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Quote, User } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const testimonials = [
+const getTestimonials = (t: (key: string) => string) => [
   {
-    quote:
-      "As your long-term partner, we are very happy to work with you and your company. Over the years, we have received very good service, great quality of products, fast and competent responses from Konti Hidroplast. All employees are responsive, competent and well-known in the products you produce.",
-    author: "Petar Ermenliev",
-    company: "Eurocom 2000",
+    quoteKey: "testimonials.petar.quote",
+    authorKey: "testimonials.petar.author",
+    companyKey: "testimonials.petar.company",
   },
   {
-    quote:
-      "Working with Konti Hidroplast has been a truly positive experience. Their professionalism, attention to detail, and commitment to delivering high-quality products & services consistently exceed our expectations. The team's expertise and responsiveness make every project smooth and efficient.",
-    author: "Alex Negrescu",
-    company: "General Manager, Dematek Water Management",
+    quoteKey: "testimonials.alex.quote",
+    authorKey: "testimonials.alex.author",
+    companyKey: "testimonials.alex.company",
   },
 ];
 
 export function TestimonialsSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.2 });
+  const { t } = useLanguage();
+  const testimonials = getTestimonials(t);
 
   return (
     <section
@@ -41,7 +42,7 @@ export function TestimonialsSection() {
                 <div className="flex items-start mb-6">
                   <Quote className="text-4xl text-konti-blue mr-4 flex-shrink-0" />
                   <p className="text-lg text-gray-700 leading-relaxed">
-                    {testimonial.quote}
+                    {t(testimonial.quoteKey)}
                   </p>
                 </div>
                 <div className="flex items-center">
@@ -50,9 +51,9 @@ export function TestimonialsSection() {
                   </div>
                   <div>
                     <div className="font-semibold text-konti-gray">
-                      {testimonial.author}
+                      {t(testimonial.authorKey)}
                     </div>
-                    <div className="text-gray-600">{testimonial.company}</div>
+                    <div className="text-gray-600">{t(testimonial.companyKey)}</div>
                   </div>
                 </div>
               </CardContent>

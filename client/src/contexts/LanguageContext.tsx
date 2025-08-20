@@ -88,6 +88,14 @@ const translations = {
     'news.article3.title': 'EPD – Environmental Product Declaration',
     'news.article3.excerpt': 'Our commitment to environmental transparency and...',
     
+    // Testimonials
+    'testimonials.petar.quote': 'As your long-term partner, we are very happy to work with you and your company. Over the years, we have received very good service, great quality of products, fast and competent responses from Konti Hidroplast. All employees are responsive, competent and well-known in the products you produce.',
+    'testimonials.petar.author': 'Petar Ermenliev',
+    'testimonials.petar.company': 'Eurocom 2000',
+    'testimonials.alex.quote': 'Working with Konti Hidroplast has been a truly positive experience. Their professionalism, attention to detail, and commitment to delivering high-quality products & services consistently exceed our expectations. The team\'s expertise and responsiveness make every project smooth and efficient.',
+    'testimonials.alex.author': 'Alex Negrescu',
+    'testimonials.alex.company': 'General Manager, Dematek Water Management',
+    
     // Contact
     'contact.title': 'Contact Us',
     'contact.subtitle': 'Get in touch with our team for inquiries and support',
@@ -322,6 +330,14 @@ const translations = {
     'news.article3.title': 'EPD – Еколошка декларација за производ',
     'news.article3.excerpt': 'Нашата посветеност кон еколошка транспарентност и...',
     
+    // Testimonials
+    'testimonials.petar.quote': 'Како ваш долгорочен партнер, многу сме среќни да работиме со вас и вашата компанија. Низ годините, добивме многу добра услуга, одличен квалитет на производи, брзи и компетентни одговори од Конти Хидропласт. Сите вработени се одговорни, компетентни и добро познати во производите што ги произведувате.',
+    'testimonials.petar.author': 'Петар Ерменлиев',
+    'testimonials.petar.company': 'Еврокон 2000',
+    'testimonials.alex.quote': 'Работењето со Конти Хидропласт беше навистина позитивно искуство. Нивниот професионализам, внимание кон деталите и посветеноста во испораката на висококвалитетни производи и услуги постојано ги надминуваат нашите очекувања. Експертизата на тимот и одговорноста го прават секој проект мирен и ефикасен.',
+    'testimonials.alex.author': 'Алекс Негреску',
+    'testimonials.alex.company': 'Генерален менаџер, Дематек управување со води',
+    
     // Contact
     'contact.title': 'Контактирајте не',
     'contact.subtitle': 'Стапете во контакт со нашиот тим за прашања и поддршка',
@@ -555,6 +571,14 @@ const translations = {
     'news.article2.excerpt': 'Unterstützung unserer Gemeinde mit erheblicher Gesundheitsversorgung...',
     'news.article3.title': 'EPD – Umwelt-Produktdeklaration',
     'news.article3.excerpt': 'Unser Engagement für Umwelttransparenz und...',
+    
+    // Testimonials
+    'testimonials.petar.quote': 'Als Ihr langfristiger Partner sind wir sehr glücklich, mit Ihnen und Ihrem Unternehmen zu arbeiten. Über die Jahre haben wir sehr guten Service, große Qualität der Produkte und schnelle, kompetente Antworten von Konti Hidroplast erhalten. Alle Mitarbeiter sind reaktionsschnell, kompetent und bekannt für die Produkte, die Sie herstellen.',
+    'testimonials.petar.author': 'Petar Ermenliev',
+    'testimonials.petar.company': 'Eurocom 2000',
+    'testimonials.alex.quote': 'Die Zusammenarbeit mit Konti Hidroplast war eine wirklich positive Erfahrung. Ihr Professionalität, Liebe zum Detail und Engagement für die Lieferung hochwertiger Produkte und Dienstleistungen übertreffen unsere Erwartungen kontinuierlich. Die Expertise und Reaktionsfähigkeit des Teams machen jedes Projekt reibungslos und effizient.',
+    'testimonials.alex.author': 'Alex Negrescu',
+    'testimonials.alex.company': 'General Manager, Dematek Wassermanagement',
     
     // Contact
     'contact.title': 'Kontaktieren Sie uns',

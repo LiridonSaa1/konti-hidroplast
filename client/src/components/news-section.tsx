@@ -77,7 +77,7 @@ export function NewsSection() {
               <div className="aspect-video overflow-hidden">
                 <img
                   src={article.image}
-                  alt={article.title}
+                  alt={t(article.titleKey)}
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                   loading="lazy"
                 />
