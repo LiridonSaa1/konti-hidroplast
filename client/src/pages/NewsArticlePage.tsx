@@ -4,9 +4,19 @@ import { useQuery } from "@tanstack/react-query";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Calendar, User, ArrowLeft, Loader2 } from "lucide-react";
+import { Calendar, User, ArrowLeft, Loader2, FileText } from "lucide-react";
 import { Link } from "wouter";
 import type { NewsArticle } from "@shared/schema";
+
+// Define the ArticleSection interface to match admin structure
+interface ArticleSection {
+  id: string;
+  type: 'text' | 'image' | 'text-with-image';
+  title: string;
+  content: string;
+  imageUrl?: string;
+  imagePosition?: 'left' | 'right';
+}
 
 // Format date helper
 const formatDate = (dateString: string | Date | null) => {
@@ -134,24 +144,36 @@ function NewsArticlePage() {
             </div>
           )}
           
-          {/* Article Content */}
-          <div className="prose prose-lg max-w-none">
+          {/* Article Content Based on Structured Sections */}
+          <div className="space-y-8">
             {article.sections && Array.isArray(article.sections) && article.sections.length > 0 ? (
-              article.sections.map((section: any, index: number) => (
-                <div key={index} className="mb-8">
-                  {section.subtitle && (
-                    <h2 className="text-2xl font-bold text-[#1c2d56] mb-4">{section.subtitle}</h2>
+              article.sections.map((section: ArticleSection, index: number) => (
+                <div key={section.id || index} className="bg-white rounded-lg shadow-sm overflow-hidden">
+                  {/* Section Title */}
+                  {section.title && (
+                    <div className="px-8 pt-8 pb-4">
+                      <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight">
+                        {section.title}
+                      </h2>
+                    </div>
                   )}
-                  {section.content && (
-                    <div className="text-gray-700 leading-relaxed mb-4" 
-                         dangerouslySetInnerHTML={{ __html: section.content.replace(/\n/g, '<br>') }} 
-                    />
+
+                  {/* Text Only Section */}
+                  {section.type === 'text' && (
+                    <div className="px-8 pb-8">
+                      <div 
+                        className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: section.content.replace(/\n/g, '<br>') }}
+                      />
+                    </div>
                   )}
-                  {section.imageUrl && (
-                    <div className="mb-6">
+
+                  {/* Image Only Section */}
+                  {section.type === 'image' && section.imageUrl && (
+                    <div className="px-8 pb-8">
                       <img
                         src={section.imageUrl}
-                        alt={section.subtitle || `Section ${index + 1}`}
+                        alt={section.title || `Section ${index + 1}`}
                         className="w-full rounded-lg shadow-md"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement;
@@ -160,11 +182,49 @@ function NewsArticlePage() {
                       />
                     </div>
                   )}
+
+                  {/* Text with Image Section */}
+                  {section.type === 'text-with-image' && (
+                    <div className={`px-8 pb-8 grid gap-8 items-start ${
+                      section.imagePosition === 'left' ? 'md:grid-cols-2' : 'md:grid-cols-2'
+                    }`}>
+                      {/* Text Content */}
+                      <div className={`${
+                        section.imagePosition === 'left' ? 'md:order-2' : 'md:order-1'
+                      }`}>
+                        <div 
+                          className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                          dangerouslySetInnerHTML={{ __html: section.content.replace(/\n/g, '<br>') }}
+                        />
+                      </div>
+                      
+                      {/* Image */}
+                      {section.imageUrl && (
+                        <div className={`${
+                          section.imagePosition === 'left' ? 'md:order-1' : 'md:order-2'
+                        }`}>
+                          <img
+                            src={section.imageUrl}
+                            alt={section.title || `Section ${index + 1}`}
+                            className="w-full rounded-lg shadow-md"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))
             ) : (
-              <div className="text-gray-700 leading-relaxed">
-                <p>This article is currently being updated with more detailed content. Please check back soon for the full article.</p>
+              <div className="bg-white rounded-lg shadow-sm p-8">
+                <div className="text-center text-gray-600">
+                  <FileText className="h-12 w-12 mx-auto mb-4 text-gray-400" />
+                  <p>This article is currently being updated with more detailed content.</p>
+                  <p>Please check back soon for the full article.</p>
+                </div>
               </div>
             )}
           </div>
