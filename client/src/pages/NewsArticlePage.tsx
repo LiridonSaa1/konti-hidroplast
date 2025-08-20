@@ -170,35 +170,37 @@ function NewsArticlePage() {
 
                   {/* Text with Image Section */}
                   {section.type === 'text-with-image' && (
-                    <div className={`px-8 pb-8 grid gap-8 items-start ${
-                      section.imagePosition === 'left' ? 'md:grid-cols-2' : 'md:grid-cols-2'
-                    }`}>
-                      {/* Text Content */}
-                      <div className={`${
-                        section.imagePosition === 'left' ? 'md:order-2' : 'md:order-1'
+                    <div className="px-8 pb-8">
+                      <div className={`grid gap-8 items-start ${
+                        section.imagePosition === 'left' ? 'md:grid-cols-2' : 'md:grid-cols-2'
                       }`}>
-                        <div 
-                          className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
-                          dangerouslySetInnerHTML={{ __html: section.content.replace(/\n/g, '<br>') }}
-                        />
-                      </div>
-                      
-                      {/* Image */}
-                      {section.imageUrl && (
+                        {/* Text Content */}
                         <div className={`${
-                          section.imagePosition === 'left' ? 'md:order-1' : 'md:order-2'
+                          section.imagePosition === 'left' ? 'md:order-2' : 'md:order-1'
                         }`}>
-                          <img
-                            src={section.imageUrl}
-                            alt={section.title || `Section ${index + 1}`}
-                            className="w-full h-[28rem] object-cover rounded-lg shadow-md"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.style.display = 'none';
-                            }}
+                          <div 
+                            className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                            dangerouslySetInnerHTML={{ __html: section.content.replace(/\n/g, '<br>') }}
                           />
                         </div>
-                      )}
+                        
+                        {/* Image */}
+                        {section.imageUrl && (
+                          <div className={`${
+                            section.imagePosition === 'left' ? 'md:order-1' : 'md:order-2'
+                          }`}>
+                            <img
+                              src={section.imageUrl}
+                              alt={section.title || `Section ${index + 1}`}
+                              className="w-full h-[28rem] object-cover rounded-lg shadow-md"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.style.display = 'none';
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
