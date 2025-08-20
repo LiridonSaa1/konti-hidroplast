@@ -1,15 +1,17 @@
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 import { MapPin, Phone } from "lucide-react";
 import logoWhite from "@assets/urban-rohr-logo-white.svg";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Footer() {
+  const { t } = useLanguage();
   const quickLinks = [
-    { label: "About Us", href: "https://konti-hidroplast.com.mk/about-us/" },
-    { label: "Products", href: "https://konti-hidroplast.com.mk/products/" },
-    { label: "News", href: "https://konti-hidroplast.com.mk/news/" },
-    { label: "Contact", href: "https://konti-hidroplast.com.mk/contacts/" },
+    { labelKey: "footer.aboutUs", href: "https://konti-hidroplast.com.mk/about-us/" },
+    { labelKey: "footer.products", href: "https://konti-hidroplast.com.mk/products/" },
+    { labelKey: "footer.news", href: "https://konti-hidroplast.com.mk/news/" },
+    { labelKey: "footer.contact", href: "https://konti-hidroplast.com.mk/contacts/" },
     {
-      label: "Privacy Policy",
+      labelKey: "footer.privacyPolicy",
       href: "https://konti-hidroplast.com.mk/privacy-policy/",
     },
   ];
@@ -34,9 +36,7 @@ export function Footer() {
               className="text-gray-300 mb-6 max-w-md"
               data-testid="footer-description"
             >
-              Export-oriented Macedonian company for production of PE and PP
-              pipes. Founded in 1975, we are committed to delivering unmatched
-              European standards for pipeline precision.
+              {t('footer.description')}
             </p>
             <div className="flex space-x-4" data-testid="footer-social">
               <a
@@ -75,7 +75,7 @@ export function Footer() {
               className="text-lg font-semibold mb-6"
               data-testid="footer-links-title"
             >
-              Quick Links
+              {t('footer.quickLinks')}
             </h4>
             <ul className="space-y-3" data-testid="footer-links">
               {quickLinks.map((link, index) => (
@@ -87,7 +87,7 @@ export function Footer() {
                     className="text-gray-300 hover:text-white transition-colors"
                     data-testid={`footer-link-${index}`}
                   >
-                    {link.label}
+                    {t(link.labelKey)}
                   </a>
                 </li>
               ))}
@@ -100,12 +100,12 @@ export function Footer() {
               className="text-lg font-semibold mb-6"
               data-testid="footer-contact-title"
             >
-              Contact Info
+              {t('footer.contactInfo')}
             </h4>
             <div className="space-y-4 text-gray-300">
               <div className="flex items-start" data-testid="footer-address">
                 <MapPin className="text-gray-300 mr-3 mt-1 flex-shrink-0" />
-                <span>Industriska 5, 1480 Gevgelija, North Macedonia</span>
+                <span>{t('footer.address')}</span>
               </div>
               <div className="flex items-start" data-testid="footer-phone">
                 <Phone className="text-gray-300 mr-3 mt-1 flex-shrink-0" />
@@ -124,7 +124,7 @@ export function Footer() {
         {/* Bottom Border */}
         <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
           <p data-testid="footer-copyright">
-            &copy; 2025 Urban Rohr. All rights reserved.
+            {t('footer.copyright')}
           </p>
         </div>
       </div>

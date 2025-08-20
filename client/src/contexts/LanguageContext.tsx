@@ -128,11 +128,16 @@ const translations = {
     'contact.phone': 'Phone',
     
     // Footer
-    'footer.company': 'Company',
+    'footer.description': 'Export-oriented Macedonian company for production of PE and PP pipes. Founded in 1975, we are committed to delivering unmatched European standards for pipeline precision.',
+    'footer.quickLinks': 'Quick Links',
+    'footer.aboutUs': 'About Us',
     'footer.products': 'Products',
-    'footer.support': 'Support',
+    'footer.news': 'News',
     'footer.contact': 'Contact',
-    'footer.rights': 'All rights reserved.',
+    'footer.privacyPolicy': 'Privacy Policy',
+    'footer.contactInfo': 'Contact Info',
+    'footer.address': 'Industriska 6, 5480 Gevgelija, North Macedonia',
+    'footer.copyright': '© 2025 Urban Rohr. All rights reserved.',
     
     // Common
     'common.loading': 'Loading...',
@@ -390,11 +395,16 @@ const translations = {
     'contact.phone': 'Телефон',
     
     // Footer
-    'footer.company': 'Компанија',
+    'footer.description': 'Извозно-ориентирана македонска компанија за производство на ПЕ и ПП цевки. Основана во 1975 година, посветени сме на испорака на непревземени европски стандарди за прецизност на цевководи.',
+    'footer.quickLinks': 'Брзи врски',
+    'footer.aboutUs': 'За нас',
     'footer.products': 'Производи',
-    'footer.support': 'Поддршка',
+    'footer.news': 'Вести',
     'footer.contact': 'Контакт',
-    'footer.rights': 'Сите права се задржани.',
+    'footer.privacyPolicy': 'Политика за приватност',
+    'footer.contactInfo': 'Контакт информации',
+    'footer.address': 'Индустриска 6, 5480 Гевгелија, Северна Македонија',
+    'footer.copyright': '© 2025 Урбан Рор. Сите права се задржани.',
     
     // Common
     'common.loading': 'Се вчитува...',
@@ -652,11 +662,16 @@ const translations = {
     'contact.phone': 'Telefon',
     
     // Footer
-    'footer.company': 'Unternehmen',
+    'footer.description': 'Exportorientiertes mazedonisches Unternehmen für die Herstellung von PE- und PP-Rohren. Gegründet 1975, sind wir verpflichtet, unübertroffene europäische Standards für Pipeline-Präzision zu liefern.',
+    'footer.quickLinks': 'Schnellzugriff',
+    'footer.aboutUs': 'Über uns',
     'footer.products': 'Produkte',
-    'footer.support': 'Support',
+    'footer.news': 'Nachrichten',
     'footer.contact': 'Kontakt',
-    'footer.rights': 'Alle Rechte vorbehalten.',
+    'footer.privacyPolicy': 'Datenschutzrichtlinie',
+    'footer.contactInfo': 'Kontaktinformationen',
+    'footer.address': 'Industriska 6, 5480 Gevgelija, Nordmazedonien',
+    'footer.copyright': '© 2025 Urban Rohr. Alle Rechte vorbehalten.',
     
     // Common
     'common.loading': 'Laden...',
