@@ -133,76 +133,76 @@ function NewsArticlePage() {
           <div className="space-y-8">
             {article.sections && Array.isArray(article.sections) && article.sections.length > 0 ? (
               article.sections.map((section: ArticleSection, index: number) => (
-                <div key={section.id || index} className="bg-white rounded-lg shadow-sm overflow-hidden">
-                  {/* Section Title */}
+                <div key={section.id || index} className="mb-8">
+                  {/* Section Title - positioned above content area */}
                   {section.title && (
-                    <div className="px-8 pt-8 pb-4">
-                      <h2 className="text-2xl font-bold text-foreground leading-tight">
-                        {section.title}
-                      </h2>
-                    </div>
+                    <h2 className="text-2xl font-bold text-foreground leading-tight mb-6">
+                      {section.title}
+                    </h2>
                   )}
 
-                  {/* Text Only Section */}
-                  {section.type === 'text' && (
-                    <div className="px-8 pb-8">
-                      <div 
-                        className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
-                        dangerouslySetInnerHTML={{ __html: section.content.replace(/\n/g, '<br>') }}
-                      />
-                    </div>
-                  )}
+                  <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+                    {/* Text Only Section */}
+                    {section.type === 'text' && (
+                      <div className="px-8 py-8">
+                        <div 
+                          className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                          dangerouslySetInnerHTML={{ __html: section.content.replace(/\n/g, '<br>') }}
+                        />
+                      </div>
+                    )}
 
-                  {/* Image Only Section */}
-                  {section.type === 'image' && section.imageUrl && (
-                    <div className="px-8 pb-8">
-                      <img
-                        src={section.imageUrl}
-                        alt={section.title || `Section ${index + 1}`}
-                        className="w-full h-[28rem] object-cover rounded-lg shadow-md"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                        }}
-                      />
-                    </div>
-                  )}
+                    {/* Image Only Section */}
+                    {section.type === 'image' && section.imageUrl && (
+                      <div className="px-8 py-8">
+                        <img
+                          src={section.imageUrl}
+                          alt={section.title || `Section ${index + 1}`}
+                          className="w-full h-[28rem] object-cover rounded-lg shadow-md"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    )}
 
-                  {/* Text with Image Section */}
-                  {section.type === 'text-with-image' && (
-                    <div className="px-8 pb-8">
-                      <div className={`grid gap-8 items-start ${
-                        section.imagePosition === 'left' ? 'md:grid-cols-2' : 'md:grid-cols-2'
-                      }`}>
-                        {/* Text Content */}
-                        <div className={`${
-                          section.imagePosition === 'left' ? 'md:order-2' : 'md:order-1'
+                    {/* Text with Image Section */}
+                    {section.type === 'text-with-image' && (
+                      <div className="px-8 py-8">
+                        <div className={`grid gap-8 items-start ${
+                          section.imagePosition === 'left' ? 'md:grid-cols-2' : 'md:grid-cols-2'
                         }`}>
-                          <div 
-                            className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
-                            dangerouslySetInnerHTML={{ __html: section.content.replace(/\n/g, '<br>') }}
-                          />
-                        </div>
-                        
-                        {/* Image */}
-                        {section.imageUrl && (
+                          {/* Text Content */}
                           <div className={`${
-                            section.imagePosition === 'left' ? 'md:order-1' : 'md:order-2'
+                            section.imagePosition === 'left' ? 'md:order-2' : 'md:order-1'
                           }`}>
-                            <img
-                              src={section.imageUrl}
-                              alt={section.title || `Section ${index + 1}`}
-                              className="w-full h-[28rem] object-cover rounded-lg shadow-md"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement;
-                                target.style.display = 'none';
-                              }}
+                            <div 
+                              className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                              dangerouslySetInnerHTML={{ __html: section.content.replace(/\n/g, '<br>') }}
                             />
                           </div>
-                        )}
+                          
+                          {/* Image */}
+                          {section.imageUrl && (
+                            <div className={`${
+                              section.imagePosition === 'left' ? 'md:order-1' : 'md:order-2'
+                            }`}>
+                              <img
+                                src={section.imageUrl}
+                                alt={section.title || `Section ${index + 1}`}
+                                className="w-full h-[28rem] object-cover rounded-lg shadow-md"
+                                onError={(e) => {
+                                  const target = e.target as HTMLImageElement;
+                                  target.style.display = 'none';
+                                }}
+                              />
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
               ))
             ) : (
