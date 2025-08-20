@@ -38,7 +38,7 @@ export function ProductsSection() {
         <div className="text-center mb-16">
           <div className="flex items-center justify-center mb-8">
             <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-            <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">Products</h2>
+            <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">{t('products.title')}</h2>
             <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
           </div>
         </div>
@@ -64,13 +64,13 @@ export function ProductsSection() {
 
               <div className="mt-4">
                 <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                  WATER SUPPLY SYSTEMS
+                  {t('products.waterSupply')}
                 </h3>
 
                 {/* Learn More Button */}
                 <Link href="/products/water-supply-systems">
                   <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
-                    <span>Learn More</span>
+                    <span>{t('products.learnMore')}</span>
                     <svg
                       className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
                       fill="none"
@@ -109,13 +109,13 @@ export function ProductsSection() {
 
               <div className="mt-4">
                 <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                  SEWERAGE SYSTEMS
+                  {t('products.sewerage')}
                 </h3>
 
                 {/* Learn More Button */}
                 <Link href="/konti-kan-pipes-and-fittings">
                   <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
-                    <span>Learn More</span>
+                    <span>{t('products.learnMore')}</span>
                     <svg
                       className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
                       fill="none"
@@ -160,7 +160,7 @@ export function ProductsSection() {
                 {/* Learn More Button */}
                 <Link href="/products/gas-pipeline-systems">
                   <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
-                    <span>Learn More</span>
+                    <span>{t('products.learnMore')}</span>
                     <svg
                       className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
                       fill="none"
@@ -205,7 +205,7 @@ export function ProductsSection() {
                 {/* Learn More Button */}
                 <Link href="/products/cable-protection">
                   <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
-                    <span>Learn More</span>
+                    <span>{t('products.learnMore')}</span>
                     <svg
                       className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
                       fill="none"

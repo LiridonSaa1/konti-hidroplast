@@ -62,8 +62,11 @@ const translations = {
     'stats.turnover': 'Turnover',
     
     // Products
-    'products.title': 'Our Products',
+    'products.title': 'Products',
     'products.subtitle': 'High-quality PE and PP pipe solutions for various applications',
+    'products.waterSupply': 'WATER SUPPLY SYSTEMS',
+    'products.sewerage': 'SEWERAGE SYSTEMS',
+    'products.learnMore': 'Learn More',
     'products.pe.title': 'PE Pipes',
     'products.pe.description': 'Polyethylene pipes for water supply, gas distribution, and industrial applications.',
     'products.pp.title': 'PP Pipes',
@@ -288,6 +291,9 @@ const translations = {
     // Products
     'products.title': 'Производи',
     'products.subtitle': 'Високо-квалитетни ПЕ и ПП решенија за цевки за различни примени',
+    'products.waterSupply': 'СИСТЕМИ ЗА ВОДОСНАБДУВАЊЕ',
+    'products.sewerage': 'КАНАЛИЗАЦИСКИ СИСТЕМИ',
+    'products.learnMore': 'Дознај повеќе',
     'products.pe.title': 'ПЕ цевки',
     'products.pe.description': 'Полиетиленски цевки за водоснабдување, дистрибуција на гас и индустриски примени.',
     'products.pp.title': 'ПП цевки',
@@ -510,8 +516,11 @@ const translations = {
     'stats.turnover': 'Umsatz',
     
     // Products
-    'products.title': 'Unsere Produkte',
+    'products.title': 'Produkte',
     'products.subtitle': 'Hochwertige PE- und PP-Rohrlösungen für verschiedene Anwendungen',
+    'products.waterSupply': 'WASSERVERSORGUNGSSYSTEME',
+    'products.sewerage': 'ABWASSERSYSTEME',
+    'products.learnMore': 'Mehr erfahren',
     'products.pe.title': 'PE-Rohre',
     'products.pe.description': 'Polyethylen-Rohre für Wasserversorgung, Gasverteilung und industrielle Anwendungen.',
     'products.pp.title': 'PP-Rohre',
