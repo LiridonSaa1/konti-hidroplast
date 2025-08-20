@@ -81,6 +81,12 @@ const translations = {
     'news.subtitle': 'Stay updated with our latest developments and industry insights',
     'news.readMore': 'Read More',
     'news.viewAll': 'View All News',
+    'news.article1.title': 'Innovations in Pipe Inspection and Maintenance Technologies',
+    'news.article1.excerpt': 'Latest advancements in pipeline maintenance technologies...',
+    'news.article2.title': 'Konti Hidroplast Donated €100,000 to Hospital in Gevgelija',
+    'news.article2.excerpt': 'Supporting our community with significant healthcare...',
+    'news.article3.title': 'EPD – Environmental Product Declaration',
+    'news.article3.excerpt': 'Our commitment to environmental transparency and...',
     
     // Contact
     'contact.title': 'Contact Us',
@@ -309,6 +315,12 @@ const translations = {
     'news.subtitle': 'Останете во тек со нашите најнови развојни активности и индустриски увиди',
     'news.readMore': 'Прочитај повеќе',
     'news.viewAll': 'Види ги сите вести',
+    'news.article1.title': 'Иновации во технологиите за инспекција и одржување на цевки',
+    'news.article1.excerpt': 'Најновите напредоци во технологиите за одржување на цевководи...',
+    'news.article2.title': 'Конти Хидропласт донираше €100.000 на болницата во Гевгелија',
+    'news.article2.excerpt': 'Поддршка на нашата заедница со значителна здравствена помош...',
+    'news.article3.title': 'EPD – Еколошка декларација за производ',
+    'news.article3.excerpt': 'Нашата посветеност кон еколошка транспарентност и...',
     
     // Contact
     'contact.title': 'Контактирајте не',
@@ -537,6 +549,12 @@ const translations = {
     'news.subtitle': 'Bleiben Sie über unsere neuesten Entwicklungen und Brancheneinblicke auf dem Laufenden',
     'news.readMore': 'Mehr lesen',
     'news.viewAll': 'Alle Nachrichten ansehen',
+    'news.article1.title': 'Innovationen in der Rohrinspektion und Wartungstechnologie',
+    'news.article1.excerpt': 'Neueste Fortschritte in der Pipeline-Wartungstechnologie...',
+    'news.article2.title': 'Konti Hidroplast spendete €100.000 an das Krankenhaus in Gevgelija',
+    'news.article2.excerpt': 'Unterstützung unserer Gemeinde mit erheblicher Gesundheitsversorgung...',
+    'news.article3.title': 'EPD – Umwelt-Produktdeklaration',
+    'news.article3.excerpt': 'Unser Engagement für Umwelttransparenz und...',
     
     // Contact
     'contact.title': 'Kontaktieren Sie uns',

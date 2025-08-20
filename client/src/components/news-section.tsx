@@ -4,29 +4,26 @@ import { ArrowRight } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-const newsArticles = [
+const getNewsArticles = (t: (key: string) => string) => [
   {
     image:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/HDPE-plastic-pipes-installed-in-Dutch-flood-protection-systems-as-a-climate-resilience-solution.-min.png",
-    category: "News",
-    title: "Innovations in Pipe Inspection and Maintenance Technologies",
-    excerpt: "Latest advancements in pipeline maintenance technologies...",
+    titleKey: "news.article1.title",
+    excerptKey: "news.article1.excerpt",
     link: "https://konti-hidroplast.com.mk/innovations-in-pipe-inspection-and-maintenance-technologies/",
   },
   {
     image:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2025/07/konti-novost.jpg",
-    category: "News",
-    title: "Konti Hidroplast Donated €100,000 to Hospital in Gevgelija",
-    excerpt: "Supporting our community with significant healthcare...",
+    titleKey: "news.article2.title",
+    excerptKey: "news.article2.excerpt",
     link: "https://konti-hidroplast.com.mk/konti-hidroplast-donated-e100000-to-the-public-general-hospital-in-gevgelija/",
   },
   {
     image:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/EPD-%E2%80%93-Environmental-Product-Declaration.jpg",
-    category: "News",
-    title: "EPD – Environmental Product Declaration",
-    excerpt: "Our commitment to environmental transparency and...",
+    titleKey: "news.article3.title",
+    excerptKey: "news.article3.excerpt",
     link: "https://konti-hidroplast.com.mk/epd-environmental-product-declaration/",
   },
 ];
@@ -34,6 +31,7 @@ const newsArticles = [
 export function NewsSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.1 });
   const { t } = useLanguage();
+  const newsArticles = getNewsArticles(t);
 
   return (
     <section
@@ -89,10 +87,10 @@ export function NewsSection() {
                   {t('news.title')}
                 </div>
                 <h3 className="text-xl font-semibold text-konti-gray mb-3 line-clamp-2">
-                  {article.title}
+                  {t(article.titleKey)}
                 </h3>
                 <p className="text-gray-600 mb-4 line-clamp-3">
-                  {article.excerpt}
+                  {t(article.excerptKey)}
                 </p>
                 <a
                   href={article.link}
