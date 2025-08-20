@@ -512,12 +512,12 @@ export default function AboutUs() {
                             {item.year}
                           </h3>
                           <h4 className="text-xl font-semibold text-[#1c2d56]">
-                            {t(item.titleKey)}
+                            {item.title}
                           </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 leading-relaxed text-lg">
-                        {t(item.descriptionKey)}
+                        {item.description}
                       </p>
                     </CardContent>
                   </Card>
@@ -815,7 +815,7 @@ export default function AboutUs() {
                         className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
                         onClick={() => project.pdfUrl && window.open(project.pdfUrl, '_blank')}
                       >
-                        {t('aboutUs.downloadPdf')}
+                        Download PDF
                       </Button>
                     )}
                   </CardContent>
@@ -826,10 +826,10 @@ export default function AboutUs() {
             <div className="text-center py-12">
               <FileText className="h-16 w-16 mx-auto text-gray-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                {t('aboutUs.noProjectsAvailable')}
+                No Projects Available
               </h3>
               <p className="text-gray-500">
-                {t('aboutUs.noProjectsText')}
+                Projects will appear here once they are added to the database.
               </p>
             </div>
           )}
