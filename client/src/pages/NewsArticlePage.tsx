@@ -159,14 +159,10 @@ function NewsArticlePage() {
                       <img
                         src={section.imageUrl}
                         alt={section.title || `Section ${index + 1}`}
-                        className="w-full rounded-lg shadow-md"
+                        className="w-full h-48 object-cover rounded-lg shadow-md"
                         onError={(e) => {
-                          console.error('Failed to load section image:', section.imageUrl);
                           const target = e.target as HTMLImageElement;
                           target.style.display = 'none';
-                        }}
-                        onLoad={() => {
-                          console.log('Successfully loaded section image:', section.imageUrl);
                         }}
                       />
                     </div>
@@ -195,14 +191,10 @@ function NewsArticlePage() {
                           <img
                             src={section.imageUrl}
                             alt={section.title || `Section ${index + 1}`}
-                            className="w-full rounded-lg shadow-md"
+                            className="w-full h-48 object-cover rounded-lg shadow-md"
                             onError={(e) => {
-                              console.error('Failed to load text-with-image section image:', section.imageUrl);
                               const target = e.target as HTMLImageElement;
                               target.style.display = 'none';
-                            }}
-                            onLoad={() => {
-                              console.log('Successfully loaded text-with-image section image:', section.imageUrl);
                             }}
                           />
                         </div>
