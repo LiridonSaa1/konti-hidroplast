@@ -128,16 +128,17 @@ function NewsArticlePage() {
 
       {/* Article Content */}
       <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Article Image */}
           {article.imageUrl && (
-            <div className="mb-12 rounded-lg overflow-hidden shadow-lg">
+            <div className="mb-12 rounded-lg overflow-hidden shadow-lg" data-testid="main-article-image">
               <img
                 src={article.imageUrl}
                 alt={article.title}
                 className="w-full h-96 object-cover"
                 onError={(e) => {
                   console.error('Failed to load main article image:', article.imageUrl);
+                  console.error('Image element:', e.target);
                   const target = e.target as HTMLImageElement;
                   target.style.display = 'none';
                 }}
@@ -145,6 +146,24 @@ function NewsArticlePage() {
                   console.log('Successfully loaded main article image:', article.imageUrl);
                 }}
               />
+            </div>
+          )}
+          
+          {/* Debug info - remove in production */}
+          {!article.imageUrl && (
+            <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded">
+              <p className="text-yellow-800">No main image URL found for this article.</p>
+            </div>
+          )}
+          
+          {article.imageUrl && (
+            <div className="mb-4 p-4 bg-blue-100 border border-blue-400 rounded">
+              <p className="text-blue-800">Main image URL: {article.imageUrl}</p>
+              <p className="text-blue-800">Testing image access: 
+                <a href={article.imageUrl} target="_blank" rel="noopener noreferrer" className="underline">
+                  Open image directly
+                </a>
+              </p>
             </div>
           )}
           
@@ -180,8 +199,12 @@ function NewsArticlePage() {
                         alt={section.title || `Section ${index + 1}`}
                         className="w-full rounded-lg shadow-md"
                         onError={(e) => {
+                          console.error('Failed to load section image:', section.imageUrl);
                           const target = e.target as HTMLImageElement;
                           target.style.display = 'none';
+                        }}
+                        onLoad={() => {
+                          console.log('Successfully loaded section image:', section.imageUrl);
                         }}
                       />
                     </div>
@@ -212,8 +235,12 @@ function NewsArticlePage() {
                             alt={section.title || `Section ${index + 1}`}
                             className="w-full rounded-lg shadow-md"
                             onError={(e) => {
+                              console.error('Failed to load text-with-image section image:', section.imageUrl);
                               const target = e.target as HTMLImageElement;
                               target.style.display = 'none';
+                            }}
+                            onLoad={() => {
+                              console.log('Successfully loaded text-with-image section image:', section.imageUrl);
                             }}
                           />
                         </div>
