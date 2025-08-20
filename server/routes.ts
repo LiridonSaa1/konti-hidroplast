@@ -416,7 +416,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/admin/news", async (req, res) => {
     try {
       console.log("Received news data:", JSON.stringify(req.body, null, 2));
-      const newsData = insertNewsArticleSchema.parse(req.body);
+      
+      // Convert publishedAt string to Date if it exists
+      const requestData = { ...req.body };
+      if (requestData.publishedAt && typeof requestData.publishedAt === 'string') {
+        requestData.publishedAt = new Date(requestData.publishedAt);
+      }
+      
+      const newsData = insertNewsArticleSchema.parse(requestData);
       console.log("Parsed news data:", JSON.stringify(newsData, null, 2));
       const article = await storage.createNews(newsData);
       console.log("Created article:", JSON.stringify(article, null, 2));
@@ -433,7 +440,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.put("/api/admin/news/:id", async (req, res) => {
     try {
-      const newsData = insertNewsArticleSchema.partial().parse(req.body);
+      // Convert publishedAt string to Date if it exists
+      const requestData = { ...req.body };
+      if (requestData.publishedAt && typeof requestData.publishedAt === 'string') {
+        requestData.publishedAt = new Date(requestData.publishedAt);
+      }
+      
+      const newsData = insertNewsArticleSchema.partial().parse(requestData);
       const article = await storage.updateNews(req.params.id, newsData);
       res.json(article);
     } catch (error) {
