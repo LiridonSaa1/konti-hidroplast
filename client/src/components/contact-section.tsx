@@ -8,6 +8,7 @@ import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useState } from "react";
 import { MapPin, Phone, Share2, ExternalLink } from "lucide-react";
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ContactFormData {
   fullName: string;
@@ -20,6 +21,7 @@ interface ContactFormData {
 export function ContactSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.1 });
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<ContactFormData>({
     fullName: "",
     email: "",
@@ -51,8 +53,8 @@ export function ContactSection() {
     // Basic validation
     if (!formData.fullName || !formData.email || !formData.message) {
       toast({
-        title: "Validation Error",
-        description: "Please fill in all required fields.",
+        title: t('contact.validation.error'),
+        description: t('contact.validation.required'),
         variant: "destructive",
       });
       setIsSubmitting(false);
@@ -63,8 +65,8 @@ export function ContactSection() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       toast({
-        title: "Invalid Email",
-        description: "Please enter a valid email address.",
+        title: t('contact.validation.email'),
+        description: t('contact.validation.email.message'),
         variant: "destructive",
       });
       setIsSubmitting(false);
@@ -86,8 +88,8 @@ export function ContactSection() {
       }
       
       toast({
-        title: "Message Sent!",
-        description: "Thank you for your message. We'll get back to you soon.",
+        title: t('contact.success.title'),
+        description: t('contact.success.message'),
       });
       
       // Reset form
@@ -100,8 +102,8 @@ export function ContactSection() {
       });
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
+        title: t('contact.error.title'),
+        description: t('contact.error.message'),
         variant: "destructive",
       });
     } finally {
@@ -126,13 +128,13 @@ export function ContactSection() {
             className="text-4xl font-bold text-konti-gray mb-4"
             data-testid="contact-title"
           >
-            Get in Touch: Connect with Us Today!
+            {t('contact.title')}
           </h2>
           <p
             className="text-xl text-gray-600"
             data-testid="contact-subtitle"
           >
-            Ready to discuss your pipeline needs? We're here to help.
+            {t('contact.subtitle')}
           </p>
         </div>
 
@@ -161,10 +163,10 @@ export function ContactSection() {
                   className="text-3xl font-bold text-white mb-2 relative z-10"
                   data-testid="contact-form-title"
                 >
-                  Send us a Message
+                  {t('contact.form.title')}
                 </h3>
                 <p className="text-blue-100 relative z-10">
-                  We'll get back to you within 24 hours
+                  {t('contact.form.subtitle')}
                 </p>
               </div>
 
@@ -174,7 +176,7 @@ export function ContactSection() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="group">
                       <Label htmlFor="name" className="text-sm font-semibold text-gray-700 mb-3 block">
-                        Full Name *
+                        {t('contact.form.name')}
                       </Label>
                       <div className="relative">
                         <Input
@@ -183,7 +185,7 @@ export function ContactSection() {
                           value={formData.fullName}
                           onChange={(e) => handleInputChange("fullName", e.target.value)}
                           className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
-                          placeholder="Enter your full name"
+                          placeholder={t('contact.form.name.placeholder')}
                           required
                           data-testid="input-name"
                         />
@@ -192,7 +194,7 @@ export function ContactSection() {
                     </div>
                     <div className="group">
                       <Label htmlFor="email" className="text-sm font-semibold text-gray-700 mb-3 block">
-                        Email Address *
+                        {t('contact.form.email')}
                       </Label>
                       <div className="relative">
                         <Input
@@ -201,7 +203,7 @@ export function ContactSection() {
                           value={formData.email}
                           onChange={(e) => handleInputChange("email", e.target.value)}
                           className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
-                          placeholder="your.email@company.com"
+                          placeholder={t('contact.form.email.placeholder')}
                           required
                           data-testid="input-email"
                         />
@@ -214,7 +216,7 @@ export function ContactSection() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="group">
                       <Label htmlFor="phone" className="text-sm font-semibold text-gray-700 mb-3 block">
-                        Phone Number
+                        {t('contact.form.phone')}
                       </Label>
                       <div className="relative">
                         <Input
@@ -223,7 +225,7 @@ export function ContactSection() {
                           value={formData.phone}
                           onChange={(e) => handleInputChange("phone", e.target.value)}
                           className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
-                          placeholder="+389 XX XXX XXX"
+                          placeholder={t('contact.form.phone.placeholder')}
                           data-testid="input-phone"
                         />
                         <div className="absolute inset-0 bg-gradient-to-r from-konti-blue/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
@@ -231,7 +233,7 @@ export function ContactSection() {
                     </div>
                     <div className="group">
                       <Label htmlFor="company" className="text-sm font-semibold text-gray-700 mb-3 block">
-                        Company
+                        {t('contact.form.company')}
                       </Label>
                       <div className="relative">
                         <Input
@@ -240,7 +242,7 @@ export function ContactSection() {
                           value={formData.company}
                           onChange={(e) => handleInputChange("company", e.target.value)}
                           className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
-                          placeholder="Your company name"
+                          placeholder={t('contact.form.company.placeholder')}
                           data-testid="input-company"
                         />
                         <div className="absolute inset-0 bg-gradient-to-r from-konti-blue/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
@@ -251,7 +253,7 @@ export function ContactSection() {
                   {/* Message Field */}
                   <div className="group">
                     <Label htmlFor="message" className="text-sm font-semibold text-gray-700 mb-3 block">
-                      Message *
+                      {t('contact.form.message')}
                     </Label>
                     <div className="relative">
                       <Textarea
@@ -260,7 +262,7 @@ export function ContactSection() {
                         onChange={(e) => handleInputChange("message", e.target.value)}
                         rows={5}
                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white resize-none"
-                        placeholder="Tell us about your pipeline needs..."
+                        placeholder={t('contact.form.message.placeholder')}
                         required
                         data-testid="input-message"
                       />
@@ -278,7 +280,7 @@ export function ContactSection() {
                       data-testid="submit-form"
                     >
                       <span className="relative z-10">
-                        {isSubmitting ? "Sending..." : "Send Message"}
+                        {isSubmitting ? t('contact.form.sending') : t('contact.form.send')}
                       </span>
                       {/* Button hover effect */}
                       <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -291,15 +293,15 @@ export function ContactSection() {
                   <div className="flex items-center justify-center space-x-6 text-sm text-gray-500">
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-green-400 rounded-full mr-2"></div>
-                      Secure & Private
+                      {t('contact.trust.secure')}
                     </div>
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-blue-400 rounded-full mr-2"></div>
-                      24h Response
+                      {t('contact.trust.response')}
                     </div>
                     <div className="flex items-center">
                       <div className="w-2 h-2 bg-purple-400 rounded-full mr-2"></div>
-                      Expert Support
+                      {t('contact.trust.support')}
                     </div>
                   </div>
                 </div>
