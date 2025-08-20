@@ -60,7 +60,7 @@ export function NewsManager() {
 
   const createMutation = useMutation({
     mutationFn: async (data: InsertNewsArticle) => {
-      return apiRequest("POST", "/api/admin/news", {
+      return apiRequest("/api/admin/news", "POST", {
         ...data,
         publishedAt: data.published ? new Date().toISOString() : null
       });
@@ -85,7 +85,7 @@ export function NewsManager() {
 
   const updateMutation = useMutation({
     mutationFn: async (data: { id: string; article: InsertNewsArticle }) => {
-      return apiRequest("PUT", `/api/admin/news/${data.id}`, {
+      return apiRequest(`/api/admin/news/${data.id}`, "PUT", {
         ...data.article,
         publishedAt: data.article.published ? new Date().toISOString() : null
       });
@@ -110,7 +110,7 @@ export function NewsManager() {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      return apiRequest("DELETE", `/api/admin/news/${id}`);
+      return apiRequest(`/api/admin/news/${id}`, "DELETE");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/news"] });
@@ -130,7 +130,7 @@ export function NewsManager() {
 
   const filteredNews = news.filter((article) => {
     const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         article.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (article.description?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
                          (article.author && article.author.toLowerCase().includes(searchTerm.toLowerCase()));
     const matchesStatus = statusFilter === "all" ||
                          (statusFilter === "published" && article.published) ||
@@ -242,7 +242,7 @@ export function NewsManager() {
     setFormData({
       title: article.title,
       subtitle: article.subtitle || "",
-      description: article.description,
+      description: article.description || "",
       imageUrl: article.imageUrl || "",
       author: article.author || "",
       published: article.published || false,
@@ -312,7 +312,7 @@ export function NewsManager() {
       </Card>
 
       {/* Articles Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {filteredNews.map((article) => (
           <Card key={article.id} className="flex flex-col" data-testid={`news-card-${article.id}`}>
             <CardHeader className="pb-3">
@@ -433,7 +433,7 @@ export function NewsManager() {
 
       {/* Create Dialog */}
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto mx-4 w-[calc(100vw-2rem)] sm:mx-auto sm:w-full">
           <DialogHeader>
             <DialogTitle>Create News Article</DialogTitle>
           </DialogHeader>
@@ -450,6 +450,28 @@ export function NewsManager() {
                     placeholder="Enter article title"
                     data-testid="input-title"
                     required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="subtitle">Subtitle</Label>
+                  <Input
+                    id="subtitle"
+                    value={formData.subtitle}
+                    onChange={(e) => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
+                    placeholder="Enter article subtitle (optional)"
+                    data-testid="input-subtitle"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="author">Author</Label>
+                  <Input
+                    id="author"
+                    value={formData.author}
+                    onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
+                    placeholder="Enter author name (optional)"
+                    data-testid="input-author"
                   />
                 </div>
 
@@ -640,7 +662,7 @@ export function NewsManager() {
 
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto mx-4 w-[calc(100vw-2rem)] sm:mx-auto sm:w-full">
           <DialogHeader>
             <DialogTitle>Edit News Article</DialogTitle>
           </DialogHeader>
@@ -657,6 +679,28 @@ export function NewsManager() {
                     placeholder="Enter article title"
                     data-testid="input-edit-title"
                     required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="edit-subtitle">Subtitle</Label>
+                  <Input
+                    id="edit-subtitle"
+                    value={formData.subtitle}
+                    onChange={(e) => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
+                    placeholder="Enter article subtitle (optional)"
+                    data-testid="input-edit-subtitle"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="edit-author">Author</Label>
+                  <Input
+                    id="edit-author"
+                    value={formData.author}
+                    onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
+                    placeholder="Enter author name (optional)"
+                    data-testid="input-edit-author"
                   />
                 </div>
 
