@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { UserDropdown } from "@/components/auth/UserDropdown";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { 
@@ -50,6 +51,7 @@ import { BrevoConfigManager } from "@/components/admin/BrevoConfigManager";
 
 export default function AdminPanel() {
   const { isAuthenticated, isLoading } = useAuth();
+  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("overview");
   const [isTeamDropdownOpen, setIsTeamDropdownOpen] = useState(false);
   const [isBrochuresDropdownOpen, setIsBrochuresDropdownOpen] = useState(false);
@@ -119,7 +121,7 @@ export default function AdminPanel() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+          <p className="mt-4 text-gray-600">{t('admin.loading')}</p>
         </div>
       </div>
     );
@@ -175,10 +177,10 @@ export default function AdminPanel() {
               </Button>
               <div>
                 <h1 className="text-xl sm:text-2xl font-bold text-slate-900" data-testid="admin-panel-title">
-                  Konti Hidroplast - Admin Panel
+                  Konti Hidroplast - {t('admin.title')}
                 </h1>
                 <p className="text-slate-600 mt-1 text-sm sm:text-base" data-testid="admin-panel-subtitle">
-                  Manage your website content and data
+                  {t('admin.content')}
                 </p>
               </div>
             </div>
@@ -214,7 +216,7 @@ export default function AdminPanel() {
               data-testid="nav-overview"
             >
               <Settings className="h-4 w-4 mr-2" />
-              Overview
+              {t('admin.overview')}
             </Button>
             
             <Separator className="my-4" />
