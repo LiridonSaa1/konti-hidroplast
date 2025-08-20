@@ -27,10 +27,8 @@ interface ArticleSection {
 
 interface NewsFormData {
   title: string;
-  subtitle: string;
   description: string;
   imageUrl: string;
-  author: string;
   published: boolean;
   sections: ArticleSection[];
 }
@@ -43,10 +41,8 @@ export function NewsManager() {
   const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
   const [formData, setFormData] = useState<NewsFormData>({
     title: "",
-    subtitle: "",
     description: "",
     imageUrl: "",
-    author: "",
     published: false,
     sections: []
   });
@@ -62,7 +58,7 @@ export function NewsManager() {
     mutationFn: async (data: InsertNewsArticle) => {
       return apiRequest("/api/admin/news", "POST", {
         ...data,
-        publishedAt: data.published ? new Date().toISOString() : null
+        publishedAt: data.published ? new Date() : null
       });
     },
     onSuccess: () => {
@@ -87,7 +83,7 @@ export function NewsManager() {
     mutationFn: async (data: { id: string; article: InsertNewsArticle }) => {
       return apiRequest(`/api/admin/news/${data.id}`, "PUT", {
         ...data.article,
-        publishedAt: data.article.published ? new Date().toISOString() : null
+        publishedAt: data.article.published ? new Date() : null
       });
     },
     onSuccess: () => {
@@ -141,10 +137,8 @@ export function NewsManager() {
   const resetForm = () => {
     setFormData({
       title: "",
-      subtitle: "",
       description: "",
       imageUrl: "",
-      author: "",
       published: false,
       sections: []
     });
@@ -222,10 +216,10 @@ export function NewsManager() {
 
     const articleData: InsertNewsArticle = {
       title: formData.title.trim(),
-      subtitle: formData.subtitle.trim() || null,
-      description: null, // Optional field - content is now in sections
+      subtitle: null,
+      description: formData.description || null,
       imageUrl: formData.imageUrl || null,
-      author: formData.author || null,
+      author: null,
       published: formData.published,
       sections: formData.sections
     };
@@ -241,10 +235,8 @@ export function NewsManager() {
     setSelectedArticle(article);
     setFormData({
       title: article.title,
-      subtitle: article.subtitle || "",
       description: article.description || "",
       imageUrl: article.imageUrl || "",
-      author: article.author || "",
       published: article.published || false,
       sections: (article.sections as ArticleSection[]) || []
     });
@@ -454,24 +446,13 @@ export function NewsManager() {
                 </div>
 
                 <div>
-                  <Label htmlFor="subtitle">Subtitle</Label>
+                  <Label htmlFor="description">Description</Label>
                   <Input
-                    id="subtitle"
-                    value={formData.subtitle}
-                    onChange={(e) => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
-                    placeholder="Enter article subtitle (optional)"
-                    data-testid="input-subtitle"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="author">Author</Label>
-                  <Input
-                    id="author"
-                    value={formData.author}
-                    onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
-                    placeholder="Enter author name (optional)"
-                    data-testid="input-author"
+                    id="description"
+                    value={formData.description}
+                    onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                    placeholder="Enter article description (optional)"
+                    data-testid="input-description"
                   />
                 </div>
 
@@ -683,24 +664,13 @@ export function NewsManager() {
                 </div>
 
                 <div>
-                  <Label htmlFor="edit-subtitle">Subtitle</Label>
+                  <Label htmlFor="edit-description">Description</Label>
                   <Input
-                    id="edit-subtitle"
-                    value={formData.subtitle}
-                    onChange={(e) => setFormData(prev => ({ ...prev, subtitle: e.target.value }))}
-                    placeholder="Enter article subtitle (optional)"
-                    data-testid="input-edit-subtitle"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="edit-author">Author</Label>
-                  <Input
-                    id="edit-author"
-                    value={formData.author}
-                    onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
-                    placeholder="Enter author name (optional)"
-                    data-testid="input-edit-author"
+                    id="edit-description"
+                    value={formData.description}
+                    onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                    placeholder="Enter article description (optional)"
+                    data-testid="input-edit-description"
                   />
                 </div>
 
