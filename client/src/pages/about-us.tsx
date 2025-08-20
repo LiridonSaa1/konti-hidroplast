@@ -323,12 +323,12 @@ export default function AboutUs() {
                 <div className="flex items-center gap-2 text-blue-300">
                   <Factory className="h-5 w-5" />
                   <span className="text-sm font-medium">
-                    Manufacturing Excellence
+                    {t('aboutUs.manufacturingExcellence')}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
                   <Award className="h-5 w-5" />
-                  <span className="text-sm font-medium">ISO Certified</span>
+                  <span className="text-sm font-medium">{t('aboutUs.isoCertified')}</span>
                 </div>
               </div>
             </div>
@@ -345,7 +345,7 @@ export default function AboutUs() {
                 ></iframe>
               </div>
               <div className="absolute -bottom-4 -right-4 bg-red-600 text-white px-4 py-2 rounded-full shadow-lg">
-                <span className="text-sm font-medium">Corporate 2024</span>
+                <span className="text-sm font-medium">{t('aboutUs.corporate2024')}</span>
               </div>
             </div>
           </div>
@@ -371,42 +371,19 @@ export default function AboutUs() {
               </p>
 
               <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                Following the successful start aided by the experience gained by
-                successfully realized projects in the Republic of North
-                Macedonia, today our company is export-oriented, and{" "}
-                <strong className="text-[#1c2d56]">
-                  95% of its products are exported
-                </strong>{" "}
-                in international markets.
+                {t('aboutUs.companyStoryText1')}
               </p>
 
               <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                Besides the experience, our large range of products and top
-                quality, by all internationally recognized standards, enabled us
-                to get access to international markets. Our current production
-                program covers all fields of application: pipes and hoses for
-                water supply systems, sewage systems, PE and PP manholes, pipes
-                for transporting gas and oil products, pipes and hoses for
-                protection of telecommunication cables, drainage systems and
-                fittings for all dimensions, which also range from a minimum
-                diameter of 12mm up to 2000mm.
+                {t('aboutUs.companyStoryText2')}
               </p>
 
               <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                Konti Hidroplast became known to the market through quality
-                supply and constant application of flexibility in operation,
-                which is very important in an industry where the complexity of
-                managing all processes is quite high.
+                {t('aboutUs.companyStoryText3')}
               </p>
 
               <p className="text-lg leading-relaxed text-gray-700">
-                One of the key factors for sustainability despite tough
-                competition is constant reinvestment in innovative technologies
-                and pursuing general technological progress. The combination of
-                all these key factors are contributing for Konti Hidroplast to
-                play an important role in the domestic and foreign markets with
-                the constant presence of all major and minor infrastructure
-                projects.
+                {t('aboutUs.companyStoryText4')}
               </p>
             </div>
           </div>
@@ -422,12 +399,10 @@ export default function AboutUs() {
                   <Target className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Mission
+                  {t('aboutUs.missionTitle')}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  Promoting new technologies while adhering to stringent EU
-                  standards. With certified quality and competitive pricing, we
-                  embrace regulations and ecological responsibility.
+                  {t('aboutUs.missionText')}
                 </p>
               </CardContent>
             </Card>
@@ -438,13 +413,10 @@ export default function AboutUs() {
                   <Eye className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Vision
+                  {t('aboutUs.visionTitle')}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  A modern factory, a leader in the region for development and
-                  production of plastic products for infrastructure buildings,
-                  within the frames of an environmentally safe system with
-                  maximum safety for all stakeholders.
+                  {t('aboutUs.visionText')}
                 </p>
               </CardContent>
             </Card>
@@ -455,12 +427,10 @@ export default function AboutUs() {
                   <Heart className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Values
+                  {t('aboutUs.valuesTitle')}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  At Konti Hidroplast, we're dedicated to leading the industry
-                  with top-quality, eco-friendly pipes while prioritizing
-                  environmental protection and employee safety.
+                  {t('aboutUs.valuesText')}
                 </p>
               </CardContent>
             </Card>
@@ -843,7 +813,7 @@ export default function AboutUs() {
                         variant="outline"
                         size="sm"
                         className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
-                        onClick={() => window.open(project.pdfUrl, '_blank')}
+                        onClick={() => project.pdfUrl && window.open(project.pdfUrl, '_blank')}
                       >
                         Download PDF
                       </Button>
