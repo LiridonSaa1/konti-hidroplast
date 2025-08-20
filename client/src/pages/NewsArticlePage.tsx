@@ -137,7 +137,7 @@ function NewsArticlePage() {
                   {/* Section Title */}
                   {section.title && (
                     <div className="px-8 pt-8 pb-4">
-                      <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight">
+                      <h2 className="text-2xl font-bold text-foreground leading-tight">
                         {section.title}
                       </h2>
                     </div>
