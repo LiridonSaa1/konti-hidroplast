@@ -1,6 +1,6 @@
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 import { MapPin, Phone } from "lucide-react";
-import logoWhite from "@assets/urban-rohr-logo-white.svg";
+import logoWhite from "@assets/urban-rohr-logo-white.pdf";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCompanyInfo } from "@/hooks/use-company-info";
 
@@ -29,8 +29,8 @@ export function Footer() {
           {/* Company Info */}
           <div className="md:col-span-2">
             <img
-              src={companyInfo.logoUrl || logoWhite}
-              alt={companyInfo.companyName || "Konti Hidroplast"}
+              src={logoWhite}
+              alt={companyInfo.companyName || "Urban Rohr"}
               className="h-16 w-auto mb-6 ml-[0px] mr-[0px]"
               data-testid="footer-logo"
             />

@@ -16,8 +16,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCompanyInfo } from "@/hooks/use-company-info";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useAnimatedScroll } from "@/hooks/use-smooth-scroll";
-import logoScrolled from "@assets/urban-rohr-logo.svg";
-import logoDefault from "@assets/urban-rohr-logo-white.svg";
+import logoScrolled from "@assets/urban-rohr-logo-dark.pdf";
+import logoDefault from "@assets/urban-rohr-logo-white.pdf";
 
 interface NavigationLink {
   href: string;

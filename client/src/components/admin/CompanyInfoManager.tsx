@@ -16,7 +16,6 @@ interface CompanyInfoForm {
   email: string;
   phones: string[];
   address: string;
-  logoUrl: string;
   description: string;
   socialLinkedIn: string;
   socialFacebook: string;
@@ -30,7 +29,6 @@ export function CompanyInfoManager() {
     email: "",
     phones: [""],
     address: "",
-    logoUrl: "",
     description: "",
     socialLinkedIn: "",
     socialFacebook: "",
@@ -67,7 +65,7 @@ export function CompanyInfoManager() {
         email: infoMap.email || "",
         phones,
         address: infoMap.address || "",
-        logoUrl: infoMap.logoUrl || "",
+
         description: infoMap.description || "",
         socialLinkedIn: infoMap.socialLinkedIn || "",
         socialFacebook: infoMap.socialFacebook || "",
@@ -187,7 +185,7 @@ export function CompanyInfoManager() {
         email: infoMap.email || "",
         phones,
         address: infoMap.address || "",
-        logoUrl: infoMap.logoUrl || "",
+
         description: infoMap.description || "",
         socialLinkedIn: infoMap.socialLinkedIn || "",
         socialFacebook: infoMap.socialFacebook || "",
@@ -267,36 +265,6 @@ export function CompanyInfoManager() {
                 rows={3}
                 data-testid="textarea-company-description"
               />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="logoUrl">Company Logo</Label>
-              {isEditing ? (
-                <FileUpload
-                  value={formData.logoUrl}
-                  onChange={(url) => setFormData({ ...formData, logoUrl: url })}
-                  label="Company Logo"
-                  placeholder="Upload company logo"
-                  data-testid="upload-company-logo"
-                />
-              ) : (
-                <div className="text-sm text-gray-600">
-                  {formData.logoUrl ? "Logo uploaded" : "No logo uploaded"}
-                </div>
-              )}
-              {formData.logoUrl && (
-                <div className="mt-2">
-                  <img
-                    src={formData.logoUrl}
-                    alt="Company Logo Preview"
-                    className="h-16 w-auto object-contain"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                    }}
-                    data-testid="preview-company-logo"
-                  />
-                </div>
-              )}
             </div>
           </CardContent>
         </Card>
