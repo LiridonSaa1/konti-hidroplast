@@ -66,7 +66,9 @@ function NewsArticlePage() {
         <Navigation />
         <div className="flex items-center justify-center py-20 mt-20">
           <Loader2 className="h-8 w-8 animate-spin text-[#1c2d56]" />
-          <span className="ml-3 text-lg text-gray-600">{t('common.loading')}</span>
+          <span className="ml-3 text-lg text-gray-600">
+            {t("common.loading")}
+          </span>
         </div>
         <Footer />
       </div>
@@ -154,11 +156,11 @@ function NewsArticlePage() {
               article.sections.map((section: ArticleSection, index: number) => (
                 <div key={section.id || index} className="mb-8">
                   {/* Section Title - positioned above content area */}
-                  {/* {section.title && (
+                  {section.title && (
                     <h2 className="text-2xl font-bold text-foreground leading-tight mb-6">
                       {section.title}
                     </h2>
-                  )} */}
+                  )}
 
                   <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     {/* Text Only Section */}
@@ -249,8 +251,8 @@ function NewsArticlePage() {
               <div className="bg-white rounded-lg shadow-sm p-8">
                 <div className="text-center text-gray-600">
                   <FileText className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                  <p>{t('newsPage.noContent.line1')}</p>
-                  <p>{t('newsPage.noContent.line2')}</p>
+                  <p>{t("newsPage.noContent.line1")}</p>
+                  <p>{t("newsPage.noContent.line2")}</p>
                 </div>
               </div>
             )}
@@ -263,7 +265,7 @@ function NewsArticlePage() {
               className="inline-flex items-center px-6 py-3 bg-[#1c2d56] text-white rounded-lg hover:bg-[#1c2d56]/90 transition-colors"
             >
               <ArrowLeft className="w-5 h-5 mr-2" />
-              {t('newsPage.backToNews')}
+              {t("newsPage.backToNews")}
             </Link>
           </div>
         </div>

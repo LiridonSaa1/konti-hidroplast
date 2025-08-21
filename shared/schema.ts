@@ -64,6 +64,7 @@ export const newsArticles = pgTable("news_articles", {
   published: boolean("published").default(false),
   publishedAt: timestamp("published_at"),
   sections: jsonb("sections").default('[]'), // Array of article sections
+  sortOrder: integer("sort_order").default(0),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });

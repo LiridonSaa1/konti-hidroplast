@@ -32,6 +32,7 @@ interface NewsFormData {
   description: string;
   imageUrl: string;
   published: boolean;
+  sortOrder: number;
   sections: ArticleSection[];
 }
 
@@ -47,6 +48,7 @@ export function NewsManager() {
     description: "",
     imageUrl: "",
     published: false,
+    sortOrder: 0,
     sections: []
   });
 
@@ -139,6 +141,8 @@ export function NewsManager() {
     })
     .sort((a, b) => {
       switch (sortBy) {
+        case "sort-order":
+          return (a.sortOrder || 0) - (b.sortOrder || 0);
         case "newest":
           return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
         case "oldest":
@@ -166,6 +170,7 @@ export function NewsManager() {
       description: "",
       imageUrl: "",
       published: false,
+      sortOrder: 0,
       sections: []
     });
     setSelectedArticle(null);
@@ -247,6 +252,7 @@ export function NewsManager() {
       imageUrl: formData.imageUrl || null,
       author: null,
       published: formData.published,
+      sortOrder: formData.sortOrder,
       sections: formData.sections
     };
 
@@ -264,6 +270,7 @@ export function NewsManager() {
       description: article.description || "",
       imageUrl: article.imageUrl || "",
       published: article.published || false,
+      sortOrder: article.sortOrder || 0,
       sections: (article.sections as ArticleSection[]) || []
     });
     setIsEditDialogOpen(true);
@@ -327,6 +334,7 @@ export function NewsManager() {
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="sort-order">Sort Order</SelectItem>
                   <SelectItem value="newest">Newest First</SelectItem>
                   <SelectItem value="oldest">Oldest First</SelectItem>
                   <SelectItem value="title-asc">Title A-Z</SelectItem>
@@ -533,6 +541,18 @@ export function NewsManager() {
                     onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                     placeholder="Enter article description (optional)"
                     data-testid="input-description"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="sortOrder">Sort Order</Label>
+                  <Input
+                    id="sortOrder"
+                    type="number"
+                    value={formData.sortOrder}
+                    onChange={(e) => setFormData(prev => ({ ...prev, sortOrder: parseInt(e.target.value) || 0 }))}
+                    placeholder="Enter sort order (0 = first)"
+                    data-testid="input-sort-order"
                   />
                 </div>
 
@@ -751,6 +771,18 @@ export function NewsManager() {
                     onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                     placeholder="Enter article description (optional)"
                     data-testid="input-edit-description"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="edit-sortOrder">Sort Order</Label>
+                  <Input
+                    id="edit-sortOrder"
+                    type="number"
+                    value={formData.sortOrder}
+                    onChange={(e) => setFormData(prev => ({ ...prev, sortOrder: parseInt(e.target.value) || 0 }))}
+                    placeholder="Enter sort order (0 = first)"
+                    data-testid="input-edit-sort-order"
                   />
                 </div>
 
