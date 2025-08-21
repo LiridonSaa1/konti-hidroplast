@@ -1160,11 +1160,10 @@ export default function AboutUs() {
                 // Navigate to home page
                 setLocation("/");
               }}
-              className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
+              className="px-8 py-3 rounded-lg font-semibold text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              <span>{t("navigation.contact")}</span>
-              <ChevronRight className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" />
+              {t("navigation.contact")}
             </Button>
           </div>
         </div>
