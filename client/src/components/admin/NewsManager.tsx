@@ -38,6 +38,7 @@ interface NewsFormData {
 export function NewsManager() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<string>("newest");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
@@ -126,15 +127,38 @@ export function NewsManager() {
     },
   });
 
-  const filteredNews = news.filter((article) => {
-    const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (article.description?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
-                         (article.author && article.author.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesStatus = statusFilter === "all" ||
-                         (statusFilter === "published" && article.published) ||
-                         (statusFilter === "draft" && !article.published);
-    return matchesSearch && matchesStatus;
-  });
+  const filteredNews = news
+    .filter((article) => {
+      const matchesSearch = article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           (article.description?.toLowerCase().includes(searchTerm.toLowerCase()) ?? false) ||
+                           (article.author && article.author.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchesStatus = statusFilter === "all" ||
+                           (statusFilter === "published" && article.published) ||
+                           (statusFilter === "draft" && !article.published);
+      return matchesSearch && matchesStatus;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "newest":
+          return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+        case "oldest":
+          return new Date(a.createdAt || 0).getTime() - new Date(b.createdAt || 0).getTime();
+        case "title-asc":
+          return a.title.localeCompare(b.title);
+        case "title-desc":
+          return b.title.localeCompare(a.title);
+        case "published-first":
+          if (a.published && !b.published) return -1;
+          if (!a.published && b.published) return 1;
+          return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+        case "draft-first":
+          if (!a.published && b.published) return -1;
+          if (a.published && !b.published) return 1;
+          return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+        default:
+          return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+      }
+    });
 
   const resetForm = () => {
     setFormData({
@@ -292,6 +316,23 @@ export function NewsManager() {
                   <SelectItem value="all">All Articles</SelectItem>
                   <SelectItem value="published">Published</SelectItem>
                   <SelectItem value="draft">Draft</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Sort By */}
+            <div className="sm:w-48">
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger data-testid="select-sort-by">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">Newest First</SelectItem>
+                  <SelectItem value="oldest">Oldest First</SelectItem>
+                  <SelectItem value="title-asc">Title A-Z</SelectItem>
+                  <SelectItem value="title-desc">Title Z-A</SelectItem>
+                  <SelectItem value="published-first">Published First</SelectItem>
+                  <SelectItem value="draft-first">Draft First</SelectItem>
                 </SelectContent>
               </Select>
             </div>
