@@ -3,35 +3,19 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useLanguage } from "@/contexts/LanguageContext";
-
-const getNewsArticles = (t: (key: string) => string) => [
-  {
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/HDPE-plastic-pipes-installed-in-Dutch-flood-protection-systems-as-a-climate-resilience-solution.-min.png",
-    titleKey: "news.article1.title",
-    excerptKey: "news.article1.excerpt",
-    link: "https://konti-hidroplast.com.mk/innovations-in-pipe-inspection-and-maintenance-technologies/",
-  },
-  {
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/07/konti-novost.jpg",
-    titleKey: "news.article2.title",
-    excerptKey: "news.article2.excerpt",
-    link: "https://konti-hidroplast.com.mk/konti-hidroplast-donated-e100000-to-the-public-general-hospital-in-gevgelija/",
-  },
-  {
-    image:
-      "https://konti-hidroplast.com.mk/wp-content/uploads/2025/06/EPD-%E2%80%93-Environmental-Product-Declaration.jpg",
-    titleKey: "news.article3.title",
-    excerptKey: "news.article3.excerpt",
-    link: "https://konti-hidroplast.com.mk/epd-environmental-product-declaration/",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
+import type { NewsArticle } from "@shared/schema";
 
 export function NewsSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.1 });
   const { t } = useLanguage();
-  const newsArticles = getNewsArticles(t);
+
+  // Fetch news articles from the database
+  const { data: newsArticles = [], isLoading, error } = useQuery<NewsArticle[]>({
+    queryKey: ['/api/news'],
+    enabled: true,
+  });
 
   return (
     <section
@@ -64,63 +48,101 @@ export function NewsSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {newsArticles.map((article, index) => (
-            <Card
-              key={index}
-              className={`overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 ${
-                hasIntersected ? "animate-slide-up" : "opacity-0"
-              }`}
-              style={{ animationDelay: `${index * 150}ms` }}
-              data-testid={`news-card-${index}`}
-            >
-              <div className="aspect-video overflow-hidden">
-                <img
-                  src={article.image}
-                  alt={t(article.titleKey)}
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                  loading="lazy"
-                />
-              </div>
-              <CardContent className="p-6">
-                <div className="text-sm text-konti-blue font-medium mb-2">
-                  {t('news.title')}
-                </div>
-                <h3 className="text-xl font-semibold text-konti-gray mb-3 line-clamp-2">
-                  {t(article.titleKey)}
-                </h3>
-                <p className="text-gray-600 mb-4 line-clamp-3">
-                  {t(article.excerptKey)}
-                </p>
-                <a
-                  href={article.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:shadow-lg"
-                  style={{ backgroundColor: "#1c2d56" }}
-                  data-testid={`news-read-more-${index}`}
-                >
-                  <span>{t('news.readMore')}</span>
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </a>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+        {/* Loading state */}
+        {isLoading && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="overflow-hidden">
+                <div className="aspect-video bg-gray-200 animate-pulse"></div>
+                <CardContent className="p-6">
+                  <div className="h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded animate-pulse mb-3"></div>
+                  <div className="space-y-2 mb-4">
+                    <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                    <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4"></div>
+                  </div>
+                  <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
 
-        <div className="text-center mt-12">
-          <a
-            href="https://konti-hidroplast.com.mk/news/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center px-8 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:shadow-lg"
-            style={{ backgroundColor: "#1c2d56" }}
-            data-testid="view-all-news"
-          >
-            <span>{t('news.viewAll')}</span>
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </a>
-        </div>
+        {/* Error state */}
+        {error && (
+          <div className="text-center py-8">
+            <p className="text-gray-600">{t('news.errorLoading') || 'Failed to load news articles'}</p>
+          </div>
+        )}
+
+        {/* News articles */}
+        {!isLoading && !error && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {newsArticles.slice(0, 3).map((article, index) => (
+              <Card
+                key={article.id}
+                className={`overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 ${
+                  hasIntersected ? "animate-slide-up" : "opacity-0"
+                }`}
+                style={{ animationDelay: `${index * 150}ms` }}
+                data-testid={`news-card-${index}`}
+              >
+                <div className="aspect-video overflow-hidden">
+                  <img
+                    src={article.imageUrl || '/placeholder-news.jpg'}
+                    alt={article.title}
+                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/placeholder-news.jpg';
+                    }}
+                  />
+                </div>
+                <CardContent className="p-6">
+                  <div className="text-sm text-konti-blue font-medium mb-2">
+                    {article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : t('news.title')}
+                  </div>
+                  <h3 className="text-xl font-semibold text-konti-gray mb-3 line-clamp-2">
+                    {article.title}
+                  </h3>
+                  <p className="text-gray-600 mb-4 line-clamp-3">
+                    {article.description || article.subtitle || t('news.noDescription')}
+                  </p>
+                  <Link
+                    href={`/news/${article.id}`}
+                    className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:shadow-lg"
+                    style={{ backgroundColor: "#1c2d56" }}
+                    data-testid={`news-read-more-${index}`}
+                  >
+                    <span>{t('news.readMore')}</span>
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+
+        {/* No articles message */}
+        {!isLoading && !error && newsArticles.length === 0 && (
+          <div className="text-center py-8">
+            <p className="text-gray-600">{t('news.noArticles') || 'No news articles available'}</p>
+          </div>
+        )}
+
+        {!isLoading && !error && newsArticles.length > 0 && (
+          <div className="text-center mt-12">
+            <Link
+              href="/news"
+              className="inline-flex items-center px-8 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:shadow-lg"
+              style={{ backgroundColor: "#1c2d56" }}
+              data-testid="view-all-news"
+            >
+              <span>{t('news.viewAll')}</span>
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );
