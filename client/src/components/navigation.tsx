@@ -499,31 +499,6 @@ export function Navigation() {
             <div className="ml-12 flex items-center space-x-8">
               <div className="flex items-baseline space-x-8">
                 {navigationItems.filter(item => item.label !== t("nav.contact")).map((item) => renderNavigationItem(item))}
-                {/* Special animated contact button */}
-                <Button
-                  onClick={() => {
-                    if (location === '/') {
-                      scrollToContact();
-                    } else {
-                      sessionStorage.setItem('scrollToContact', 'true');
-                      setLocation('/');
-                    }
-                  }}
-                  className={`
-                    group relative px-6 py-2 font-medium transition-all duration-300 text-[15px] rounded-full
-                    ${isScrolled 
-                      ? 'bg-gradient-to-r from-[#1c2d56] to-blue-700 text-white hover:from-blue-700 hover:to-[#1c2d56] shadow-md hover:shadow-lg transform hover:scale-105' 
-                      : 'bg-white/10 text-white backdrop-blur-sm border border-white/20 hover:bg-white/20'
-                    }
-                  `}
-                  data-testid="nav-contact-animated"
-                >
-                  <div className="flex items-center space-x-2">
-                    <MessageCircle className="h-4 w-4" />
-                    <span>{t('navigation.contact')}</span>
-                  </div>
-                  <div className={`absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${!isScrolled ? 'hidden' : ''}`} />
-                </Button>
               </div>
               <LanguageSwitcher />
             </div>
