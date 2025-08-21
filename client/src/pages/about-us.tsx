@@ -9,7 +9,7 @@ import { Slider } from "@/components/ui/slider";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { type Team, type Project, type GalleryCategory } from "@shared/schema";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   ChevronRight,
@@ -191,6 +191,7 @@ function useTeamData() {
 
 export default function AboutUs() {
   const { t } = useLanguage();
+  const [, setLocation] = useLocation();
   const [activeYear, setActiveYear] = useState("1990");
   const [sliderValue, setSliderValue] = useState([0]);
   const [activeTeamTabIndex, setActiveTeamTabIndex] = useState(0);
@@ -1129,13 +1130,18 @@ export default function AboutUs() {
               Need more information about our cable protection solutions?
               Contact our team of experts.
             </p>
-            <a
-              href="/#contact"
+            <Button
+              onClick={() => {
+                // Store scroll target in sessionStorage
+                sessionStorage.setItem('scrollToContact', 'true');
+                // Navigate to home page
+                setLocation('/');
+              }}
               className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
               {t('navigation.contact')}
-            </a>
+            </Button>
           </div>
         </div>
       </section>
