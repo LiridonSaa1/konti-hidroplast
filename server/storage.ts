@@ -1066,11 +1066,13 @@ export class MemStorage implements IStorage {
     const newNews: NewsArticle = {
       ...news,
       id: `news_${Date.now()}`,
-      excerpt: news.excerpt ?? null,
+      description: news.description ?? null,
+      subtitle: news.subtitle ?? null,
       imageUrl: news.imageUrl ?? null,
       author: news.author ?? null,
       published: news.published ?? null,
       publishedAt: news.publishedAt ?? null,
+      sections: news.sections ?? [],
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -1111,6 +1113,9 @@ export class MemStorage implements IStorage {
     const newCategory: CertificateCategory = {
       ...category,
       id: Date.now(),
+      description: category.description ?? null,
+      status: category.status || "active",
+      sortOrder: category.sortOrder ?? 0,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -1156,6 +1161,10 @@ export class MemStorage implements IStorage {
     const newSubcategory: CertificateSubcategory = {
       ...subcategory,
       id: Date.now(),
+      description: subcategory.description ?? null,
+      status: subcategory.status || "active",
+      sortOrder: subcategory.sortOrder ?? 0,
+      categoryId: subcategory.categoryId ?? null,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -1207,6 +1216,11 @@ export class MemStorage implements IStorage {
     const newCertificate: Certificate = {
       ...certificate,
       id: Date.now(),
+      status: certificate.status || "active",
+      sortOrder: certificate.sortOrder ?? 0,
+      categoryId: certificate.categoryId ?? null,
+      subcategoryId: certificate.subcategoryId ?? null,
+      downloadUrl: certificate.downloadUrl ?? null,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -1357,6 +1371,7 @@ export class MemStorage implements IStorage {
       imageUrl: project.imageUrl ?? null,
       pdfUrl: project.pdfUrl ?? null,
       status: project.status ?? null,
+      sortOrder: project.sortOrder ?? 0,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -1678,6 +1693,10 @@ export class MemStorage implements IStorage {
     const newConfig: BrevoConfig = {
       ...config,
       id: 1,
+      brevoApiKey: config.brevoApiKey ?? null,
+      validatedSenderEmail: config.validatedSenderEmail ?? null,
+      templateId: config.templateId ?? null,
+      isActive: config.isActive ?? null,
       recipientEmail: config.recipientEmail || "admin@kontihidroplast.com",
       createdAt: new Date(),
       updatedAt: new Date()
