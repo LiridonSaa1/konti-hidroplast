@@ -355,7 +355,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Company Info routes
-  app.get("/api/admin/company-info", async (req, res) => {
+  app.get("/api/admin/company-info", requireAuth, async (req, res) => {
     try {
       const info = await storage.getAllCompanyInfo();
       res.json(info);
@@ -365,7 +365,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/company-info/:key", async (req, res) => {
+  app.get("/api/admin/company-info/:key", requireAuth, async (req, res) => {
     try {
       const info = await storage.getCompanyInfoByKey(req.params.key);
       if (!info) {
@@ -378,7 +378,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/company-info", async (req, res) => {
+  app.post("/api/admin/company-info", requireAuth, async (req, res) => {
     try {
       const infoData = insertCompanyInfoSchema.parse(req.body);
       const info = await storage.upsertCompanyInfo(infoData);
