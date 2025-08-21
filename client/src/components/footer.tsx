@@ -1,6 +1,6 @@
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 import { MapPin, Phone } from "lucide-react";
-import logoWhite from "@assets/urban-rohr-logo-white.pdf";
+import logoWhite from "@assets/urban-rohr-logo-white.svg";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCompanyInfo } from "@/hooks/use-company-info";
 

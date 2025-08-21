@@ -16,8 +16,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCompanyInfo } from "@/hooks/use-company-info";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useAnimatedScroll } from "@/hooks/use-smooth-scroll";
-import logoScrolled from "@assets/urban-rohr-logo-dark.pdf";
-import logoDefault from "@assets/urban-rohr-logo-white.pdf";
+import logoScrolled from "@assets/urban-rohr-logo.svg";
+import logoDefault from "@assets/urban-rohr-logo-white.svg";
 
 interface NavigationLink {
   href: string;
@@ -488,11 +488,12 @@ export function Navigation() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <img
-              src={companyInfo.logoUrl || (isScrolled ? logoScrolled : logoDefault)}
-              alt={companyInfo.companyName || "Urban Rohr"}
+              src={isScrolled ? logoScrolled : logoDefault}
+              alt="Urban Rohr"
               className="h-16 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
               onClick={scrollToTop}
               data-testid="logo"
+              style={isScrolled ? { filter: 'brightness(0) saturate(100%) invert(17%) sepia(25%) saturate(1349%) hue-rotate(205deg) brightness(97%) contrast(95%)' } : {}}
             />
           </div>
 
