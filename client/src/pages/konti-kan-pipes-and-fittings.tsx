@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import {
@@ -131,6 +132,7 @@ const fittingTypes = [
 function KontiKanPipesAndFittingsPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
+  const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("konti-kan");
   const [activeFittingTab, setActiveFittingTab] = useState("injection-molding");
   const [activeFittingTabIndex, setActiveFittingTabIndex] = useState(0);
@@ -155,7 +157,7 @@ function KontiKanPipesAndFittingsPage() {
 
   useEffect(() => {
     // Set page title
-    document.title = "HDPE Konti Kan Sewage Pipe - Konti Hidroplast";
+    document.title = `HDPE Konti Kan Sewage Pipe - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
     // Add meta description
     const metaDescription = document.querySelector('meta[name="description"]');

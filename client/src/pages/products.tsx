@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Navigation } from "@/components/navigation";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -87,11 +88,12 @@ const productCategories = [
 
 function ProductsPage() {
   const { t } = useLanguage();
+  const { data: companyInfo } = useCompanyInfo();
   const [, setLocation] = useLocation();
 
   useEffect(() => {
     // Set page title
-    document.title = "Products - Konti Hidroplast";
+    document.title = `Products - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
     // Add meta description
     const metaDescription = document.querySelector('meta[name="description"]');

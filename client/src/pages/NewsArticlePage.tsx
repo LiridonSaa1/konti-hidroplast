@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Calendar, User, ArrowLeft, Loader2, FileText } from "lucide-react";
 import { Link } from "wouter";
 import type { NewsArticle } from "@shared/schema";
@@ -31,6 +32,7 @@ const formatDate = (dateString: string | Date | null) => {
 
 function NewsArticlePage() {
   const { t } = useLanguage();
+  const { data: companyInfo } = useCompanyInfo();
   const { slug } = useParams(); // This will be the article ID
 
   // Fetch the specific article
@@ -45,7 +47,7 @@ function NewsArticlePage() {
 
   useEffect(() => {
     if (article) {
-      document.title = `${article.title} - Konti Hidroplast`;
+      document.title = `${article.title} - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
       const metaDescription = document.querySelector(
         'meta[name="description"]',

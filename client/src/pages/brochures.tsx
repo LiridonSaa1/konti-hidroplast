@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { Download, ChevronLeft, ChevronRight } from "lucide-react";
@@ -142,6 +143,7 @@ const brochureCategories = [
 function BrochuresPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
+  const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("water-supply");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
@@ -161,7 +163,7 @@ function BrochuresPage() {
 
   useEffect(() => {
     // Set page title
-    document.title = "Brochures - Konti Hidroplast";
+    document.title = `Brochures - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
     // Add meta description
     const metaDescription = document.querySelector('meta[name="description"]');
@@ -303,30 +305,6 @@ function BrochuresPage() {
           ))}
         </div>
       </section>
-      <section className="py-20 bg-[#ffffff]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center mb-8">
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
-              </h2>
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-            </div>
-            <p className="text-xl text-gray-600 mb-8">
-              Need more information about our cable protection solutions?
-              Contact our team of experts.
-            </p>
-            <a
-              href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
-              data-testid="contact-button"
-            >
-              Contact Us
-            </a>
-          </div>
-        </div>
-      </section>
       {/* Contact Section */}
       <section className="py-20 bg-[#ffffff]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -339,8 +317,8 @@ function BrochuresPage() {
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our products and solutions?
-              Contact our team of experts.
+              Need more information about our products and solutions? Contact
+              our team of experts.
             </p>
             <Button
               onClick={() => {

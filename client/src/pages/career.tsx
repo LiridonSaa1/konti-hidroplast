@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { useToast } from "@/hooks/use-toast";
 import {
   Users,
@@ -31,6 +32,7 @@ type JobApplicationForm = z.infer<typeof jobApplicationSchema>;
 
 function CareerPage() {
   const { t } = useLanguage();
+  const { data: companyInfo } = useCompanyInfo();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
@@ -152,7 +154,7 @@ function CareerPage() {
 
   useEffect(() => {
     // Set page title
-    document.title = "Career Opportunities - Konti Hidroplast";
+    document.title = `Career Opportunities - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
     // Add meta description
     const metaDescription = document.querySelector('meta[name="description"]');

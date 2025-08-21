@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Download, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
@@ -132,11 +133,12 @@ const connectionTypes = [
 
 export default function ManholesPage() {
   const [, setLocation] = useLocation();
+  const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("hdpe-manholes");
 
   useEffect(() => {
     // Set page title
-    document.title = "Manholes - Konti Hidroplast";
+    document.title = `Manholes - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
     // Add meta description
     const metaDescription = document.querySelector('meta[name="description"]');

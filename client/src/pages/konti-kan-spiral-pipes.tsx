@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { ChevronDown, Download, Play, Check } from "lucide-react";
@@ -111,13 +112,14 @@ const fittingTypes = [
 function KontiKanSpiralPipesPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
+  const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("konti-kan-spiral");
   const [activeFittingTab, setActiveFittingTab] =
     useState("connection-methods");
 
   useEffect(() => {
     // Set page title
-    document.title = "KONTI KAN SPIRAL – HDPE / ID - Konti Hidroplast";
+    document.title = `KONTI KAN SPIRAL – HDPE / ID - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
     // Add meta description
     const metaDescription = document.querySelector('meta[name="description"]');

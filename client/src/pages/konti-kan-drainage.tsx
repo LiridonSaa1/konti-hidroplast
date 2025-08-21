@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Navigation } from "@/components/navigation";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Footer } from "@/components/footer";
 import { Download, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -67,10 +68,11 @@ const slotPatterns = [
 
 export default function KontiKanDrainagePage() {
   const [, setLocation] = useLocation();
+  const { data: companyInfo } = useCompanyInfo();
   
   useEffect(() => {
     // Set page title
-    document.title = "KONTI KAN DRAINAGE - Konti Hidroplast";
+    document.title = `KONTI KAN DRAINAGE - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
     // Add meta description
     const metaDescription = document.querySelector('meta[name="description"]');

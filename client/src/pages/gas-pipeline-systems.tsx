@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import {
@@ -190,6 +191,7 @@ const gasFittingTypes = [
 function GasPipelineSystemsPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
+  const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("gas-pe");
   const [activeFittingTab, setActiveFittingTab] = useState("butt-welding");
   const [activeFittingTabIndex, setActiveFittingTabIndex] = useState(0);
@@ -214,7 +216,7 @@ function GasPipelineSystemsPage() {
 
   useEffect(() => {
     // Set page title
-    document.title = "Gas Pipeline Systems - Konti Hidroplast";
+    document.title = `Gas Pipeline Systems - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
     // Add meta description
     const metaDescription = document.querySelector('meta[name="description"]');

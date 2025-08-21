@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { Calendar, User, ArrowRight, Loader2 } from "lucide-react";
@@ -30,6 +31,7 @@ const formatDate = (dateString: string | Date | null) => {
 function NewsPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
+  const { data: companyInfo } = useCompanyInfo();
   const [visibleArticles, setVisibleArticles] = useState(6);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -40,7 +42,7 @@ function NewsPage() {
 
   useEffect(() => {
     // Set page title
-    document.title = "News & Updates - Konti Hidroplast";
+    document.title = `News & Updates - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
     // Add meta description
     const metaDescription = document.querySelector('meta[name="description"]');

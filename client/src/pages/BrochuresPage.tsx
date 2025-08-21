@@ -3,11 +3,13 @@ import { useQuery } from "@tanstack/react-query";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Download, ChevronLeft, ChevronRight, FileText, Image as ImageIcon } from "lucide-react";
 import type { Brochure, BrochureCategory } from "@shared/schema";
 
 function BrochuresPage() {
   const { t, language } = useLanguage();
+  const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("water-supply");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
@@ -66,7 +68,7 @@ function BrochuresPage() {
 
   useEffect(() => {
     // Set page title
-    document.title = "Brochures - Konti Hidroplast";
+    document.title = `Brochures - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
     // Add meta description
     const metaDescription = document.querySelector('meta[name="description"]');
