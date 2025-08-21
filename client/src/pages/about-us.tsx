@@ -1160,10 +1160,10 @@ export default function AboutUs() {
                 // Navigate to home page
                 setLocation("/");
               }}
-              className="px-8 py-3 rounded-lg font-semibold text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
+              className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              {t("navigation.contact")}
+              Contact Us
             </Button>
           </div>
         </div>
