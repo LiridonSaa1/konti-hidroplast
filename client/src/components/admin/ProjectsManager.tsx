@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Edit, Trash2, FileUp, Image as ImageIcon, Eye, Search, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { FileUpload } from "@/components/ui/file-upload";
 import { insertProjectSchema, type Project, type InsertProject } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
-import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
 
 export function ProjectsManager() {
   const [editingProject, setEditingProject] = useState<Project | null>(null);
@@ -26,11 +25,6 @@ export function ProjectsManager() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<keyof Project>("sortOrder");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
-  const [translations, setTranslations] = useState<{
-    en?: Record<string, string>;
-    mk?: Record<string, string>;
-    de?: Record<string, string>;
-  }>({});
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -45,17 +39,6 @@ export function ProjectsManager() {
       sortOrder: 0,
     },
   });
-
-  // Sync translations with form values for backward compatibility
-  useEffect(() => {
-    const enTranslations = translations.en || {};
-    if (enTranslations.title) {
-      form.setValue('title', enTranslations.title);
-    }
-    if (enTranslations.description) {
-      form.setValue('description', enTranslations.description);
-    }
-  }, [translations, form]);
 
   const { data: projects = [], isLoading } = useQuery<Project[]>({
     queryKey: ["/api/admin/projects"],
@@ -179,16 +162,10 @@ export function ProjectsManager() {
   });
 
   const handleSubmit = (data: InsertProject) => {
-    const projectData = {
-      ...data,
-      translations,
-      defaultLanguage: 'en' as const
-    };
-    
     if (editingProject) {
-      updateProjectMutation.mutate({ id: editingProject.id, projectData });
+      updateProjectMutation.mutate({ id: editingProject.id, projectData: data });
     } else {
-      createProjectMutation.mutate(projectData);
+      createProjectMutation.mutate(data);
     }
   };
 
@@ -202,12 +179,6 @@ export function ProjectsManager() {
       status: (project.status as "active" | "completed" | "on-hold" | "cancelled") || "active",
       sortOrder: project.sortOrder || 0,
     });
-    
-    // Load translations from project data
-    setTranslations(project.translations || {
-      en: { title: project.title, description: project.description || '' }
-    });
-    
     setIsFormOpen(true);
   };
 
@@ -240,7 +211,6 @@ export function ProjectsManager() {
       status: "active",
       sortOrder: 0,
     });
-    setTranslations({});
     setEditingProject(null);
     setIsFormOpen(false);
   };
@@ -280,21 +250,38 @@ export function ProjectsManager() {
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-                <TranslatableFieldEditor
-                  label="Project Title"
-                  fieldName="title"
-                  currentTranslations={translations}
-                  originalValue={form.getValues('title')}
-                  onChange={setTranslations}
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Project Title</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter project title" {...field} data-testid="input-project-title" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
 
-                <TranslatableFieldEditor
-                  label="Project Description"
-                  fieldName="description"
-                  type="textarea"
-                  currentTranslations={translations}
-                  originalValue={form.getValues('description')}
-                  onChange={setTranslations}
+                <FormField
+                  control={form.control}
+                  name="description"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Description</FormLabel>
+                      <FormControl>
+                        <Textarea 
+                          placeholder="Enter project description" 
+                          {...field}
+                          value={field.value || ""}
+                          rows={3}
+                          data-testid="input-project-description"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
 
                 <FormField
@@ -307,6 +294,7 @@ export function ProjectsManager() {
                           label="Image URL"
                           value={field.value || ""}
                           onChange={field.onChange}
+                          type="image"
                           placeholder="Enter image URL or upload image"
                           testId="input-project-image"
                         />
@@ -326,6 +314,7 @@ export function ProjectsManager() {
                           label="PDF Document URL"
                           value={field.value || ""}
                           onChange={field.onChange}
+                          type="pdf"
                           placeholder="Enter PDF URL or upload document"
                           testId="input-project-pdf"
                         />
