@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
 
 // Product categories data
 const productCategories = [
@@ -85,6 +87,7 @@ const productCategories = [
 
 function ProductsPage() {
   const { t } = useLanguage();
+  const [, setLocation] = useLocation();
 
   useEffect(() => {
     // Set page title
@@ -436,13 +439,18 @@ function ProductsPage() {
               Need more information about our cable protection solutions?
               Contact our team of experts.
             </p>
-            <a
-              href="/contact"
-              className="inline-flex items-center px-8 py-4  text-white rounded-lg bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors text-lg font-semibold"
+            <Button
+              onClick={() => {
+                // Store scroll target in sessionStorage
+                sessionStorage.setItem("scrollToContact", "true");
+                // Navigate to home page
+                setLocation("/");
+              }}
+              className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
               Contact Us
-            </a>
+            </Button>
           </div>
         </div>
       </section>
