@@ -27,6 +27,8 @@ export const products = pgTable("products", {
   featured: boolean("featured").default(false),
   active: boolean("active").default(true),
   sortOrder: integer("sort_order").default(0),
+  translations: jsonb("translations").default('{}'),
+  defaultLanguage: text("default_language").notNull().default("en"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -65,6 +67,8 @@ export const newsArticles = pgTable("news_articles", {
   publishedAt: timestamp("published_at"),
   sections: jsonb("sections").default('[]'), // Array of article sections
   sortOrder: integer("sort_order").default(0),
+  translations: jsonb("translations").default('{}'),
+  defaultLanguage: text("default_language").notNull().default("en"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -76,6 +80,8 @@ export const certificateCategories = pgTable("certificate_categories", {
   description: text("description"),
   sortOrder: integer("sort_order").default(0),
   status: text("status").notNull().default("active"), // active, inactive
+  translations: jsonb("translations").default('{}'),
+  defaultLanguage: text("default_language").notNull().default("en"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -88,6 +94,8 @@ export const certificateSubcategories = pgTable("certificate_subcategories", {
   description: text("description"),
   sortOrder: integer("sort_order").default(0),
   status: text("status").notNull().default("active"), // active, inactive
+  translations: jsonb("translations").default('{}'),
+  defaultLanguage: text("default_language").notNull().default("en"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -102,6 +110,8 @@ export const certificates = pgTable("certificates", {
   downloadUrl: text("download_url"),
   sortOrder: integer("sort_order").default(0),
   status: text("status").notNull().default("active"), // active, inactive
+  translations: jsonb("translations").default('{}'),
+  defaultLanguage: text("default_language").notNull().default("en"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -231,6 +241,8 @@ export const insertProductSchema = createInsertSchema(products).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+  translations: true,
+  defaultLanguage: true,
 });
 
 export const insertMediaSchema = createInsertSchema(media).omit({
@@ -247,24 +259,32 @@ export const insertNewsArticleSchema = createInsertSchema(newsArticles).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+  translations: true,
+  defaultLanguage: true,
 });
 
 export const insertCertificateCategorySchema = createInsertSchema(certificateCategories).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+  translations: true,
+  defaultLanguage: true,
 });
 
 export const insertCertificateSubcategorySchema = createInsertSchema(certificateSubcategories).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+  translations: true,
+  defaultLanguage: true,
 });
 
 export const insertCertificateSchema = createInsertSchema(certificates).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+  translations: true,
+  defaultLanguage: true,
 });
 
 export const insertBrochureSchema = createInsertSchema(brochures, {
@@ -336,6 +356,8 @@ export const projects = pgTable("projects", {
   pdfUrl: varchar("pdf_url", { length: 500 }),
   status: varchar("status", { length: 50 }).default("active"),
   sortOrder: integer("sort_order").default(0),
+  translations: jsonb("translations").default('{}'),
+  defaultLanguage: text("default_language").notNull().default("en"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -347,6 +369,8 @@ export const galleryCategories = pgTable("gallery_categories", {
   imageUrl: varchar("image_url", { length: 500 }),
   status: varchar("status", { length: 50 }).default("active"),
   sortOrder: integer("sort_order").default(0),
+  translations: jsonb("translations").default('{}'),
+  defaultLanguage: text("default_language").notNull().default("en"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -366,12 +390,16 @@ export const insertProjectSchema = createInsertSchema(projects).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+  translations: true,
+  defaultLanguage: true,
 });
 
 export const insertGalleryCategorySchema = createInsertSchema(galleryCategories).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+  translations: true,
+  defaultLanguage: true,
 });
 
 export const insertGalleryItemSchema = createInsertSchema(galleryItems).omit({
@@ -417,6 +445,8 @@ export const positions = pgTable("positions", {
   title: varchar("title", { length: 255 }).notNull().unique(),
   description: text("description"),
   active: boolean("active").default(true),
+  translations: jsonb("translations").default('{}'),
+  defaultLanguage: text("default_language").notNull().default("en"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -425,6 +455,8 @@ export const insertPositionSchema = createInsertSchema(positions).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
+  translations: true,
+  defaultLanguage: true,
 });
 
 export type InsertPosition = z.infer<typeof insertPositionSchema>;

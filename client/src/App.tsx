@@ -33,6 +33,7 @@ import QualityControlGalleryPage from "@/pages/gallery/QualityControlGalleryPage
 import StorageGalleryPage from "@/pages/gallery/StorageGalleryPage";
 import ProjectsGalleryPage from "@/pages/gallery/ProjectsGalleryPage";
 import NotFound from "@/pages/not-found";
+import { NewsTranslationExample } from "@/components/admin/NewsTranslationExample";
 
 function Router() {
   // Add scroll to top functionality for all route changes
@@ -59,6 +60,7 @@ function Router() {
       <Route path="/pp-hm-smooth-od" component={PPHMSmoothODPage} />
       <Route path="/apply" component={Apply} />
       <Route path="/admin-panel" component={AdminPanel} />
+      <Route path="/admin-translations-demo" component={NewsTranslationExample} />
       <Route path="/gallery/production" component={ProductionGalleryPage} />
       <Route path="/gallery/quality-control" component={QualityControlGalleryPage} />
       <Route path="/gallery/storage" component={StorageGalleryPage} />

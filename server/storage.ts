@@ -267,7 +267,7 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     const [newProduct] = await db
       .insert(products)
-      .values(product)
+      .values({...product, translations: {}, defaultLanguage: 'en'})
       .returning();
     return newProduct;
   }
@@ -353,7 +353,7 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     const [newNews] = await db
       .insert(newsArticles)
-      .values(news)
+      .values({...news, translations: {}, defaultLanguage: 'en'})
       .returning();
     return newNews;
   }
@@ -389,7 +389,7 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     const [newCategory] = await db
       .insert(certificateCategories)
-      .values(category)
+      .values({...category, translations: {}, defaultLanguage: 'en'})
       .returning();
     return newCategory;
   }
@@ -432,7 +432,7 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     const [newSubcategory] = await db
       .insert(certificateSubcategories)
-      .values(subcategory)
+      .values({...subcategory, translations: {}, defaultLanguage: 'en'})
       .returning();
     return newSubcategory;
   }
@@ -482,7 +482,7 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     const [newCertificate] = await db
       .insert(certificates)
-      .values(certificate)
+      .values({...certificate, translations: {}, defaultLanguage: 'en'})
       .returning();
     return newCertificate;
   }
@@ -590,7 +590,7 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     const [newProject] = await db
       .insert(projects)
-      .values(project)
+      .values({...project, translations: {}, defaultLanguage: 'en'})
       .returning();
     return newProject;
   }
@@ -662,7 +662,7 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     const [newPosition] = await db
       .insert(positions)
-      .values(position)
+      .values({...position, translations: {}, defaultLanguage: 'en'})
       .returning();
     return newPosition;
   }
@@ -698,7 +698,7 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     const [category] = await db
       .insert(galleryCategories)
-      .values(insertCategory)
+      .values({...insertCategory, translations: {}, defaultLanguage: 'en'})
       .returning();
     return category;
   }
