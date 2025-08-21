@@ -156,16 +156,16 @@ function NewsArticlePage() {
               article.sections.map((section: ArticleSection, index: number) => (
                 <div key={section.id || index} className="mb-8">
                   {/* Section Title - positioned above content area */}
-                  {section.title && (
-                    <h2 className="text-2xl font-bold text-foreground leading-tight mb-6">
-                      {section.title}
-                    </h2>
-                  )}
 
                   <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     {/* Text Only Section */}
                     {section.type === "text" && (
                       <div className="px-8 py-8">
+                        {section.title && (
+                          <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
+                            {section.title}
+                          </h2>
+                        )}
                         <div
                           className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
                           dangerouslySetInnerHTML={{
@@ -178,6 +178,11 @@ function NewsArticlePage() {
                     {/* Image Only Section */}
                     {section.type === "image" && section.imageUrl && (
                       <div className="px-8 py-8">
+                        {section.title && (
+                          <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
+                            {section.title}
+                          </h2>
+                        )}
                         <img
                           src={section.imageUrl}
                           alt={section.title || `Section ${index + 1}`}
