@@ -661,10 +661,11 @@ export function NewsManager() {
                     {(section.type === 'text' || section.type === 'text-with-image') && (
                       <div>
                         <Label>Content</Label>
-                        <RichTextEditor
+                        <Textarea
                           value={section.content}
-                          onChange={(content) => updateSection(section.id, { content })}
-                          placeholder="Enter section content with rich formatting"
+                          onChange={(e) => updateSection(section.id, { content: e.target.value })}
+                          placeholder="Enter section content"
+                          rows={4}
                         />
                       </div>
                     )}
@@ -890,10 +891,11 @@ export function NewsManager() {
                     {(section.type === 'text' || section.type === 'text-with-image') && (
                       <div>
                         <Label>Content</Label>
-                        <RichTextEditor
+                        <Textarea
                           value={section.content}
-                          onChange={(content) => updateSection(section.id, { content })}
-                          placeholder="Enter section content with rich formatting"
+                          onChange={(e) => updateSection(section.id, { content: e.target.value })}
+                          placeholder="Enter section content"
+                          rows={4}
                         />
                       </div>
                     )}
