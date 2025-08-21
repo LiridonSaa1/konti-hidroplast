@@ -490,7 +490,7 @@ export function Navigation() {
             <img
               src={isScrolled ? logoScrolled : logoDefault}
               alt="Urban Rohr"
-              className="h-16 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
+              className="h-14 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
               onClick={scrollToTop}
               data-testid="logo"
               style={isScrolled ? { filter: 'brightness(0) saturate(100%) invert(17%) sepia(25%) saturate(1349%) hue-rotate(205deg) brightness(97%) contrast(95%)' } : {}}
@@ -540,7 +540,7 @@ export function Navigation() {
                     <img
                       src={logoScrolled}
                       alt="Urban Rohr"
-                      className="h-14 w-auto cursor-pointer"
+                      className="h-12 w-auto cursor-pointer"
                       onClick={() => {
                         scrollToTop();
                         setMobileMenuOpen(false);
