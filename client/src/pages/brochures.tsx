@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
 import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Brochures data organized by category
@@ -139,6 +141,7 @@ const brochureCategories = [
 
 function BrochuresPage() {
   const { t } = useLanguage();
+  const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("water-supply");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
@@ -321,6 +324,36 @@ function BrochuresPage() {
             >
               Contact Us
             </a>
+          </div>
+        </div>
+      </section>
+      {/* Contact Section */}
+      <section className="py-20 bg-[#ffffff]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
+                Get in Touch: Connect with Us Today!
+              </h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+            <p className="text-xl text-gray-600 mb-8">
+              Need more information about our products and solutions?
+              Contact our team of experts.
+            </p>
+            <Button
+              onClick={() => {
+                // Store scroll target in sessionStorage
+                sessionStorage.setItem("scrollToContact", "true");
+                // Navigate to home page
+                setLocation("/");
+              }}
+              className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
+              data-testid="contact-button"
+            >
+              Contact Us
+            </Button>
           </div>
         </div>
       </section>
