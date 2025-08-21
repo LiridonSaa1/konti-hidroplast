@@ -1130,11 +1130,11 @@ export default function AboutUs() {
               Contact our team of experts.
             </p>
             <a
-              href="/contact"
+              href="/#contact"
               className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
-              Contact Us
+              {t('navigation.contact')}
             </a>
           </div>
         </div>
