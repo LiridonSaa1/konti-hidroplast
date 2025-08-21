@@ -84,7 +84,7 @@ export function CompanyInfoManager() {
       for (const [key, value] of Object.entries(data)) {
         if (key === 'phones') continue; // Handle phones separately
         updates.push(
-          apiRequest("POST", "/api/admin/company-info", {
+          apiRequest("/api/admin/company-info", "POST", {
             key,
             value: value as string,
             category: getCategoryForKey(key)
@@ -97,7 +97,7 @@ export function CompanyInfoManager() {
         const phoneKey = i === 0 ? 'phone' : `phone${i + 1}`;
         const phoneValue = data.phones[i] || '';
         updates.push(
-          apiRequest("POST", "/api/admin/company-info", {
+          apiRequest("/api/admin/company-info", "POST", {
             key: phoneKey,
             value: phoneValue,
             category: 'contact'
