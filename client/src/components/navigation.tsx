@@ -498,7 +498,7 @@ export function Navigation() {
           <div className="hidden md:block">
             <div className="ml-12 flex items-center space-x-8">
               <div className="flex items-baseline space-x-8">
-                {navigationItems.filter(item => item.label !== t("nav.contact")).map((item) => renderNavigationItem(item))}
+                {navigationItems.map((item) => renderNavigationItem(item))}
               </div>
               <LanguageSwitcher />
             </div>
@@ -546,30 +546,10 @@ export function Navigation() {
                     />
                     <LanguageSwitcher />
                   </div>
-                  {navigationItems.filter(item => item.label !== t("nav.contact")).map((item) =>
+                  {navigationItems.map((item) =>
                     renderNavigationItem(item, true),
                   )}
-                  
-                  {/* Mobile animated contact button */}
-                  <Button
-                    onClick={() => {
-                      if (location === '/') {
-                        scrollToContact();
-                      } else {
-                        sessionStorage.setItem('scrollToContact', 'true');
-                        setLocation('/');
-                      }
-                      setMobileMenuOpen(false);
-                      closeMobileDropdowns();
-                    }}
-                    className="w-full mt-6 py-4 bg-gradient-to-r from-[#1c2d56] to-blue-700 text-white hover:from-blue-700 hover:to-[#1c2d56] shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg"
-                    data-testid="mobile-nav-contact-animated"
-                  >
-                    <div className="flex items-center justify-center space-x-2">
-                      <MessageCircle className="h-5 w-5" />
-                      <span className="text-lg font-semibold">{t('navigation.contact')}</span>
-                    </div>
-                  </Button>
+
                 </div>
               </SheetContent>
             </Sheet>
