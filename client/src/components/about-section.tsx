@@ -82,7 +82,7 @@ export function AboutSection() {
                     className="bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300"
                     data-testid="about-cta"
                   >
-                    Learn More
+                    {t('common.learnMore')}
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>

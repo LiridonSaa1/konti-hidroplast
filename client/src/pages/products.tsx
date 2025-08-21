@@ -276,7 +276,7 @@ function ProductsPage() {
                     className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
                     data-testid="button-water-supply-learn-more"
                   >
-                    <span>Learn More</span>
+                    <span>{t('products.learnMore')}</span>
                     <svg
                       className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
                       fill="none"
@@ -319,7 +319,7 @@ function ProductsPage() {
 
                   {/* Learn More Button */}
                   <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
-                    <span>Learn More</span>
+                    <span>{t('products.learnMore')}</span>
                     <svg
                       className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
                       fill="none"
@@ -362,7 +362,7 @@ function ProductsPage() {
 
                   {/* Learn More Button */}
                   <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
-                    <span>Learn More</span>
+                    <span>{t('products.learnMore')}</span>
                     <svg
                       className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
                       fill="none"
@@ -405,7 +405,7 @@ function ProductsPage() {
 
                   {/* Learn More Button */}
                   <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
-                    <span>Learn More</span>
+                    <span>{t('products.learnMore')}</span>
                     <svg
                       className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
                       fill="none"
