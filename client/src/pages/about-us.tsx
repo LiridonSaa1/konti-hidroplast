@@ -200,14 +200,17 @@ export default function AboutUs() {
   const { teamCategories, teamData, isLoading: isTeamLoading } = useTeamData();
 
   // Fetch projects
-  const { data: projects = [], isLoading: isProjectsLoading } = useQuery<Project[]>({
+  const { data: projects = [], isLoading: isProjectsLoading } = useQuery<
+    Project[]
+  >({
     queryKey: ["/api/admin/projects"],
   });
 
   // Fetch gallery categories (public endpoint)
-  const { data: galleryCategories = [], isLoading: isGalleryLoading } = useQuery<GalleryCategory[]>({
-    queryKey: ["/api/gallery-categories"],
-  });
+  const { data: galleryCategories = [], isLoading: isGalleryLoading } =
+    useQuery<GalleryCategory[]>({
+      queryKey: ["/api/gallery-categories"],
+    });
 
   // Fetch leadership data
   const { data: leadershipData } = useQuery({
@@ -311,25 +314,28 @@ export default function AboutUs() {
                 Since 1975
               </Badge>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                {t('aboutUs.title').toUpperCase()} <span className="text-red-500">KONTI</span>
+                {t("aboutUs.title").toUpperCase()}{" "}
+                <span className="text-red-500">KONTI</span>
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
                   HIDROPLAST
                 </span>
               </h1>
               <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                {t('aboutUs.heroSubtitle')}
+                {t("aboutUs.heroSubtitle")}
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
                   <Factory className="h-5 w-5" />
                   <span className="text-sm font-medium">
-                    {t('aboutUs.manufacturingExcellence')}
+                    {t("aboutUs.manufacturingExcellence")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
                   <Award className="h-5 w-5" />
-                  <span className="text-sm font-medium">{t('aboutUs.isoCertified')}</span>
+                  <span className="text-sm font-medium">
+                    {t("aboutUs.isoCertified")}
+                  </span>
                 </div>
               </div>
             </div>
@@ -346,7 +352,9 @@ export default function AboutUs() {
                 ></iframe>
               </div>
               <div className="absolute -bottom-4 -right-4 bg-red-600 text-white px-4 py-2 rounded-full shadow-lg">
-                <span className="text-sm font-medium">{t('aboutUs.corporate2024')}</span>
+                <span className="text-sm font-medium">
+                  {t("aboutUs.corporate2024")}
+                </span>
               </div>
             </div>
           </div>
@@ -359,7 +367,7 @@ export default function AboutUs() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold text-gray-700 mx-8">
-                {t('aboutUs.heroTitle')}
+                {t("aboutUs.heroTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -368,23 +376,23 @@ export default function AboutUs() {
           <div className="prose prose-lg max-w-none">
             <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 mb-12">
               <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                {t('about.text1')}
+                {t("about.text1")}
               </p>
 
               <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                {t('aboutUs.companyStoryText1')}
+                {t("aboutUs.companyStoryText1")}
               </p>
 
               <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                {t('aboutUs.companyStoryText2')}
+                {t("aboutUs.companyStoryText2")}
               </p>
 
               <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                {t('aboutUs.companyStoryText3')}
+                {t("aboutUs.companyStoryText3")}
               </p>
 
               <p className="text-lg leading-relaxed text-gray-700">
-                {t('aboutUs.companyStoryText4')}
+                {t("aboutUs.companyStoryText4")}
               </p>
             </div>
           </div>
@@ -400,10 +408,10 @@ export default function AboutUs() {
                   <Target className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  {t('aboutUs.missionTitle')}
+                  {t("aboutUs.missionTitle")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  {t('aboutUs.missionText')}
+                  {t("aboutUs.missionText")}
                 </p>
               </CardContent>
             </Card>
@@ -414,10 +422,10 @@ export default function AboutUs() {
                   <Eye className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  {t('aboutUs.visionTitle')}
+                  {t("aboutUs.visionTitle")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  {t('aboutUs.visionText')}
+                  {t("aboutUs.visionText")}
                 </p>
               </CardContent>
             </Card>
@@ -428,10 +436,10 @@ export default function AboutUs() {
                   <Heart className="h-8 w-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  {t('aboutUs.valuesTitle')}
+                  {t("aboutUs.valuesTitle")}
                 </h3>
                 <p className="text-gray-600 leading-relaxed">
-                  {t('aboutUs.valuesText')}
+                  {t("aboutUs.valuesText")}
                 </p>
               </CardContent>
             </Card>
@@ -769,7 +777,10 @@ export default function AboutUs() {
           {isProjectsLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
               {[...Array(4)].map((_, index) => (
-                <Card key={index} className="group overflow-hidden border-0 shadow-xl">
+                <Card
+                  key={index}
+                  className="group overflow-hidden border-0 shadow-xl"
+                >
                   <div className="relative h-80 overflow-hidden bg-gray-200 animate-pulse"></div>
                   <CardContent className="p-6 bg-white">
                     <div className="h-6 bg-gray-200 rounded animate-pulse mb-4"></div>
@@ -781,47 +792,53 @@ export default function AboutUs() {
           ) : projects.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
               {projects
-                .filter(project => project.status === 'active')
+                .filter((project) => project.status === "active")
                 .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
                 .map((project) => (
-                <Card key={project.id} className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                  <div className="relative h-80 overflow-hidden">
-                    {project.imageUrl ? (
-                      <img
-                        src={project.imageUrl}
-                        alt={project.title}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
-                        <FileText className="h-16 w-16 text-slate-400" />
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  </div>
-                  <CardContent className="p-6 bg-white">
-                    <h3 className="font-bold text-gray-900 mb-2 text-[15px]">
-                      {project.title}
-                    </h3>
-                    {project.description && (
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                        {project.description}
-                      </p>
-                    )}
+                  <Card
+                    key={project.id}
+                    className="group overflow-hidden border-0 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2"
+                  >
+                    <div className="relative h-80 overflow-hidden">
+                      {project.imageUrl ? (
+                        <img
+                          src={project.imageUrl}
+                          alt={project.title}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
+                          <FileText className="h-16 w-16 text-slate-400" />
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                    </div>
+                    <CardContent className="p-6 bg-white">
+                      <h3 className="font-bold text-gray-900 mb-2 text-[15px]">
+                        {project.title}
+                      </h3>
+                      {project.description && (
+                        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+                          {project.description}
+                        </p>
+                      )}
 
-                    {project.pdfUrl && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
-                        onClick={() => project.pdfUrl && window.open(project.pdfUrl, '_blank')}
-                      >
-                        Download PDF
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+                      {project.pdfUrl && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="w-full border-[#1c2d56] text-[#1c2d56] hover:bg-[#1c2d56] hover:text-white"
+                          onClick={() =>
+                            project.pdfUrl &&
+                            window.open(project.pdfUrl, "_blank")
+                          }
+                        >
+                          Download PDF
+                        </Button>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
             </div>
           ) : (
             <div className="text-center py-12">
@@ -1048,7 +1065,10 @@ export default function AboutUs() {
           {isGalleryLoading ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
               {[...Array(4)].map((_, index) => (
-                <div key={index} className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100">
+                <div
+                  key={index}
+                  className="bg-white rounded-3xl overflow-hidden shadow-xl border border-gray-100"
+                >
                   <div className="h-64 bg-gray-200 animate-pulse"></div>
                   <div className="p-8">
                     <div className="h-6 bg-gray-200 rounded animate-pulse mb-4"></div>
@@ -1060,48 +1080,51 @@ export default function AboutUs() {
           ) : galleryCategories.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
               {galleryCategories
-                .filter(category => category.status === 'active')
+                .filter((category) => category.status === "active")
                 .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
                 .map((category) => (
-                <div key={category.id} className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
-                  {/* Gallery Image - Top */}
-                  <div className="h-64 relative overflow-hidden">
-                    {category.imageUrl ? (
-                      <img
-                        src={category.imageUrl}
-                        alt={category.title}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
-                        <Image className="h-16 w-16 text-slate-400" />
+                  <div
+                    key={category.id}
+                    className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100"
+                  >
+                    {/* Gallery Image - Top */}
+                    <div className="h-64 relative overflow-hidden">
+                      {category.imageUrl ? (
+                        <img
+                          src={category.imageUrl}
+                          alt={category.title}
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
+                          <Image className="h-16 w-16 text-slate-400" />
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
+                    </div>
+
+                    {/* Gallery Content - Bottom */}
+                    <div className="p-8 relative">
+                      {/* Decorative accent */}
+                      <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
+
+                      <div className="mt-4">
+                        <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                          {category.title}
+                        </h3>
+
+                        {/* View Gallery Button */}
+                        <a
+                          href={`/gallery/${category.title.toLowerCase().replace(/\s+/g, "-")}`}
+                          className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
+                        >
+                          <span>View Gallery</span>
+                          <ChevronRight className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" />
+                        </a>
                       </div>
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
-                  </div>
-
-                  {/* Gallery Content - Bottom */}
-                  <div className="p-8 relative">
-                    {/* Decorative accent */}
-                    <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
-
-                    <div className="mt-4">
-                      <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                        {category.title}
-                      </h3>
-
-                      {/* View Gallery Button */}
-                      <a
-                        href={`/gallery/${category.title.toLowerCase().replace(/\s+/g, '-')}`}
-                        className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
-                      >
-                        <span>View Gallery</span>
-                        <ChevronRight className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" />
-                      </a>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           ) : (
             <div className="text-center py-12">
@@ -1133,14 +1156,15 @@ export default function AboutUs() {
             <Button
               onClick={() => {
                 // Store scroll target in sessionStorage
-                sessionStorage.setItem('scrollToContact', 'true');
+                sessionStorage.setItem("scrollToContact", "true");
                 // Navigate to home page
-                setLocation('/');
+                setLocation("/");
               }}
-              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] text-white rounded-lg hover:bg-blue-900 transition-colors text-lg font-semibold"
+              className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
               data-testid="contact-button"
             >
-              {t('navigation.contact')}
+              <span>{t("navigation.contact")}</span>
+              <ChevronRight className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" />
             </Button>
           </div>
         </div>
