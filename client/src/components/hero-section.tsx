@@ -1,9 +1,11 @@
 import { ChevronDown } from "lucide-react";
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 
 export function HeroSection() {
   const { t } = useLanguage();
+  const { data: companyInfo } = useCompanyInfo();
   
   const scrollToAbout = () => {
     const aboutSection = document.getElementById("about");
@@ -49,39 +51,45 @@ export function HeroSection() {
 
         {/* Social Media Links */}
         <div className="flex justify-center space-x-6 mb-8" data-testid="social-links">
-          <a
-            href="https://www.linkedin.com/company/konti-hidroplast/about/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white transition-colors"
-            onMouseEnter={(e) => e.currentTarget.style.color = '#1c2d56'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
-            data-testid="social-linkedin"
-          >
-            <FaLinkedin className="text-3xl" />
-          </a>
-          <a
-            href="https://www.facebook.com/kontihidroplastofficial"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white transition-colors"
-            onMouseEnter={(e) => e.currentTarget.style.color = '#1c2d56'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
-            data-testid="social-facebook"
-          >
-            <FaFacebook className="text-3xl" />
-          </a>
-          <a
-            href="https://www.instagram.com/kontihidroplast/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-white transition-colors"
-            onMouseEnter={(e) => e.currentTarget.style.color = '#1c2d56'}
-            onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
-            data-testid="social-instagram"
-          >
-            <FaInstagram className="text-3xl" />
-          </a>
+          {companyInfo.socialLinkedIn && (
+            <a
+              href={companyInfo.socialLinkedIn}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white transition-colors"
+              onMouseEnter={(e) => e.currentTarget.style.color = '#1c2d56'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
+              data-testid="social-linkedin"
+            >
+              <FaLinkedin className="text-3xl" />
+            </a>
+          )}
+          {companyInfo.socialFacebook && (
+            <a
+              href={companyInfo.socialFacebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white transition-colors"
+              onMouseEnter={(e) => e.currentTarget.style.color = '#1c2d56'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
+              data-testid="social-facebook"
+            >
+              <FaFacebook className="text-3xl" />
+            </a>
+          )}
+          {companyInfo.socialInstagram && (
+            <a
+              href={companyInfo.socialInstagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white transition-colors"
+              onMouseEnter={(e) => e.currentTarget.style.color = '#1c2d56'}
+              onMouseLeave={(e) => e.currentTarget.style.color = 'white'}
+              data-testid="social-instagram"
+            >
+              <FaInstagram className="text-3xl" />
+            </a>
+          )}
         </div>
 
 
