@@ -11,9 +11,10 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu, ChevronDown, ExternalLink, ChevronRight } from "lucide-react";
+import { Menu, ChevronDown, ExternalLink, ChevronRight, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { LanguageSwitcher } from "@/components/language-switcher";
+import { useAnimatedScroll } from "@/hooks/use-smooth-scroll";
 import logoScrolled from "@assets/urban-rohr-logo.svg";
 import logoDefault from "@assets/urban-rohr-logo-white.svg";
 
@@ -98,6 +99,7 @@ export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileDropdowns, setMobileDropdowns] = useState<Record<string, boolean>>({});
   const { t } = useLanguage();
+  const { scrollToContact } = useAnimatedScroll();
   const navigationItems = useNavigationItems(t);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const dropdownContainerRef = useRef<HTMLDivElement | null>(null);
@@ -496,7 +498,32 @@ export function Navigation() {
           <div className="hidden md:block">
             <div className="ml-12 flex items-center space-x-8">
               <div className="flex items-baseline space-x-8">
-                {navigationItems.map((item) => renderNavigationItem(item))}
+                {navigationItems.filter(item => item.label !== t("nav.contact")).map((item) => renderNavigationItem(item))}
+                {/* Special animated contact button */}
+                <Button
+                  onClick={() => {
+                    if (location === '/') {
+                      scrollToContact();
+                    } else {
+                      sessionStorage.setItem('scrollToContact', 'true');
+                      setLocation('/');
+                    }
+                  }}
+                  className={`
+                    group relative px-6 py-2 font-medium transition-all duration-300 text-[15px] rounded-full
+                    ${isScrolled 
+                      ? 'bg-gradient-to-r from-[#1c2d56] to-blue-700 text-white hover:from-blue-700 hover:to-[#1c2d56] shadow-md hover:shadow-lg transform hover:scale-105' 
+                      : 'bg-white/10 text-white backdrop-blur-sm border border-white/20 hover:bg-white/20'
+                    }
+                  `}
+                  data-testid="nav-contact-animated"
+                >
+                  <div className="flex items-center space-x-2">
+                    <MessageCircle className="h-4 w-4" />
+                    <span>{t('navigation.contact')}</span>
+                  </div>
+                  <div className={`absolute inset-0 rounded-full bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${!isScrolled ? 'hidden' : ''}`} />
+                </Button>
               </div>
               <LanguageSwitcher />
             </div>
@@ -544,9 +571,30 @@ export function Navigation() {
                     />
                     <LanguageSwitcher />
                   </div>
-                  {navigationItems.map((item) =>
+                  {navigationItems.filter(item => item.label !== t("nav.contact")).map((item) =>
                     renderNavigationItem(item, true),
                   )}
+                  
+                  {/* Mobile animated contact button */}
+                  <Button
+                    onClick={() => {
+                      if (location === '/') {
+                        scrollToContact();
+                      } else {
+                        sessionStorage.setItem('scrollToContact', 'true');
+                        setLocation('/');
+                      }
+                      setMobileMenuOpen(false);
+                      closeMobileDropdowns();
+                    }}
+                    className="w-full mt-6 py-4 bg-gradient-to-r from-[#1c2d56] to-blue-700 text-white hover:from-blue-700 hover:to-[#1c2d56] shadow-lg hover:shadow-xl transition-all duration-300 rounded-lg"
+                    data-testid="mobile-nav-contact-animated"
+                  >
+                    <div className="flex items-center justify-center space-x-2">
+                      <MessageCircle className="h-5 w-5" />
+                      <span className="text-lg font-semibold">{t('navigation.contact')}</span>
+                    </div>
+                  </Button>
                 </div>
               </SheetContent>
             </Sheet>

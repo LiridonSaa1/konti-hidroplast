@@ -115,9 +115,13 @@ export function ContactSection() {
     <section
       id="contact"
       ref={ref}
-      className="py-20 bg-white"
+      className="py-20 bg-white relative"
       data-testid="contact-section"
     >
+      {/* Scroll target indicator */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2">
+        <div className="w-12 h-1 bg-gradient-to-r from-[#1c2d56] to-blue-500 rounded-full opacity-60"></div>
+      </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className={`text-center mb-16 ${
