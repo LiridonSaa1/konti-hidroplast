@@ -2,9 +2,11 @@ import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 import { MapPin, Phone } from "lucide-react";
 import logoWhite from "@assets/urban-rohr-logo-white.svg";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 
 export function Footer() {
   const { t } = useLanguage();
+  const { data: companyInfo } = useCompanyInfo();
   const quickLinks = [
     { labelKey: "footer.aboutUs", href: "https://konti-hidroplast.com.mk/about-us/" },
     { labelKey: "footer.products", href: "https://konti-hidroplast.com.mk/products/" },
@@ -27,8 +29,8 @@ export function Footer() {
           {/* Company Info */}
           <div className="md:col-span-2">
             <img
-              src={logoWhite}
-              alt="Konti Hidroplast"
+              src={companyInfo.logoUrl || logoWhite}
+              alt={companyInfo.companyName || "Konti Hidroplast"}
               className="h-16 w-auto mb-6 ml-[0px] mr-[0px]"
               data-testid="footer-logo"
             />
@@ -36,36 +38,42 @@ export function Footer() {
               className="text-gray-300 mb-6 max-w-md"
               data-testid="footer-description"
             >
-              {t('footer.description')}
+              {companyInfo.description || t('footer.description')}
             </p>
             <div className="flex space-x-4" data-testid="footer-social">
-              <a
-                href="https://www.linkedin.com/company/konti-hidroplast/about/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
-                data-testid="footer-linkedin"
-              >
-                <FaLinkedin className="text-xl" />
-              </a>
-              <a
-                href="https://www.facebook.com/kontihidroplastofficial"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
-                data-testid="footer-facebook"
-              >
-                <FaFacebook className="text-xl" />
-              </a>
-              <a
-                href="https://www.instagram.com/kontihidroplast/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white transition-colors"
-                data-testid="footer-instagram"
-              >
-                <FaInstagram className="text-xl" />
-              </a>
+              {companyInfo.socialLinkedIn && (
+                <a
+                  href={companyInfo.socialLinkedIn}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                  data-testid="footer-linkedin"
+                >
+                  <FaLinkedin className="text-xl" />
+                </a>
+              )}
+              {companyInfo.socialFacebook && (
+                <a
+                  href={companyInfo.socialFacebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                  data-testid="footer-facebook"
+                >
+                  <FaFacebook className="text-xl" />
+                </a>
+              )}
+              {companyInfo.socialInstagram && (
+                <a
+                  href={companyInfo.socialInstagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-400 hover:text-white transition-colors"
+                  data-testid="footer-instagram"
+                >
+                  <FaInstagram className="text-xl" />
+                </a>
+              )}
             </div>
           </div>
 
@@ -103,20 +111,22 @@ export function Footer() {
               {t('footer.contactInfo')}
             </h4>
             <div className="space-y-4 text-gray-300">
-              <div className="flex items-start" data-testid="footer-address">
-                <MapPin className="text-gray-300 mr-3 mt-1 flex-shrink-0" />
-                <span>{t('footer.address')}</span>
-              </div>
-              <div className="flex items-start" data-testid="footer-phone">
-                <Phone className="text-gray-300 mr-3 mt-1 flex-shrink-0" />
-                <div>
-                  <div>+389 34 215 225</div>
-                  <div>+389 34 212 064</div>
-                  <div>+389 34 212 226</div>
-                  <div>+389 34 211 964</div>
-                  <div>+389 34 211 757</div>
+              {companyInfo.address && (
+                <div className="flex items-start" data-testid="footer-address">
+                  <MapPin className="text-gray-300 mr-3 mt-1 flex-shrink-0" />
+                  <span>{companyInfo.address}</span>
                 </div>
-              </div>
+              )}
+              {companyInfo.phones.length > 0 && (
+                <div className="flex items-start" data-testid="footer-phone">
+                  <Phone className="text-gray-300 mr-3 mt-1 flex-shrink-0" />
+                  <div>
+                    {companyInfo.phones.map((phone, index) => (
+                      <div key={index}>{phone}</div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

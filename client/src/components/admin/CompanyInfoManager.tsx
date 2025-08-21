@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Building, Phone, Mail, MapPin, Globe, Save, Edit3 } from "lucide-react";
+import { Building, Phone, Mail, MapPin, Globe, Save, Edit3, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -8,15 +8,15 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { FileUpload } from "@/components/ui/file-upload";
 import type { CompanyInfo, InsertCompanyInfo } from "@shared/schema";
 
 interface CompanyInfoForm {
   companyName: string;
   email: string;
-  phone: string;
+  phones: string[];
   address: string;
   logoUrl: string;
-  website: string;
   description: string;
   socialLinkedIn: string;
   socialFacebook: string;
@@ -28,10 +28,9 @@ export function CompanyInfoManager() {
   const [formData, setFormData] = useState<CompanyInfoForm>({
     companyName: "",
     email: "",
-    phone: "",
+    phones: [""],
     address: "",
     logoUrl: "",
-    website: "",
     description: "",
     socialLinkedIn: "",
     socialFacebook: "",
@@ -53,13 +52,22 @@ export function CompanyInfoManager() {
         return acc;
       }, {} as Record<string, string>);
 
+      // Handle multiple phone numbers
+      const phones = [];
+      for (let i = 0; i < 5; i++) {
+        const phoneKey = i === 0 ? 'phone' : `phone${i + 1}`;
+        if (infoMap[phoneKey]) {
+          phones.push(infoMap[phoneKey]);
+        }
+      }
+      if (phones.length === 0) phones.push("");
+
       setFormData({
         companyName: infoMap.companyName || "",
         email: infoMap.email || "",
-        phone: infoMap.phone || "",
+        phones,
         address: infoMap.address || "",
         logoUrl: infoMap.logoUrl || "",
-        website: infoMap.website || "",
         description: infoMap.description || "",
         socialLinkedIn: infoMap.socialLinkedIn || "",
         socialFacebook: infoMap.socialFacebook || "",
@@ -70,13 +78,33 @@ export function CompanyInfoManager() {
 
   const updateMutation = useMutation({
     mutationFn: async (data: CompanyInfoForm) => {
-      const updates = Object.entries(data).map(([key, value]) => 
-        apiRequest("POST", "/api/admin/company-info", {
-          key,
-          value,
-          category: getCategoryForKey(key)
-        })
-      );
+      const updates = [];
+      
+      // Handle regular fields
+      for (const [key, value] of Object.entries(data)) {
+        if (key === 'phones') continue; // Handle phones separately
+        updates.push(
+          apiRequest("POST", "/api/admin/company-info", {
+            key,
+            value: value as string,
+            category: getCategoryForKey(key)
+          })
+        );
+      }
+      
+      // Handle phone numbers
+      for (let i = 0; i < 5; i++) {
+        const phoneKey = i === 0 ? 'phone' : `phone${i + 1}`;
+        const phoneValue = data.phones[i] || '';
+        updates.push(
+          apiRequest("POST", "/api/admin/company-info", {
+            key: phoneKey,
+            value: phoneValue,
+            category: 'contact'
+          })
+        );
+      }
+      
       return Promise.all(updates);
     },
     onSuccess: () => {
@@ -98,9 +126,38 @@ export function CompanyInfoManager() {
 
   const getCategoryForKey = (key: string): string => {
     if (key.startsWith('social')) return 'social';
-    if (['email', 'phone', 'address'].includes(key)) return 'contact';
-    if (['logoUrl', 'website'].includes(key)) return 'branding';
+    if (['email', 'address'].includes(key) || key.startsWith('phone')) return 'contact';
+    if (['logoUrl'].includes(key)) return 'branding';
     return 'general';
+  };
+
+  // Phone management functions
+  const addPhone = () => {
+    if (formData.phones.length < 5) {
+      setFormData({
+        ...formData,
+        phones: [...formData.phones, ""]
+      });
+    }
+  };
+
+  const removePhone = (index: number) => {
+    if (formData.phones.length > 1) {
+      const newPhones = formData.phones.filter((_, i) => i !== index);
+      setFormData({
+        ...formData,
+        phones: newPhones
+      });
+    }
+  };
+
+  const updatePhone = (index: number, value: string) => {
+    const newPhones = [...formData.phones];
+    newPhones[index] = value;
+    setFormData({
+      ...formData,
+      phones: newPhones
+    });
   };
 
   const handleSubmit = () => {
@@ -115,13 +172,22 @@ export function CompanyInfoManager() {
         return acc;
       }, {} as Record<string, string>);
 
+      // Handle multiple phone numbers
+      const phones = [];
+      for (let i = 0; i < 5; i++) {
+        const phoneKey = i === 0 ? 'phone' : `phone${i + 1}`;
+        if (infoMap[phoneKey]) {
+          phones.push(infoMap[phoneKey]);
+        }
+      }
+      if (phones.length === 0) phones.push("");
+
       setFormData({
         companyName: infoMap.companyName || "",
         email: infoMap.email || "",
-        phone: infoMap.phone || "",
+        phones,
         address: infoMap.address || "",
         logoUrl: infoMap.logoUrl || "",
-        website: infoMap.website || "",
         description: infoMap.description || "",
         socialLinkedIn: infoMap.socialLinkedIn || "",
         socialFacebook: infoMap.socialFacebook || "",
@@ -203,28 +269,20 @@ export function CompanyInfoManager() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="website">Website URL</Label>
-              <Input
-                id="website"
-                type="url"
-                value={formData.website}
-                onChange={(e) => setFormData({ ...formData, website: e.target.value })}
-                disabled={!isEditing}
-                placeholder="https://example.com"
-                data-testid="input-company-website"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="logoUrl">Logo URL</Label>
-              <Input
-                id="logoUrl"
-                type="url"
-                value={formData.logoUrl}
-                onChange={(e) => setFormData({ ...formData, logoUrl: e.target.value })}
-                disabled={!isEditing}
-                placeholder="https://example.com/logo.png"
-                data-testid="input-company-logo"
-              />
+              <Label htmlFor="logoUrl">Company Logo</Label>
+              {isEditing ? (
+                <FileUpload
+                  value={formData.logoUrl}
+                  onChange={(url) => setFormData({ ...formData, logoUrl: url })}
+                  label="Company Logo"
+                  placeholder="Upload company logo"
+                  data-testid="upload-company-logo"
+                />
+              ) : (
+                <div className="text-sm text-gray-600">
+                  {formData.logoUrl ? "Logo uploaded" : "No logo uploaded"}
+                </div>
+              )}
               {formData.logoUrl && (
                 <div className="mt-2">
                   <img
@@ -267,17 +325,48 @@ export function CompanyInfoManager() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phone" className="flex items-center gap-2">
-                <Phone className="h-4 w-4" />
-                Phone Number
-              </Label>
-              <Input
-                id="phone"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                disabled={!isEditing}
-                data-testid="input-company-phone"
-              />
+              <div className="flex items-center justify-between">
+                <Label className="flex items-center gap-2">
+                  <Phone className="h-4 w-4" />
+                  Phone Numbers
+                </Label>
+                {isEditing && formData.phones.length < 5 && (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={addPhone}
+                    data-testid="button-add-phone"
+                  >
+                    <Plus className="h-4 w-4 mr-1" />
+                    Add More
+                  </Button>
+                )}
+              </div>
+              <div className="space-y-2">
+                {formData.phones.map((phone, index) => (
+                  <div key={index} className="flex gap-2">
+                    <Input
+                      value={phone}
+                      onChange={(e) => updatePhone(index, e.target.value)}
+                      disabled={!isEditing}
+                      placeholder={`Phone ${index + 1}`}
+                      data-testid={`input-company-phone-${index}`}
+                    />
+                    {isEditing && formData.phones.length > 1 && (
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={() => removePhone(index)}
+                        data-testid={`button-remove-phone-${index}`}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="address" className="flex items-center gap-2">
@@ -360,7 +449,7 @@ export function CompanyInfoManager() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
               <div className="space-y-1">
                 <div className="font-medium text-slate-700">Company</div>
                 <div data-testid="preview-company-name">{formData.companyName || "Not set"}</div>
@@ -370,19 +459,14 @@ export function CompanyInfoManager() {
                 <div data-testid="preview-company-email">{formData.email || "Not set"}</div>
               </div>
               <div className="space-y-1">
-                <div className="font-medium text-slate-700">Phone</div>
-                <div data-testid="preview-company-phone">{formData.phone || "Not set"}</div>
-              </div>
-              <div className="space-y-1">
-                <div className="font-medium text-slate-700">Website</div>
-                <div data-testid="preview-company-website">
-                  {formData.website ? (
-                    <a href={formData.website} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
-                      {formData.website}
-                    </a>
-                  ) : (
-                    "Not set"
-                  )}
+                <div className="font-medium text-slate-700">Phone Numbers</div>
+                <div data-testid="preview-company-phones">
+                  {formData.phones.filter(phone => phone.trim()).length > 0 
+                    ? formData.phones.filter(phone => phone.trim()).map((phone, index) => (
+                        <div key={index}>{phone}</div>
+                      ))
+                    : "Not set"
+                  }
                 </div>
               </div>
             </div>

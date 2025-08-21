@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Menu, ChevronDown, ExternalLink, ChevronRight, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { LanguageSwitcher } from "@/components/language-switcher";
 import { useAnimatedScroll } from "@/hooks/use-smooth-scroll";
 import logoScrolled from "@assets/urban-rohr-logo.svg";
@@ -99,6 +100,7 @@ export function Navigation() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileDropdowns, setMobileDropdowns] = useState<Record<string, boolean>>({});
   const { t } = useLanguage();
+  const { data: companyInfo } = useCompanyInfo();
   const { scrollToContact } = useAnimatedScroll();
   const navigationItems = useNavigationItems(t);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -486,8 +488,8 @@ export function Navigation() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <img
-              src={isScrolled ? logoScrolled : logoDefault}
-              alt="Urban Rohr"
+              src={companyInfo.logoUrl || (isScrolled ? logoScrolled : logoDefault)}
+              alt={companyInfo.companyName || "Urban Rohr"}
               className="h-16 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
               onClick={scrollToTop}
               data-testid="logo"
