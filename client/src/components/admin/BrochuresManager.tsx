@@ -75,7 +75,11 @@ export function BrochuresManager() {
       imageUrl: "",
       language: "en"
     }],
-    translations: {}
+    translations: {
+      en: {},
+      mk: {},
+      de: {}
+    }
   });
 
   const { toast } = useToast();
@@ -186,7 +190,11 @@ export function BrochuresManager() {
         imageUrl: "",
         language: "en"
       }],
-      translations: {}
+      translations: {
+        en: {},
+        mk: {},
+        de: {}
+      }
     });
   };
 
@@ -212,7 +220,11 @@ export function BrochuresManager() {
         imageUrl: brochure.imageUrl || "",
         language: brochure.language || "en"
       }],
-      translations: (brochure as any).translations || {}
+      translations: (brochure as any).translations || {
+        en: {},
+        mk: {},
+        de: {}
+      }
     });
     setIsEditDialogOpen(true);
   };
@@ -294,18 +306,18 @@ export function BrochuresManager() {
       }
     }
 
-    // Get the name from translations or fallback to the direct name input
-    const translatedName = formData.translations?.en?.name || formData.name;
-    const translatedDescription = formData.translations?.en?.description || formData.description;
+    // Get the name from translations or fallback to the direct name input (matching categories pattern)
+    const enName = formData.translations?.en?.name || formData.name;
+    const enDescription = formData.translations?.en?.description || formData.description;
 
     const submissionData = {
-      title: translatedName, // Use name as title
-      name: translatedName,
+      title: enName, // Use name as title
+      name: enName,
       category: formData.category,
       language: formData.language as "en" | "mk" | "de",
       pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
       imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
-      description: translatedDescription,
+      description: enDescription || null,
       status: formData.status as "active" | "inactive" | "draft",
       active: formData.active,
       sortOrder: formData.sortOrder,
@@ -915,7 +927,7 @@ function BrochureFormDialog({
         </Button>
         <Button 
           onClick={onSubmit} 
-          disabled={isLoading || (!formData.name && !formData.translations?.en?.name) || !formData.category || (!formData.pdfFile && !formData.pdfUrl && title.includes("Add"))}
+          disabled={isLoading || !(formData.translations?.en?.name || formData.name).trim() || !formData.category || (!formData.pdfFile && !formData.pdfUrl && title.includes("Add"))}
           data-testid="button-save-brochure"
         >
           {isLoading ? "Saving..." : "Save Brochure"}
