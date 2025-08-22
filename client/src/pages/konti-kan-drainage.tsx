@@ -3,6 +3,61 @@ import { Navigation } from "@/components/navigation";
 import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Footer } from "@/components/footer";
 import { Download, Check } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
+
+// Drainage translation helper function
+const translateDrainageText = (text: string, t: any) => {
+  const translations: { [key: string]: string } = {
+    // Page titles and headers
+    "KONTIKAN": t("drainage.kontikan"),
+    "DRAINAGE": t("drainage.drainage"),
+    "KONTI DREN": t("drainage.kontiDren"),
+    
+    // Descriptions
+    "Drainage Polypropylene (PP) pipes are widely used in drainage systems for managing groundwater, excess surface water, and wastewater. These pipes are designed with precision slots or perforations to allow water infiltration.": t("drainage.heroDescription"),
+    "Drainage PP pipes offer an efficient, durable, and eco-friendly solution for managing water in a variety of drainage applications. Their lightweight nature, structural strength, and long lifespan make them a cost-effective choice for modern water management systems.": t("drainage.kontiDrenDescription"),
+    "Polypropylene is resistant to wear and tear, ensuring long-term performance in harsh environments. PP pipes are highly resistant to chemicals, including acids, alkalis, and salts commonly found in wastewater and drainage applications.": t("drainage.materialDescription"),
+    
+    // Standards & Compliance
+    "Standards & Compliance": t("drainage.standardsCompliance"),
+    "PP slotted pipes are manufactured to comply with standards such as EN 1852, EN 13476, DIN 4262-1 (TYPE R3) or equivalent local drainage pipe regulations, ensuring quality and reliability.": t("drainage.standardsDescription"),
+    "Available with different slot patterns (e.g., longitudinal, spiral, or circumferential) to optimize water collection based on the application.": t("drainage.slotPatternsDescription"),
+    
+    // Slot Patterns
+    "Slot Patterns Available": t("drainage.slotPatternsAvailable"),
+    "PP - Partially perforated": t("drainage.ppPartiallyPerforated"),
+    "Optimized for controlled water infiltration": t("drainage.optimizedControlledInfiltration"),
+    "MP - Multipurpose": t("drainage.mpMultipurpose"),
+    "Versatile solution for various applications": t("drainage.versatileSolution"),
+    "FP - Fully perforated": t("drainage.fpFullyPerforated"),
+    "Maximum water collection capacity": t("drainage.maximumWaterCollection"),
+    
+    // Key Applications
+    "Key Applications": t("drainage.keyApplications"),
+    "Suitable for agriculture (irrigation), infrastructure projects (road and slope drainage), and residential or commercial water management systems. Can be easily connected to other drainage components, such as catch basins and manholes, using standard fittings.": t("drainage.applicationsDescription"),
+    "Agriculture (irrigation)": t("drainage.agriculture"),
+    "Infrastructure projects (road and slope drainage)": t("drainage.infrastructureProjects"),
+    "Residential water management systems": t("drainage.residentialWaterManagement"),
+    "Commercial water management systems": t("drainage.commercialWaterManagement"),
+    "Subsurface drainage": t("drainage.subsurfaceDrainage"),
+    "Slope stabilization": t("drainage.slopeStabilization"),
+    "Groundwater management": t("drainage.groundwaterManagement"),
+    "Surface water management": t("drainage.surfaceWaterManagement"),
+    
+    // Characteristics
+    "Durable, chemical-resistant, non-corrosive": t("drainage.durableChemicalResistant"),
+    "Smooth inner surface, controlled infiltration": t("drainage.smoothInnerSurface"),
+    "High ring stiffness, flexible under soil pressure": t("drainage.highRingStiffness"),
+    "Operates between -20°C and +90°C": t("drainage.temperatureRange"),
+    "Optimized for water infiltration, debris exclusion": t("drainage.optimizedInfiltration"),
+    "Range of pipe: DN 110-1000 mm": t("drainage.pipeRange"),
+    "UV-stabilized, eco-friendly, recyclable": t("drainage.uvStabilized"),
+    "Lightweight, easy to transport and install": t("drainage.lightweightEasyInstall"),
+    "Minimal maintenance due to clog resistance and durability": t("drainage.minimalMaintenance"),
+    "Service life 50+ years": t("drainage.serviceLife"),
+  };
+  return translations[text] || text;
+};
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 
@@ -67,6 +122,7 @@ const slotPatterns = [
 ];
 
 export default function KontiKanDrainagePage() {
+  const { t } = useLanguage();
   const [, setLocation] = useLocation();
   const { data: companyInfo } = useCompanyInfo();
   
@@ -100,35 +156,32 @@ export default function KontiKanDrainagePage() {
             <div>
               <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
                 <span className="text-sm font-medium">
-                  ENGINEERED FOR EXCELLENCE
+{t("drainage.engineeredForExcellence")}
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                KONTI<span className="text-red-500">KAN</span>
+{translateDrainageText("KONTIKAN", t)}
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  DRAINAGE
+                  {translateDrainageText("DRAINAGE", t)}
                 </span>
               </h1>
               <p
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                Drainage Polypropylene (PP) pipes are widely used in drainage
-                systems for managing groundwater, excess surface water, and
-                wastewater. These pipes are designed with precision slots or
-                perforations to allow water infiltration.
+{translateDrainageText("Drainage Polypropylene (PP) pipes are widely used in drainage systems for managing groundwater, excess surface water, and wastewater. These pipes are designed with precision slots or perforations to allow water infiltration.", t)}
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
                   <Check className="w-5 h-5" />
                   <span className="text-sm font-medium">
-                    50+ Years Lifespan
+{t("drainage.yearsLifespan")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
                   <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">100% Recyclable</span>
+                  <span className="text-sm font-medium">{t("drainage.recyclable")}</span>
                 </div>
               </div>
             </div>
@@ -146,7 +199,7 @@ export default function KontiKanDrainagePage() {
                 />
               </div>
               <div className="absolute -bottom-4 -right-4 text-white px-4 py-2 rounded-full shadow-lg bg-[#ef4444]">
-                <span className="text-sm font-medium">Premium Quality</span>
+                <span className="text-sm font-medium">{t("drainage.premiumQuality")}</span>
               </div>
             </div>
           </div>
@@ -159,35 +212,30 @@ export default function KontiKanDrainagePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-                Standards & Compliance
+{translateDrainageText("Standards & Compliance", t)}
               </h2>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  PP slotted pipes are manufactured to comply with standards
-                  such as EN 1852, EN 13476, DIN 4262-1 (TYPE R3) or equivalent
-                  local drainage pipe regulations, ensuring quality and
-                  reliability.
+                  {translateDrainageText("PP slotted pipes are manufactured to comply with standards such as EN 1852, EN 13476, DIN 4262-1 (TYPE R3) or equivalent local drainage pipe regulations, ensuring quality and reliability.", t)}
                 </p>
                 <p>
-                  Available with different slot patterns (e.g., longitudinal,
-                  spiral, or circumferential) to optimize water collection based
-                  on the application.
+                  {translateDrainageText("Available with different slot patterns (e.g., longitudinal, spiral, or circumferential) to optimize water collection based on the application.", t)}
                 </p>
               </div>
             </div>
 
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-                Slot Patterns Available
+{translateDrainageText("Slot Patterns Available", t)}
               </h3>
               <div className="space-y-4">
                 {slotPatterns.map((pattern, index) => (
                   <div key={index} className="border-l-4 border-blue-500 pl-4">
                     <h4 className="font-semibold text-[#1c2d56] mb-1">
-                      {pattern.name}
+{translateDrainageText(pattern.name, t)}
                     </h4>
                     <p className="text-gray-600 text-sm">
-                      {pattern.description}
+{translateDrainageText(pattern.description, t)}
                     </p>
                   </div>
                 ))}
@@ -202,14 +250,10 @@ export default function KontiKanDrainagePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-              Key Applications
+{translateDrainageText("Key Applications", t)}
             </h2>
             <p className="text-gray-600 max-w-3xl mx-auto">
-              Suitable for agriculture (irrigation), infrastructure projects
-              (road and slope drainage), and residential or commercial water
-              management systems. Can be easily connected to other drainage
-              components, such as catch basins and manholes, using standard
-              fittings.
+{translateDrainageText("Suitable for agriculture (irrigation), infrastructure projects (road and slope drainage), and residential or commercial water management systems. Can be easily connected to other drainage components, such as catch basins and manholes, using standard fittings.", t)}
             </p>
           </div>
 
@@ -221,7 +265,7 @@ export default function KontiKanDrainagePage() {
               >
                 <div className="flex items-center gap-3 mb-2">
                   <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                  <span className="text-[#1c2d56] font-medium">{app}</span>
+                  <span className="text-[#1c2d56] font-medium">{translateDrainageText(app, t)}</span>
                 </div>
               </div>
             ))}
@@ -236,7 +280,7 @@ export default function KontiKanDrainagePage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
-                KONTI DREN
+{translateDrainageText("KONTI DREN", t)}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -246,21 +290,21 @@ export default function KontiKanDrainagePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
-                {drainageSpecifications[0].title}
+{translateDrainageText(drainageSpecifications[0].title, t)}
               </h3>
               <p className="text-[#ffffff] mb-6">
-                {drainageSpecifications[0].description}
+{translateDrainageText(drainageSpecifications[0].description, t)}
               </p>
 
               <p className="text-[#ffffff] mb-6">
-                {drainageSpecifications[0].additionalInfo}
+{translateDrainageText(drainageSpecifications[0].additionalInfo, t)}
               </p>
 
               <div className="space-y-3 mb-8">
                 {drainageSpecifications[0].features.map((feature, index) => (
                   <div key={index} className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-[#ffffff]">{feature}</span>
+                    <span className="text-[#ffffff]">{translateDrainageText(feature, t)}</span>
                   </div>
                 ))}
               </div>
@@ -273,7 +317,7 @@ export default function KontiKanDrainagePage() {
                   className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-[#ffffff] rounded-lg transition-colors"
                 >
                   <Download className="w-4 h-4 mr-2" />
-                  Download Specs
+{t("drainage.downloadSpecs")}
                 </a>
                 <a
                   href={drainageSpecifications[0].brochure}
@@ -282,7 +326,7 @@ export default function KontiKanDrainagePage() {
                   className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                 >
                   <Download className="w-4 h-4 mr-2" />
-                  Download Brochure
+{t("drainage.downloadBrochure")}
                 </a>
               </div>
             </div>
@@ -291,7 +335,7 @@ export default function KontiKanDrainagePage() {
               <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <img
                   src={drainageSpecifications[0].images[0]}
-                  alt={drainageSpecifications[0].title}
+alt={translateDrainageText(drainageSpecifications[0].title, t)}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -305,20 +349,19 @@ export default function KontiKanDrainagePage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+{t("drainage.contactTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our cable protection solutions?
-              Contact our team of experts.
+              {t("drainage.contactDescriptionCableProtection")}
             </p>
             <a
               href="/contact"
               className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
-              Contact Us
+{t("drainage.contactUs")}
             </a>
           </div>
         </div>
@@ -330,13 +373,12 @@ export default function KontiKanDrainagePage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+{t("drainage.contactTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our drainage solutions?
-              Contact our team of experts.
+{t("drainage.contactDescriptionDrainage")}
             </p>
             <Button
               onClick={() => {
@@ -348,7 +390,7 @@ export default function KontiKanDrainagePage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              Contact Us
+{t("drainage.contactUs")}
             </Button>
           </div>
         </div>
