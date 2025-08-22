@@ -311,7 +311,6 @@ export const insertBrochureCategorySchema = createInsertSchema(brochureCategorie
   id: true,
   createdAt: true,
   updatedAt: true,
-  translations: true,
   defaultLanguage: true,
 });
 
