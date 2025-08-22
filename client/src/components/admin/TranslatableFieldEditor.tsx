@@ -38,6 +38,7 @@ export function TranslatableFieldEditor({
   onChange 
 }: TranslatableFieldEditorProps) {
   const handleFieldChange = (languageCode: string, value: string) => {
+    console.log(`TranslatableFieldEditor: Field ${fieldName} changed for language ${languageCode} to: "${value}"`);
     const updatedTranslations = {
       ...currentTranslations,
       [languageCode]: {
@@ -45,6 +46,7 @@ export function TranslatableFieldEditor({
         [fieldName]: value
       }
     };
+    console.log('TranslatableFieldEditor: Updated translations:', updatedTranslations);
     onChange(updatedTranslations);
   };
 

@@ -188,22 +188,20 @@ function BrochuresPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
-              <span className="text-sm font-medium">PRODUCT DOCUMENTATION</span>
+              <span className="text-sm font-medium">{t("productPages.productDocumentation")}</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-              PRODUCT<span className="text-red-500"> BROCHURES</span>
+              {t("productPages.productBrochures")}<span className="text-red-500"> </span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                & CATALOGS
+                {t("productPages.andCatalogs")}
               </span>
             </h1>
             <p
               className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
               data-testid="hero-description"
             >
-              Download comprehensive product documentation, technical
-              specifications, and catalogs for all our pipe and fitting
-              solutions.
+{t("productPages.brochuresDescription")}
             </p>
           </div>
         </div>
@@ -295,7 +293,7 @@ function BrochuresPage() {
                         data-testid={`download-${category.id}-${index}`}
                       >
                         <Download className="w-4 h-4 mr-2" />
-                        Download PDF
+{t("productPages.downloadPdf")}
                       </a>
                     </div>
                   </div>
@@ -312,13 +310,12 @@ function BrochuresPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+                {t("aboutUs.getInTouchTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our products and solutions? Contact
-              our team of experts.
+              {t("productPages.needMoreInfo")} products and {t("productPages.solutions")}? {t("productPages.contactExperts")}.
             </p>
             <Button
               onClick={() => {
@@ -330,7 +327,7 @@ function BrochuresPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              Contact Us
+{t("aboutUs.contactUsButton")}
             </Button>
           </div>
         </div>

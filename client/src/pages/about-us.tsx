@@ -28,128 +28,350 @@ import {
   Wrench,
   FileText,
   Image,
+  Globe,
 } from "lucide-react";
 
 const timelineData = [
   {
     year: "1990",
-    title: "Beginnings",
-    description:
-      "Konti Hidroplast has started its manufacturing production in 1990 with one single production line of polyethylene pipes, with a total number of 10 employees.",
+    translations: {
+      en: {
+        title: "Beginnings",
+        description: "Konti Hidroplast has started its manufacturing production in 1990 with one single production line of polyethylene pipes, with a total number of 10 employees."
+      },
+      mk: {
+        title: "Почетоци",
+        description: "Конти Хидропласт ја започна својата производствена производство во 1990 година со една единствена производствена линија на полиетиленски цевки, со вкупен број од 10 вработени."
+      },
+      de: {
+        title: "Anfänge",
+        description: "Konti Hidroplast hat 1990 mit einer einzigen Produktionslinie für Polyethylenrohre mit insgesamt 10 Mitarbeitern mit der Fertigungsproduktion begonnen."
+      }
+    }
   },
   {
     year: "1994",
-    title: "New products and production lines",
-    description:
-      "By 1994, the production program expanded with an additional 5 production lines. In addition to polyethylene hoses and LDPE pipes, Konti Hidroplast began to expand its production program with new types of products and the development of a wider range of dimensions. With the development of new classes of polyethylene (PE), the use of PE pipes for household installations and pressure systems also expanded. With the use of second-generation polyethylene, such as PE63 and PE80, we started producing pipes for domestic installations with a pressure capacity of up to 16 bars. The range of dimensions increased with pipes up to F110mm.",
+    translations: {
+      en: {
+        title: "New products and production lines",
+        description: "By 1994, the production program expanded with an additional 5 production lines. In addition to polyethylene hoses and LDPE pipes, Konti Hidroplast began to expand its production program with new types of products and the development of a wider range of dimensions. With the development of new classes of polyethylene (PE), the use of PE pipes for household installations and pressure systems also expanded. With the use of second-generation polyethylene, such as PE63 and PE80, we started producing pipes for domestic installations with a pressure capacity of up to 16 bars. The range of dimensions increased with pipes up to F110mm."
+      },
+      mk: {
+        title: "Нови производи и производствени линии",
+        description: "До 1994 година, производствениот програм се прошири со дополнителни 5 производствени линии. Покрај полиетиленски црева и LDPE цевки, Конти Хидропласт почна да го проширува својот производствен програм со нови типови на производи и развојот на поширок опсег на димензии. Со развојот на новите класи на полиетилен (PE), употребата на PE цевки за домашни инсталации и притисни системи исто така се прошири. Со употребата на полиетилен од второ поколение, како што се PE63 и PE80, почнавме да произведуваме цевки за домашни инсталации со капацитет на притисок до 16 бари. Опсегот на димензии се зголеми со цевки до F110mm."
+      },
+      de: {
+        title: "Neue Produkte und Produktionslinien",
+        description: "Bis 1994 wurde das Produktionsprogramm um 5 zusätzliche Produktionslinien erweitert. Neben Polyethylenschläuchen und LDPE-Rohren begann Konti Hidroplast, sein Produktionsprogramm mit neuen Produkttypen und der Entwicklung eines breiteren Dimensionsbereichs zu erweitern. Mit der Entwicklung neuer Polyethylenklassen (PE) wurde auch die Verwendung von PE-Rohren für Hausinstallationen und Druckluftsysteme erweitert. Mit der Verwendung von Polyethylen der zweiten Generation, wie PE63 und PE80, begannen wir mit der Herstellung von Rohren für Hausinstallationen mit einem Druckvermögen von bis zu 16 bar. Der Dimensionsbereich wurde mit Rohren bis zu F110mm erweitert."
+      }
+    }
   },
   {
     year: "1996",
-    title: "Third Generation",
-    description:
-      "In 1996 were manufactured the first pipes of a third generation polyethylene material, specifically PE 100. This allowed the pipes to be used in installations with a working pressure of 32 bars. That year, we also began producing gas transportation pipes for use in installations with a working pressure of 10 bars, as well as pipes that can be used in various other industries. We increased the range of dimensions once again, with the largest dimension now being F160mm.",
+    translations: {
+      en: {
+        title: "Third Generation",
+        description: "In 1996 were manufactured the first pipes of a third generation polyethylene material, specifically PE 100. This allowed the pipes to be used in installations with a working pressure of 32 bars. That year, we also began producing gas transportation pipes for use in installations with a working pressure of 10 bars, as well as pipes that can be used in various other industries. We increased the range of dimensions once again, with the largest dimension now being F160mm."
+      },
+      mk: {
+        title: "Трето поколение",
+        description: "Во 1996 година се произведоа првите цевки од материјал од трето поколение полиетилен, конкретно PE 100. Ова овозможи цевките да се користат во инсталации со работен притисок од 32 бари. Таа година, исто така почнавме да произведуваме цевки за транспорт на гас за употреба во инсталации со работен притисок од 10 бари, како и цевки кои можат да се користат во различни други индустрии. Повторно го зголемивме опсегот на димензии, со најголемата димензија сега да биде F160mm."
+      },
+      de: {
+        title: "Dritte Generation",
+        description: "1996 wurden die ersten Rohre aus einem Polyethylenmaterial der dritten Generation hergestellt, speziell PE 100. Dies ermöglichte es, die Rohre in Installationen mit einem Arbeitsdruck von 32 bar zu verwenden. In diesem Jahr begannen wir auch mit der Herstellung von Gastransportrohren für Installationen mit einem Arbeitsdruck von 10 bar sowie Rohren, die in verschiedenen anderen Industrien verwendet werden können. Wir haben den Dimensionsbereich erneut vergrößert, wobei die größte Dimension jetzt F160mm beträgt."
+      }
+    }
   },
   {
     year: "1998",
-    title: "ISO 9001",
-    description:
-      "In 1998 the dimensional range is increased once again. Now, the largest dimension being F250mm. That year, Konti Hidroplast obtained the ISO 9001 certificate for its management quality system.",
+    translations: {
+      en: {
+        title: "ISO 9001",
+        description: "In 1998 the dimensional range is increased once again. Now, the largest dimension being F250mm. That year, Konti Hidroplast obtained the ISO 9001 certificate for its management quality system."
+      },
+      mk: {
+        title: "ISO 9001",
+        description: "Во 1998 година димензионалниот опсег повторно се зголеми. Сега, најголемата димензија е F250mm. Таа година, Конти Хидропласт го доби сертификатот ISO 9001 за својот систем за управување со квалитет."
+      },
+      de: {
+        title: "ISO 9001",
+        description: "1998 wurde der Dimensionsbereich erneut vergrößert. Jetzt beträgt die größte Dimension F250mm. In diesem Jahr erhielt Konti Hidroplast das ISO 9001-Zertifikat für sein Qualitätsmanagementsystem."
+      }
+    }
   },
   {
     year: "1999-2000",
-    title: "International Offices",
-    description:
-      "In 1999-2000 Konti Hidroplast began expanding its representations with opening its first offices abroad in Serbia and Bulgaria. But, the expanding did not stop there, today Konti Hidroplast has office representations in all of the Balkan countries. In 2001 Konti Hidroplast achieved the greatest expantion of its production capacities to that date with the acquisition of two complete extrusion lines. The first extrusion line expanded the range of pipes for domestic installations, producing pipes up to F400mm, while the second extrusion line was intended for the production of double-layer polyethylene pipes for sewage with dimensions up to F315mm. That year, in addition to the ISO 9001 certification, we also received the ISO 14001 certification for the environmental management system.",
+    translations: {
+      en: {
+        title: "International Offices",
+        description: "In 1999-2000 Konti Hidroplast began expanding its representations with opening its first offices abroad in Serbia and Bulgaria. But, the expanding did not stop there, today Konti Hidroplast has office representations in all of the Balkan countries. In 2001 Konti Hidroplast achieved the greatest expantion of its production capacities to that date with the acquisition of two complete extrusion lines. The first extrusion line expanded the range of pipes for domestic installations, producing pipes up to F400mm, while the second extrusion line was intended for the production of double-layer polyethylene pipes for sewage with dimensions up to F315mm. That year, in addition to the ISO 9001 certification, we also received the ISO 14001 certification for the environmental management system."
+      },
+      mk: {
+        title: "Меѓународни канцеларии",
+        description: "Во 1999-2000 година Конти Хидропласт почна да ги проширува своите претставништва со отворање на првите канцеларии во странство во Србија и Бугарија. Но, проширувањето не застана таму, денес Конти Хидропласт има канцелариски претставништва во сите балкански земји. Во 2001 година Конти Хидропласт ја постигна најголемата експанзија на своите производствени капацитети до тој датум со стекнувањето на две комплетни екструзиони линии. Првата екструзиона линија го прошири опсегот на цевки за домашни инсталации, произведувајќи цевки до F400mm, додека втората екструзиона линија беше наменета за производство на двојни полиетиленски цевки за канализација со димензии до F315mm. Таа година, покрај ISO 9001 сертификацијата, исто така добивме и ISO 14001 сертификација за системот за управување со животната средина."
+      },
+      de: {
+        title: "Internationale Büros",
+        description: "1999-2000 begann Konti Hidroplast mit der Erweiterung seiner Vertretungen durch die Eröffnung seiner ersten Büros im Ausland in Serbien und Bulgarien. Aber die Expansion hörte dort nicht auf, heute hat Konti Hidroplast Bürovertretungen in allen Balkanländern. 2001 erreichte Konti Hidroplast die größte Expansion seiner Produktionskapazitäten bis zu diesem Zeitpunkt durch den Erwerb von zwei kompletten Extrusionslinien. Die erste Extrusionslinie erweiterte den Bereich der Rohre für Hausinstallationen und produzierte Rohre bis zu F400mm, während die zweite Extrusionslinie für die Herstellung von zweischichtigen Polyethylenrohren für Abwasser mit Abmessungen bis zu F315mm bestimmt war. In diesem Jahr erhielten wir neben der ISO 9001-Zertifizierung auch die ISO 14001-Zertifizierung für das Umweltmanagementsystem."
+      }
+    }
   },
   {
     year: "2002",
-    title: "New capacities",
-    description:
-      "In 2002, the company expanded its capacities and product range with an additional production line for household installations, as well as sewage pipes with dimensions up to F630mm.",
+    translations: {
+      en: {
+        title: "New capacities",
+        description: "In 2002, the company expanded its capacities and product range with an additional production line for household installations, as well as sewage pipes with dimensions up to F630mm."
+      },
+      mk: {
+        title: "Нови капацитети",
+        description: "Во 2002 година, компанијата ги прошири своите капацитети и производствен опсег со дополнителна производствена линија за домашни инсталации, како и канализациски цевки со димензии до F630mm."
+      },
+      de: {
+        title: "Neue Kapazitäten",
+        description: "2002 erweiterte das Unternehmen seine Kapazitäten und Produktpalette um eine zusätzliche Produktionslinie für Hausinstallationen sowie Abwasserrohre mit Abmessungen bis zu F630mm."
+      }
+    }
   },
   {
     year: "2003",
-    title: "New International Offices",
-    description:
-      "In 2003 were opened new company representations in Albania, Bosnia & Herzegovina and Croatia.",
+    translations: {
+      en: {
+        title: "New International Offices",
+        description: "In 2003 were opened new company representations in Albania, Bosnia & Herzegovina and Croatia."
+      },
+      mk: {
+        title: "Нови меѓународни канцеларии",
+        description: "Во 2003 година се отворија нови претставништва на компанијата во Албанија, Босна и Херцеговина и Хрватска."
+      },
+      de: {
+        title: "Neue internationale Büros",
+        description: "2003 wurden neue Firmenvertretungen in Albanien, Bosnien und Herzegowina und Kroatien eröffnet."
+      }
+    }
   },
   {
     year: "2004",
-    title: "New Product",
-    description:
-      "In 2004 began the production of a new product, the spiral sewage pipes with a diameter up to F1200mm.",
+    translations: {
+      en: {
+        title: "New Product",
+        description: "In 2004 began the production of a new product, the spiral sewage pipes with a diameter up to F1200mm."
+      },
+      mk: {
+        title: "Нов производ",
+        description: "Во 2004 година почна производството на нов производ, спиралните канализациски цевки со дијаметар до F1200mm."
+      },
+      de: {
+        title: "Neues Produkt",
+        description: "2004 begann die Produktion eines neuen Produkts, der Spiralabwasserrohre mit einem Durchmesser bis zu F1200mm."
+      }
+    }
   },
   {
     year: "2006",
-    title: "New Production Line",
-    description:
-      "In 2006 was installed a new production line for ribbed double-layer pipes with a diameter of up to F1200mm",
+    translations: {
+      en: {
+        title: "New Production Line",
+        description: "In 2006 was installed a new production line for ribbed double-layer pipes with a diameter of up to F1200mm"
+      },
+      mk: {
+        title: "Нова производствена линија",
+        description: "Во 2006 година беше инсталирана нова производствена линија за ребрести двојни цевки со дијаметар до F1200mm"
+      },
+      de: {
+        title: "Neue Produktionslinie",
+        description: "2006 wurde eine neue Produktionslinie für gerippte zweischichtige Rohre mit einem Durchmesser von bis zu F1200mm installiert"
+      }
+    }
   },
   {
     year: "2008",
-    title: "New Capacity Increase",
-    description:
-      "In 2008, we increased the production capacity of ribbed pipes with an additional production line, as well as a line for pressure pipes.",
+    translations: {
+      en: {
+        title: "New Capacity Increase",
+        description: "In 2008, we increased the production capacity of ribbed pipes with an additional production line, as well as a line for pressure pipes."
+      },
+      mk: {
+        title: "Ново зголемување на капацитетите",
+        description: "Во 2008 година, го зголемивме производствениот капацитет на ребрести цевки со дополнителна производствена линија, како и линија за притисни цевки."
+      },
+      de: {
+        title: "Neue Kapazitätserhöhung",
+        description: "2008 haben wir die Produktionskapazität für gerippte Rohre mit einer zusätzlichen Produktionslinie sowie einer Linie für Druckrohre erhöht."
+      }
+    }
   },
   {
     year: "2009",
-    title: "PP HM",
-    description:
-      "In 2009, Konti Hidroplast expanded its production lines and product range with a new product, the PP HM pipes.",
+    translations: {
+      en: {
+        title: "PP HM",
+        description: "In 2009, Konti Hidroplast expanded its production lines and product range with a new product, the PP HM pipes."
+      },
+      mk: {
+        title: "PP HM",
+        description: "Во 2009 година, Конти Хидропласт ги прошири своите производствени линии и производствен опсег со нов производ, PP HM цевките."
+      },
+      de: {
+        title: "PP HM",
+        description: "2009 erweiterte Konti Hidroplast seine Produktionslinien und Produktpalette um ein neues Produkt, die PP HM-Rohre."
+      }
+    }
   },
   {
     year: "2011",
-    title: "New Line and Machines",
-    description:
-      "Two new injection molding machines for the production of sewer fittings and a new production line for spiral pipes in the dimensional range of 1300-2000 mm.",
+    translations: {
+      en: {
+        title: "New Line and Machines",
+        description: "Two new injection molding machines for the production of sewer fittings and a new production line for spiral pipes in the dimensional range of 1300-2000 mm."
+      },
+      mk: {
+        title: "Нова линија и машини",
+        description: "Две нови машини за лиење под притисок за производство на канализациски фитинзи и нова производствена линија за спирални цевки во димензионалниот опсег од 1300-2000 mm."
+      },
+      de: {
+        title: "Neue Linie und Maschinen",
+        description: "Zwei neue Spritzgießmaschinen für die Herstellung von Abwasserfittings und eine neue Produktionslinie für Spiralrohre im Dimensionsbereich von 1300-2000 mm."
+      }
+    }
   },
   {
     year: "2013",
-    title: "Expansion and Renovation",
-    description:
-      "Expansion of the factory's storage space with new areas. A new production line for pressure pipes up to 110 mm in diameter. Two new machines for perforating pressure pipes. Complete renovation of the area surrounding the factory.",
+    translations: {
+      en: {
+        title: "Expansion and Renovation",
+        description: "Expansion of the factory's storage space with new areas. A new production line for pressure pipes up to 110 mm in diameter. Two new machines for perforating pressure pipes. Complete renovation of the area surrounding the factory."
+      },
+      mk: {
+        title: "Проширување и реновирање",
+        description: "Проширување на складишниот простор на фабриката со нови области. Нова производствена линија за притисни цевки до 110 mm во дијаметар. Две нови машини за перфорирање на притисни цевки. Комплетно реновирање на областа околу фабриката."
+      },
+      de: {
+        title: "Erweiterung und Renovierung",
+        description: "Erweiterung des Lagerraums der Fabrik mit neuen Bereichen. Eine neue Produktionslinie für Druckrohre bis zu 110 mm Durchmesser. Zwei neue Maschinen zum Perforieren von Druckrohren. Komplette Renovierung des Bereichs um die Fabrik."
+      }
+    }
   },
   {
     year: "2014",
-    title: "New Production Line",
-    description:
-      "A new production line for pressure pipes up to F 500 mm and reorganization of production capacities and separation of fitting production from extrusion.",
+    translations: {
+      en: {
+        title: "New Production Line",
+        description: "A new production line for pressure pipes up to F 500 mm and reorganization of production capacities and separation of fitting production from extrusion."
+      },
+      mk: {
+        title: "Нова производствена линија",
+        description: "Нова производствена линија за притисни цевки до F 500 mm и реорганизација на производствените капацитети и одвојување на производството на фитинзи од екструзијата."
+      },
+      de: {
+        title: "Neue Produktionslinie",
+        description: "Eine neue Produktionslinie für Druckrohre bis zu F 500 mm und Reorganisation der Produktionskapazitäten und Trennung der Fittingproduktion von der Extrusion."
+      }
+    }
   },
   {
     year: "2015",
-    title: "OD 1000",
-    description:
-      "Replacement of the OD 1000 line with a new European-made line for pipes up to F 630 mm. Expansion of the ID 1000 production line to include the OD 1000 dimension.",
+    translations: {
+      en: {
+        title: "OD 1000",
+        description: "Replacement of the OD 1000 line with a new European-made line for pipes up to F 630 mm. Expansion of the ID 1000 production line to include the OD 1000 dimension."
+      },
+      mk: {
+        title: "OD 1000",
+        description: "Замена на OD 1000 линијата со нова европска линија за цевки до F 630 mm. Проширување на ID 1000 производствената линија за да ја вклучи OD 1000 димензијата."
+      },
+      de: {
+        title: "OD 1000",
+        description: "Ersatz der OD 1000-Linie durch eine neue europäische Linie für Rohre bis zu F 630 mm. Erweiterung der ID 1000-Produktionslinie um die OD 1000-Dimension."
+      }
+    }
   },
   {
     year: "2016-2017",
-    title: "New Acquisitions",
-    description:
-      'Procurement of a "cross head" extrusion die for the production of PE 100 RC Type 3 with an external protective layer (PE or PP) in dimensions ranging from 75 to 400 mm. Procurement of an injection molding machine with a capacity of up to 20 kg per shot. Acquisition of two new scanners, eccentricity indicators from the beginning of the process.',
+    translations: {
+      en: {
+        title: "New Acquisitions",
+        description: 'Procurement of a "cross head" extrusion die for the production of PE 100 RC Type 3 with an external protective layer (PE or PP) in dimensions ranging from 75 to 400 mm. Procurement of an injection molding machine with a capacity of up to 20 kg per shot. Acquisition of two new scanners, eccentricity indicators from the beginning of the process.'
+      },
+      mk: {
+        title: "Нови набавки",
+        description: 'Набавка на "cross head" екструзиона матрица за производство на PE 100 RC Type 3 со надворешен заштитен слој (PE или PP) во димензии од 75 до 400 mm. Набавка на машина за лиење под притисок со капацитет до 20 kg по истрел. Набавка на два нови скенери, индикатори за ексцентричност од почетокот на процесот.'
+      },
+      de: {
+        title: "Neue Anschaffungen",
+        description: 'Beschaffung einer "Cross-Head"-Extrusionsmatrize für die Herstellung von PE 100 RC Typ 3 mit einer äußeren Schutzschicht (PE oder PP) in Abmessungen von 75 bis 400 mm. Beschaffung einer Spritzgießmaschine mit einer Kapazität von bis zu 20 kg pro Schuss. Anschaffung von zwei neuen Scannern, Exzentrizitätsindikatoren vom Beginn des Prozesses.'
+      }
+    }
   },
   {
     year: "2018",
-    title: "OD 315",
-    description:
-      "Replacement of the base of the oldest corrugator (OD 315) with a new one.",
+    translations: {
+      en: {
+        title: "OD 315",
+        description: "Replacement of the base of the oldest corrugator (OD 315) with a new one."
+      },
+      mk: {
+        title: "OD 315",
+        description: "Замена на основата на најстариот коругатор (OD 315) со нова."
+      },
+      de: {
+        title: "OD 315",
+        description: "Ersatz der Basis des ältesten Wellpappenmaschinen (OD 315) durch eine neue."
+      }
+    }
   },
   {
     year: "2019",
-    title: "Two New Halls",
-    description: "Construction of two new halls for storing raw materials.",
+    translations: {
+      en: {
+        title: "Two New Halls",
+        description: "Construction of two new halls for storing raw materials."
+      },
+      mk: {
+        title: "Две нови сали",
+        description: "Изградба на две нови сали за складирање на суровини."
+      },
+      de: {
+        title: "Zwei neue Hallen",
+        description: "Bau von zwei neuen Hallen zur Lagerung von Rohstoffen."
+      }
+    }
   },
   {
     year: "2020-2021",
-    title: "New Hall with Three Production Lines",
-    description:
-      "Construction of a new hall to expand production capacities. Installation of three new production lines for pressure pipes: 20-63 mm with a capacity of 300 kg/h, 63-250 mm with a capacity of 600 kg/h, 250-630 mm with a capacity of 1000 kg/h.",
+    translations: {
+      en: {
+        title: "New Hall with Three Production Lines",
+        description: "Construction of a new hall to expand production capacities. Installation of three new production lines for pressure pipes: 20-63 mm with a capacity of 300 kg/h, 63-250 mm with a capacity of 600 kg/h, 250-630 mm with a capacity of 1000 kg/h."
+      },
+      mk: {
+        title: "Нова сала со три производствени линии",
+        description: "Изградба на нова сала за проширување на производствените капацитети. Инсталација на три нови производствени линии за притисни цевки: 20-63 mm со капацитет од 300 kg/h, 63-250 mm со капацитет од 600 kg/h, 250-630 mm со капацитет од 1000 kg/h."
+      },
+      de: {
+        title: "Neue Halle mit drei Produktionslinien",
+        description: "Bau einer neuen Halle zur Erweiterung der Produktionskapazitäten. Installation von drei neuen Produktionslinien für Druckrohre: 20-63 mm mit einer Kapazität von 300 kg/h, 63-250 mm mit einer Kapazität von 600 kg/h, 250-630 mm mit einer Kapazität von 1000 kg/h."
+      }
+    }
   },
   {
     year: "2022",
-    title: "New Corrugated Pipe Line and New Machines",
-    description:
-      "A new high-productivity, energy-efficient production line for corrugated pipes in the 160-315 mm dimensional range. Improvement of the corrugated pipe production process by enhancing the welding of fittings, including the acquisition of three automatic inline welding machines for fitting attachment to pipes.",
-  },
+    translations: {
+      en: {
+        title: "New Corrugated Pipe Line and New Machines",
+        description: "A new high-productivity, energy-efficient production line for corrugated pipes in the 160-315 mm dimensional range. Improvement of the corrugated pipe production process by enhancing the welding of fittings, including the acquisition of three automatic inline welding machines for fitting attachment to pipes."
+      },
+      mk: {
+        title: "Нова линија за коругирани цевки и нови машини",
+        description: "Нова високопроизводствена, енергетски ефикасна производствена линија за коругирани цевки во димензионалниот опсег од 160-315 mm. Подобрување на процесот на производство на коругирани цевки со подобрување на заварувањето на фитинзи, вклучувајќи набавка на три автоматизирани инлајн заварни машини за прикачување на фитинзи на цевки."
+      },
+      de: {
+        title: "Neue Wellrohrlinie und neue Maschinen",
+        description: "Eine neue hochproduktive, energieeffiziente Produktionslinie für Wellrohre im Dimensionsbereich von 160-315 mm. Verbesserung des Wellrohrproduktionsprozesses durch Verbesserung des Schweißens von Fittings, einschließlich der Anschaffung von drei automatischen Inline-Schweißmaschinen für die Befestigung von Fittings an Rohren."
+      }
+    }
+  }
 ];
 
 // Fetch team members from database
@@ -190,7 +412,7 @@ function useTeamData() {
 }
 
 export default function AboutUs() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [, setLocation] = useLocation();
   const [activeYear, setActiveYear] = useState("1990");
   const [sliderValue, setSliderValue] = useState([0]);
@@ -203,8 +425,75 @@ export default function AboutUs() {
   const { data: projects = [], isLoading: isProjectsLoading } = useQuery<
     Project[]
   >({
-    queryKey: ["/api/admin/projects"],
+    queryKey: ["/api/projects"],
   });
+
+  // Debug: Log projects data to see what we're getting
+  useEffect(() => {
+    if (projects.length > 0) {
+      console.log('=== PROJECTS DEBUG ===');
+      console.log('Total projects fetched:', projects.length);
+      console.log('Current language:', language);
+      console.log('All projects data:', projects);
+      
+      projects.forEach((project, index) => {
+        console.log(`\n--- Project ${index + 1} ---`);
+        console.log('ID:', project.id);
+        console.log('Title (original):', project.title);
+        console.log('Description (original):', project.description);
+        console.log('Translations object:', project.translations);
+        console.log('Default language:', project.defaultLanguage);
+        
+        // Check each language
+        ['en', 'mk', 'de'].forEach(lang => {
+          const translations = project.translations as any;
+          if (translations && translations[lang]) {
+            console.log(`${lang.toUpperCase()} - Title:`, translations[lang].title);
+            console.log(`${lang.toUpperCase()} - Description:`, translations[lang].description);
+          } else {
+            console.log(`${lang.toUpperCase()} - No translations available`);
+          }
+        });
+        
+        // Show what getLocalizedText returns
+        console.log('getLocalizedText(title):', getLocalizedText(project, 'title'));
+        console.log('getLocalizedText(description):', getLocalizedText(project, 'description'));
+      });
+      console.log('=== END DEBUG ===');
+    }
+  }, [projects, language]);
+
+  // Helper function to get localized text for projects
+  const getLocalizedText = (project: Project, field: 'title' | 'description') => {
+    console.log(`getLocalizedText called for project ${project.id}, field: ${field}, language: ${language}`);
+    
+    if (project.translations && typeof project.translations === 'object') {
+      const translations = project.translations as any;
+      console.log('Translations available:', translations);
+      
+      if (translations[language] && translations[language][field]) {
+        console.log(`Found ${language} translation for ${field}:`, translations[language][field]);
+        return translations[language][field];
+      } else {
+        console.log(`No ${language} translation for ${field}, checking fallback`);
+      }
+    } else {
+      console.log('No translations object found');
+    }
+    
+    // Fallback to original field
+    console.log(`Using fallback for ${field}:`, project[field]);
+    return project[field] || '';
+  };
+
+  // Helper function to get localized timeline text
+  const getTimelineText = (item: any, field: 'title' | 'description') => {
+    if (item.translations && item.translations[language] && item.translations[language][field]) {
+      return item.translations[language][field];
+    }
+    // Fallback to English
+    return item.translations?.en?.[field] || item.year;
+  };
 
   // Fetch gallery categories (public endpoint)
   const { data: galleryCategories = [], isLoading: isGalleryLoading } =
@@ -311,7 +600,7 @@ export default function AboutUs() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <Badge className="mb-6 bg-red-600 hover:bg-red-700 text-white px-4 py-2">
-                Since 1975
+                {t("aboutUs.since1975")}
               </Badge>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
                 {t("aboutUs.title").toUpperCase()}{" "}
@@ -450,6 +739,20 @@ export default function AboutUs() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-8">
+            {/* Timeline Header with Language Indicator */}
+            <div className="text-center mb-8">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                {t("aboutUs.timelineTitle")}
+              </h2>
+              {/* Language Indicator */}
+              <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+                <Globe className="h-4 w-4" />
+                <span>
+                  {t("aboutUs.displayingIn")} {language === 'en' ? t("aboutUs.englishLang") : language === 'mk' ? t("aboutUs.macedonianLang") : t("aboutUs.germanLang")}
+                </span>
+              </div>
+            </div>
+            
             {/* Timeline Slider */}
             <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8">
               <div className="flex items-center justify-between mb-6">
@@ -521,12 +824,17 @@ export default function AboutUs() {
                             {item.year}
                           </h3>
                           <h4 className="text-xl font-semibold text-[#1c2d56]">
-                            {item.title}
+                            {getTimelineText(item, 'title')}
+                            {item.translations && !item.translations[language]?.title && (
+                              <Badge variant="outline" className="ml-2 text-xs">
+                                {language === 'en' ? 'EN' : language === 'mk' ? 'MK' : 'DE'} {t("aboutUs.fallback")}
+                              </Badge>
+                            )}
                           </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 leading-relaxed text-lg">
-                        {item.description}
+                        {getTimelineText(item, 'description')}
                       </p>
                     </CardContent>
                   </Card>
@@ -576,35 +884,35 @@ export default function AboutUs() {
               <div className="space-y-4">
                 <div className="inline-block px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
                   <span className="text-sm font-medium text-white/90">
-                    Leadership Message
+                    {t("aboutUs.leadershipMessage")}
                   </span>
                 </div>
 
                 <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
                   {leadershipContent.title ||
-                    "Building the Future of Infrastructure"}
+                    t("aboutUs.leadershipTitle")}
                 </h2>
               </div>
 
               <div className="space-y-6 text-lg leading-relaxed text-white/90">
                 <p>
                   {leadershipContent.description1 ||
-                    "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow."}
+                    t("aboutUs.leadershipDescription1")}
                 </p>
 
                 <p>
                   {leadershipContent.description2 ||
-                    "Together, we build not just for today, but for a future our next generations will be proud of."}
+                    t("aboutUs.leadershipDescription2")}
                 </p>
               </div>
 
               <div className="pt-4">
                 <div className="space-y-2">
                   <h3 className="text-2xl font-bold text-white">
-                    {leadershipContent.leaderName || "Boris Madjunkov"}
+                    {leadershipContent.leaderName || t("aboutUs.leaderName")}
                   </h3>
                   <p className="text-blue-200 font-semibold text-lg">
-                    {leadershipContent.leaderPosition || "General Director"}
+                    {leadershipContent.leaderPosition || t("aboutUs.leaderPosition")}
                   </p>
                 </div>
 
@@ -629,7 +937,7 @@ export default function AboutUs() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold text-gray-900 mx-8">
-                Our Team
+                {t("aboutUs.teamTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -736,7 +1044,7 @@ export default function AboutUs() {
                           }
                         >
                           <Mail className="h-4 w-4 mr-2" />
-                          Contact Us
+                          {t("aboutUs.contactUsButton")}
                         </Button>
                       )}
                     </CardContent>
@@ -748,11 +1056,10 @@ export default function AboutUs() {
             <div className="text-center py-12">
               <Users className="h-16 w-16 mx-auto text-gray-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                No Team Members Yet
+                {t("aboutUs.noTeamMembers")}
               </h3>
               <p className="text-gray-500">
-                Team members will appear here once they are added to the
-                database.
+                {t("aboutUs.teamMembersDescription")}
               </p>
             </div>
           )}
@@ -767,9 +1074,16 @@ export default function AboutUs() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold text-gray-900 mx-8">
-                Projects
+                {t("aboutUs.projectsTitle") || t("aboutUs.productsTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+            {/* Language Indicator */}
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+              <Globe className="h-4 w-4" />
+              <span>
+                {t("aboutUs.displayingIn")} {language === 'en' ? t("aboutUs.englishLang") : language === 'mk' ? t("aboutUs.macedonianLang") : t("aboutUs.germanLang")}
+              </span>
             </div>
           </div>
 
@@ -803,7 +1117,7 @@ export default function AboutUs() {
                       {project.imageUrl ? (
                         <img
                           src={project.imageUrl}
-                          alt={project.title}
+                          alt={getLocalizedText(project, 'title')}
                           className="w-full h-full object-cover"
                         />
                       ) : (
@@ -815,11 +1129,16 @@ export default function AboutUs() {
                     </div>
                     <CardContent className="p-6 bg-white">
                       <h3 className="font-bold text-gray-900 mb-2 text-[15px]">
-                        {project.title}
+                        {getLocalizedText(project, 'title')}
+                        {project.translations && !(project.translations as any)[language]?.title && (
+                          <Badge variant="outline" className="ml-2 text-xs">
+                            {language === 'en' ? 'EN' : language === 'mk' ? 'MK' : 'DE'} {t("aboutUs.fallback")}
+                          </Badge>
+                        )}
                       </h3>
                       {project.description && (
                         <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                          {project.description}
+                          {getLocalizedText(project, 'description')}
                         </p>
                       )}
 
@@ -833,7 +1152,7 @@ export default function AboutUs() {
                             window.open(project.pdfUrl, "_blank")
                           }
                         >
-                          Download PDF
+                          {t("aboutUs.downloadPdf")}
                         </Button>
                       )}
                     </CardContent>
@@ -844,10 +1163,10 @@ export default function AboutUs() {
             <div className="text-center py-12">
               <FileText className="h-16 w-16 mx-auto text-gray-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                No Projects Available
+                {t("aboutUs.noProjectsAvailable")}
               </h3>
               <p className="text-gray-500">
-                Projects will appear here once they are added to the database.
+                {t("aboutUs.projectsDescription")}
               </p>
             </div>
           )}
@@ -860,7 +1179,7 @@ export default function AboutUs() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
-                Products
+                {t("aboutUs.productsTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -887,7 +1206,7 @@ export default function AboutUs() {
 
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    WATER SUPPLY SYSTEMS
+                    {t("aboutUs.waterSupplySystems")}
                   </h3>
 
                   {/* Learn More Button */}
@@ -932,7 +1251,7 @@ export default function AboutUs() {
 
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    SEWERAGE SYSTEMS
+                    {t("aboutUs.sewerageSystems")}
                   </h3>
 
                   {/* Learn More Button */}
@@ -977,7 +1296,7 @@ export default function AboutUs() {
 
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    GAS PIPELINE SYSTEM
+                    {t("aboutUs.gasPipelineSystem")}
                   </h3>
 
                   {/* Learn More Button */}
@@ -1022,7 +1341,7 @@ export default function AboutUs() {
 
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    CABLE PROTECTION
+                    {t("aboutUs.cableProtection")}
                   </h3>
 
                   {/* Learn More Button */}
@@ -1056,7 +1375,7 @@ export default function AboutUs() {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold text-gray-900 mx-8">Gallery</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mx-8">{t("aboutUs.galleryTitle")}</h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
           </div>
@@ -1118,7 +1437,7 @@ export default function AboutUs() {
                           href={`/gallery/${category.title.toLowerCase().replace(/\s+/g, "-")}`}
                           className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
                         >
-                          <span>View Gallery</span>
+                          <span>{t("aboutUs.viewGallery")}</span>
                           <ChevronRight className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" />
                         </a>
                       </div>
@@ -1130,10 +1449,10 @@ export default function AboutUs() {
             <div className="text-center py-12">
               <Image className="h-16 w-16 mx-auto text-gray-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                No Gallery Categories
+                {t("aboutUs.noGalleryCategories")}
               </h3>
               <p className="text-gray-500">
-                Gallery categories will appear here once they are added.
+                {t("aboutUs.galleryCategoriesDescription")}
               </p>
             </div>
           )}
@@ -1145,13 +1464,12 @@ export default function AboutUs() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+                {t("aboutUs.getInTouchTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our cable protection solutions?
-              Contact our team of experts.
+              {t("aboutUs.getInTouchDescription")}
             </p>
             <Button
               onClick={() => {
@@ -1163,7 +1481,7 @@ export default function AboutUs() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              Contact Us
+              {t("aboutUs.contactUsButton")}
             </Button>
           </div>
         </div>

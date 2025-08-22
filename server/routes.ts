@@ -783,6 +783,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Projects routes
+  // Public endpoint for projects (no authentication required)
+  app.get("/api/projects", async (req, res) => {
+    try {
+      const { language } = req.query;
+      const projects = await storage.getAllProjects();
+      // Only return active projects for public view, sorted by sortOrder
+      const activeProjects = projects
+        .filter(project => project.status === "active")
+        .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+      
+      // If language is specified, we could filter or enhance the response
+      // For now, we return all projects with their full translation data
+      res.json(activeProjects);
+    } catch (error) {
+      console.error("Error fetching public projects:", error);
+      res.status(500).json({ error: "Failed to fetch projects" });
+    }
+  });
+
   app.get("/api/admin/projects", async (req, res) => {
     try {
       const projects = await storage.getAllProjects();

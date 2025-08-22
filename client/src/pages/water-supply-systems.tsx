@@ -232,6 +232,53 @@ const fittingTypes = [
   },
 ];
 
+// Helper function to translate fitting names
+const translateFittingName = (name: string, t: any) => {
+  const translations: { [key: string]: string } = {
+    "Mechanical Fittings": t("waterSupply.mechanicalFittings"),
+    "Butt Welding": t("waterSupply.buttWelding"),
+    "Electrofusion Fittings": t("waterSupply.electrofusionFittings"),
+    "Coupling": t("waterSupply.coupling"),
+    "Reducer Coupling": t("waterSupply.reducerCoupling"),
+    "Adapter Coupling Male": t("waterSupply.adapterCouplingMale"),
+    "Adapter Coupling Female": t("waterSupply.adapterCouplingFemale"),
+    "Line End": t("waterSupply.lineEnd"),
+    "Reducing Coupling 90°": t("waterSupply.reducingCoupling90"),
+    "Tee Male Thread 90°": t("waterSupply.teeMaleThread90"),
+    "Tee Female Thread 90°": t("waterSupply.teeFemaleThread90"),
+    "Equal Tee 90°": t("waterSupply.equalTee90"),
+    "Elbow 90°": t("waterSupply.elbow90"),
+    "2 Bolt Saddle": t("waterSupply.2BoltSaddle"),
+    "4 Bolt Saddle Female Thread": t("waterSupply.4BoltSaddleFemaleThread"),
+    "6 Bolt Saddle Female Thread": t("waterSupply.6BoltSaddleFemaleThread"),
+    "Electrofusion Socket": t("waterSupply.electrofusionSocket"),
+    "Electrofusion Tee Outlet": t("waterSupply.electrofusionTeeOutlet"),
+    "Electrofusion Tee Reducer": t("waterSupply.electrofusionTeeReducer"),
+    "Electrofusion Elbow 45°": t("waterSupply.electrofusionElbow45"),
+    "Electrofusion Elbow 90°": t("waterSupply.electrofusionElbow90"),
+    "Electrofusion Reducer": t("waterSupply.electrofusionReducer"),
+    "Electrofusion End Cap": t("waterSupply.electrofusionEndCap"),
+    // PE Pipe Specifications
+    "PE-80": t("waterSupply.pe80"),
+    "PE-100": t("waterSupply.pe100"),
+    "PE-100 RC": t("waterSupply.pe100RC"),
+    "Third generation PE of high density for high-pressure applications and critical utility services": t("waterSupply.pe100Description"),
+    "Design stress: σ=8.0 МПа": t("waterSupply.pe100DesignStress"),
+    "MRS: 10": t("waterSupply.pe100MRS"),
+    "Factor of safety: C=1.25": t("waterSupply.pe100FactorOfSafety"),
+    "Color: black with blue coextruded lines or blue": t("waterSupply.pe100Color"),
+    "Operating temperature: -40°C to +60°C": t("waterSupply.pe100OperatingTemp"),
+    "Pressure ratings up to PN 32": t("waterSupply.pe100PressureRatings"),
+    "Specialized variant with greater resistance to slow crack growth and environmental stress cracking": t("waterSupply.pe100RCDescription"),
+    "Material: High quality PE 100-RC material and PE 100": t("waterSupply.pe100RCMaterial"),
+    "Standards: EN 12201-2 and PAS 1075": t("waterSupply.pe100RCStandards"),
+    "Project elongation: σ=8.0МПа": t("waterSupply.pe100RCProjectElongation"),
+    "Color: Black with yellow or orange lines, or entirely orange": t("waterSupply.pe100RCColor"),
+    "Service life of 100+ years under normal operating conditions": t("waterSupply.pe100RCServiceLife"),
+  };
+  return translations[name] || name;
+};
+
 function WaterSupplySystemsPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
@@ -287,34 +334,28 @@ function WaterSupplySystemsPage() {
             <div>
               <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
                 <span className="text-sm font-medium">
-                  ENGINEERED FOR EXCELLENCE
+                  {t("waterSupply.engineeredForExcellence")}
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                WATERT<span className="text-red-500">SUPPLY</span>
-                <br />
-                <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  SYSTEM
-                </span>
+                {t("waterSupply.waterSupplySystem")}
               </h1>
               <p
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                High-quality polyethylene pipes for potable water distribution
-                networks, meeting the highest standards for safety and
-                durability.
+{t("waterSupply.heroDescription")}
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
                   <Check className="w-5 h-5" />
                   <span className="text-sm font-medium">
-                    50+ Years Lifespan
+{t("waterSupply.yearsLifespan")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
                   <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">100% Recyclable</span>
+                  <span className="text-sm font-medium">{t("waterSupply.recyclable")}</span>
                 </div>
               </div>
             </div>
@@ -332,7 +373,7 @@ function WaterSupplySystemsPage() {
                 />
               </div>
               <div className="absolute -bottom-4 -right-4 text-white px-4 py-2 rounded-full shadow-lg bg-[#ef4444]">
-                <span className="text-sm font-medium">Premium Quality</span>
+                <span className="text-sm font-medium">{t("productPages.premiumQuality")}</span>
               </div>
             </div>
           </div>
@@ -344,41 +385,35 @@ function WaterSupplySystemsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-                Technical Specifications
+                {t("productPages.technicalSpecifications")}
               </h2>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  The pipes' color is black with an inner white layer and
-                  coextruded blue lines, or blue with an inner white layer.
+                  {t("waterSupply.colorDescription")}
                 </p>
                 <p>
-                  The range of diameters is from DN 16mm to DN 630mm, and the
-                  pressures are from PN 6 to PN 32 bar.
+                  {t("waterSupply.diameterRange")}
                 </p>
                 <p>
-                  Pipes of the DN-16-110mm range are easily bended, so they can
-                  be wound in coils of different lengths, and the requirements
-                  for fittings and the time for installation can be reduced.
-                  Pipes of range 125-800mm are produced in straight pipes of 6
-                  or 12m.
+                  {t("waterSupply.smallPipesDescription")}
                 </p>
               </div>
             </div>
 
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-                General Properties
+                {t("productPages.generalProperties")}
               </h3>
               <div className="space-y-3">
                 {[
-                  "Low specific weight",
-                  "Flexibility",
-                  "Good chemical resistance",
-                  "Excellent welding options",
-                  "Smooth internal surface resistant to deposits",
-                  "Suitable for drinking water",
-                  "Long lifespan (more than 50 years)",
-                  "100% recycling possibility",
+                  t("waterSupply.lowSpecificWeight"),
+                  t("waterSupply.flexibility"),
+                  t("waterSupply.goodChemicalResistance"),
+                  t("waterSupply.excellentWeldingOptions"),
+                  t("waterSupply.smoothInternalSurface"),
+                  t("waterSupply.suitableForDrinkingWater"),
+                  t("waterSupply.longLifespan"),
+                  t("waterSupply.recyclingPossibility"),
                 ].map((property, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
@@ -397,7 +432,7 @@ function WaterSupplySystemsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
-                PE Water-Supply Pipes
+{t("waterSupply.peWaterSupplyPipes")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -431,15 +466,15 @@ function WaterSupplySystemsPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
                   <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
-                    {spec.title}
+{translateFittingName(spec.title, t)}
                   </h3>
-                  <p className="text-[#ffffff] mb-6">{spec.description}</p>
+                  <p className="text-[#ffffff] mb-6">{translateFittingName(spec.description, t)}</p>
 
                   <div className="space-y-3 mb-8">
                     {spec.features.map((feature, index) => (
                       <div key={index} className="flex items-start gap-3">
                         <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                        <span className="text-[#ffffff]">{feature}</span>
+                        <span className="text-[#ffffff]">{translateFittingName(feature, t)}</span>
                       </div>
                     ))}
                   </div>
@@ -452,7 +487,7 @@ function WaterSupplySystemsPage() {
                       className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-[#ffffff] rounded-lg transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
-                      Download Specs
+                      {t("productPages.downloadSpecs")}
                     </a>
                     <a
                       href={spec.brochure}
@@ -461,7 +496,7 @@ function WaterSupplySystemsPage() {
                       className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
-                      Download Brochure
+                      {t("productPages.downloadBrochure")}
                     </a>
                   </div>
                 </div>
@@ -487,7 +522,7 @@ function WaterSupplySystemsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                PE Fittings
+{t("waterSupply.peFittings")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -505,7 +540,7 @@ function WaterSupplySystemsPage() {
 
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
               <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
-                {fittingTypes[activeFittingTabIndex].title}
+{translateFittingName(fittingTypes[activeFittingTabIndex].title, t)}
               </h3>
               <div className="flex justify-center space-x-1 mt-3">
                 {fittingTypes.map((_, index) => (
@@ -546,7 +581,7 @@ function WaterSupplySystemsPage() {
                   {/* Left Column - Fittings List */}
                   <div>
                     <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
-                      {fitting.title}
+{translateFittingName(fitting.title, t)}
                     </h3>
 
                     <div className="space-y-3">
@@ -566,7 +601,7 @@ function WaterSupplySystemsPage() {
                                 <Download className="w-3 h-3 text-white" />
                               </div>
                               <span className="text-sm font-medium">
-                                {item.name}
+{translateFittingName(item.name, t)}
                               </span>
                             </a>
                           ) : (
@@ -574,7 +609,7 @@ function WaterSupplySystemsPage() {
                               <div className="w-6 h-6 bg-gray-400 rounded flex items-center justify-center flex-shrink-0">
                                 <Download className="w-3 h-3 text-white" />
                               </div>
-                              <span className="text-sm">{item.name}</span>
+                              <span className="text-sm">{translateFittingName(item.name, t)}</span>
                             </div>
                           )}
                         </div>
@@ -605,7 +640,7 @@ function WaterSupplySystemsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+{t("aboutUs.getInTouchTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -618,7 +653,7 @@ function WaterSupplySystemsPage() {
               className="inline-flex items-center px-8 py-4 text-white rounded-lg bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
-              Contact Us
+{t("aboutUs.contactUsButton")}
             </a>
           </div>
         </div>
@@ -630,13 +665,12 @@ function WaterSupplySystemsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+{t("aboutUs.getInTouchTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our water supply solutions?
-              Contact our team of experts.
+              {t("productPages.needMoreInfo")} water supply {t("productPages.solutions")}? {t("productPages.contactExperts")}.
             </p>
             <Button
               onClick={() => {
@@ -648,7 +682,7 @@ function WaterSupplySystemsPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              Contact Us
+{t("aboutUs.contactUsButton")}
             </Button>
           </div>
         </div>

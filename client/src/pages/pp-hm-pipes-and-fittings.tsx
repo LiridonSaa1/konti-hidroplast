@@ -14,6 +14,92 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+// PP HM pipes translation helper function
+const translatePpHmPipeText = (text: string, t: any) => {
+  const translations: { [key: string]: string } = {
+    // Page titles and headers
+    "PP HM Konti Kan": t("ppHmPipes.ppHmKontiKanTitle"),
+    "PP HM Konti Kan Pipes": t("ppHmPipes.ppHmKontiKanPipes"),
+    "PP HM Fittings": t("ppHmPipes.ppHmFittings"),
+    "PP HM Manufacturing": t("ppHmPipes.ppHmManufacturing"),
+    
+    // Descriptions
+    "PP double-wall corrugated pipes are an excellent choice for heavy-duty sewage and drainage systems, offering superior durability, chemical resistance, and hydraulic efficiency.": t("ppHmPipes.heroDescription"),
+    "PP (Polypropylene) double-wall corrugated pipes are widely used for drainage, sewage, and stormwater management systems due to their excellent material properties and structural design.": t("ppHmPipes.pipeDescription"),
+    
+    // Standards
+    "EN 13476-1 and EN 13476-3: Production standard for structured-wall plastic pipes.": t("ppHmPipes.standardEN13476"),
+    "ISO 21138: Specifications for non-pressure drainage and sewerage systems.": t("ppHmPipes.standardISO21138"),
+    "ASTM F2736/F2764: Standards for polypropylene corrugated pipes.": t("ppHmPipes.standardASTM"),
+    
+    // Technical specifications and features
+    "High stiffness ratings (SN 4, SN 6, SN 8, 10, 12, 16)": t("ppHmPipes.stiffnessRatings"),
+    "Dimension range: DN/ID 100-1200mm": t("ppHmPipes.dimensionRange"),
+    "Color: Outer black with inner light grey": t("ppHmPipes.color"),
+    "Strong corrugated structure for deep burial or heavy traffic loads": t("ppHmPipes.corrugatedStructure"),
+    "Manning's coefficient is typically 0.009": t("ppHmPipes.manningsCoefficient"),
+    "50+ years under normal operating conditions": t("ppHmPipes.serviceLife"),
+    
+    // Material properties
+    "Polypropylene (PP)": t("ppHmPipes.ppMaterial"),
+    "High strength-to-weight ratio": t("ppHmPipes.strengthToWeightRatio"),
+    "Greater chemical and thermal resistance compared to HDPE": t("ppHmPipes.chemicalThermalResistance"),
+    "Excellent resistance to abrasion, making it ideal for sewage applications": t("ppHmPipes.abrasionResistance"),
+    "More rigid and durable in higher temperatures than HDPE": t("ppHmPipes.rigidDurable"),
+    
+    // Applications
+    "Municipal and industrial wastewater systems": t("ppHmPipes.municipalIndustrialWastewater"),
+    "Stormwater, rainwater harvesting, and subsoil drainage": t("ppHmPipes.stormwaterHarvesting"),
+    "Road and rail infrastructure, as culverts and drainage pipes": t("ppHmPipes.roadRailInfrastructure"),
+    
+    // Characteristics
+    "Smooth inner wall ensures low resistance to flow, improving hydraulic performance": t("ppHmPipes.smoothInnerWall"),
+    "Manning's coefficient is typically 0.009, which minimizes clogging and sediment buildup": t("ppHmPipes.manningsCoefficient"),
+    "Designed to handle high flow rates in drainage and sewage systems": t("ppHmPipes.highFlowRates"),
+    "UV-stabilized for applications exposed to sunlight": t("ppHmPipes.uvStabilized"),
+    "Typically exceeds 50 years under normal operating conditions": t("ppHmPipes.serviceLife"),
+    "Can operate between -20°C and +90°C, with short-term resistance to higher temperatures": t("ppHmPipes.temperatureRange"),
+    "Fully recyclable, making it an eco-friendly option": t("ppHmPipes.fullyRecyclable"),
+    
+    // Fittings
+    "Injection Molding": t("ppHmPipes.injectionMolding"),
+    "Precision injection molded fittings for reliable connections": t("sewagePipes.injectionMoldingDescription"),
+    "Welded Fittings": t("ppHmPipes.weldedFittings"),
+    "High-strength welded fittings for permanent connections": t("sewagePipes.weldedFittingsDescription"),
+    "Connection Components": t("ppHmPipes.connectionComponents"),
+    "Essential components for secure pipe connections": t("sewagePipes.connectionComponentsDescription"),
+    
+    // Individual fittings
+    "Injection Molding Elbow": t("ppHmPipes.injectionMoldingElbow"),
+    "Injection Molding Tee": t("ppHmPipes.injectionMoldingTee"),
+    "Injection Molding Y-branch": t("ppHmPipes.injectionMoldingYBranch"),
+    "Injection Molding Y-branch Reducer": t("ppHmPipes.injectionMoldingYBranchReducer"),
+    "Injection Molding Tee Reducer": t("ppHmPipes.injectionMoldingTeeReducer"),
+    "Injection Molding Reducer": t("ppHmPipes.injectionMoldingReducer"),
+    "Welded Elbow 11°": t("ppHmPipes.weldedElbow11"),
+    "Welded Elbow 22°": t("ppHmPipes.weldedElbow22"),
+    "Welded Elbow 30°": t("ppHmPipes.weldedElbow30"),
+    "Welded Elbow 45°": t("ppHmPipes.weldedElbow45"),
+    "Welded Elbow 60°": t("ppHmPipes.weldedElbow60"),
+    "Welded Elbow 90°": t("ppHmPipes.weldedElbow90"),
+    "Welded Tee": t("ppHmPipes.weldedTee"),
+    "Welded Y-branch": t("ppHmPipes.weldedYBranch"),
+    "Welded Tee Reducer": t("ppHmPipes.weldedTeeReducer"),
+    "Welded Y-branch Reducer": t("ppHmPipes.weldedYBranchReducer"),
+    "Welded Reducer": t("ppHmPipes.weldedReducer"),
+    "Welded End Cap": t("ppHmPipes.weldedEndCap"),
+    "Socket": t("ppHmPipes.socket"),
+    "Flex Adapter": t("ppHmPipes.flexAdapter"),
+    "Gasket": t("ppHmPipes.gasket"),
+    
+    // Section headers
+    "Material Properties:": t("ppHmPipes.materialProperties"),
+    "Application:": t("ppHmPipes.application"),
+    "Characteristics:": t("ppHmPipes.characteristics"),
+  };
+  return translations[text] || text;
+};
+
 // PP HM Pipe specifications data
 const pipeSpecifications = [
   {
@@ -209,7 +295,7 @@ function PPHMPipesAndFittingsPage() {
             <div>
               <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
                 <span className="text-sm font-medium">
-                  ENGINEERED FOR EXCELLENCE
+{t("ppHmPipes.engineeredForExcellence")}
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
@@ -225,20 +311,18 @@ function PPHMPipesAndFittingsPage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                PP double-wall corrugated pipes are an excellent choice for
-                heavy-duty sewage and drainage systems, offering superior
-                durability, chemical resistance, and hydraulic efficiency.
+{translatePpHmPipeText("PP double-wall corrugated pipes are an excellent choice for heavy-duty sewage and drainage systems, offering superior durability, chemical resistance, and hydraulic efficiency.", t)}
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
                   <Check className="w-5 h-5" />
                   <span className="text-sm font-medium">
-                    50+ Years Lifespan
+{t("ppHmPipes.yearsLifespan")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
                   <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">100% Recyclable</span>
+                  <span className="text-sm font-medium">{t("ppHmPipes.recyclable")}</span>
                 </div>
               </div>
             </div>
@@ -252,7 +336,7 @@ function PPHMPipesAndFittingsPage() {
                 />
               </div>
               <div className="absolute -bottom-4 -right-4 text-white px-4 py-2 rounded-full shadow-lg bg-[#ef4444]">
-                <span className="text-sm font-medium">Premium Quality</span>
+                <span className="text-sm font-medium">{t("ppHmPipes.premiumQuality")}</span>
               </div>
             </div>
           </div>
@@ -266,7 +350,7 @@ function PPHMPipesAndFittingsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Technical Specifications
+{t("ppHmPipes.technicalSpecifications")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -275,23 +359,16 @@ function PPHMPipesAndFittingsPage() {
           <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 max-w-6xl mx-auto">
             <div className="space-y-6 text-gray-700">
               <p className="text-lg leading-relaxed">
-                PP (Polypropylene) double-wall corrugated pipes are widely used
-                for drainage, sewage, and stormwater management systems due to
-                their excellent material properties and structural design.
-                Common international standards for PP double-wall corrugated
-                pipes include:
+{t("ppHmPipes.mainDescription")}
               </p>
               <p className="text-lg leading-relaxed">
-                - EN 13476-1 and EN 13476-3: Production standard for
-                structured-wall plastic pipes.
+- {translatePpHmPipeText("EN 13476-1 and EN 13476-3: Production standard for structured-wall plastic pipes.", t)}
               </p>
               <p className="text-lg leading-relaxed">
-                - ISO 21138: Specifications for non-pressure drainage and
-                sewerage systems.
+- {translatePpHmPipeText("ISO 21138: Specifications for non-pressure drainage and sewerage systems.", t)}
               </p>
               <p className="text-lg leading-relaxed">
-                - ASTM F2736/F2764: Standards for polypropylene corrugated
-                pipes.
+- {translatePpHmPipeText("ASTM F2736/F2764: Standards for polypropylene corrugated pipes.", t)}
               </p>
             </div>
           </div>
@@ -305,7 +382,7 @@ function PPHMPipesAndFittingsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-white">
-                PP HM Konti Kan Pipes
+{translatePpHmPipeText("PP HM Konti Kan Pipes", t)}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -316,17 +393,14 @@ function PPHMPipesAndFittingsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div>
                 <h3 className="text-3xl font-bold text-white mb-4">
-                  PP HM Konti Kan
+{translatePpHmPipeText("PP HM Konti Kan", t)}
                 </h3>
                 <p className="text-white mb-6">
-                  PP (Polypropylene) double-wall corrugated pipes are widely
-                  used for drainage, sewage, and stormwater management systems
-                  due to their excellent material properties and structural
-                  design.
+{translatePpHmPipeText("PP (Polypropylene) double-wall corrugated pipes are widely used for drainage, sewage, and stormwater management systems due to their excellent material properties and structural design.", t)}
                 </p>
 
                 <h4 className="text-xl font-bold text-white mb-4">
-                  Material Properties:
+{translatePpHmPipeText("Material Properties:", t)}
                 </h4>
                 <div className="space-y-3 mb-6">
                   {[
@@ -338,13 +412,13 @@ function PPHMPipesAndFittingsPage() {
                   ].map((property, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-white">{property}</span>
+                      <span className="text-white">{translatePpHmPipeText(property, t)}</span>
                     </div>
                   ))}
                 </div>
 
                 <h4 className="text-xl font-bold text-white mb-4">
-                  Application:
+{translatePpHmPipeText("Application:", t)}
                 </h4>
                 <div className="space-y-3 mb-6">
                   {[
@@ -354,13 +428,13 @@ function PPHMPipesAndFittingsPage() {
                   ].map((application, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-white">{application}</span>
+                      <span className="text-white">{translatePpHmPipeText(application, t)}</span>
                     </div>
                   ))}
                 </div>
 
                 <h4 className="text-xl font-bold text-white mb-4">
-                  Characteristics:
+{translatePpHmPipeText("Characteristics:", t)}
                 </h4>
                 <div className="space-y-3 mb-8">
                   {[
@@ -378,7 +452,7 @@ function PPHMPipesAndFittingsPage() {
                   ].map((characteristic, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-white">{characteristic}</span>
+                      <span className="text-white">{translatePpHmPipeText(characteristic, t)}</span>
                     </div>
                   ))}
                 </div>
@@ -391,7 +465,7 @@ function PPHMPipesAndFittingsPage() {
                     className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-white rounded-lg transition-colors"
                   >
                     <Download className="w-4 h-4 mr-2" />
-                    Download Specs
+{t("ppHmPipes.downloadSpecs")}
                   </a>
                   <a
                     href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-PPHM_EN-2024_posledna-promena_MART_compressed.pdf"
@@ -400,7 +474,7 @@ function PPHMPipesAndFittingsPage() {
                     className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                   >
                     <Download className="w-4 h-4 mr-2" />
-                    Download Brochure
+{t("ppHmPipes.downloadBrochure")}
                   </a>
                 </div>
               </div>
@@ -435,7 +509,7 @@ function PPHMPipesAndFittingsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                PP HM Fittings
+{translatePpHmPipeText("PP HM Fittings", t)}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -453,7 +527,7 @@ function PPHMPipesAndFittingsPage() {
 
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
               <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
-                {fittingTypes[activeFittingTabIndex].title}
+{translatePpHmPipeText(fittingTypes[activeFittingTabIndex].title, t)}
               </h3>
               <div className="flex justify-center space-x-1 mt-3">
                 {fittingTypes.map((_, index) => (
@@ -494,7 +568,7 @@ function PPHMPipesAndFittingsPage() {
                   {/* Left Column - Fittings List */}
                   <div>
                     <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
-                      {fitting.title}
+{translatePpHmPipeText(fitting.title, t)}
                     </h3>
 
                     <div className="space-y-3">
@@ -514,7 +588,7 @@ function PPHMPipesAndFittingsPage() {
                                 <Download className="w-3 h-3 text-white" />
                               </div>
                               <span className="text-sm font-medium">
-                                {item.name}
+{translatePpHmPipeText(item.name, t)}
                               </span>
                             </a>
                           ) : (
@@ -554,20 +628,19 @@ function PPHMPipesAndFittingsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+{t("ppHmPipes.contactTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our PP HM sewage pipe solutions?
-              Contact our team of experts.
+{t("ppHmPipes.contactDescriptionPpHm")}
             </p>
             <a
               href="/contact"
               className="inline-flex items-center px-8 py-4 text-white text-lg font-semibold rounded-lg bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors shadow-lg"
               data-testid="contact-button"
             >
-              Contact Us
+{t("ppHmPipes.contactUs")}
             </a>
           </div>
         </div>
@@ -580,13 +653,12 @@ function PPHMPipesAndFittingsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+{t("ppHmPipes.contactTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our PP HM pipe solutions?
-              Contact our team of experts.
+{t("ppHmPipes.contactDescriptionGeneral")}
             </p>
             <Button
               onClick={() => {
@@ -598,7 +670,7 @@ function PPHMPipesAndFittingsPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              Contact Us
+{t("ppHmPipes.contactUs")}
             </Button>
           </div>
         </div>

@@ -84,7 +84,7 @@ function NewsPage() {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-100">
-            <span className="text-gray-400 text-sm">No Image</span>
+            <span className="text-gray-400 text-sm">{t("newsPage.noImage")}</span>
           </div>
         )}
       </div>
@@ -93,7 +93,7 @@ function NewsPage() {
         {/* News Category Label */}
         <div className="mb-3">
           <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-            NEWS
+{t("newsPage.newsCategory")}
           </span>
         </div>
         
@@ -104,7 +104,7 @@ function NewsPage() {
         
         {/* Section 2: Description */}
         <p className="text-gray-600 mb-6 leading-relaxed">
-          {article.description ? truncateText(article.description, 120) : "No description available"}
+          {article.description ? truncateText(article.description, 120) : t("newsPage.noDescription")}
         </p>
 
         {/* Date and Read More */}
@@ -118,7 +118,7 @@ function NewsPage() {
             className="inline-flex items-center px-4 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm font-medium rounded transition-colors"
             data-testid={`read-more-${article.id}`}
           >
-            Read More
+{t("newsPage.readMore")}
             <ArrowRight className="w-4 h-4 ml-2" />
           </a>
         </div>
@@ -140,13 +140,13 @@ function NewsPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
-              <span className="text-sm font-medium">LATEST UPDATES</span>
+              <span className="text-sm font-medium">{t("newsPage.latestUpdates")}</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
               {t('newsPage.title')}&<span className="text-red-500"> {t('newsPage.insights')}</span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                FROM KONTI
+{t("newsPage.fromKonti")}
               </span>
             </h1>
             <p
@@ -174,7 +174,7 @@ function NewsPage() {
           {isLoadingNews ? (
             <div className="flex items-center justify-center py-20">
               <Loader2 className="h-8 w-8 animate-spin text-[#1c2d56]" />
-              <span className="ml-3 text-lg text-gray-600">Loading news articles...</span>
+              <span className="ml-3 text-lg text-gray-600">{t("newsPage.loadingArticles")}</span>
             </div>
           ) : (
             <>
@@ -199,7 +199,7 @@ function NewsPage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Loading...
+{t("newsPage.loading")}
                   </>
                 ) : (
                   <>
@@ -218,9 +218,9 @@ function NewsPage() {
           {!isLoadingNews && newsArticles.length === 0 && (
             <div className="text-center py-20">
               <Calendar className="h-16 w-16 text-gray-300 mx-auto mb-6" />
-              <h3 className="text-2xl font-bold text-gray-700 mb-4">No News Articles Yet</h3>
+              <h3 className="text-2xl font-bold text-gray-700 mb-4">{t("newsPage.noNewsYet")}</h3>
               <p className="text-gray-500">
-                Check back soon for the latest updates and insights from Konti Hidroplast.
+                {t("newsPage.checkBackSoon")}
               </p>
             </div>
           )}
@@ -229,10 +229,10 @@ function NewsPage() {
           {!isLoadingNews && newsArticles.length > 0 && visibleArticles >= newsArticles.length && (
             <div className="text-center">
               <p className="text-lg text-gray-600 mb-4">
-                You've seen all our latest news articles!
+{t("newsPage.allArticlesShown")}
               </p>
               <p className="text-sm text-gray-500">
-                Check back soon for more updates and insights.
+{t("newsPage.checkBackMore")}
               </p>
             </div>
           )}
@@ -269,13 +269,12 @@ function NewsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+{t('contact.connectWithUs')}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Want to stay updated with our latest news and innovations?
-              Contact our team for more information.
+{t('contact.stayUpdated')}
             </p>
             <Button
               onClick={() => {
@@ -287,7 +286,7 @@ function NewsPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              Contact Us
+{t('common.contactUs')}
             </Button>
           </div>
         </div>

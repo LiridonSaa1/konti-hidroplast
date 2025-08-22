@@ -154,7 +154,7 @@ export function ProductsSection() {
 
               <div className="mt-4">
                 <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                  GAS PIPELINE SYSTEM
+                  {t('aboutUs.gasPipelineSystem')}
                 </h3>
 
                 {/* Learn More Button */}
@@ -199,7 +199,7 @@ export function ProductsSection() {
 
               <div className="mt-4">
                 <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                  CABLE PROTECTION
+                  {t('aboutUs.cableProtection')}
                 </h3>
 
                 {/* Learn More Button */}

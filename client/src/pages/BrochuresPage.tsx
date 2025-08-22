@@ -101,22 +101,22 @@ function BrochuresPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
-              <span className="text-sm font-medium">PRODUCT DOCUMENTATION</span>
+              <span className="text-sm font-medium">{t("productPages.productDocumentation")}</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-              PRODUCT<span className="text-red-500"> BROCHURES</span>
+              {t("productPages.productBrochures")}<span className="text-red-500"> </span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                & CATALOGS
+                {t("productPages.andCatalogs")}
               </span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Download comprehensive product documentation, technical specifications, and catalogs for all our pipe and fitting solutions.
+{t("productPages.brochuresDescription")}
             </p>
             
             {/* Language indicator */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-              <span className="text-sm">Current Language:</span>
+              <span className="text-sm">{t("brochures.currentLanguage")}</span>
               <span className="font-medium">
                 {language === 'en' ? '🇺🇸 English' : 
                  language === 'mk' ? '🇲🇰 Macedonian' : 
@@ -134,7 +134,7 @@ function BrochuresPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Product Brochures
+{t("brochures.productBrochures")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -142,9 +142,9 @@ function BrochuresPage() {
             {groupedBrochures.length === 0 && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-md mx-auto">
                 <FileText className="h-12 w-12 text-blue-600 mx-auto mb-3" />
-                <p className="text-blue-800 font-medium">No brochures available for {language === 'mk' ? 'Macedonian' : language === 'de' ? 'German' : 'English'}</p>
+                <p className="text-blue-800 font-medium">{t("brochures.noBrochuresAvailable")} {language === 'mk' ? 'Macedonian' : language === 'de' ? 'German' : 'English'}</p>
                 <p className="text-blue-600 text-sm mt-2">
-                  Switch languages or check back later for updated content.
+{t("brochures.switchLanguages")}
                 </p>
               </div>
             )}
@@ -232,12 +232,12 @@ function BrochuresPage() {
                             data-testid={`download-${brochure.id}`}
                           >
                             <Download className="w-3 h-3 mr-2" />
-                            Download
+{t("productPages.download")}
                           </a>
                         ) : (
                           <div className="inline-flex items-center w-full justify-center px-3 py-2 bg-gray-300 text-gray-500 text-sm rounded-lg cursor-not-allowed">
                             <Download className="w-3 h-3 mr-2" />
-                            No PDF Available
+{t("brochures.noPdfAvailable")}
                           </div>
                         )}
                       </div>
@@ -249,10 +249,10 @@ function BrochuresPage() {
               {/* Total count */}
               <div className="text-center mt-12">
                 <p className="text-gray-600">
+                  {t("brochures.currentLanguage")} {language === 'en' ? '🇺🇸 English' : language === 'mk' ? '🇲🇰 Macedonian' : language === 'de' ? '🇩🇪 German' : language}
+                  <br />
                   Showing {groupedBrochures[activeTabIndex]?.brochures.length || 0} brochures 
                   {groupedBrochures.length > 1 && ` in ${groupedBrochures[activeTabIndex]?.title || 'this category'}`}
-                  {' '}for{' '}
-                  {language === 'en' ? 'English' : language === 'mk' ? 'Macedonian' : language === 'de' ? 'German' : language}
                 </p>
               </div>
             </>

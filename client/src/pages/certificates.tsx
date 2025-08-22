@@ -753,7 +753,7 @@ function CertificatesPage() {
             data-testid={`download-${categoryId}-${index}`}
           >
             <Download className="w-3 h-3 mr-2" />
-            Download
+{t("productPages.download")}
           </a>
         ) : (
           <button
@@ -767,7 +767,7 @@ function CertificatesPage() {
             data-testid={`certificate-${categoryId}-${index}`}
           >
             <Shield className="w-3 h-3 mr-2" />
-            Certificate Only
+{t("productPages.certificateOnly")}
           </button>
         )}
       </div>
@@ -788,35 +788,33 @@ function CertificatesPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
-              <span className="text-sm font-medium">QUALITY ASSURANCE</span>
+              <span className="text-sm font-medium">{t("productPages.qualityAssurance")}</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-              QUALITY<span className="text-red-500"> CERTIFICATES</span>
+              {t("productPages.qualityCertificates")}<span className="text-red-500"> </span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                & STANDARDS
+                {t("productPages.andStandards")}
               </span>
             </h1>
             <p
               className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
               data-testid="hero-description"
             >
-              Official certificates and quality assurance documentation
-              demonstrating our commitment to international standards and
-              environmental responsibility.
+{t("productPages.certificatesDescription")}
             </p>
             <div className="flex justify-center space-x-8 text-sm">
               <div className="flex items-center">
                 <Award className="w-5 h-5 mr-2 text-yellow-400" />
-                ISO Certified
+{t("productPages.isoCertified")}
               </div>
               <div className="flex items-center">
                 <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
-                Quality Assured
+{t("productPages.qualityAssured")}
               </div>
               <div className="flex items-center">
                 <Shield className="w-5 h-5 mr-2 text-blue-400" />
-                European Standards
+{t("productPages.europeanStandards")}
               </div>
             </div>
           </div>
@@ -830,7 +828,7 @@ function CertificatesPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Certificates & Standards
+                {t("productPages.certificatesStandards")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -840,14 +838,14 @@ function CertificatesPage() {
           {isLoading && (
             <div className="text-center py-12">
               <div className="animate-spin w-12 h-12 border-4 border-[#1c2d56] border-t-transparent rounded-full mx-auto mb-4"></div>
-              <p className="text-gray-600">Loading certificates...</p>
+              <p className="text-gray-600">{t("productPages.loadingCertificates")}</p>
             </div>
           )}
 
           {/* Error state */}
           {error && (
             <div className="text-center py-12">
-              <p className="text-red-600 mb-4">Error loading certificates. Using cached data.</p>
+              <p className="text-red-600 mb-4">{t("productPages.errorLoadingCertificates")}</p>
             </div>
           )}
 
@@ -947,7 +945,7 @@ function CertificatesPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+{t("aboutUs.getInTouchTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -960,7 +958,7 @@ function CertificatesPage() {
               className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
-              Contact Us
+{t("aboutUs.contactUsButton")}
             </a>
           </div>
         </div>
@@ -973,13 +971,12 @@ function CertificatesPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+{t("aboutUs.getInTouchTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our certificates and quality standards?
-              Contact our team of experts.
+{t("productPages.needMoreInfo")} certificates and quality standards? {t("productPages.contactExperts")}.
             </p>
             <Button
               onClick={() => {
@@ -991,7 +988,7 @@ function CertificatesPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              Contact Us
+{t("aboutUs.contactUsButton")}
             </Button>
           </div>
         </div>

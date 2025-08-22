@@ -16,6 +16,64 @@ import {
 
 import Gas_gore from "@assets/Gas-gore.jpg";
 
+// Gas pipeline translation helper function
+const translateGasPipelineText = (text: string, t: any) => {
+  const translations: { [key: string]: string } = {
+    // Gas pipeline specifications
+    "GAS": t("gasPipeline.gas"),
+    "Petroleum Derivatives": t("gasPipeline.petroleumDerivatives"),
+    "Polyethylene gas pipes are made of PE 80 and PE 100, and are intended for distribution of gas through a network, up to working pressure of 10 bar.": t("gasPipeline.pipeDescription"),
+    "Color: Black with longitudinal yellow lines, or yellow color for PE 80, and black with yellow lines or orange color for PE 100": t("gasPipeline.colorStandards"),
+    "Standards: EN 1555-2 and ISO 4437": t("gasPipeline.standards"),
+    "PE 80: Designed for medium-pressure applications with good flexibility and durability": t("gasPipeline.pe80Applications"),
+    "PE 80: Suitable for smaller diameter and lower pressure systems": t("gasPipeline.pe80SuitableFor"),
+    "PE 100: Higher density and strength compared to PE 80, designed for high-pressure systems": t("gasPipeline.pe100Strength"),
+    "PE 100: Enables thinner wall thickness for the same pressure class, leading to reduced weight and cost savings": t("gasPipeline.pe100WallThickness"),
+    "PE 100: Longer service life due to improved resistance to stress cracking and environmental stress": t("gasPipeline.pe100ServiceLife"),
+    "PE 80 is preferred for low to medium-pressure systems with smaller diameters, while PE 100 is ideal for high-pressure systems, larger diameters, and long-term, demanding applications": t("gasPipeline.pe80vs100"),
+    
+    // Konti Petrol specifications
+    "Konti Petrol gas pipe is a double-layered pipe with outer black surface made of PE100 standards, the same that apply for the classic PE i.e. EN 1555 or ISO 4437.": t("gasPipeline.kontiPetrolDescription"),
+    "Color: Black with orange longitudinal lines on the outer layer, and orange inner layer": t("gasPipeline.kontiPetrolColor"),
+    "Excellent resistance to volatile organic compounds from petroleum derivatives and prevents their crossing in the environment": t("gasPipeline.organicResistance"),
+    "Protecting groundwater from impurities from the oil derivatives": t("gasPipeline.groundwaterProtection"),
+    "Resistance to extreme temperatures 35°C to 85°C": t("gasPipeline.temperatureResistance"),
+    "Higher chemical resistance of the pipe": t("gasPipeline.higherChemicalResistance"),
+    "Excellent resistance to abrasion": t("gasPipeline.abrasionResistance"),
+    "Application: Transport of petrol diesel and other fuels in stations and refinery": t("gasPipeline.applicationFuel"),
+    "Application: Gas distribution": t("gasPipeline.applicationGas"),
+    "Application: Special industrial application": t("gasPipeline.applicationIndustrial"),
+    "Application: Geothermal and city heating": t("gasPipeline.applicationGeothermal"),
+    "Dimensions: PE100-PE100-X pipes are produced in dimensions from 20mm to 250mm": t("gasPipeline.dimensions"),
+    
+    // General properties
+    "Working pressure up to 10 bar": t("gasPipeline.workingPressure"),
+    "Excellent chemical resistance": t("gasPipeline.chemicalResistance"),
+    "Superior welding capabilities": t("gasPipeline.weldingCapabilities"),
+    "Smooth internal surface": t("gasPipeline.smoothSurface"),
+    "Suitable for gas distribution": t("gasPipeline.suitableForGas"),
+    "Long lifespan (more than 50 years)": t("gasPipeline.longLifespan"),
+    "100% recycling possibility": t("gasPipeline.recyclingPossibility"),
+    "Complies with EN 1555-2 and ISO 4437": t("gasPipeline.compliesWithStandards"),
+    
+    // Butt welding fittings - reuse from water supply
+    "Butt Welding": t("waterSupply.buttWelding"),
+    "Fitting Stub Ends (Welding Collars)": t("waterSupply.fittingStubEnds"),
+    "Fitting – FF Piece": t("waterSupply.fittingFFPiece"),
+    "Fitting – Metal Flange": t("waterSupply.fittingMetalFlange"),
+    "Fitting – Elbow 11°-12°-30°": t("waterSupply.fittingElbow11"),
+    "Fitting – Elbow 45°": t("waterSupply.fittingElbow45"),
+    "Fitting – Elbow 60°": t("waterSupply.fittingElbow60"),
+    "Fitting – Elbow 90°": t("waterSupply.fittingElbow90"),
+    "Fitting – Concentric Reducer": t("waterSupply.fittingConcentricReducer"),
+    "Fitting – End Cup": t("waterSupply.fittingEndCup"),
+    "Fitting – Tee Outlet Without Reinforcement": t("waterSupply.fittingTeeOutlet"),
+    "Fitting – Tee Outlet Reducer": t("waterSupply.fittingTeeOutletReducer"),
+    "Fitting – Tee Outlet": t("waterSupply.fittingTeeOutlet"),
+  };
+  return translations[text] || text;
+};
+
 // PE Gas Pipe specifications data
 const gasSpecifications = [
   {
@@ -243,7 +301,7 @@ function GasPipelineSystemsPage() {
             <div>
               <div className="mb-6 bg-[#ef4444]  text-white px-4 py-2 rounded-full inline-block">
                 <span className="text-sm font-medium">
-                  ENGINEERED FOR EXCELLENCE
+                  {t("productPages.engineeredForExcellence")}
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
@@ -257,19 +315,17 @@ function GasPipelineSystemsPage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                High-quality polyethylene pipes for gas distribution networks,
-                meeting the highest standards for safety and reliability up to
-                10 bar working pressure.
+{t("gasPipeline.heroDescription")}
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
                   <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">Up to 10 Bar</span>
+                  <span className="text-sm font-medium">{t("gasPipeline.upTo10Bar")}</span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
                   <Check className="w-5 h-5" />
                   <span className="text-sm font-medium">
-                    EN 1555-2 & ISO 4437
+{t("gasPipeline.enStandards")}
                   </span>
                 </div>
               </div>
@@ -284,7 +340,7 @@ function GasPipelineSystemsPage() {
                 />
               </div>
               <div className="absolute -bottom-4 -right-4 bg-[#ef4444] text-white px-4 py-2 rounded-full shadow-lg">
-                <span className="text-sm font-medium">Premium Quality</span>
+                <span className="text-sm font-medium">{t("productPages.premiumQuality")}</span>
               </div>
             </div>
           </div>
@@ -296,30 +352,24 @@ function GasPipelineSystemsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-                Technical Specifications
+                {t("productPages.technicalSpecifications")}
               </h2>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  Polyethylene gas pipes are made of PE 80 and PE 100 materials,
-                  and are intended for distribution of gas through a network, up
-                  to working pressure of 10 bar.
+{t("gasPipeline.pipeDescription")}
                 </p>
                 <p>
-                  PE 80 (Medium Density Polyethylene) are designed for
-                  medium-pressure applications and offer good flexibility and
-                  durability.
+{t("gasPipeline.pe80Description")}
                 </p>
                 <p>
-                  PE 100 (High-Density Polyethylene) have higher density and
-                  strength compared to PE 80 and are designed for high-pressure
-                  systems with enhanced safety features.
+{t("gasPipeline.pe100Description")}
                 </p>
               </div>
             </div>
 
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-                General Properties
+                {t("productPages.generalProperties")}
               </h3>
               <div className="space-y-3">
                 {[
@@ -334,7 +384,7 @@ function GasPipelineSystemsPage() {
                 ].map((property, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-gray-700">{property}</span>
+                    <span className="text-gray-700">{translateGasPipelineText(property, t)}</span>
                   </div>
                 ))}
               </div>
@@ -349,7 +399,7 @@ function GasPipelineSystemsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
-                Gas Pipeline Pipes
+{t("gasPipeline.gasPipelinePipes")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -368,7 +418,7 @@ function GasPipelineSystemsPage() {
                       : "text-gray-600 hover:text-[#1c2d56]"
                   }`}
                 >
-                  {spec.title}
+{translateGasPipelineText(spec.title, t)}
                 </button>
               ))}
             </div>
@@ -383,15 +433,15 @@ function GasPipelineSystemsPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
                   <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
-                    {spec.title}
+{translateGasPipelineText(spec.title, t)}
                   </h3>
-                  <p className="text-[#ffffff] mb-6">{spec.description}</p>
+                  <p className="text-[#ffffff] mb-6">{translateGasPipelineText(spec.description, t)}</p>
 
                   <div className="space-y-3 mb-8">
                     {spec.features.map((feature, index) => (
                       <div key={index} className="flex items-start gap-3">
                         <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                        <span className="text-[#ffffff]">{feature}</span>
+                        <span className="text-[#ffffff]">{translateGasPipelineText(feature, t)}</span>
                       </div>
                     ))}
                   </div>
@@ -404,7 +454,7 @@ function GasPipelineSystemsPage() {
                       className="inline-flex items-center px-6 py-3 bg-[#ffffff] text-[#1c2d56] rounded-lg transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
-                      Download Specs
+{t("gasPipeline.downloadSpecs")}
                     </a>
                     <a
                       href={spec.brochure}
@@ -413,7 +463,7 @@ function GasPipelineSystemsPage() {
                       className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
-                      Download Brochure
+{t("gasPipeline.downloadBrochure")}
                     </a>
                   </div>
                 </div>
@@ -439,7 +489,7 @@ function GasPipelineSystemsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                PE Fittings
+{t("gasPipeline.peFittings")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -457,7 +507,7 @@ function GasPipelineSystemsPage() {
 
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
               <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
-                {gasFittingTypes[activeFittingTabIndex].title}
+{translateGasPipelineText(gasFittingTypes[activeFittingTabIndex].title, t)}
               </h3>
               <div className="flex justify-center space-x-1 mt-3">
                 {gasFittingTypes.map((_, index) => (
@@ -498,7 +548,7 @@ function GasPipelineSystemsPage() {
                   {/* Left Column - Fittings List */}
                   <div>
                     <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
-                      {fitting.title}
+{translateGasPipelineText(fitting.title, t)}
                     </h3>
 
                     <div className="space-y-3">
@@ -518,7 +568,7 @@ function GasPipelineSystemsPage() {
                                 <Download className="w-3 h-3 text-white" />
                               </div>
                               <span className="text-sm font-medium">
-                                {item.name}
+{translateGasPipelineText(item.name, t)}
                               </span>
                             </a>
                           ) : (
@@ -526,7 +576,7 @@ function GasPipelineSystemsPage() {
                               <div className="w-6 h-6 bg-gray-400 rounded flex items-center justify-center flex-shrink-0">
                                 <Download className="w-3 h-3 text-white" />
                               </div>
-                              <span className="text-sm">{item.name}</span>
+                              <span className="text-sm">{translateGasPipelineText(item.name, t)}</span>
                             </div>
                           )}
                         </div>
@@ -556,20 +606,19 @@ function GasPipelineSystemsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+{t("gasPipeline.contactTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our cable protection solutions?
-              Contact our team of experts.
+{t("gasPipeline.contactDescription")}
             </p>
             <a
               href="/contact"
               className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
-              Contact Us
+{t("gasPipeline.contactUs")}
             </a>
           </div>
         </div>
@@ -581,13 +630,12 @@ function GasPipelineSystemsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+{t("gasPipeline.contactTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our gas pipeline solutions?
-              Contact our team of experts.
+{t("gasPipeline.contactDescription")}
             </p>
             <Button
               onClick={() => {
@@ -599,7 +647,7 @@ function GasPipelineSystemsPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              Contact Us
+{t("gasPipeline.contactUs")}
             </Button>
           </div>
         </div>

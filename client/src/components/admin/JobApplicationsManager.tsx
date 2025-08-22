@@ -360,14 +360,14 @@ export function JobApplicationsManager() {
       {/* Application Details Modal */}
       {viewModalOpen && selectedApplication && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <Card className="w-full max-w-2xl max-h-[95vh] overflow-hidden flex flex-col">
             <CardHeader>
               <CardTitle>Job Application Details</CardTitle>
               <CardDescription>
                 Application from {selectedApplication.fullName} for {selectedApplication.position}
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 flex-1 overflow-y-auto min-h-0">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Label className="text-sm font-medium">Full Name</Label>

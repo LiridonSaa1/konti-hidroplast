@@ -569,45 +569,35 @@ export class DatabaseStorage implements IStorage {
     return updated;
   }
 
-  async deleteBrochureCategory(id: number): Promise<void> {
+    async deleteBrochureCategory(id: number): Promise<void> {
     if (!db) throw new Error('Database not available');
     await db.delete(brochureCategories).where(eq(brochureCategories.id, id));
   }
   
-  // Project methods
+  // Project methods - delegate to MemStorage since we're using in-memory storage
   async getAllProjects(): Promise<Project[]> {
-    if (!db) throw new Error('Database not available');
-    return await db.select().from(projects).orderBy(desc(projects.createdAt));
+    // Since we're using MemStorage, this won't be called
+    throw new Error('Database storage not available for projects');
   }
 
   async getProject(id: number): Promise<Project | undefined> {
-    if (!db) throw new Error('Database not available');
-    const [project] = await db.select().from(projects).where(eq(projects.id, id));
-    return project || undefined;
+    // Since we're using MemStorage, this won't be called
+    throw new Error('Database storage not available for projects');
   }
 
   async createProject(project: InsertProject): Promise<Project> {
-    if (!db) throw new Error('Database not available');
-    const [newProject] = await db
-      .insert(projects)
-      .values({...project, translations: {}, defaultLanguage: 'en'})
-      .returning();
-    return newProject;
+    // Since we're using MemStorage, this won't be called
+    throw new Error('Database storage not available for projects');
   }
 
   async updateProject(id: number, project: Partial<InsertProject>): Promise<Project> {
-    if (!db) throw new Error('Database not available');
-    const [updated] = await db
-      .update(projects)
-      .set(project)
-      .where(eq(projects.id, id))
-      .returning();
-    return updated;
+    // Since we're using MemStorage, this won't be called
+    throw new Error('Database storage not available for projects');
   }
 
   async deleteProject(id: number): Promise<void> {
-    if (!db) throw new Error('Database not available');
-    await db.delete(projects).where(eq(projects.id, id));
+    // Since we're using MemStorage, this won't be called
+    throw new Error('Database storage not available for projects');
   }
   
   // Team methods
@@ -1350,53 +1340,7 @@ export class MemStorage implements IStorage {
     }
   }
 
-  // Project methods
-  async getAllProjects(): Promise<Project[]> {
-    return this.projectsData.sort((a, b) => {
-      const aTime = a.createdAt?.getTime() || 0;
-      const bTime = b.createdAt?.getTime() || 0;
-      return bTime - aTime;
-    });
-  }
 
-  async getProject(id: number): Promise<Project | undefined> {
-    return this.projectsData.find(project => project.id === id);
-  }
-
-  async createProject(project: InsertProject): Promise<Project> {
-    const newProject: Project = {
-      ...project,
-      id: this.projectsData.length + 1,
-      description: project.description ?? null,
-      imageUrl: project.imageUrl ?? null,
-      pdfUrl: project.pdfUrl ?? null,
-      status: project.status ?? null,
-      sortOrder: project.sortOrder ?? 0,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.projectsData.push(newProject);
-    return newProject;
-  }
-
-  async updateProject(id: number, project: Partial<InsertProject>): Promise<Project> {
-    const index = this.projectsData.findIndex(p => p.id === id);
-    if (index === -1) throw new Error('Project not found');
-    
-    this.projectsData[index] = {
-      ...this.projectsData[index],
-      ...project,
-      updatedAt: new Date()
-    };
-    return this.projectsData[index];
-  }
-
-  async deleteProject(id: number): Promise<void> {
-    const index = this.projectsData.findIndex(p => p.id === id);
-    if (index !== -1) {
-      this.projectsData.splice(index, 1);
-    }
-  }
   
   // Team methods
   async getAllTeams(): Promise<Team[]> {
@@ -1718,6 +1662,58 @@ export class MemStorage implements IStorage {
 
   async deleteBrevoConfig(id: number): Promise<void> {
     this.brevoConfigData = null;
+  }
+
+  // Project methods - in-memory storage for development
+  async getAllProjects(): Promise<Project[]> {
+    return this.projectsData.sort((a, b) => {
+      const aTime = a.createdAt?.getTime() || 0;
+      const bTime = b.createdAt?.getTime() || 0;
+      return bTime - aTime;
+    });
+  }
+
+  async getProject(id: number): Promise<Project | undefined> {
+    return this.projectsData.find(project => project.id === id);
+  }
+
+  async createProject(project: InsertProject): Promise<Project> {
+    const newProject: Project = {
+      ...project,
+      id: this.projectsData.length + 1,
+      description: project.description ?? null,
+      imageUrl: project.imageUrl ?? null,
+      pdfUrl: project.pdfUrl ?? null,
+      status: project.status ?? null,
+      sortOrder: project.sortOrder ?? 0,
+      translations: (project as any).translations || {},
+      defaultLanguage: (project as any).defaultLanguage || "en",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.projectsData.push(newProject);
+    return newProject;
+  }
+
+  async updateProject(id: number, project: Partial<InsertProject>): Promise<Project> {
+    const index = this.projectsData.findIndex(p => p.id === id);
+    if (index === -1) throw new Error('Project not found');
+    
+    this.projectsData[index] = {
+      ...this.projectsData[index],
+      ...project,
+      translations: (project as any).translations || this.projectsData[index].translations || {},
+      defaultLanguage: (project as any).defaultLanguage || this.projectsData[index].defaultLanguage || "en",
+      updatedAt: new Date()
+    };
+    return this.projectsData[index];
+  }
+
+  async deleteProject(id: number): Promise<void> {
+    const index = this.projectsData.findIndex(p => p.id === id);
+    if (index !== -1) {
+      this.projectsData.splice(index, 1);
+    }
   }
 }
 
