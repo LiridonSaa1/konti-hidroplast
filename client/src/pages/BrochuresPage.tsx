@@ -23,19 +23,41 @@ function BrochuresPage() {
     queryKey: ['/api/admin/brochure-categories'],
   });
 
-  // Group brochures by category and filter by current language
+  // Helper function to get translated text
+  const getTranslatedText = (item: any, field: string, fallback: string = '') => {
+    // For brochure categories (use 'translations' field)
+    if (item.translations && item.translations[language] && item.translations[language][field]) {
+      return item.translations[language][field];
+    }
+    // For brochures (use 'translationMetadata' field)
+    const translations = item.translationMetadata;
+    if (translations && translations[language] && translations[language][field]) {
+      return translations[language][field];
+    }
+    // Fallback to the base field value
+    return item[field] || fallback;
+  };
+
+  // Group brochures by category - show all active brochures, not filtered by language
   const groupedBrochures = categories.map(category => {
     const categoryBrochures = brochures
       .filter(brochure => 
         brochure.category === category.title && 
-        brochure.language === language && 
         brochure.active
       )
+      // Group by translationGroup to avoid duplicates, keep only one per group
+      .reduce((acc, brochure) => {
+        const groupId = brochure.translationGroup || brochure.id;
+        if (!acc.find(b => (b.translationGroup || b.id) === groupId)) {
+          acc.push(brochure);
+        }
+        return acc;
+      }, [] as typeof brochures)
       .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
     return {
       id: category.title.toLowerCase().replace(/\s+/g, '-'),
-      title: category.title,
+      title: getTranslatedText(category, 'title', category.title) || category.title,
       brochures: categoryBrochures
     };
   }).filter(category => category.brochures.length > 0);
@@ -209,7 +231,7 @@ function BrochuresPage() {
                         {brochure.imageUrl ? (
                           <img
                             src={brochure.imageUrl}
-                            alt={brochure.title}
+                            alt={getTranslatedText(brochure, 'name', brochure.title || brochure.name)}
                             className="w-full h-full object-cover"
                             loading="lazy"
                           />
@@ -221,8 +243,13 @@ function BrochuresPage() {
                       </div>
                       <div className="p-4">
                         <h3 className="text-sm font-semibold text-[#1c2d56] mb-3 line-clamp-2 min-h-[2.5rem]">
-                          {brochure.title}
+                          {getTranslatedText(brochure, 'name', brochure.title || brochure.name)}
                         </h3>
+                        {getTranslatedText(brochure, 'description', brochure.description) && (
+                          <p className="text-xs text-gray-600 mb-3 line-clamp-2">
+                            {getTranslatedText(brochure, 'description', brochure.description)}
+                          </p>
+                        )}
                         {brochure.pdfUrl ? (
                           <a
                             href={brochure.pdfUrl}

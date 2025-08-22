@@ -16,7 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import type { Brochure, InsertBrochure, BrochureCategory } from "@shared/schema";
 import { TranslationHelper } from "./TranslationHelper";
-
+import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
 
 interface BrochureEntry {
   id: string;
@@ -30,11 +30,21 @@ interface BrochureEntry {
 interface BrochureFormData {
   name: string;
   category: string;
+  language: string;
+  pdfFile: File | null;
+  pdfUrl: string;
+  imageFile: File | null;
+  imageUrl: string;
   description: string;
   status: string;
   active: boolean;
   sortOrder: number;
   entries: BrochureEntry[];
+  translations: {
+    en?: Record<string, string>;
+    mk?: Record<string, string>;
+    de?: Record<string, string>;
+  };
 }
 
 export function BrochuresManager() {
@@ -48,6 +58,11 @@ export function BrochuresManager() {
   const [formData, setFormData] = useState<BrochureFormData>({
     name: "",
     category: "",
+    language: "en",
+    pdfFile: null,
+    pdfUrl: "",
+    imageFile: null,
+    imageUrl: "",
     description: "",
     status: "active",
     active: true,
@@ -59,7 +74,12 @@ export function BrochuresManager() {
       imageFile: null,
       imageUrl: "",
       language: "en"
-    }]
+    }],
+    translations: {
+      en: {},
+      mk: {},
+      de: {}
+    }
   });
 
   const { toast } = useToast();
@@ -153,6 +173,11 @@ export function BrochuresManager() {
     setFormData({
       name: "",
       category: "",
+      language: "en",
+      pdfFile: null,
+      pdfUrl: "",
+      imageFile: null,
+      imageUrl: "",
       description: "",
       status: "active",
       active: true,
@@ -164,7 +189,12 @@ export function BrochuresManager() {
         imageFile: null,
         imageUrl: "",
         language: "en"
-      }]
+      }],
+      translations: {
+        en: {},
+        mk: {},
+        de: {}
+      }
     });
   };
 
@@ -181,7 +211,20 @@ export function BrochuresManager() {
       description: brochure.description || "",
       status: brochure.status || "active",
       active: brochure.active ?? true,
-      sortOrder: brochure.sortOrder || 0
+      sortOrder: brochure.sortOrder || 0,
+      entries: [{
+        id: "1",
+        pdfFile: null,
+        pdfUrl: brochure.pdfUrl || "",
+        imageFile: null,
+        imageUrl: brochure.imageUrl || "",
+        language: brochure.language || "en"
+      }],
+      translations: (brochure as any).translations || {
+        en: {},
+        mk: {},
+        de: {}
+      }
     });
     setIsEditDialogOpen(true);
   };
@@ -263,17 +306,22 @@ export function BrochuresManager() {
       }
     }
 
+    // Get the name from translations or fallback to the direct name input (matching categories pattern)
+    const enName = formData.translations?.en?.name || formData.name;
+    const enDescription = formData.translations?.en?.description || formData.description;
+
     const submissionData = {
-      title: formData.name, // Use name as title
-      name: formData.name,
+      title: enName, // Use name as title
+      name: enName,
       category: formData.category,
       language: formData.language as "en" | "mk" | "de",
       pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
       imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
-      description: formData.description,
+      description: enDescription || undefined,
       status: formData.status as "active" | "inactive" | "draft",
       active: formData.active,
-      sortOrder: formData.sortOrder
+      sortOrder: formData.sortOrder,
+      translations: formData.translations
     };
 
     if (selectedBrochure) {
@@ -642,36 +690,40 @@ function BrochureFormDialog({
       <DialogHeader>
         <DialogTitle data-testid="brochure-form-title">{title}</DialogTitle>
       </DialogHeader>
-      <div className="space-y-4 py-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Brochure Name *</Label>
-            <Input
-              id="name"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="Enter brochure name"
-              data-testid="input-brochure-name"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="category">Category *</Label>
-            <Select
-              value={formData.category}
-              onValueChange={(value) => setFormData({ ...formData, category: value })}
-            >
-              <SelectTrigger data-testid="select-brochure-category-form">
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories
-                  .filter(cat => cat.active)
-                  .map(category => (
-                    <SelectItem key={category.id} value={category.title}>{category.title}</SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-          </div>
+      <div className="space-y-6 py-4">
+        {/* Multi-language Name Field - Updated */}
+        <TranslatableFieldEditor
+          label="Brochure Name *"
+          fieldName="name"
+          type="text"
+          currentTranslations={formData.translations}
+          originalValue={formData.name}
+          onChange={(translations) => {
+            setFormData({ 
+              ...formData, 
+              translations,
+              name: translations.en?.name || formData.name
+            });
+          }}
+        />
+        
+        <div className="space-y-2">
+          <Label htmlFor="category">Category *</Label>
+          <Select
+            value={formData.category}
+            onValueChange={(value) => setFormData({ ...formData, category: value })}
+          >
+            <SelectTrigger data-testid="select-brochure-category-form">
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories
+                .filter(cat => cat.active)
+                .map(category => (
+                  <SelectItem key={category.id} value={category.title}>{category.title}</SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
         </div>
 
         {/* Language Selection Row */}
@@ -813,17 +865,21 @@ function BrochureFormDialog({
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            placeholder="Enter brochure description (optional)"
-            rows={3}
-            data-testid="textarea-brochure-description"
-          />
-        </div>
+        {/* Multi-language Description Field */}
+        <TranslatableFieldEditor
+          label="Description"
+          fieldName="description"
+          type="textarea"
+          currentTranslations={formData.translations}
+          originalValue={formData.description}
+          onChange={(translations) => {
+            setFormData({ 
+              ...formData, 
+              translations,
+              description: translations.en?.description || formData.description
+            });
+          }}
+        />
 
         <div className="grid grid-cols-3 gap-4">
           <div className="space-y-2">
@@ -871,7 +927,7 @@ function BrochureFormDialog({
         </Button>
         <Button 
           onClick={onSubmit} 
-          disabled={isLoading || !formData.name || !formData.category || (!formData.pdfFile && !formData.pdfUrl && title.includes("Add"))}
+          disabled={isLoading || !(formData.translations?.en?.name || formData.name).trim() || !formData.category || (!formData.pdfFile && !formData.pdfUrl && title.includes("Add"))}
           data-testid="button-save-brochure"
         >
           {isLoading ? "Saving..." : "Save Brochure"}

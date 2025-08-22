@@ -82,6 +82,8 @@ const translations = {
       "High-quality PE and PP pipe solutions for various applications",
     "products.waterSupply": "WATER SUPPLY SYSTEMS",
     "products.sewerage": "SEWERAGE SYSTEMS",
+    "products.gasPipeline": "GAS PIPELINE SYSTEM",
+    "products.cableProtection": "CABLE PROTECTION",
     "products.learnMore": "Learn More",
     "products.pe.title": "PE Pipes",
     "products.pe.description":
@@ -1311,6 +1313,8 @@ const translations = {
       "Високо-квалитетни ПЕ и ПП решенија за цевки за различни примени",
     "products.waterSupply": "СИСТЕМИ ЗА ВОДОСНАБДУВАЊЕ",
     "products.sewerage": "КАНАЛИЗАЦИСКИ СИСТЕМИ",
+    "products.gasPipeline": "СИСТЕМ ЗА ГАСОВОД",
+    "products.cableProtection": "ЗАШТИТА НА КАБЛИ",
     "products.learnMore": "Дознај повеќе",
     "products.pe.title": "ПЕ цевки",
     "products.pe.description":
@@ -2548,6 +2552,8 @@ const translations = {
       "Hochwertige PE- und PP-Rohrlösungen für verschiedene Anwendungen",
     "products.waterSupply": "WASSERVERSORGUNGSSYSTEME",
     "products.sewerage": "ABWASSERSYSTEME",
+    "products.gasPipeline": "GASLEITUNGSSYSTEM",
+    "products.cableProtection": "KABELSCHUTZ",
     "products.learnMore": "Mehr erfahren",
     "products.pe.title": "PE-Rohre",
     "products.pe.description":

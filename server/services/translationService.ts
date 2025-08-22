@@ -50,7 +50,7 @@ export class TranslationService {
   async extractTextFromPDF(pdfBuffer: Buffer): Promise<string> {
     // For now, return a placeholder since we don't have PDF parsing set up
     // This would need a proper PDF parsing library in production
-    throw new Error("PDF text extraction is not currently available. Please ensure the OPENAI_API_KEY is configured for translations.");
+    throw new Error("PDF text extraction is not currently available.");
   }
 
   async translateText(
