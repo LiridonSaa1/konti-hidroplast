@@ -871,6 +871,68 @@ const translations = {
     "manholes.contactDescription": "Need more information about our manhole solutions? Contact our team of experts.",
     "manholes.contactUs": "Contact Us",
     
+    // Drainage
+    "drainage.engineeredForExcellence": "ENGINEERED FOR EXCELLENCE",
+    "drainage.kontikan": "KONTIKAN",
+    "drainage.drainage": "DRAINAGE",
+    "drainage.heroDescription": "Drainage Polypropylene (PP) pipes are widely used in drainage systems for managing groundwater, excess surface water, and wastewater. These pipes are designed with precision slots or perforations to allow water infiltration.",
+    "drainage.yearsLifespan": "50+ Years Lifespan",
+    "drainage.recyclable": "100% Recyclable",
+    "drainage.premiumQuality": "Premium Quality",
+    
+    // Standards & Compliance
+    "drainage.standardsCompliance": "Standards & Compliance",
+    "drainage.standardsDescription": "PP slotted pipes are manufactured to comply with standards such as EN 1852, EN 13476, DIN 4262-1 (TYPE R3) or equivalent local drainage pipe regulations, ensuring quality and reliability.",
+    "drainage.slotPatternsDescription": "Available with different slot patterns (e.g., longitudinal, spiral, or circumferential) to optimize water collection based on the application.",
+    
+    // Slot Patterns
+    "drainage.slotPatternsAvailable": "Slot Patterns Available",
+    "drainage.ppPartiallyPerforated": "PP - Partially perforated",
+    "drainage.optimizedControlledInfiltration": "Optimized for controlled water infiltration",
+    "drainage.mpMultipurpose": "MP - Multipurpose",
+    "drainage.versatileSolution": "Versatile solution for various applications",
+    "drainage.fpFullyPerforated": "FP - Fully perforated",
+    "drainage.maximumWaterCollection": "Maximum water collection capacity",
+    
+    // Key Applications
+    "drainage.keyApplications": "Key Applications",
+    "drainage.applicationsDescription": "Suitable for agriculture (irrigation), infrastructure projects (road and slope drainage), and residential or commercial water management systems. Can be easily connected to other drainage components, such as catch basins and manholes, using standard fittings.",
+    "drainage.agriculture": "Agriculture (irrigation)",
+    "drainage.infrastructureProjects": "Infrastructure projects (road and slope drainage)",
+    "drainage.residentialWaterManagement": "Residential water management systems",
+    "drainage.commercialWaterManagement": "Commercial water management systems",
+    "drainage.subsurfaceDrainage": "Subsurface drainage",
+    "drainage.slopeStabilization": "Slope stabilization",
+    "drainage.groundwaterManagement": "Groundwater management",
+    "drainage.surfaceWaterManagement": "Surface water management",
+    
+    // KONTI DREN
+    "drainage.kontiDren": "KONTI DREN",
+    "drainage.kontiDrenDescription": "Drainage PP pipes offer an efficient, durable, and eco-friendly solution for managing water in a variety of drainage applications. Their lightweight nature, structural strength, and long lifespan make them a cost-effective choice for modern water management systems.",
+    "drainage.materialDescription": "Polypropylene is resistant to wear and tear, ensuring long-term performance in harsh environments. PP pipes are highly resistant to chemicals, including acids, alkalis, and salts commonly found in wastewater and drainage applications.",
+    
+    // Characteristics
+    "drainage.durableChemicalResistant": "Durable, chemical-resistant, non-corrosive",
+    "drainage.smoothInnerSurface": "Smooth inner surface, controlled infiltration",
+    "drainage.highRingStiffness": "High ring stiffness, flexible under soil pressure",
+    "drainage.temperatureRange": "Operates between -20°C and +90°C",
+    "drainage.optimizedInfiltration": "Optimized for water infiltration, debris exclusion",
+    "drainage.pipeRange": "Range of pipe: DN 110-1000 mm",
+    "drainage.uvStabilized": "UV-stabilized, eco-friendly, recyclable",
+    "drainage.lightweightEasyInstall": "Lightweight, easy to transport and install",
+    "drainage.minimalMaintenance": "Minimal maintenance due to clog resistance and durability",
+    "drainage.serviceLife": "Service life 50+ years",
+    
+    // Downloads
+    "drainage.downloadSpecs": "Download Specs",
+    "drainage.downloadBrochure": "Download Brochure",
+    
+    // Contact
+    "drainage.contactTitle": "Get in Touch: Connect with Us Today!",
+    "drainage.contactDescriptionCableProtection": "Need more information about our cable protection solutions? Contact our team of experts.",
+    "drainage.contactDescriptionDrainage": "Need more information about our drainage solutions? Contact our team of experts.",
+    "drainage.contactUs": "Contact Us",
+    
     // Common Product Page Elements
     "productPages.engineeredForExcellence": "ENGINEERED FOR EXCELLENCE",
     "productPages.premiumQuality": "Premium Quality",
@@ -2106,6 +2168,68 @@ const translations = {
     "manholes.contactTitle": "Стапете во контакт: Поврзете се со нас денес!",
     "manholes.contactDescription": "Треба ви повеќе информации за нашите решенија за шахти? Контактирајте го нашиот тим на експерти.",
     "manholes.contactUs": "Контактирајте нè",
+    
+    // Drainage
+    "drainage.engineeredForExcellence": "ИНЖЕНЕРСКИ ЗА ИЗВОНРЕДНОСТ",
+    "drainage.kontikan": "КОНТИКАН",
+    "drainage.drainage": "ДРЕНАЖА",
+    "drainage.heroDescription": "Дренажните полипропиленски (PP) цевки се широко користат во дренажни системи за управување со подземни води, вишок површински води и отпадни води. Овие цевки се дизајнирани со прецизни слотови или перфорации за да овозможат инфилтрација на вода.",
+    "drainage.yearsLifespan": "50+ години животен век",
+    "drainage.recyclable": "100% рециклабилни",
+    "drainage.premiumQuality": "Премиум квалитет",
+    
+    // Standards & Compliance
+    "drainage.standardsCompliance": "Стандарди и соодветност",
+    "drainage.standardsDescription": "PP слотирани цевки се произведуваат во согласност со стандарди како што се EN 1852, EN 13476, DIN 4262-1 (TYPE R3) или еквивалентни локални прописи за дренажни цевки, обезбедувајќи квалитет и доверливост.",
+    "drainage.slotPatternsDescription": "Достапни со различни шеми на слотови (на пр. надолжни, спирални или кружни) за оптимизирање на собирањето на вода врз основа на примената.",
+    
+    // Slot Patterns
+    "drainage.slotPatternsAvailable": "Достапни шеми на слотови",
+    "drainage.ppPartiallyPerforated": "PP - Делумно перфорирани",
+    "drainage.optimizedControlledInfiltration": "Оптимизирани за контролирана инфилтрација на вода",
+    "drainage.mpMultipurpose": "MP - Повеќенаменски",
+    "drainage.versatileSolution": "Разнострано решение за различни примени",
+    "drainage.fpFullyPerforated": "FP - Целосно перфорирани",
+    "drainage.maximumWaterCollection": "Максимален капацитет за собирање вода",
+    
+    // Key Applications
+    "drainage.keyApplications": "Клучни примени",
+    "drainage.applicationsDescription": "Погодни за земјоделство (наводнување), инфраструктурни проекти (патишта и дренажа на косини), и станбени или комерцијални системи за управување со вода. Можат лесно да се поврзат со други дренажни компоненти, како што се собирни басени и шахти, користејќи стандардни фитинзи.",
+    "drainage.agriculture": "Земјоделство (наводнување)",
+    "drainage.infrastructureProjects": "Инфраструктурни проекти (патишта и дренажа на косини)",
+    "drainage.residentialWaterManagement": "Станбени системи за управување со вода",
+    "drainage.commercialWaterManagement": "Комерцијални системи за управување со вода",
+    "drainage.subsurfaceDrainage": "Подповршинска дренажа",
+    "drainage.slopeStabilization": "Стабилизација на косини",
+    "drainage.groundwaterManagement": "Управување со подземни води",
+    "drainage.surfaceWaterManagement": "Управување со површински води",
+    
+    // KONTI DREN
+    "drainage.kontiDren": "КОНТИ ДРЕН",
+    "drainage.kontiDrenDescription": "Дренажните PP цевки нудат ефикасно, трајно и еколошки решение за управување со вода во различни дренажни примени. Нивната лесна природа, структурна јачина и долг животен век ги прават економична одбор за модерни системи за управување со вода.",
+    "drainage.materialDescription": "Полипропиленот е отпорен на истрошување, обезбедувајќи долгорочни перформанси во тешки средини. PP цевките се високо отпорни на хемикалии, вклучувајќи киселини, алкали и соли што обично се наоѓаат во отпадни води и дренажни примени.",
+    
+    // Characteristics
+    "drainage.durableChemicalResistant": "Трајни, отпорни на хемикалии, некорозивни",
+    "drainage.smoothInnerSurface": "Мазна внатрешна површина, контролирана инфилтрација",
+    "drainage.highRingStiffness": "Висока кружна крутост, флексибилни под притисок од почвата",
+    "drainage.temperatureRange": "Работи помеѓу -20°C и +90°C",
+    "drainage.optimizedInfiltration": "Оптимизирани за инфилтрација на вода, исклучување на отпад",
+    "drainage.pipeRange": "Опсег на цевки: DN 110-1000 mm",
+    "drainage.uvStabilized": "UV-стабилизирани, еколошки, рециклабилни",
+    "drainage.lightweightEasyInstall": "Лесни, лесни за транспорт и инсталација",
+    "drainage.minimalMaintenance": "Минимално одржување поради отпорност на запушување и трајност",
+    "drainage.serviceLife": "Сервисен живот 50+ години",
+    
+    // Downloads
+    "drainage.downloadSpecs": "Преземи спецификации",
+    "drainage.downloadBrochure": "Преземи брошура",
+    
+    // Contact
+    "drainage.contactTitle": "Стапете во контакт: Поврзете се со нас денес!",
+    "drainage.contactDescriptionCableProtection": "Треба ви повеќе информации за нашите решенија за заштита на кабли? Контактирајте го нашиот тим на експерти.",
+    "drainage.contactDescriptionDrainage": "Треба ви повеќе информации за нашите дренажни решенија? Контактирајте го нашиот тим на експерти.",
+    "drainage.contactUs": "Контактирајте нè",
     
     // Common Product Page Elements
     "productPages.engineeredForExcellence": "ИНЖЕНЕРСКИ ЗА ИЗВОНРЕДНОСТ",
@@ -3343,6 +3467,68 @@ const translations = {
     "manholes.contactTitle": "Kontakt aufnehmen: Verbinden Sie sich noch heute mit uns!",
     "manholes.contactDescription": "Benötigen Sie weitere Informationen zu unseren Schachtlösungen? Kontaktieren Sie unser Expertenteam.",
     "manholes.contactUs": "Kontaktieren Sie uns",
+    
+    // Drainage
+    "drainage.engineeredForExcellence": "FÜR EXZELLENZ ENTWICKELT",
+    "drainage.kontikan": "KONTIKAN",
+    "drainage.drainage": "ENTWÄSSERUNG",
+    "drainage.heroDescription": "Entwässerungs-Polypropylen (PP) Rohre werden in Entwässerungssystemen zur Verwaltung von Grundwasser, überschüssigem Oberflächenwasser und Abwasser weit verbreitet eingesetzt. Diese Rohre sind mit präzisen Schlitzen oder Perforationen ausgelegt, um Wasserinfiltration zu ermöglichen.",
+    "drainage.yearsLifespan": "50+ Jahre Lebensdauer",
+    "drainage.recyclable": "100% Recycelbar",
+    "drainage.premiumQuality": "Premium-Qualität",
+    
+    // Standards & Compliance
+    "drainage.standardsCompliance": "Standards & Konformität",
+    "drainage.standardsDescription": "PP-Schlitzrohre werden unter Einhaltung von Standards wie EN 1852, EN 13476, DIN 4262-1 (TYPE R3) oder gleichwertigen lokalen Entwässerungsrohrvorschriften hergestellt, um Qualität und Zuverlässigkeit zu gewährleisten.",
+    "drainage.slotPatternsDescription": "Verfügbar mit verschiedenen Schlitzmustern (z.B. längs, spiralförmig oder umfangsmäßig) zur Optimierung der Wassersammlung basierend auf der Anwendung.",
+    
+    // Slot Patterns
+    "drainage.slotPatternsAvailable": "Verfügbare Schlitzmuster",
+    "drainage.ppPartiallyPerforated": "PP - Teilweise perforiert",
+    "drainage.optimizedControlledInfiltration": "Optimiert für kontrollierte Wasserinfiltration",
+    "drainage.mpMultipurpose": "MP - Mehrzweck",
+    "drainage.versatileSolution": "Vielseitige Lösung für verschiedene Anwendungen",
+    "drainage.fpFullyPerforated": "FP - Vollständig perforiert",
+    "drainage.maximumWaterCollection": "Maximale Wassersammelkapazität",
+    
+    // Key Applications
+    "drainage.keyApplications": "Hauptanwendungen",
+    "drainage.applicationsDescription": "Geeignet für Landwirtschaft (Bewässerung), Infrastrukturprojekte (Straßen- und Hangentwässerung) sowie Wohn- oder Gewerbewassermanagementsysteme. Können einfach mit anderen Entwässerungskomponenten wie Auffangbecken und Schächten unter Verwendung von Standardfittings verbunden werden.",
+    "drainage.agriculture": "Landwirtschaft (Bewässerung)",
+    "drainage.infrastructureProjects": "Infrastrukturprojekte (Straßen- und Hangentwässerung)",
+    "drainage.residentialWaterManagement": "Wohnwassermanagementsysteme",
+    "drainage.commercialWaterManagement": "Gewerbliche Wassermanagementsysteme",
+    "drainage.subsurfaceDrainage": "Unterflächenentwässerung",
+    "drainage.slopeStabilization": "Hangstabilisierung",
+    "drainage.groundwaterManagement": "Grundwassermanagement",
+    "drainage.surfaceWaterManagement": "Oberflächenwassermanagement",
+    
+    // KONTI DREN
+    "drainage.kontiDren": "KONTI DREN",
+    "drainage.kontiDrenDescription": "Entwässerungs-PP-Rohre bieten eine effiziente, langlebige und umweltfreundliche Lösung für die Wasserverwaltung in verschiedenen Entwässerungsanwendungen. Ihre leichte Natur, strukturelle Festigkeit und lange Lebensdauer machen sie zu einer kostengünstigen Wahl für moderne Wassermanagementsysteme.",
+    "drainage.materialDescription": "Polypropylen ist verschleißfest und gewährleistet langfristige Leistung in rauen Umgebungen. PP-Rohre sind hochbeständig gegen Chemikalien, einschließlich Säuren, Laugen und Salzen, die häufig in Abwasser- und Entwässerungsanwendungen vorkommen.",
+    
+    // Characteristics
+    "drainage.durableChemicalResistant": "Langlebig, chemikalienbeständig, korrosionsfrei",
+    "drainage.smoothInnerSurface": "Glatte Innenoberfläche, kontrollierte Infiltration",
+    "drainage.highRingStiffness": "Hohe Ringsteifigkeit, flexibel unter Bodendruck",
+    "drainage.temperatureRange": "Betrieb zwischen -20°C und +90°C",
+    "drainage.optimizedInfiltration": "Optimiert für Wasserinfiltration, Trümmerausschluss",
+    "drainage.pipeRange": "Rohrbereich: DN 110-1000 mm",
+    "drainage.uvStabilized": "UV-stabilisiert, umweltfreundlich, recycelbar",
+    "drainage.lightweightEasyInstall": "Leichtgewicht, einfach zu transportieren und zu installieren",
+    "drainage.minimalMaintenance": "Minimale Wartung aufgrund von Verstopfungsresistenz und Haltbarkeit",
+    "drainage.serviceLife": "Nutzungsdauer 50+ Jahre",
+    
+    // Downloads
+    "drainage.downloadSpecs": "Spezifikationen herunterladen",
+    "drainage.downloadBrochure": "Broschüre herunterladen",
+    
+    // Contact
+    "drainage.contactTitle": "Kontakt aufnehmen: Verbinden Sie sich noch heute mit uns!",
+    "drainage.contactDescriptionCableProtection": "Benötigen Sie weitere Informationen zu unseren Kabelschutzlösungen? Kontaktieren Sie unser Expertenteam.",
+    "drainage.contactDescriptionDrainage": "Benötigen Sie weitere Informationen zu unseren Entwässerungslösungen? Kontaktieren Sie unser Expertenteam.",
+    "drainage.contactUs": "Kontaktieren Sie uns",
     
     // Common Product Page Elements
     "productPages.engineeredForExcellence": "FÜR EXZELLENZ ENTWICKELT",
