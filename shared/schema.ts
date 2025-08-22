@@ -143,6 +143,8 @@ export const brochureCategories = pgTable("brochure_categories", {
   status: text("status").notNull().default("active"), // active, inactive
   active: boolean("active").default(true),
   sortOrder: integer("sort_order").default(0),
+  translations: jsonb("translations").default('{}'),
+  defaultLanguage: text("default_language").notNull().default("en"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -309,6 +311,8 @@ export const insertBrochureCategorySchema = createInsertSchema(brochureCategorie
   id: true,
   createdAt: true,
   updatedAt: true,
+  translations: true,
+  defaultLanguage: true,
 });
 
 // Types

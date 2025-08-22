@@ -550,16 +550,20 @@ export class DatabaseStorage implements IStorage {
     return category || undefined;
   }
 
-  async createBrochureCategory(category: InsertBrochureCategory): Promise<BrochureCategory> {
+  async createBrochureCategory(category: InsertBrochureCategory & { translations?: any }): Promise<BrochureCategory> {
     if (!db) throw new Error('Database not available');
     const [newCategory] = await db
       .insert(brochureCategories)
-      .values(category)
+      .values({
+        ...category, 
+        translations: category.translations || {}, 
+        defaultLanguage: 'en'
+      })
       .returning();
     return newCategory;
   }
 
-  async updateBrochureCategory(id: number, category: Partial<InsertBrochureCategory>): Promise<BrochureCategory> {
+  async updateBrochureCategory(id: number, category: Partial<InsertBrochureCategory> & { translations?: any }): Promise<BrochureCategory> {
     if (!db) throw new Error('Database not available');
     const [updated] = await db
       .update(brochureCategories)

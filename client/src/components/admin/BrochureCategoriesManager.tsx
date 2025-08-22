@@ -14,6 +14,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { TranslatableFieldEditor } from "@/components/admin/TranslatableFieldEditor";
 import type { BrochureCategory, InsertBrochureCategory } from "@shared/schema";
 
 interface CategoryFormData {
@@ -22,6 +23,11 @@ interface CategoryFormData {
   status: string;
   active: boolean;
   sortOrder: number;
+  translations?: {
+    en?: Record<string, string>;
+    mk?: Record<string, string>;
+    de?: Record<string, string>;
+  };
 }
 
 const STATUS_OPTIONS = [
@@ -42,7 +48,12 @@ export function BrochureCategoriesManager() {
     description: "",
     status: "active",
     active: true,
-    sortOrder: 0
+    sortOrder: 0,
+    translations: {
+      en: {},
+      mk: {},
+      de: {}
+    }
   });
 
   const { toast } = useToast();
@@ -130,19 +141,30 @@ export function BrochureCategoriesManager() {
       description: "",
       status: "active",
       active: true,
-      sortOrder: 0
+      sortOrder: 0,
+      translations: {
+        en: {},
+        mk: {},
+        de: {}
+      }
     });
   };
 
   const handleCreate = () => {
+    // Get the English title as the main title
+    const enTitle = formData.translations?.en?.title || formData.title;
+    const enDescription = formData.translations?.en?.description || formData.description;
+    
     const categoryData: InsertBrochureCategory = {
-      title: formData.title,
-      description: formData.description || null,
+      title: enTitle,
+      description: enDescription || null,
       status: formData.status,
       active: formData.active,
       sortOrder: formData.sortOrder
     };
-    createMutation.mutate(categoryData);
+    
+    // Send with translation data in a separate mutation that will handle the translations
+    createMutation.mutate({ ...categoryData, translations: formData.translations } as any);
   };
 
   const handleEdit = (category: BrochureCategory) => {
@@ -154,7 +176,12 @@ export function BrochureCategoriesManager() {
       description: category.description || "",
       status: derivedStatus,
       active: category.active || true,
-      sortOrder: category.sortOrder || 0
+      sortOrder: category.sortOrder || 0,
+      translations: (category as any).translations || {
+        en: { title: category.title, description: category.description || "" },
+        mk: {},
+        de: {}
+      }
     });
     setIsEditDialogOpen(true);
   };
@@ -162,14 +189,18 @@ export function BrochureCategoriesManager() {
   const handleUpdate = () => {
     if (!selectedCategory) return;
     
+    // Get the English title as the main title
+    const enTitle = formData.translations?.en?.title || formData.title;
+    const enDescription = formData.translations?.en?.description || formData.description;
+    
     const updateData: Partial<InsertBrochureCategory> = {
-      title: formData.title,
-      description: formData.description || null,
+      title: enTitle,
+      description: enDescription || null,
       status: formData.status,
       active: formData.active,
       sortOrder: formData.sortOrder
     };
-    updateMutation.mutate({ id: selectedCategory.id, data: updateData });
+    updateMutation.mutate({ id: selectedCategory.id, data: { ...updateData, translations: formData.translations } as any });
   };
 
   const handleDelete = (id: number) => {
@@ -247,28 +278,35 @@ export function BrochureCategoriesManager() {
               <DialogTitle>Create New Brochure Category</DialogTitle>
             </DialogHeader>
             <div className="grid gap-6 py-4">
-              <div className="space-y-2">
-                <Label htmlFor="title">Title *</Label>
-                <Input
-                  id="title"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Enter category title"
-                  data-testid="input-title"
-                />
-              </div>
+              <TranslatableFieldEditor
+                label="Title"
+                fieldName="title"
+                type="text"
+                currentTranslations={formData.translations}
+                originalValue={formData.title}
+                onChange={(translations) => {
+                  setFormData({ 
+                    ...formData, 
+                    translations,
+                    title: translations.en?.title || formData.title
+                  });
+                }}
+              />
               
-              <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Enter category description"
-                  rows={3}
-                  data-testid="input-description"
-                />
-              </div>
+              <TranslatableFieldEditor
+                label="Description"
+                fieldName="description"
+                type="textarea"
+                currentTranslations={formData.translations}
+                originalValue={formData.description}
+                onChange={(translations) => {
+                  setFormData({ 
+                    ...formData, 
+                    translations,
+                    description: translations.en?.description || formData.description
+                  });
+                }}
+              />
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -316,7 +354,7 @@ export function BrochureCategoriesManager() {
                 </Button>
                 <Button
                   onClick={handleCreate}
-                  disabled={!formData.title.trim() || createMutation.isPending}
+                  disabled={!(formData.translations?.en?.title || formData.title).trim() || createMutation.isPending}
                   data-testid="button-save-create"
                 >
                   {createMutation.isPending ? "Creating..." : "Create Category"}
@@ -544,28 +582,35 @@ export function BrochureCategoriesManager() {
             <DialogTitle>Edit Brochure Category</DialogTitle>
           </DialogHeader>
           <div className="grid gap-6 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="edit-title">Title *</Label>
-              <Input
-                id="edit-title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="Enter category title"
-                data-testid="input-edit-title"
-              />
-            </div>
+            <TranslatableFieldEditor
+              label="Title"
+              fieldName="title"
+              type="text"
+              currentTranslations={formData.translations}
+              originalValue={formData.title}
+              onChange={(translations) => {
+                setFormData({ 
+                  ...formData, 
+                  translations,
+                  title: translations.en?.title || formData.title
+                });
+              }}
+            />
             
-            <div className="space-y-2">
-              <Label htmlFor="edit-description">Description</Label>
-              <Textarea
-                id="edit-description"
-                value={formData.description}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Enter category description"
-                rows={3}
-                data-testid="input-edit-description"
-              />
-            </div>
+            <TranslatableFieldEditor
+              label="Description"
+              fieldName="description"
+              type="textarea"
+              currentTranslations={formData.translations}
+              originalValue={formData.description}
+              onChange={(translations) => {
+                setFormData({ 
+                  ...formData, 
+                  translations,
+                  description: translations.en?.description || formData.description
+                });
+              }}
+            />
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
