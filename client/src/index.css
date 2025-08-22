@@ -1,0 +1,337 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(222, 84%, 4.9%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(222, 84%, 4.9%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(222, 84%, 4.9%);
+  --primary: hsl(221, 83%, 53%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(210, 40%, 96%);
+  --secondary-foreground: hsl(222, 47%, 11%);
+  --muted: hsl(210, 40%, 96%);
+  --muted-foreground: hsl(215, 16%, 47%);
+  --accent: hsl(210, 40%, 96%);
+  --accent-foreground: hsl(222, 47%, 11%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --border: hsl(214, 32%, 91%);
+  --input: hsl(214, 32%, 91%);
+  --ring: hsl(221, 83%, 53%);
+  --radius: 0.5rem;
+  
+  /* Konti Hidroplast Brand Colors */
+  --konti-blue: hsl(220, 52%, 22%);
+  --konti-blue-light: hsl(217, 91%, 60%);
+  --konti-gray: hsl(215, 25%, 27%);
+  --konti-gray-light: hsl(210, 20%, 98%);
+  
+  --font-sans: 'Space Grotesk', 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+.dark {
+  --background: hsl(222, 84%, 4.9%);
+  --foreground: hsl(210, 40%, 98%);
+  --card: hsl(222, 84%, 4.9%);
+  --card-foreground: hsl(210, 40%, 98%);
+  --popover: hsl(222, 84%, 4.9%);
+  --popover-foreground: hsl(210, 40%, 98%);
+  --primary: hsl(217, 91%, 60%);
+  --primary-foreground: hsl(222, 47%, 11%);
+  --secondary: hsl(217, 32%, 17%);
+  --secondary-foreground: hsl(210, 40%, 98%);
+  --muted: hsl(217, 32%, 17%);
+  --muted-foreground: hsl(215, 16%, 57%);
+  --accent: hsl(217, 32%, 17%);
+  --accent-foreground: hsl(210, 40%, 98%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --border: hsl(217, 32%, 17%);
+  --input: hsl(217, 32%, 17%);
+  --ring: hsl(224, 71%, 4%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .konti-gradient {
+    background: rgb(28, 45, 86);
+  }
+  
+  .to-konti-gray {
+    --tw-gradient-to: rgb(28, 45, 86) var(--tw-gradient-to-position);
+  }
+  
+  .bg-primary {
+    background-color: rgb(28, 45, 86);
+  }
+  
+  /* Contact form input focus styles */
+  input:focus,
+  textarea:focus {
+    border-color: rgb(28, 45, 86) !important;
+    box-shadow: 0 0 0 3px rgba(28, 45, 86, 0.1) !important;
+  }
+  
+  .hero-overlay {
+    background: linear-gradient(135deg, hsl(221, 83%, 53%, 0.4) 0%, hsl(217, 91%, 60%, 0.4) 100%);
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  .animate-fade-out {
+    animation: fadeOut 0.8s ease-out forwards;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.8s ease-out;
+  }
+  
+  .animate-counter {
+    animation: counter 2s ease-out;
+  }
+
+  /* Navigation Dropdown Styles */
+  .nav-dropdown {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    min-width: 200px;
+  }
+
+  .nav-dropdown-item {
+    padding: 12px 16px;
+    transition: background-color 0.15s ease-in-out;
+  }
+
+  .nav-dropdown-item:hover {
+    background-color: #f9fafb;
+  }
+
+  /* Enhanced Navigation Styles */
+  .navbar-enhanced {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .nav-logo-enhanced {
+    transition: all 0.3s ease-in-out;
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+  }
+
+  /* News Read More Button Hover */
+  .news-read-more:hover {
+    color: #1c2d56 !important;
+  }
+
+  .nav-logo-enhanced:hover {
+    transform: scale(1.08);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  }
+
+  /* Transparent navbar text shadow for better visibility */
+  .nav-text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Smooth backdrop blur transition */
+  .navbar-transition {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Enhanced scroll animations */
+  @keyframes pulse-soft {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.02);
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes bounce-gentle {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+  
+  .animate-pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  .animate-bounce-gentle {
+    animation: bounce-gentle 1s ease-in-out infinite;
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #1c2d56, #3b82f6);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #0f172a, #1d4ed8);
+  }
+
+  /* Hero Typography */
+  .hero-title {
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+  }
+
+  .hero-banner {
+    background: linear-gradient(135deg, #ef4444 0%, #ec4899 100%);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Video fullscreen styling */
+  .video-fullscreen {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 56.25vw; /* 16:9 aspect ratio */
+    min-height: 100vh;
+    min-width: 177.77vh; /* 16:9 aspect ratio */
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  @media (max-aspect-ratio: 16/9) {
+    .video-fullscreen {
+      height: 100vh;
+      width: 177.77vh;
+    }
+  }
+
+  @media (min-aspect-ratio: 16/9) {
+    .video-fullscreen {
+      width: 100vw;
+      height: 56.25vw;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes counter {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Smooth scrolling for navigation */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(210, 20%, 98%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--konti-blue);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--konti-blue-light);
+}

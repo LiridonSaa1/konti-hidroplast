@@ -1,0 +1,90 @@
+# Replit configuration for Konti Hidroplast full-stack application
+run = "npm run dev"
+
+# Development server configuration
+[deployment]
+run = ["sh", "-c", "npm run build && npm start"]
+deploymentTarget = "gce"
+
+# Language configuration
+language = "nodejs"
+
+# Audio configuration for video content
+[audio]
+enable = true
+
+# Package management
+[packager]
+language = "nodejs"
+
+[packager.features]
+packageSearch = true
+guessImports = true
+enabledForHosting = false
+
+# Nix configuration
+[nix]
+channel = "stable-23_11"
+
+# Language server settings
+[languages]
+
+[languages.typescript]
+pattern = "**/{*.ts,*.js,*.tsx,*.jsx}"
+[languages.typescript.languageServer]
+start = "typescript-language-server --stdio"
+
+[languages.javascript]
+pattern = "**/{*.js,*.jsx}"
+[languages.javascript.languageServer]
+start = "typescript-language-server --stdio"
+
+# Development environment
+[env]
+NODE_ENV = "development"
+VITE_API_URL = "/"
+
+# Git configuration
+[gitHubImport]
+requiredFiles = [".replit", "replit.nix"]
+
+# Debugger configuration
+[debugger]
+support = true
+
+[debugger.interactive]
+transport = "localhost:0"
+startCommand = ["dap-node"]
+
+[debugger.interactive.initializeMessage]
+command = "initialize"
+type = "request"
+
+[debugger.interactive.initializeMessage.arguments]
+clientID = "replit"
+clientName = "replit.com"
+columnsStartAt1 = true
+linesStartAt1 = true
+locale = "en-us"
+pathFormat = "path"
+supportsInvalidatedEvent = true
+supportsProgressReporting = true
+supportsRunInTerminalRequest = true
+supportsVariablePaging = true
+supportsVariableType = true
+
+[debugger.interactive.launchMessage]
+command = "launch"
+type = "request"
+
+[debugger.interactive.launchMessage.arguments]
+console = "integrated"
+args = []
+program = "server/index.ts"
+restart = true
+runtimeExecutable = "tsx"
+skipFiles = ["<node_internals>/**"]
+
+# Object storage for uploads
+[objectStorage]
+defaultBucketID = "replit-objstore-konti-hidroplast"
