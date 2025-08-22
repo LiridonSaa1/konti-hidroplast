@@ -690,8 +690,8 @@ function BrochureFormDialog({
       <DialogHeader>
         <DialogTitle data-testid="brochure-form-title">{title}</DialogTitle>
       </DialogHeader>
-      <div className="space-y-4 py-4">
-        {/* Multi-language Name Field */}
+      <div className="space-y-6 py-4">
+        {/* Multi-language Name Field - Updated */}
         <TranslatableFieldEditor
           label="Brochure Name *"
           fieldName="name"

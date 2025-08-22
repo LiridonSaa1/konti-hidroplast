@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import type { Brochure, InsertBrochure, BrochureCategory } from "@shared/schema";
 import { TranslationHelper } from "./TranslationHelper";
+import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
 
 interface BrochureEntry {
   id: string;
@@ -35,6 +36,11 @@ interface BrochureFormData {
   active: boolean;
   sortOrder: number;
   entries: BrochureEntry[];
+  translations: {
+    en?: Record<string, string>;
+    mk?: Record<string, string>;
+    de?: Record<string, string>;
+  };
 }
 
 export function EnhancedBrochuresManager() {
@@ -60,7 +66,12 @@ export function EnhancedBrochuresManager() {
       imageUrl: "",
       language: "en",
       languageName: "English"
-    }]
+    }],
+    translations: {
+      en: {},
+      mk: {},
+      de: {}
+    }
   });
 
   const { toast } = useToast();
@@ -159,7 +170,12 @@ export function EnhancedBrochuresManager() {
         imageUrl: "",
         language: "en",
         languageName: "English"
-      }]
+      }],
+      translations: {
+        en: {},
+        mk: {},
+        de: {}
+      }
     });
   };
 
@@ -241,7 +257,11 @@ export function EnhancedBrochuresManager() {
   };
 
   const handleSubmit = async () => {
-    if (!formData.name || !formData.category) {
+    // Get the name from translations or fallback to the direct name input (matching categories pattern)
+    const enName = formData.translations?.en?.name || formData.name;
+    const enDescription = formData.translations?.en?.description || formData.description;
+    
+    if (!enName.trim() || !formData.category) {
       toast({
         title: "Error",
         description: "Please fill in all required fields",
@@ -325,16 +345,17 @@ export function EnhancedBrochuresManager() {
       }
 
       const submissionData = {
-        title: formData.name,
-        name: formData.name,
+        title: enName,
+        name: enName,
         category: formData.category,
         language: (primaryEntry?.language || "en") as "en" | "mk" | "de",
         pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
         imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
-        description: formData.description,
+        description: enDescription || undefined,
         status: formData.status as "active" | "inactive" | "draft",
         active: formData.active,
-        sortOrder: formData.sortOrder
+        sortOrder: formData.sortOrder,
+        translations: formData.translations
       };
 
       updateMutation.mutate({ id: selectedBrochure.id, data: submissionData });
@@ -389,17 +410,18 @@ export function EnhancedBrochuresManager() {
 
         // Prepare the data for this language entry
         processedEntries.push({
-          title: formData.name,
-          name: formData.name,
+          title: enName,
+          name: enName,
           category: formData.category,
           language: entry.language as "en" | "mk" | "de",
           pdfUrl,
           imageUrl,
-          description: formData.description,
+          description: enDescription || undefined,
           status: formData.status as "active" | "inactive" | "draft",
           active: formData.active,
           sortOrder: formData.sortOrder,
-          translationGroup: translationGroupId
+          translationGroup: translationGroupId,
+          translations: formData.translations
         });
       }
 
@@ -788,47 +810,56 @@ function BrochureFormDialog({
         <DialogTitle>{title}</DialogTitle>
       </DialogHeader>
       <div className="space-y-6 py-4">
-        {/* Basic Info */}
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">Brochure Name *</Label>
-            <Input
-              id="name"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="Enter brochure name"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="category">Category *</Label>
-            <Select
-              value={formData.category}
-              onValueChange={(value) => setFormData({ ...formData, category: value })}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select category" />
-              </SelectTrigger>
-              <SelectContent>
-                {categories
-                  .filter(cat => cat.active)
-                  .map(category => (
-                    <SelectItem key={category.id} value={category.title}>{category.title}</SelectItem>
-                  ))}
-              </SelectContent>
-            </Select>
-          </div>
+        {/* Multi-language Name Field */}
+        <TranslatableFieldEditor
+          label="Brochure Name *"
+          fieldName="name"
+          type="text"
+          currentTranslations={formData.translations}
+          originalValue={formData.name}
+          onChange={(translations) => {
+            setFormData({ 
+              ...formData, 
+              translations,
+              name: translations.en?.name || formData.name
+            });
+          }}
+        />
+        
+        <div className="space-y-2">
+          <Label htmlFor="category">Category *</Label>
+          <Select
+            value={formData.category}
+            onValueChange={(value) => setFormData({ ...formData, category: value })}
+          >
+            <SelectTrigger>
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories
+                .filter(cat => cat.active)
+                .map(category => (
+                  <SelectItem key={category.id} value={category.title}>{category.title}</SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            placeholder="Enter brochure description (optional)"
-            rows={3}
-          />
-        </div>
+        {/* Multi-language Description Field */}
+        <TranslatableFieldEditor
+          label="Description"
+          fieldName="description"
+          type="textarea"
+          currentTranslations={formData.translations}
+          originalValue={formData.description}
+          onChange={(translations) => {
+            setFormData({ 
+              ...formData, 
+              translations,
+              description: translations.en?.description || formData.description
+            });
+          }}
+        />
 
         {/* Dynamic Entries Table */}
         <Card>
