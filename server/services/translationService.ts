@@ -1,8 +1,8 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({ 
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({ 
   apiKey: process.env.OPENAI_API_KEY 
-});
+}) : null;
 
 interface TranslationResult {
   originalText: string;
@@ -42,7 +42,7 @@ export class TranslationService {
   async extractTextFromPDF(pdfBuffer: Buffer): Promise<string> {
     // For now, return a placeholder since we don't have PDF parsing set up
     // This would need a proper PDF parsing library in production
-    throw new Error("PDF text extraction is not currently available. Please ensure the OPENAI_API_KEY is configured for translations.");
+    throw new Error("PDF text extraction is not currently available.");
   }
 
   async translateText(
@@ -50,6 +50,18 @@ export class TranslationService {
     sourceLanguage: string, 
     targetLanguage: string
   ): Promise<TranslationResult> {
+    if (!openai) {
+      // Return fallback when OpenAI is not available
+      const wordCount = text.split(/\s+/).length;
+      return {
+        originalText: text,
+        translatedText: `[Translation unavailable - OpenAI API key not configured] ${text}`,
+        sourceLanguage,
+        targetLanguage,
+        wordCount
+      };
+    }
+
     try {
       const sourceLangName = this.getLanguageName(sourceLanguage);
       const targetLangName = this.getLanguageName(targetLanguage);
@@ -104,6 +116,15 @@ Translated text:`;
     sourceLanguage: string,
     targetLanguage: string
   ): Promise<{ name: string; description: string; category: string }> {
+    if (!openai) {
+      // Return originals when OpenAI is not available
+      return {
+        name: originalName,
+        description: originalDescription,
+        category: originalCategory
+      };
+    }
+
     try {
       const sourceLangName = this.getLanguageName(sourceLanguage);
       const targetLangName = this.getLanguageName(targetLanguage);
