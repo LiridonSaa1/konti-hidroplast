@@ -317,7 +317,7 @@ export function BrochuresManager() {
       language: formData.language as "en" | "mk" | "de",
       pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
       imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
-      description: enDescription || null,
+      description: enDescription || undefined,
       status: formData.status as "active" | "inactive" | "draft",
       active: formData.active,
       sortOrder: formData.sortOrder,
