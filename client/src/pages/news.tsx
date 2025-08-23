@@ -93,7 +93,7 @@ function NewsPage() {
         {/* News Category Label */}
         <div className="mb-3">
           <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-{t("newsPage.newsCategory")}
+            {t("newsPage.newsCategory")}
           </span>
         </div>
         
@@ -118,7 +118,7 @@ function NewsPage() {
             className="inline-flex items-center px-4 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm font-medium rounded transition-colors"
             data-testid={`read-more-${article.id}`}
           >
-{t("newsPage.readMore")}
+            {t("newsPage.readMore")}
             <ArrowRight className="w-4 h-4 ml-2" />
           </a>
         </div>
@@ -146,7 +146,7 @@ function NewsPage() {
               {t('newsPage.title')}&<span className="text-red-500"> {t('newsPage.insights')}</span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-{t("newsPage.fromKonti")}
+                {t("newsPage.fromKonti")}
               </span>
             </h1>
             <p
@@ -199,7 +199,7 @@ function NewsPage() {
                 {isLoading ? (
                   <>
                     <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-{t("newsPage.loading")}
+                    {t("newsPage.loading")}
                   </>
                 ) : (
                   <>
@@ -229,10 +229,10 @@ function NewsPage() {
           {!isLoadingNews && newsArticles.length > 0 && visibleArticles >= newsArticles.length && (
             <div className="text-center">
               <p className="text-lg text-gray-600 mb-4">
-{t("newsPage.allArticlesShown")}
+                {t("newsPage.allArticlesShown")}
               </p>
               <p className="text-sm text-gray-500">
-{t("newsPage.checkBackMore")}
+                {t("newsPage.checkBackMore")}
               </p>
             </div>
           )}
@@ -269,12 +269,12 @@ function NewsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t('contact.connectWithUs')}
+                {t('contact.connectWithUs')}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-{t('contact.stayUpdated')}
+              {t('contact.stayUpdated')}
             </p>
             <Button
               onClick={() => {
@@ -286,7 +286,7 @@ function NewsPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-{t('common.contactUs')}
+              {t('common.contactUs')}
             </Button>
           </div>
         </div>

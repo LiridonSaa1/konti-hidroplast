@@ -753,7 +753,7 @@ function CertificatesPage() {
             data-testid={`download-${categoryId}-${index}`}
           >
             <Download className="w-3 h-3 mr-2" />
-{t("productPages.download")}
+            {t("productPages.download")}
           </a>
         ) : (
           <button
@@ -767,7 +767,7 @@ function CertificatesPage() {
             data-testid={`certificate-${categoryId}-${index}`}
           >
             <Shield className="w-3 h-3 mr-2" />
-{t("productPages.certificateOnly")}
+            {t("productPages.certificateOnly")}
           </button>
         )}
       </div>
@@ -801,20 +801,20 @@ function CertificatesPage() {
               className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
               data-testid="hero-description"
             >
-{t("productPages.certificatesDescription")}
+              {t("productPages.certificatesDescription")}
             </p>
             <div className="flex justify-center space-x-8 text-sm">
               <div className="flex items-center">
                 <Award className="w-5 h-5 mr-2 text-yellow-400" />
-{t("productPages.isoCertified")}
+                {t("productPages.isoCertified")}
               </div>
               <div className="flex items-center">
                 <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
-{t("productPages.qualityAssured")}
+                {t("productPages.qualityAssured")}
               </div>
               <div className="flex items-center">
                 <Shield className="w-5 h-5 mr-2 text-blue-400" />
-{t("productPages.europeanStandards")}
+                {t("productPages.europeanStandards")}
               </div>
             </div>
           </div>
@@ -945,7 +945,7 @@ function CertificatesPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("aboutUs.getInTouchTitle")}
+                {t("aboutUs.getInTouchTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -958,7 +958,7 @@ function CertificatesPage() {
               className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
-{t("aboutUs.contactUsButton")}
+              {t("aboutUs.contactUsButton")}
             </a>
           </div>
         </div>
@@ -971,12 +971,12 @@ function CertificatesPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("aboutUs.getInTouchTitle")}
+                {t("aboutUs.getInTouchTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-{t("productPages.needMoreInfo")} certificates and quality standards? {t("productPages.contactExperts")}.
+              {t("productPages.needMoreInfo")} certificates and quality standards? {t("productPages.contactExperts")}.
             </p>
             <Button
               onClick={() => {
@@ -988,7 +988,7 @@ function CertificatesPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-{t("aboutUs.contactUsButton")}
+              {t("aboutUs.contactUsButton")}
             </Button>
           </div>
         </div>

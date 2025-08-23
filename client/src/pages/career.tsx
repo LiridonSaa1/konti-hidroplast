@@ -179,7 +179,7 @@ function CareerPage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
+            <div className="text-center mb-4">
               <span className="text-sm font-medium">{t("careerPage.joinOurTeam")}</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
@@ -191,24 +191,21 @@ function CareerPage() {
               <br />
               <span className="text-white">{t("careerPage.topTalent")}</span>
             </h1>
-            <p
-              className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
-              data-testid="hero-description"
-            >
-{t("careerPage.heroDescription")}
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+              {t("careerPage.heroDescription")}
             </p>
             <div className="flex justify-center space-x-8 text-sm">
               <div className="flex items-center">
                 <Users className="w-5 h-5 mr-2 text-blue-400" />
-{t("careerPage.dynamicTeam")}
+                {t("careerPage.dynamicTeam")}
               </div>
               <div className="flex items-center">
                 <Award className="w-5 h-5 mr-2 text-yellow-400" />
-{t("careerPage.professionalGrowth")}
+                {t("careerPage.professionalGrowth")}
               </div>
               <div className="flex items-center">
                 <TrendingUp className="w-5 h-5 mr-2 text-green-400" />
-{t("careerPage.careerDevelopment")}
+                {t("careerPage.careerDevelopment")}
               </div>
             </div>
           </div>
@@ -225,7 +222,7 @@ function CareerPage() {
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-{t("careerPage.applyDescription")}
+              {t("careerPage.applyDescription")}
             </p>
           </div>
 
