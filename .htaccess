@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Don’t rewrite files or directories that exist
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Rewrite everything else to index.html
+  RewriteRule ^ index.html [L]
+
+  # Proxy API requests to Node.js server
+  RewriteRule ^/api/(.*)$ http://localhost:5000/api/$1 [P,L]
+</IfModule>
