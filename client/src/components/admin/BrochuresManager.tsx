@@ -35,7 +35,6 @@ interface BrochureFormData {
   pdfUrl: string;
   imageFile: File | null;
   imageUrl: string;
-  description: string;
   status: string;
   active: boolean;
   sortOrder: number;
@@ -63,7 +62,6 @@ export function BrochuresManager() {
     pdfUrl: "",
     imageFile: null,
     imageUrl: "",
-    description: "",
     status: "active",
     active: true,
     sortOrder: 0,
@@ -169,17 +167,16 @@ export function BrochuresManager() {
     return matchesSearch && matchesCategory && matchesLanguage;
   });
 
-  const resetForm = () => {
+    const resetForm = () => {
     setFormData({
       name: "",
       category: "",
       language: "en",
       pdfFile: null,
       pdfUrl: "",
-          imageFile: null,
-    imageUrl: "",
-    description: "",
-    status: "active",
+      imageFile: null,
+      imageUrl: "",
+      status: "active",
       active: true,
       sortOrder: 0,
       entries: [{
@@ -208,7 +205,6 @@ export function BrochuresManager() {
       pdfUrl: brochure.pdfUrl || "",
       imageFile: null, // Will be handled separately for existing files
       imageUrl: brochure.imageUrl || "",
-      description: brochure.description || "",
       status: brochure.status || "active",
       active: brochure.active ?? true,
       sortOrder: brochure.sortOrder || 0,
@@ -308,7 +304,6 @@ export function BrochuresManager() {
 
     // Get the name from translations or fallback to the direct name input (matching categories pattern)
     const enName = formData.translations?.en?.name || formData.name;
-    const enDescription = formData.translations?.en?.description || formData.description;
 
     const submissionData = {
       title: enName, // Use name as title
@@ -317,7 +312,6 @@ export function BrochuresManager() {
       language: formData.language as "en" | "mk" | "de",
       pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
       imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
-      description: enDescription || undefined,
       status: formData.status as "active" | "inactive" | "draft",
       active: formData.active,
       sortOrder: formData.sortOrder,
@@ -698,6 +692,7 @@ function BrochureFormDialog({
           type="text"
           currentTranslations={formData.translations}
           originalValue={formData.name}
+          defaultLanguage={formData.language || "en"}
           onChange={(translations) => {
             setFormData({ 
               ...formData, 
@@ -865,21 +860,7 @@ function BrochureFormDialog({
           </div>
         </div>
 
-        {/* Multi-language Description Field */}
-        <TranslatableFieldEditor
-          label="Description"
-          fieldName="description"
-          type="textarea"
-          currentTranslations={formData.translations}
-          originalValue={formData.description}
-          onChange={(translations) => {
-            setFormData({ 
-              ...formData, 
-              translations,
-              description: translations.en?.description || formData.description
-            });
-          }}
-        />
+
 
         <div className="grid grid-cols-3 gap-4">
           <div className="space-y-2">
