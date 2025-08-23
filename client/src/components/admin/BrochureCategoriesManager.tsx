@@ -19,7 +19,6 @@ import type { BrochureCategory, InsertBrochureCategory } from "@shared/schema";
 
 interface CategoryFormData {
   title: string;
-  description: string;
   status: string;
   active: boolean;
   sortOrder: number;
@@ -45,7 +44,6 @@ export function BrochureCategoriesManager() {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [formData, setFormData] = useState<CategoryFormData>({
     title: "",
-    description: "",
     status: "active",
     active: true,
     sortOrder: 0,
@@ -138,7 +136,6 @@ export function BrochureCategoriesManager() {
   const resetForm = () => {
     setFormData({
       title: "",
-      description: "",
       status: "active",
       active: true,
       sortOrder: 0,
@@ -153,11 +150,9 @@ export function BrochureCategoriesManager() {
   const handleCreate = () => {
     // Get the English title as the main title
     const enTitle = formData.translations?.en?.title || formData.title;
-    const enDescription = formData.translations?.en?.description || formData.description;
     
     const categoryData: InsertBrochureCategory = {
       title: enTitle,
-      description: enDescription || null,
       status: formData.status,
       active: formData.active,
       sortOrder: formData.sortOrder
@@ -173,12 +168,11 @@ export function BrochureCategoriesManager() {
     const derivedStatus = category.status || (category.active ? 'active' : 'inactive');
     setFormData({
       title: category.title,
-      description: category.description || "",
       status: derivedStatus,
       active: category.active || true,
       sortOrder: category.sortOrder || 0,
       translations: (category as any).translations || {
-        en: { title: category.title, description: category.description || "" },
+        en: { title: category.title },
         mk: {},
         de: {}
       }
@@ -191,11 +185,9 @@ export function BrochureCategoriesManager() {
     
     // Get the English title as the main title
     const enTitle = formData.translations?.en?.title || formData.title;
-    const enDescription = formData.translations?.en?.description || formData.description;
     
     const updateData: Partial<InsertBrochureCategory> = {
       title: enTitle,
-      description: enDescription || null,
       status: formData.status,
       active: formData.active,
       sortOrder: formData.sortOrder
@@ -225,8 +217,7 @@ export function BrochureCategoriesManager() {
 
   const filteredAndSortedCategories = categories
     .filter((category) => {
-      const matchesSearch = category.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           (category.description && category.description.toLowerCase().includes(searchTerm.toLowerCase()));
+      const matchesSearch = category.title.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesStatus = selectedStatus === "all" || category.status === selectedStatus;
       return matchesSearch && matchesStatus;
     })
@@ -263,7 +254,7 @@ export function BrochureCategoriesManager() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900" data-testid="page-title">Brochure Categories</h1>
           <p className="text-gray-600" data-testid="page-description">
-            Manage brochure categories with titles, descriptions, and status
+            Manage brochure categories with titles and status
           </p>
         </div>
         <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
@@ -278,35 +269,20 @@ export function BrochureCategoriesManager() {
               <DialogTitle>Create New Brochure Category</DialogTitle>
             </DialogHeader>
             <div className="grid gap-6 py-4">
-              <TranslatableFieldEditor
-                label="Title"
-                fieldName="title"
-                type="text"
-                currentTranslations={formData.translations}
-                originalValue={formData.title}
-                onChange={(translations) => {
-                  setFormData({ 
-                    ...formData, 
-                    translations,
-                    title: translations.en?.title || formData.title
-                  });
-                }}
-              />
-              
-              <TranslatableFieldEditor
-                label="Description"
-                fieldName="description"
-                type="textarea"
-                currentTranslations={formData.translations}
-                originalValue={formData.description}
-                onChange={(translations) => {
-                  setFormData({ 
-                    ...formData, 
-                    translations,
-                    description: translations.en?.description || formData.description
-                  });
-                }}
-              />
+                          <TranslatableFieldEditor
+              label="Title"
+              fieldName="title"
+              type="text"
+              currentTranslations={formData.translations}
+              originalValue={formData.title}
+              onChange={(translations) => {
+                setFormData({ 
+                  ...formData, 
+                  translations,
+                  title: translations.en?.title || formData.title
+                });
+              }}
+            />
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
@@ -448,7 +424,7 @@ export function BrochureCategoriesManager() {
                       {getSortIcon('title')}
                     </Button>
                   </TableHead>
-                  <TableHead>Description</TableHead>
+
                   <TableHead>
                     <Button
                       variant="ghost"
@@ -497,11 +473,6 @@ export function BrochureCategoriesManager() {
                   <TableRow key={category.id} data-testid={`category-row-${category.id}`}>
                     <TableCell className="font-medium" data-testid={`category-title-${category.id}`}>
                       {category.title}
-                    </TableCell>
-                    <TableCell data-testid={`category-description-${category.id}`}>
-                      {category.description || (
-                        <span className="text-slate-400 text-sm">No description</span>
-                      )}
                     </TableCell>
                     <TableCell>
                       <Badge 
@@ -582,35 +553,20 @@ export function BrochureCategoriesManager() {
             <DialogTitle>Edit Brochure Category</DialogTitle>
           </DialogHeader>
           <div className="grid gap-6 py-4">
-            <TranslatableFieldEditor
-              label="Title"
-              fieldName="title"
-              type="text"
-              currentTranslations={formData.translations}
-              originalValue={formData.title}
-              onChange={(translations) => {
-                setFormData({ 
-                  ...formData, 
-                  translations,
-                  title: translations.en?.title || formData.title
-                });
-              }}
-            />
-            
-            <TranslatableFieldEditor
-              label="Description"
-              fieldName="description"
-              type="textarea"
-              currentTranslations={formData.translations}
-              originalValue={formData.description}
-              onChange={(translations) => {
-                setFormData({ 
-                  ...formData, 
-                  translations,
-                  description: translations.en?.description || formData.description
-                });
-              }}
-            />
+                          <TranslatableFieldEditor
+                label="Title"
+                fieldName="title"
+                type="text"
+                currentTranslations={formData.translations}
+                originalValue={formData.title}
+                onChange={(translations) => {
+                  setFormData({ 
+                    ...formData, 
+                    translations,
+                    title: translations.en?.title || formData.title
+                  });
+                }}
+              />
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">

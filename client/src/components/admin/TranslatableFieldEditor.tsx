@@ -16,6 +16,7 @@ interface TranslatableFieldEditorProps {
     de?: Record<string, string>;
   };
   originalValue: string;
+  defaultLanguage?: string;
   onChange: (translations: {
     en?: Record<string, string>;
     mk?: Record<string, string>;
@@ -35,8 +36,19 @@ export function TranslatableFieldEditor({
   type = 'text',
   currentTranslations = {}, 
   originalValue = '',
+  defaultLanguage = 'en',
   onChange 
 }: TranslatableFieldEditorProps) {
+  console.log('TranslatableFieldEditor render:', { label, fieldName, defaultLanguage, currentTranslations });
+  
+  const [activeTab, setActiveTab] = React.useState(defaultLanguage);
+  
+  // Update active tab when defaultLanguage changes
+  React.useEffect(() => {
+    console.log('TranslatableFieldEditor: defaultLanguage changed to:', defaultLanguage);
+    setActiveTab(defaultLanguage);
+  }, [defaultLanguage]);
+  
   const handleFieldChange = (languageCode: string, value: string) => {
     console.log(`TranslatableFieldEditor: Field ${fieldName} changed for language ${languageCode} to: "${value}"`);
     const updatedTranslations = {
@@ -78,7 +90,7 @@ export function TranslatableFieldEditor({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="en" className="w-full">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-4">
             {languages.map((lang) => {
               const status = getTranslationStatus(lang.code);
