@@ -41,12 +41,16 @@ export function PositionsManager() {
       title: "",
       active: true,
       status: "active",
+      sortOrder: 0,
     },
   });
 
   const { data: positions = [], isLoading } = useQuery<Position[]>({
     queryKey: ["/api/admin/positions"],
   });
+
+  // Sort positions by sortOrder
+  const sortedPositions = [...positions].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
 
   const createPositionMutation = useMutation({
     mutationFn: async (positionData: InsertPosition) => {
@@ -166,6 +170,7 @@ export function PositionsManager() {
       title: position.title || "",
       active: position.active || true,
       status: derivedStatus,
+      sortOrder: position.sortOrder || 0,
     });
     setIsFormOpen(true);
   };
@@ -179,6 +184,7 @@ export function PositionsManager() {
       title: "",
       active: true,
       status: "active",
+      sortOrder: 0,
     });
     setTranslations({});
     setEditingPosition(null);
@@ -267,6 +273,28 @@ export function PositionsManager() {
                   )}
                 />
 
+                <FormField
+                  control={form.control}
+                  name="sortOrder"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Sort Order</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="0"
+                          value={field.value || 0}
+                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          data-testid="input-position-sort-order"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <div className="flex justify-end space-x-2 pt-4">
                   <Button type="button" variant="outline" onClick={resetForm} data-testid="button-cancel">
                     Cancel
@@ -297,26 +325,30 @@ export function PositionsManager() {
               <TableRow className="bg-gray-50">
                 <TableHead className="text-gray-600 font-medium px-6 py-3">Title</TableHead>
                 <TableHead className="text-gray-600 font-medium px-6 py-3">Status</TableHead>
+                <TableHead className="text-gray-600 font-medium px-6 py-3">Sort Order</TableHead>
                 <TableHead className="text-gray-600 font-medium px-6 py-3 text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {positions.length === 0 ? (
+              {sortedPositions.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={3} className="px-6 py-8 text-center">
+                  <TableCell colSpan={4} className="px-6 py-8 text-center">
                     <div className="text-gray-500">No positions found</div>
                   </TableCell>
                 </TableRow>
               ) : (
-                positions.map((position) => (
+                sortedPositions.map((position) => (
                   <TableRow key={position.id} data-testid={`position-row-${position.id}`} className="hover:bg-gray-50">
                     <TableCell className="px-6 py-4" data-testid={`position-title-${position.id}`}>
                       <div className="font-medium text-gray-900">{position.title}</div>
                     </TableCell>
                     <TableCell className="px-6 py-4" data-testid={`position-status-${position.id}`}>
-                      <Badge className={getStatusBadgeColor(position.active)}>
+                      <Badge className={getStatusBadgeColor(position.active || false)}>
                         {position.active ? "Active" : "Inactive"}
                       </Badge>
+                    </TableCell>
+                    <TableCell className="px-6 py-4" data-testid={`position-sort-order-${position.id}`}>
+                      <div className="font-medium text-gray-900">{position.sortOrder}</div>
                     </TableCell>
                     <TableCell className="px-6 py-4 text-right">
                       <div className="flex justify-end space-x-1">

@@ -31,6 +31,25 @@ export function FileUpload({
   const handleUpload = async (file: File) => {
     if (!file) return;
 
+    console.log('=== File Upload Started ===');
+    console.log('File details:', {
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      lastModified: file.lastModified
+    });
+
+    // Check file size (100MB limit)
+    const maxSize = 100 * 1024 * 1024; // 100MB
+    if (file.size > maxSize) {
+      toast({
+        title: "File Too Large",
+        description: `File size (${(file.size / 1024 / 1024).toFixed(1)}MB) exceeds the 100MB limit`,
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsUploading(true);
     try {
       const formData = new FormData();
@@ -44,6 +63,8 @@ export function FileUpload({
         headers["Authorization"] = `Bearer ${token}`;
       }
 
+      console.log('Uploading to /api/upload with token:', token ? 'Present' : 'Missing');
+
       const response = await fetch("/api/upload", {
         method: "POST",
         headers,
@@ -51,12 +72,18 @@ export function FileUpload({
         credentials: "include",
       });
 
+      console.log('Upload response status:', response.status);
+      console.log('Upload response headers:', response.headers);
+
       if (!response.ok) {
         const errorData = await response.json();
+        console.error('Upload error response:', errorData);
         throw new Error(errorData.error || `HTTP ${response.status}`);
       }
 
       const result = await response.json();
+      console.log('Upload success result:', result);
+      
       onChange(result.url);
       
       toast({
@@ -144,7 +171,7 @@ export function FileUpload({
                 </Button>
               </p>
               <p className="text-xs text-gray-500 mt-1">
-                PNG, JPG, GIF up to 10MB
+                PNG, JPG, GIF up to 100MB • Drag & drop or click to browse
               </p>
             </div>
           </div>

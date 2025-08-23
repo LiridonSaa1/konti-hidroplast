@@ -444,6 +444,7 @@ export const positions = pgTable("positions", {
   title: varchar("title", { length: 255 }).notNull().unique(),
   description: text("description"),
   active: boolean("active").default(true),
+  sortOrder: integer("sort_order").default(0),
   translations: jsonb("translations").default('{}'),
   defaultLanguage: text("default_language").notNull().default("en"),
   createdAt: timestamp("created_at").defaultNow(),

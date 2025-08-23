@@ -707,7 +707,7 @@ export class DatabaseStorage implements IStorage {
   // Position methods
   async getAllPositions(): Promise<Position[]> {
     if (!db) throw new Error('Database not available');
-    return await db.select().from(positions).orderBy(desc(positions.createdAt));
+    return await db.select().from(positions).orderBy(asc(positions.sortOrder));
   }
 
   async getPosition(id: number): Promise<Position | undefined> {

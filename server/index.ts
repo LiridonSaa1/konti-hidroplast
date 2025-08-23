@@ -7,8 +7,8 @@ import { setupVite, serveStatic, log } from "./vite";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ extended: false, limit: '100mb' }));
 
 // Serve attached assets statically
 app.use("/attached_assets", express.static(path.resolve(__dirname, "..", "attached_assets")));

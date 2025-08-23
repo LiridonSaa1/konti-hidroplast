@@ -162,7 +162,7 @@ function useTeamData() {
 
   // Fetch positions with translations
   const { data: positions = [], isLoading: isPositionsLoading } = useQuery<Position[]>({
-    queryKey: ["/api/admin/positions"], // Temporarily using admin endpoint to test
+    queryKey: ["/api/positions"], // Back to public endpoint
   });
 
   console.log('=== useTeamData Debug ===');
@@ -188,11 +188,13 @@ function useTeamData() {
 
   console.log('Grouped by position:', groupedByPosition);
 
-  // Create categories from unique positions with translations
+  // Sort positions by sortOrder and create categories from unique positions with translations
+  const sortedPositions = [...positions].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+  
   const teamCategories = Object.keys(groupedByPosition).map(
     (position, index) => {
       // Find the position object to get translations
-      const positionObj = positions.find(p => p.title === position);
+      const positionObj = sortedPositions.find(p => p.title === position);
       console.log(`Position "${position}" found:`, positionObj);
       
       return {
@@ -200,10 +202,11 @@ function useTeamData() {
         title: position,
         data: position,
         translations: positionObj?.translations || {},
-        defaultLanguage: positionObj?.defaultLanguage || 'en'
+        defaultLanguage: positionObj?.defaultLanguage || 'en',
+        sortOrder: positionObj?.sortOrder || 0
       };
     },
-  );
+  ).sort((a, b) => a.sortOrder - b.sortOrder);
 
   console.log('Team categories:', teamCategories);
 
@@ -231,31 +234,6 @@ export default function AboutUs() {
     console.log('Position title:', positionTitle);
     console.log('Current language:', language);
     console.log('All positions:', positions);
-    
-    // TEMPORARY: Hardcoded translations for testing
-    const hardcodedTranslations: Record<string, Record<string, string>> = {
-      'Commerce': {
-        'en': 'Commerce',
-        'mk': 'Комерција',
-        'de': 'Handel'
-      },
-      'Engineering': {
-        'en': 'Engineering',
-        'mk': 'Инженеринг',
-        'de': 'Ingenieurwesen'
-      },
-      'Management': {
-        'en': 'Management',
-        'mk': 'Менаџмент',
-        'de': 'Management'
-      }
-    };
-    
-    // Check hardcoded translations first
-    if (hardcodedTranslations[positionTitle] && hardcodedTranslations[positionTitle][language]) {
-      console.log(`Found hardcoded ${language} translation:`, hardcodedTranslations[positionTitle][language]);
-      return hardcodedTranslations[positionTitle][language];
-    }
     
     const positionObj = positions.find(p => p.title === positionTitle);
     console.log('Found position object:', positionObj);

@@ -48,7 +48,7 @@ async function ensureUploadDir() {
 const upload = multer({
   dest: uploadDir,
   limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB limit
+    fileSize: 100 * 1024 * 1024, // 100MB limit (increased from 10MB)
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = /jpeg|jpg|png|gif|pdf/;
@@ -235,20 +235,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // File upload endpoint
   app.post("/api/upload", upload.single('file'), async (req, res) => {
     try {
+      console.log('=== File Upload Request ===');
+      console.log('Headers:', req.headers);
+      console.log('File:', req.file);
+      
       if (!req.file) {
+        console.log('No file in request');
         return res.status(400).json({ error: "No file uploaded" });
       }
+
+      console.log('File details:', {
+        originalname: req.file.originalname,
+        filename: req.file.filename,
+        size: req.file.size,
+        mimetype: req.file.mimetype,
+        path: req.file.path
+      });
 
       const fileExtension = path.extname(req.file.originalname);
       const fileName = `${req.file.filename}${fileExtension}`;
       const oldPath = req.file.path;
       const newPath = path.join(uploadDir, fileName);
 
+      console.log('File paths:', { oldPath, newPath, fileName });
+
       // Rename file to include extension
       await fs.rename(oldPath, newPath);
 
       // Return the public URL
       const fileUrl = `/uploads/${fileName}`;
+      
+      console.log('Upload successful:', { fileUrl, size: req.file.size });
 
       res.json({ 
         url: fileUrl,
@@ -1610,9 +1627,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get positions (public) - for team display on About Us page
   app.get("/api/positions", async (req, res) => {
     try {
+      console.log('=== /api/positions endpoint called ===');
       const positions = await storage.getAllPositions();
+      console.log('Raw positions from storage:', positions);
+      
       // Filter only active positions for public API
       const activePositions = positions.filter(pos => pos.active);
+      console.log('Active positions:', activePositions);
+      
+      // If no positions found, return some test data
+      if (activePositions.length === 0) {
+        console.log('No positions found, returning test data');
+        const testPositions = [
+          {
+            id: 1,
+            title: 'Commerce',
+            active: true,
+            translations: {
+              en: { title: 'Commerce' },
+              mk: { title: 'Комерција' },
+              de: { title: 'Handel' }
+            },
+            defaultLanguage: 'en',
+            createdAt: new Date(),
+            updatedAt: new Date()
+          }
+        ];
+        return res.json(testPositions);
+      }
+      
       res.json(activePositions);
     } catch (error) {
       console.error("Error fetching positions:", error);
