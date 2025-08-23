@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -52,6 +52,21 @@ export function GalleryItemsManager() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
+  // Debug form data changes
+  useEffect(() => {
+    console.log("Form data changed:", formData);
+    console.log("categoryId value:", formData.categoryId);
+    console.log("categoryId type:", typeof formData.categoryId);
+  }, [formData]);
+
+  // Reset form when create dialog opens
+  useEffect(() => {
+    if (isCreateDialogOpen) {
+      console.log("Create dialog opened, resetting form");
+      resetForm();
+    }
+  }, [isCreateDialogOpen]);
+
   const { data: items = [], isLoading } = useQuery<GalleryItem[]>({
     queryKey: ["/api/admin/gallery-items"]
   });
@@ -62,7 +77,15 @@ export function GalleryItemsManager() {
 
   const createMutation = useMutation({
     mutationFn: async (data: InsertGalleryItem) => {
+      console.log("=== Creating Gallery Item ===");
+      console.log("Data being sent to API:", data);
+      console.log("Data type:", typeof data);
+      console.log("Data keys:", Object.keys(data));
+      console.log("categoryId value:", data.categoryId);
+      console.log("categoryId type:", typeof data.categoryId);
+      
       const result = await apiRequest("/api/admin/gallery-items", "POST", data);
+      console.log("API response:", result);
       return result.json();
     },
     onSuccess: () => {
@@ -74,7 +97,11 @@ export function GalleryItemsManager() {
         description: "Gallery item created successfully",
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
+      console.error("=== Creation Error ===");
+      console.error("Error object:", error);
+      console.error("Error message:", error.message);
+      console.error("Error details:", error.details);
       toast({
         title: "Error",
         description: `Failed to create gallery item: ${error.message || 'Unknown error'}`,
@@ -85,7 +112,16 @@ export function GalleryItemsManager() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: Partial<InsertGalleryItem> }) => {
+      console.log("=== Updating Gallery Item ===");
+      console.log("ID:", id);
+      console.log("Data being sent to API:", data);
+      console.log("Data type:", typeof data);
+      console.log("Data keys:", Object.keys(data));
+      console.log("categoryId value:", data.categoryId);
+      console.log("categoryId type:", typeof data.categoryId);
+      
       const result = await apiRequest(`/api/admin/gallery-items/${id}`, "PATCH", data);
+      console.log("API response:", result);
       return result.json();
     },
     onSuccess: () => {
@@ -98,7 +134,11 @@ export function GalleryItemsManager() {
         description: "Gallery item updated successfully",
       });
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error("=== Update Error ===");
+      console.error("Error object:", error);
+      console.error("Error message:", error.message);
+      console.error("Error details:", error.details);
       toast({
         title: "Error",
         description: "Failed to update gallery item",
@@ -301,12 +341,20 @@ export function GalleryItemsManager() {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="create-category">Category</Label>
-                <Select value={formData.categoryId.toString()} onValueChange={(value) => {
-                  const categoryId = parseInt(value);
-                  if (!isNaN(categoryId) && categoryId > 0) {
-                    setFormData({ ...formData, categoryId: categoryId });
-                  }
-                }}>
+                <Select 
+                  value={formData.categoryId === "" ? "" : formData.categoryId.toString()} 
+                  onValueChange={(value) => {
+                    console.log("Category selection changed to:", value);
+                    const categoryId = parseInt(value);
+                    console.log("Parsed categoryId:", categoryId);
+                    if (!isNaN(categoryId) && categoryId > 0) {
+                      console.log("Setting categoryId to:", categoryId);
+                      setFormData({ ...formData, categoryId: categoryId });
+                    } else {
+                      console.log("Invalid categoryId:", value);
+                    }
+                  }}
+                >
                   <SelectTrigger data-testid="select-create-category">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
@@ -318,6 +366,11 @@ export function GalleryItemsManager() {
                     ))}
                   </SelectContent>
                 </Select>
+                {formData.categoryId !== "" && (
+                  <p className="text-sm text-gray-600 mt-1">
+                    Selected: {categories.find(c => c.id === formData.categoryId)?.title || 'Unknown'}
+                  </p>
+                )}
               </div>
               
               <div>
@@ -374,6 +427,18 @@ export function GalleryItemsManager() {
               >
                 {createMutation.isPending ? "Creating..." : "Create Item"}
               </Button>
+              
+              {/* Validation feedback */}
+              {formData.categoryId === "" && (
+                <p className="text-sm text-red-600 text-center">
+                  Please select a category
+                </p>
+              )}
+              {!formData.imageUrl.trim() && (
+                <p className="text-sm text-red-600 text-center">
+                  Please upload an image
+                </p>
+              )}
             </div>
           </DialogContent>
         </Dialog>
@@ -529,12 +594,20 @@ export function GalleryItemsManager() {
           <div className="space-y-4">
             <div>
               <Label htmlFor="edit-category">Category</Label>
-              <Select value={formData.categoryId.toString()} onValueChange={(value) => {
-                const categoryId = parseInt(value);
-                if (!isNaN(categoryId) && categoryId > 0) {
-                  setFormData({ ...formData, categoryId: categoryId });
-                }
-              }}>
+              <Select 
+                value={formData.categoryId === "" ? "" : formData.categoryId.toString()} 
+                onValueChange={(value) => {
+                  console.log("Edit - Category selection changed to:", value);
+                  const categoryId = parseInt(value);
+                  console.log("Edit - Parsed categoryId:", categoryId);
+                  if (!isNaN(categoryId) && categoryId > 0) {
+                    console.log("Edit - Setting categoryId to:", categoryId);
+                    setFormData({ ...formData, categoryId: categoryId });
+                  } else {
+                    console.log("Edit - Invalid categoryId:", value);
+                  }
+                }}
+              >
                 <SelectTrigger data-testid="select-edit-category">
                   <SelectValue />
                 </SelectTrigger>
@@ -546,6 +619,11 @@ export function GalleryItemsManager() {
                   ))}
                 </SelectContent>
               </Select>
+              {formData.categoryId !== "" && (
+                <p className="text-sm text-gray-600 mt-1">
+                  Selected: {categories.find(c => c.id === formData.categoryId)?.title || 'Unknown'}
+                </p>
+              )}
             </div>
             
             <div>
@@ -602,6 +680,18 @@ export function GalleryItemsManager() {
             >
               {updateMutation.isPending ? "Updating..." : "Update Item"}
             </Button>
+            
+            {/* Validation feedback */}
+            {formData.categoryId === "" && (
+              <p className="text-sm text-red-600 text-center">
+                Please select a category
+              </p>
+            )}
+            {!formData.imageUrl.trim() && (
+              <p className="text-sm text-red-600 text-center">
+                Please upload an image
+              </p>
+            )}
           </div>
         </DialogContent>
       </Dialog>

@@ -1607,6 +1607,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get positions (public) - for team display on About Us page
+  app.get("/api/positions", async (req, res) => {
+    try {
+      const positions = await storage.getAllPositions();
+      // Filter only active positions for public API
+      const activePositions = positions.filter(pos => pos.active);
+      res.json(activePositions);
+    } catch (error) {
+      console.error("Error fetching positions:", error);
+      res.status(500).json({ error: "Failed to fetch positions" });
+    }
+  });
+
   // Get brochure categories (public)
   app.get("/api/brochure-categories", async (req, res) => {
     try {

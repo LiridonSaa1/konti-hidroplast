@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { type Team, type Project, type GalleryCategory } from "@shared/schema";
+import { type Team, type Project, type GalleryCategory, type Position } from "@shared/schema";
 import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
@@ -156,9 +156,20 @@ const timelineData = [
 
 // Fetch team members from database
 function useTeamData() {
-  const { data: teams = [], isLoading } = useQuery<Team[]>({
+  const { data: teams = [], isLoading: isTeamsLoading } = useQuery<Team[]>({
     queryKey: ["/api/admin/teams"],
   });
+
+  // Fetch positions with translations
+  const { data: positions = [], isLoading: isPositionsLoading } = useQuery<Position[]>({
+    queryKey: ["/api/admin/positions"], // Temporarily using admin endpoint to test
+  });
+
+  console.log('=== useTeamData Debug ===');
+  console.log('Teams data:', teams);
+  console.log('Positions data:', positions);
+  console.log('Teams loading:', isTeamsLoading);
+  console.log('Positions loading:', isPositionsLoading);
 
   // Group team members by position
   const groupedByPosition = teams
@@ -175,19 +186,32 @@ function useTeamData() {
       {} as Record<string, Team[]>,
     );
 
-  // Create categories from unique positions
+  console.log('Grouped by position:', groupedByPosition);
+
+  // Create categories from unique positions with translations
   const teamCategories = Object.keys(groupedByPosition).map(
-    (position, index) => ({
-      id: position.toLowerCase().replace(/\s+/g, "-"),
-      title: position,
-      data: position,
-    }),
+    (position, index) => {
+      // Find the position object to get translations
+      const positionObj = positions.find(p => p.title === position);
+      console.log(`Position "${position}" found:`, positionObj);
+      
+      return {
+        id: position.toLowerCase().replace(/\s+/g, "-"),
+        title: position,
+        data: position,
+        translations: positionObj?.translations || {},
+        defaultLanguage: positionObj?.defaultLanguage || 'en'
+      };
+    },
   );
+
+  console.log('Team categories:', teamCategories);
 
   return {
     teamCategories,
     teamData: groupedByPosition,
-    isLoading,
+    positions,
+    isLoading: isTeamsLoading || isPositionsLoading,
   };
 }
 
@@ -199,7 +223,36 @@ export default function AboutUs() {
   const [activeTeamTabIndex, setActiveTeamTabIndex] = useState(0);
 
   // Use the dynamic team data hook
-  const { teamCategories, teamData, isLoading: isTeamLoading } = useTeamData();
+  const { teamCategories, teamData, positions, isLoading: isTeamLoading } = useTeamData();
+
+  // Helper function to get translated position title
+  const getTranslatedPositionTitle = (positionTitle: string) => {
+    console.log('=== getTranslatedPositionTitle ===');
+    console.log('Position title:', positionTitle);
+    console.log('Current language:', language);
+    console.log('All positions:', positions);
+    
+    const positionObj = positions.find(p => p.title === positionTitle);
+    console.log('Found position object:', positionObj);
+    
+    if (positionObj?.translations && typeof positionObj.translations === 'object') {
+      const translations = positionObj.translations as any;
+      console.log('Position translations:', translations);
+      
+      if (translations[language]?.title) {
+        console.log(`Found ${language} translation:`, translations[language].title);
+        return translations[language].title;
+      } else {
+        console.log(`No ${language} translation found`);
+      }
+    } else {
+      console.log('No translations object found for position');
+    }
+    
+    // Fallback to original title
+    console.log('Using fallback title:', positionTitle);
+    return positionTitle;
+  };
 
   // Fetch projects
   const { data: projects = [], isLoading: isProjectsLoading } = useQuery<
@@ -605,11 +658,6 @@ export default function AboutUs() {
                           </h3>
                           <h4 className="text-xl font-semibold text-[#1c2d56]">
                             {getTimelineText(item, 'title')}
-                            {item.translations && !item.translations[language]?.title && (
-                              <Badge variant="outline" className="ml-2 text-xs">
-                                {language === 'en' ? 'EN' : language === 'mk' ? 'MK' : 'DE'} {t("aboutUs.fallback")}
-                              </Badge>
-                            )}
                           </h4>
                         </div>
                       </div>
@@ -737,7 +785,7 @@ export default function AboutUs() {
 
               <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
                 <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
-                  {teamCategories[activeTeamTabIndex]?.title || "Loading..."}
+                  {getTranslatedPositionTitle(teamCategories[activeTeamTabIndex]?.title || "") || "Loading..."}
                 </h3>
                 <div className="flex justify-center space-x-1 mt-3">
                   {teamCategories.map((_, index) => (
