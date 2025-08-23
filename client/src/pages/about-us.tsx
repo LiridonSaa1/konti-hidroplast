@@ -232,6 +232,31 @@ export default function AboutUs() {
     console.log('Current language:', language);
     console.log('All positions:', positions);
     
+    // TEMPORARY: Hardcoded translations for testing
+    const hardcodedTranslations: Record<string, Record<string, string>> = {
+      'Commerce': {
+        'en': 'Commerce',
+        'mk': 'Комерција',
+        'de': 'Handel'
+      },
+      'Engineering': {
+        'en': 'Engineering',
+        'mk': 'Инженеринг',
+        'de': 'Ingenieurwesen'
+      },
+      'Management': {
+        'en': 'Management',
+        'mk': 'Менаџмент',
+        'de': 'Management'
+      }
+    };
+    
+    // Check hardcoded translations first
+    if (hardcodedTranslations[positionTitle] && hardcodedTranslations[positionTitle][language]) {
+      console.log(`Found hardcoded ${language} translation:`, hardcodedTranslations[positionTitle][language]);
+      return hardcodedTranslations[positionTitle][language];
+    }
+    
     const positionObj = positions.find(p => p.title === positionTitle);
     console.log('Found position object:', positionObj);
     
