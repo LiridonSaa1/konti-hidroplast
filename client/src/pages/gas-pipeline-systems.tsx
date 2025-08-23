@@ -352,7 +352,7 @@ function GasPipelineSystemsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-                {t("productPages.technicalSpecifications")}
+{t("productPages.technicalSpecifications")}
               </h2>
               <div className="space-y-4 text-gray-700">
                 <p>
@@ -369,7 +369,7 @@ function GasPipelineSystemsPage() {
 
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-                {t("productPages.generalProperties")}
+{t("productPages.generalProperties")}
               </h3>
               <div className="space-y-3">
                 {[

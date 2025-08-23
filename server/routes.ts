@@ -1412,6 +1412,214 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Public Brochures API (no authentication required)
+  app.get("/api/brochures", async (req, res) => {
+    try {
+      const { language, category } = req.query;
+      let brochures;
+
+      if (language && category) {
+        brochures = await storage.getBrochuresByLanguageAndCategory(
+          language as string, 
+          category as string
+        );
+      } else if (language) {
+        brochures = await storage.getBrochuresByLanguage(language as string);
+      } else if (category) {
+        brochures = await storage.getBrochuresByCategory(category as string);
+      } else {
+        brochures = await storage.getActiveBrochures();
+      }
+
+      res.json(brochures);
+    } catch (error) {
+      console.error("Error fetching public brochures:", error);
+      res.status(500).json({ error: "Failed to fetch brochures" });
+    }
+  });
+
+  // Get a specific brochure by ID (public)
+  app.get("/api/brochures/:id", async (req, res) => {
+    try {
+      const brochure = await storage.getBrochureById(req.params.id);
+      if (!brochure) {
+        return res.status(404).json({ error: "Brochure not found" });
+      }
+      
+      // Only return active brochures to public
+      if (!brochure.active) {
+        return res.status(404).json({ error: "Brochure not found" });
+      }
+      
+      res.json(brochure);
+    } catch (error) {
+      console.error("Error fetching brochure:", error);
+      res.status(500).json({ error: "Failed to fetch brochure" });
+    }
+  });
+
+  // Get brochures by translation group (admin only)
+  app.get("/api/admin/brochures/group/:translationGroup", requireAuth, async (req, res) => {
+    try {
+      const brochures = await storage.getBrochuresByTranslationGroup(req.params.translationGroup);
+      res.json(brochures);
+    } catch (error) {
+      console.error("Error fetching brochures by translation group:", error);
+      res.status(500).json({ error: "Failed to fetch brochures" });
+    }
+  });
+
+  // Link brochures with same name/category to same translation group (admin utility)
+  app.post("/api/admin/brochures/group-similar", requireAuth, async (req, res) => {
+    try {
+      const allBrochures = await storage.getAllBrochures();
+      const updates = [];
+      
+      // Group brochures by name and category
+      const groups = new Map<string, typeof allBrochures>();
+      
+      for (const brochure of allBrochures) {
+        const key = `${brochure.name}-${brochure.category}`;
+        if (!groups.has(key)) {
+          groups.set(key, []);
+        }
+        groups.get(key)!.push(brochure);
+      }
+      
+      // Assign same translation group to brochures with same name/category
+      for (const [key, brochures] of Array.from(groups.entries())) {
+        if (brochures.length > 1) {
+          // Find existing translation group or create new one
+          const existingGroup = brochures.find((b: any) => b.translationGroup)?.translationGroup;
+          const groupId = existingGroup || `group_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+          
+          // Update all brochures in this group
+          for (const brochure of brochures) {
+            if (brochure.translationGroup !== groupId) {
+              await storage.updateBrochure(brochure.id, { translationGroup: groupId });
+              updates.push({ id: brochure.id, name: brochure.name, language: brochure.language, groupId });
+            }
+          }
+        }
+      }
+      
+      res.json({ 
+        message: "Successfully grouped similar brochures", 
+        updatedBrochures: updates.length,
+        updates 
+      });
+    } catch (error) {
+      console.error("Error grouping brochures:", error);
+      res.status(500).json({ error: "Failed to group brochures" });
+    }
+  });
+
+  // Add default descriptions to brochures that are missing them (admin utility)
+  app.post("/api/admin/brochures/add-descriptions", requireAuth, async (req, res) => {
+    try {
+      const allBrochures = await storage.getAllBrochures();
+      const updates = [];
+      
+      const defaultDescriptions = {
+        en: {
+          'Water-supply systems': 'High-quality pipes and fittings for reliable water supply systems. Professional grade materials with European standards compliance.',
+          'Sewerage systems': 'Durable sewerage pipes and components for efficient wastewater management. Built to withstand heavy loads and chemical exposure.',
+          'Gas': 'Premium gas pipeline systems designed for safe and efficient gas distribution. Meets all safety standards and regulations.',
+          'Cable protection': 'Protective conduits and ducting systems for cable installations. Ensures long-term protection against environmental factors.',
+          'default': 'Professional pipe solutions engineered for durability and performance. Manufactured to European quality standards.'
+        },
+        mk: {
+          'Water-supply systems': 'Висококвалитетни цевки и фитинзи за сигурни системи за водоснабдување. Професионални материјали со европски стандарди.',
+          'Sewerage systems': 'Издржливи канализациски цевки за ефикасно управување со отпадни води. Изградени да издржат големи оптоварувања.',
+          'Gas': 'Премиум системи за гасоводи дизајнирани за безбедна дистрибуција на гас. Ги исполнува сите безбедносни стандарди.',
+          'Cable protection': 'Заштитни системи за кабли и инсталации. Обезбедува долгорочна заштита од környезетски фактори.',
+          'default': 'Професионални решенија за цевки инженерирани за издржливост и перформанси. Произведени според европски стандарди.'
+        },
+        de: {
+          'Water-supply systems': 'Hochwertige Rohre und Fittings für zuverlässige Wasserversorgungssysteme. Professionelle Materialien nach europäischen Standards.',
+          'Sewerage systems': 'Langlebige Abwasserrohre für effizientes Abwassermanagement. Entwickelt für hohe Belastungen und Chemikalienbeständigkeit.',
+          'Gas': 'Premium-Gaspipelinesysteme für sichere Gasverteilung. Erfüllt alle Sicherheitsstandards und Vorschriften.',
+          'Cable protection': 'Schutzrohre und Kanalsysteme für Kabelinstallationen. Gewährleistet langfristigen Schutz vor Umwelteinflüssen.',
+          'default': 'Professionelle Rohrlösungen für Langlebigkeit und Leistung. Nach europäischen Qualitätsstandards hergestellt.'
+        }
+      };
+      
+      // Add descriptions to brochures that don't have them
+      for (const brochure of allBrochures) {
+        if (!brochure.description || brochure.description.trim() === '') {
+          const lang = brochure.language as keyof typeof defaultDescriptions;
+          const langDescriptions = defaultDescriptions[lang] || defaultDescriptions.en;
+          const categoryDesc = langDescriptions[brochure.category as keyof typeof langDescriptions];
+          const description = categoryDesc || langDescriptions.default;
+          
+          await storage.updateBrochure(brochure.id, { description });
+          updates.push({ 
+            id: brochure.id, 
+            name: brochure.name, 
+            language: brochure.language, 
+            category: brochure.category,
+            description: description.substring(0, 50) + '...'
+          });
+        }
+      }
+      
+      res.json({ 
+        message: "Successfully added descriptions to brochures", 
+        updatedBrochures: updates.length,
+        updates 
+      });
+    } catch (error) {
+      console.error("Error adding descriptions:", error);
+      res.status(500).json({ error: "Failed to add descriptions" });
+    }
+  });
+
+  // Download PDF for a specific brochure
+  app.get("/api/brochures/:id/download", async (req, res) => {
+    try {
+      const brochure = await storage.getBrochureById(req.params.id);
+      if (!brochure || !brochure.active) {
+        return res.status(404).json({ error: "Brochure not found" });
+      }
+
+      if (!brochure.pdfUrl) {
+        return res.status(404).json({ error: "PDF not available" });
+      }
+
+      // If it's a relative URL (uploaded file), serve from uploads directory
+      if (brochure.pdfUrl.startsWith('/uploads/')) {
+        const filePath = path.join(process.cwd(), brochure.pdfUrl);
+        try {
+          await fs.access(filePath);
+          res.setHeader('Content-Type', 'application/pdf');
+          res.setHeader('Content-Disposition', `attachment; filename="${brochure.name}.pdf"`);
+          return res.sendFile(filePath);
+        } catch (fileError) {
+          return res.status(404).json({ error: "PDF file not found" });
+        }
+      } else {
+        // External URL - redirect to it
+        res.redirect(brochure.pdfUrl);
+      }
+    } catch (error) {
+      console.error("Error downloading brochure PDF:", error);
+      res.status(500).json({ error: "Failed to download PDF" });
+    }
+  });
+
+  // Get brochure categories (public)
+  app.get("/api/brochure-categories", async (req, res) => {
+    try {
+      const categories = await storage.getAllBrochureCategories();
+      // Filter only active categories for public API
+      const activeCategories = categories.filter(cat => cat.active);
+      res.json(activeCategories);
+    } catch (error) {
+      console.error("Error fetching brochure categories:", error);
+      res.status(500).json({ error: "Failed to fetch categories" });
+    }
+  });
+
   // Register translation routes
   app.use(translationRoutes);
 

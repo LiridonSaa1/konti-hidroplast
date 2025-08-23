@@ -259,7 +259,7 @@ function KontiKanPipesAndFittingsPage() {
             <div>
               <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
                 <span className="text-sm font-medium">
-{t("sewagePipes.engineeredForExcellence")}
+                  ENGINEERED FOR EXCELLENCE
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
@@ -275,18 +275,20 @@ function KontiKanPipesAndFittingsPage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                {translateSewagePipeText("HDPE corrugated sewage pipes excel in durability, hydraulic efficiency, and structural performance, making them a preferred choice for sewage and drainage systems.", t)}
+                HDPE corrugated sewage pipes excel in durability, hydraulic
+                efficiency, and structural performance, making them a preferred
+                choice for sewage and drainage systems.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
                   <Check className="w-5 h-5" />
                   <span className="text-sm font-medium">
-{t("sewagePipes.yearsLifespan")}
+                    50+ Years Lifespan
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
                   <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">{t("sewagePipes.recyclable")}</span>
+                  <span className="text-sm font-medium">100% Recyclable</span>
                 </div>
               </div>
             </div>
@@ -309,7 +311,7 @@ function KontiKanPipesAndFittingsPage() {
                 </video>
               </div>
               <div className="absolute -bottom-4 -right-4 text-white px-4 py-2 rounded-full shadow-lg bg-[#ef4444]">
-                <span className="text-sm font-medium">{t("sewagePipes.premiumQuality")}</span>
+                <span className="text-sm font-medium">Premium Quality</span>
               </div>
             </div>
           </div>
@@ -323,7 +325,7 @@ function KontiKanPipesAndFittingsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("sewagePipes.technicalSpecifications")}
+                Technical Specifications
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -332,10 +334,15 @@ function KontiKanPipesAndFittingsPage() {
           <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 max-w-6xl mx-auto">
             <div className="space-y-6 text-gray-700">
               <p className="text-lg leading-relaxed">
-{t("sewagePipes.mainDescription")}
+                HDPE corrugated sewage pipes excel in durability, hydraulic
+                efficiency, and structural performance, making them a preferred
+                choice for sewage and drainage systems. Their lightweight,
+                flexibility, and chemical resistance further enhance their
+                suitability for a wide range of applications.
               </p>
               <p className="text-lg leading-relaxed">
-{t("sewagePipes.commonStandards")}
+                Common standards for HDPE corrugated pipes:{" "}
+                <strong>EN 13476-1</strong> and <strong>EN 13476-3</strong>
               </p>
             </div>
           </div>
@@ -349,7 +356,7 @@ function KontiKanPipesAndFittingsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-white">
-{translateSewagePipeText("HDPE Konti Kan Pipes", t)}
+                HDPE Konti Kan Pipes
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -360,14 +367,16 @@ function KontiKanPipesAndFittingsPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div>
                 <h3 className="text-3xl font-bold text-white mb-4">
-{translateSewagePipeText("HDPE Konti Kan", t)}
+                  HDPE Konti Kan
                 </h3>
                 <p className="text-white mb-6">
-{translateSewagePipeText("HDPE (High-Density Polyethylene) corrugated pipes are widely used in sewage and drainage systems due to their excellent performance characteristics.", t)}
+                  HDPE (High-Density Polyethylene) corrugated pipes are widely
+                  used in sewage and drainage systems due to their excellent
+                  performance characteristics.
                 </p>
 
                 <h4 className="text-xl font-bold text-white mb-4">
-{translateSewagePipeText("Material Properties:", t)}
+                  Material Properties:
                 </h4>
                 <div className="space-y-3 mb-6">
                   {[
@@ -384,7 +393,7 @@ function KontiKanPipesAndFittingsPage() {
                 </div>
 
                 <h4 className="text-xl font-bold text-white mb-4">
-{translateSewagePipeText("Application:", t)}
+                  Application:
                 </h4>
                 <div className="space-y-3 mb-6">
                   {[
@@ -401,7 +410,7 @@ function KontiKanPipesAndFittingsPage() {
                 </div>
 
                 <h4 className="text-xl font-bold text-white mb-4">
-{translateSewagePipeText("Characteristics:", t)}
+                  Characteristics:
                 </h4>
                 <div className="space-y-3 mb-8">
                   {[
@@ -433,7 +442,7 @@ function KontiKanPipesAndFittingsPage() {
                     className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-white rounded-lg transition-colors"
                   >
                     <Download className="w-4 h-4 mr-2" />
-{t("sewagePipes.downloadSpecs")}
+                    Download Specs
                   </a>
                   <a
                     href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-Konti-Kan-siv_EN-2021-so-korekcii-MART-2021-2.pdf"
@@ -442,7 +451,7 @@ function KontiKanPipesAndFittingsPage() {
                     className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                   >
                     <Download className="w-4 h-4 mr-2" />
-{t("sewagePipes.downloadBrochure")}
+                    Download Brochure
                   </a>
                 </div>
               </div>
@@ -477,7 +486,7 @@ function KontiKanPipesAndFittingsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{translateSewagePipeText("Konti Kan Fittings", t)}
+                Konti Kan Fittings
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -495,7 +504,7 @@ function KontiKanPipesAndFittingsPage() {
 
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
               <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
-{translateSewagePipeText(fittingTypes[activeFittingTabIndex].title, t)}
+                {translateSewagePipeText(fittingTypes[activeFittingTabIndex].title, t)}
               </h3>
               <div className="flex justify-center space-x-1 mt-3">
                 {fittingTypes.map((_, index) => (
@@ -536,7 +545,7 @@ function KontiKanPipesAndFittingsPage() {
                   {/* Left Column - Fittings List */}
                   <div>
                     <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
-{translateSewagePipeText(fitting.title, t)}
+                      {translateSewagePipeText(fitting.title, t)}
                     </h3>
                     <p className="text-gray-600 mb-6">{translateSewagePipeText(fitting.description, t)}</p>
 
@@ -556,7 +565,7 @@ function KontiKanPipesAndFittingsPage() {
                               <Download className="w-3 h-3 text-white" />
                             </div>
                             <span className="text-sm font-medium">
-{translateSewagePipeText(item.name, t)}
+                              {translateSewagePipeText(item.name, t)}
                             </span>
                           </a>
                         </div>
@@ -588,19 +597,20 @@ function KontiKanPipesAndFittingsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("sewagePipes.contactTitle")}
+                Get in Touch: Connect with Us Today!
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-{t("sewagePipes.contactDescription")}
+              Need more information about our Konti Kan sewage pipe solutions?
+              Contact our team of experts.
             </p>
             <a
               href="/contact"
               className="inline-flex items-center px-8 py-4 text-white text-lg font-semibold rounded-lg bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors shadow-lg"
               data-testid="contact-button"
             >
-{t("sewagePipes.contactUs")}
+              Contact Us
             </a>
           </div>
         </div>
@@ -613,12 +623,13 @@ function KontiKanPipesAndFittingsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("sewagePipes.contactTitle")}
+                Get in Touch: Connect with Us Today!
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-{t("sewagePipes.contactDescriptionGeneral")}
+              Need more information about our sewage pipe solutions?
+              Contact our team of experts.
             </p>
             <Button
               onClick={() => {
@@ -630,7 +641,7 @@ function KontiKanPipesAndFittingsPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-{t("sewagePipes.contactUs")}
+              Contact Us
             </Button>
           </div>
         </div>

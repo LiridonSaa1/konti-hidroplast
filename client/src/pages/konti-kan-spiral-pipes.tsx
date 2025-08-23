@@ -292,7 +292,7 @@ function KontiKanSpiralPipesPage() {
             <div>
               <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
                 <span className="text-sm font-medium">
-{t("spiralPipes.engineeredForExcellence")}
+                  ENGINEERED FOR EXCELLENCE
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
@@ -308,18 +308,21 @@ function KontiKanSpiralPipesPage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                {translateSpiralPipeText("Clients and engineers as ideal pipe material for many pressure and non-pressure applications such as water distribution; gravity sewer, rehabilitation projects and manholes recognize polyethylene.", t)}
+                Clients and engineers as ideal pipe material for many pressure
+                and non-pressure applications such as water distribution;
+                gravity sewer, rehabilitation projects and manholes recognize
+                polyethylene.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
                   <Check className="w-5 h-5" />
                   <span className="text-sm font-medium">
-{t("spiralPipes.yearsLifespan")}
+                    50+ Years Lifespan
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
                   <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">{t("spiralPipes.recyclable")}</span>
+                  <span className="text-sm font-medium">100% Recyclable</span>
                 </div>
               </div>
             </div>
@@ -328,12 +331,12 @@ function KontiKanSpiralPipesPage() {
               <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <img
                   src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/Gogo_20240824_9415-19.jpg"
-alt={t("spiralPipes.manufacturing")}
+                  alt="KONTI KAN SPIRAL pipes manufacturing"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="absolute -bottom-4 -right-4 text-white px-4 py-2 rounded-full shadow-lg bg-[#ef4444]">
-                <span className="text-sm font-medium">{t("spiralPipes.premiumQuality")}</span>
+                <span className="text-sm font-medium">Premium Quality</span>
               </div>
             </div>
           </div>
@@ -347,7 +350,7 @@ alt={t("spiralPipes.manufacturing")}
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("spiralPipes.productOverview")}
+                Product Overview
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -356,40 +359,61 @@ alt={t("spiralPipes.manufacturing")}
           <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 max-w-6xl mx-auto">
             <div className="space-y-6 text-gray-700">
               <p className="text-lg leading-relaxed">
-{translateSpiralPipeText("Clients and engineers as ideal pipe material for many pressure and non-pressure applications such as water distribution; gravity sewer, rehabilitation projects and manholes recognize polyethylene.", t)}
+                Clients and engineers as ideal pipe material for many pressure
+                and non-pressure applications such as water distribution;
+                gravity sewer, rehabilitation projects and manholes recognize
+                polyethylene.
               </p>
               <p className="text-lg leading-relaxed">
-{translateSpiralPipeText("Latest development of production of Konti Hidroplast is manufacturing sewage pipes for non-pressure applications. Konti Kan Spiral pipe and complete range of Konti Kan Spiral fittings.", t)}
+                Latest development of production of Konti Hidroplast is
+                manufacturing sewage pipes for non-pressure applications. Konti
+                Kan Spiral pipe and complete range of Konti Kan Spiral fittings.
               </p>
               <p className="text-lg leading-relaxed">
-{translateSpiralPipeText("Konti Kan Spiral pipes are made of hollow PE-HD sections helically wound on a drum with a specific diameter. Konti Kan Spiral Pipe provides all technical advantages of equivalent polyethylene solid wall pipe with substantial saving in weight combining greater ease of installation with increased cost effectiveness. Its unique structure can offer a range of pipe sizes and ring stiffness, depending of customers requirements.", t)}
+                Konti Kan Spiral pipes are made of hollow PE-HD sections
+                helically wound on a drum with a specific diameter. Konti Kan
+                Spiral Pipe provides all technical advantages of equivalent
+                polyethylene solid wall pipe with substantial saving in weight
+                combining greater ease of installation with increased cost
+                effectiveness. Its unique structure can offer a range of pipe
+                sizes and ring stiffness, depending of customers requirements.
               </p>
               <p className="text-lg leading-relaxed">
-{translateSpiralPipeText("The characteristics of raw material and the technology of production are combined to insure application in:", t)}
+                The characteristics of raw material and the technology of
+                production are combined to insure application in:
               </p>
               <ul className="text-lg leading-relaxed list-disc list-inside ml-4">
-                <li>{translateSpiralPipeText("Municipality for infrastructure objects", t)}</li>
-                <li>{translateSpiralPipeText("Industry", t)}</li>
-                <li>{translateSpiralPipeText("Roads building", t)}</li>
-                <li>{translateSpiralPipeText("Reconstruction", t)}</li>
+                <li>Municipality for infrastructure objects</li>
+                <li>Industry</li>
+                <li>Roads building</li>
+                <li>Reconstruction</li>
               </ul>
               <p className="text-lg leading-relaxed">
-{translateSpiralPipeText("Konti Kan Spiral provides all technical advantages as well as polyethylene or polypropylene pipes with solid wall, the only difference is that Konti Kan Spiral are significantly lighter in weight and thus for the installation, which is also financially viable.", t)}
+                Konti Kan Spiral provides all technical advantages as well as
+                polyethylene or polypropylene pipes with solid wall, the only
+                difference is that Konti Kan Spiral are significantly lighter in
+                weight and thus for the installation, which is also financially
+                viable.
               </p>
               <p className="text-lg leading-relaxed">
-{translateSpiralPipeText("Color: Black (other color on request) | Length: 6m", t)}
+                <strong>Color:</strong> Black (other color on request) |{" "}
+                <strong>Length:</strong> 6m
               </p>
               <p className="text-lg leading-relaxed">
-{translateSpiralPipeText("For connection of the pipes and fittings Konti Kan spiral pipe are use the following methods:", t)}
+                For connection of the pipes and fittings Konti Kan spiral pipe
+                are use the following methods:
               </p>
               <ul className="text-lg leading-relaxed list-disc list-inside ml-4">
-                <li>{translateSpiralPipeText("Connection with socket +EPDM gasket", t)}</li>
-                <li>{translateSpiralPipeText("Extrusion welding from both side", t)}</li>
-                <li>{translateSpiralPipeText("Extrusion welding inside", t)}</li>
-                <li>{translateSpiralPipeText("Connection with thread with inside welding or with thermo shrink tape", t)}</li>
-                <li>{translateSpiralPipeText("Electro fusion connection", t)}</li>
-                <li>{translateSpiralPipeText("Connection with metal part with inside rubber layer", t)}</li>
-                <li>{translateSpiralPipeText("But welding", t)}</li>
+                <li>Connection with socket +EPDM gasket</li>
+                <li>Extrusion welding from both side</li>
+                <li>Extrusion welding inside</li>
+                <li>
+                  Connection with thread with inside welding or with thermo
+                  shrink tape
+                </li>
+                <li>Electro fusion connection</li>
+                <li>Connection with metal part with inside rubber layer</li>
+                <li>But welding</li>
               </ul>
             </div>
           </div>
@@ -403,7 +427,7 @@ alt={t("spiralPipes.manufacturing")}
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-white">
-{translateSpiralPipeText("KONTI KAN SPIRAL Pipes", t)}
+                KONTI KAN SPIRAL Pipes
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -414,11 +438,15 @@ alt={t("spiralPipes.manufacturing")}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div>
                 <p className="text-white mb-6">
-{translateSpiralPipeText("KONTI KAN SPIRAL PIPE is made of PEHD profile spirally wound on a drum with a specific diameter. It contains all technical advantages of equivalent polyethylene pipes with full walls significantly decreasing the weight, providing much easier installation and increased efficiency.", t)}
+                  KONTI KAN SPIRAL PIPE is made of PEHD profile spirally wound
+                  on a drum with a specific diameter. It contains all technical
+                  advantages of equivalent polyethylene pipes with full walls
+                  significantly decreasing the weight, providing much easier
+                  installation and increased efficiency.
                 </p>
 
                 <h4 className="text-xl font-bold text-white mb-4">
-{translateSpiralPipeText("Material Properties:", t)}
+                  Material Properties:
                 </h4>
                 <div className="space-y-3 mb-6">
                   {[
@@ -435,7 +463,7 @@ alt={t("spiralPipes.manufacturing")}
                 </div>
 
                 <h4 className="text-xl font-bold text-white mb-4">
-{translateSpiralPipeText("Application:", t)}
+                  Application:
                 </h4>
                 <div className="space-y-3 mb-6">
                   {[
@@ -453,7 +481,7 @@ alt={t("spiralPipes.manufacturing")}
                 </div>
 
                 <h4 className="text-xl font-bold text-white mb-4">
-{translateSpiralPipeText("Characteristics:", t)}
+                  Characteristics:
                 </h4>
                 <div className="space-y-3 mb-8">
                   {[
@@ -484,7 +512,7 @@ alt={t("spiralPipes.manufacturing")}
                     className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-white rounded-lg transition-colors"
                   >
                     <Download className="w-4 h-4 mr-2" />
-{t("spiralPipes.downloadSpecs")}
+                    Download Specs
                   </a>
                   <a
                     href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-KONTI-SPIRAL_EN_2021_compressed.pdf"
@@ -493,7 +521,7 @@ alt={t("spiralPipes.manufacturing")}
                     className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                   >
                     <Download className="w-4 h-4 mr-2" />
-{t("spiralPipes.downloadBrochure")}
+                    Download Brochure
                   </a>
                 </div>
               </div>
@@ -503,7 +531,7 @@ alt={t("spiralPipes.manufacturing")}
                   <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
                     <img
                       src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral.jpg"
-alt={translateSpiralPipeText("KONTI KAN SPIRAL Pipes", t)}
+                      alt="KONTI KAN SPIRAL Pipes"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -528,7 +556,7 @@ alt={translateSpiralPipeText("KONTI KAN SPIRAL Pipes", t)}
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{translateSpiralPipeText("Connection Methods & Standards", t)}
+                Connection Methods & Standards
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -540,10 +568,10 @@ alt={translateSpiralPipeText("KONTI KAN SPIRAL Pipes", t)}
                 <thead>
                   <tr className="bg-gray-50">
                     <th className="border border-gray-300 px-6 py-4 text-left text-sm font-semibold text-gray-900">
-{translateSpiralPipeText("Reference Standards", t)}
+                      Reference Standards
                     </th>
                     <th className="border border-gray-300 px-6 py-4 text-left text-sm font-semibold text-gray-900">
-{translateSpiralPipeText("Application", t)}
+                      Application
                     </th>
                   </tr>
                 </thead>
@@ -581,10 +609,10 @@ alt={translateSpiralPipeText("KONTI KAN SPIRAL Pipes", t)}
                   ].map((item, index) => (
                     <tr key={index} className="hover:bg-gray-50">
                       <td className="border border-gray-300 px-6 py-4 text-sm font-medium text-[#1c2d56]">
-{translateSpiralPipeText(item.standard, t)}
+                        {translateSpiralPipeText(item.standard, t)}
                       </td>
                       <td className="border border-gray-300 px-6 py-4 text-sm text-gray-700">
-{translateSpiralPipeText(item.application, t)}
+                        {translateSpiralPipeText(item.application, t)}
                       </td>
                     </tr>
                   ))}
@@ -602,19 +630,20 @@ alt={translateSpiralPipeText("KONTI KAN SPIRAL Pipes", t)}
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                {t("spiralPipes.contactTitle")}
+                Get in Touch: Connect with Us Today!
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-{t("spiralPipes.contactDescriptionSpecific")}
+              Need more information about our KONTI KAN SPIRAL pipe solutions?
+              Contact our team of experts.
             </p>
             <a
               href="/contact"
               className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-lg font-semibold rounded-lg transition-colors shadow-lg"
               data-testid="contact-button"
             >
-{t("spiralPipes.contactUs")}
+              Contact Us
             </a>
           </div>
         </div>
@@ -627,12 +656,13 @@ alt={translateSpiralPipeText("KONTI KAN SPIRAL Pipes", t)}
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                {t("spiralPipes.contactTitle")}
+                Get in Touch: Connect with Us Today!
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-{t("spiralPipes.contactDescriptionGeneral")}
+              Need more information about our spiral pipe solutions?
+              Contact our team of experts.
             </p>
             <Button
               onClick={() => {
@@ -644,7 +674,7 @@ alt={translateSpiralPipeText("KONTI KAN SPIRAL Pipes", t)}
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-{t("spiralPipes.contactUs")}
+              Contact Us
             </Button>
           </div>
         </div>

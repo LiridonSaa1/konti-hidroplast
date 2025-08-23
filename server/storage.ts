@@ -55,7 +55,7 @@ import {
   brevoConfig,
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, asc } from "drizzle-orm";
+import { eq, desc, asc, and } from "drizzle-orm";
 
 export interface IStorage {
   // User methods
@@ -118,6 +118,11 @@ export interface IStorage {
   
   // Brochure methods
   getAllBrochures(): Promise<Brochure[]>;
+  getBrochuresByLanguage(language: string): Promise<Brochure[]>;
+  getBrochuresByCategory(category: string): Promise<Brochure[]>;
+  getBrochuresByLanguageAndCategory(language: string, category: string): Promise<Brochure[]>;
+  getBrochuresByTranslationGroup(translationGroup: string): Promise<Brochure[]>;
+  getActiveBrochures(): Promise<Brochure[]>;
   getBrochureById(id: string): Promise<Brochure | undefined>;
   createBrochure(brochure: InsertBrochure): Promise<Brochure>;
   updateBrochure(id: string, brochure: Partial<InsertBrochure>): Promise<Brochure>;
@@ -508,6 +513,55 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(brochures).orderBy(desc(brochures.createdAt));
   }
 
+  async getBrochuresByLanguage(language: string): Promise<Brochure[]> {
+    if (!db) throw new Error('Database not available');
+    return await db
+      .select()
+      .from(brochures)
+      .where(and(eq(brochures.language, language), eq(brochures.active, true)))
+      .orderBy(brochures.sortOrder, desc(brochures.createdAt));
+  }
+
+  async getBrochuresByCategory(category: string): Promise<Brochure[]> {
+    if (!db) throw new Error('Database not available');
+    return await db
+      .select()
+      .from(brochures)
+      .where(and(eq(brochures.category, category), eq(brochures.active, true)))
+      .orderBy(brochures.sortOrder, desc(brochures.createdAt));
+  }
+
+  async getBrochuresByLanguageAndCategory(language: string, category: string): Promise<Brochure[]> {
+    if (!db) throw new Error('Database not available');
+    return await db
+      .select()
+      .from(brochures)
+      .where(and(
+        eq(brochures.language, language),
+        eq(brochures.category, category),
+        eq(brochures.active, true)
+      ))
+      .orderBy(brochures.sortOrder, desc(brochures.createdAt));
+  }
+
+  async getBrochuresByTranslationGroup(translationGroup: string): Promise<Brochure[]> {
+    if (!db) throw new Error('Database not available');
+    return await db
+      .select()
+      .from(brochures)
+      .where(eq(brochures.translationGroup, translationGroup))
+      .orderBy(brochures.language, desc(brochures.createdAt));
+  }
+
+  async getActiveBrochures(): Promise<Brochure[]> {
+    if (!db) throw new Error('Database not available');
+    return await db
+      .select()
+      .from(brochures)
+      .where(eq(brochures.active, true))
+      .orderBy(brochures.sortOrder, desc(brochures.createdAt));
+  }
+
   async getBrochureById(id: string): Promise<Brochure | undefined> {
     if (!db) throw new Error('Database not available');
     const [brochure] = await db.select().from(brochures).where(eq(brochures.id, id));
@@ -527,7 +581,7 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     const [updated] = await db
       .update(brochures)
-      .set(brochure)
+      .set({ ...brochure, updatedAt: new Date() })
       .where(eq(brochures.id, id))
       .returning();
     return updated;
@@ -573,35 +627,45 @@ export class DatabaseStorage implements IStorage {
     return updated;
   }
 
-    async deleteBrochureCategory(id: number): Promise<void> {
+  async deleteBrochureCategory(id: number): Promise<void> {
     if (!db) throw new Error('Database not available');
     await db.delete(brochureCategories).where(eq(brochureCategories.id, id));
   }
   
-  // Project methods - delegate to MemStorage since we're using in-memory storage
+  // Project methods
   async getAllProjects(): Promise<Project[]> {
-    // Since we're using MemStorage, this won't be called
-    throw new Error('Database storage not available for projects');
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(projects).orderBy(desc(projects.createdAt));
   }
 
   async getProject(id: number): Promise<Project | undefined> {
-    // Since we're using MemStorage, this won't be called
-    throw new Error('Database storage not available for projects');
+    if (!db) throw new Error('Database not available');
+    const [project] = await db.select().from(projects).where(eq(projects.id, id));
+    return project || undefined;
   }
 
   async createProject(project: InsertProject): Promise<Project> {
-    // Since we're using MemStorage, this won't be called
-    throw new Error('Database storage not available for projects');
+    if (!db) throw new Error('Database not available');
+    const [newProject] = await db
+      .insert(projects)
+      .values({...project, translations: {}, defaultLanguage: 'en'})
+      .returning();
+    return newProject;
   }
 
   async updateProject(id: number, project: Partial<InsertProject>): Promise<Project> {
-    // Since we're using MemStorage, this won't be called
-    throw new Error('Database storage not available for projects');
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(projects)
+      .set(project)
+      .where(eq(projects.id, id))
+      .returning();
+    return updated;
   }
 
   async deleteProject(id: number): Promise<void> {
-    // Since we're using MemStorage, this won't be called
-    throw new Error('Database storage not available for projects');
+    if (!db) throw new Error('Database not available');
+    await db.delete(projects).where(eq(projects.id, id));
   }
   
   // Team methods
@@ -1250,6 +1314,75 @@ export class MemStorage implements IStorage {
     });
   }
 
+  async getBrochuresByLanguage(language: string): Promise<Brochure[]> {
+    return this.brochuresData
+      .filter(brochure => brochure.language === language && brochure.active)
+      .sort((a, b) => {
+        if (a.sortOrder !== b.sortOrder) {
+          return (a.sortOrder || 0) - (b.sortOrder || 0);
+        }
+        const aTime = a.createdAt?.getTime() || 0;
+        const bTime = b.createdAt?.getTime() || 0;
+        return bTime - aTime;
+      });
+  }
+
+  async getBrochuresByCategory(category: string): Promise<Brochure[]> {
+    return this.brochuresData
+      .filter(brochure => brochure.category === category && brochure.active)
+      .sort((a, b) => {
+        if (a.sortOrder !== b.sortOrder) {
+          return (a.sortOrder || 0) - (b.sortOrder || 0);
+        }
+        const aTime = a.createdAt?.getTime() || 0;
+        const bTime = b.createdAt?.getTime() || 0;
+        return bTime - aTime;
+      });
+  }
+
+  async getBrochuresByLanguageAndCategory(language: string, category: string): Promise<Brochure[]> {
+    return this.brochuresData
+      .filter(brochure => 
+        brochure.language === language && 
+        brochure.category === category && 
+        brochure.active
+      )
+      .sort((a, b) => {
+        if (a.sortOrder !== b.sortOrder) {
+          return (a.sortOrder || 0) - (b.sortOrder || 0);
+        }
+        const aTime = a.createdAt?.getTime() || 0;
+        const bTime = b.createdAt?.getTime() || 0;
+        return bTime - aTime;
+      });
+  }
+
+  async getBrochuresByTranslationGroup(translationGroup: string): Promise<Brochure[]> {
+    return this.brochuresData
+      .filter(brochure => brochure.translationGroup === translationGroup)
+      .sort((a, b) => {
+        if (a.language !== b.language) {
+          return a.language.localeCompare(b.language);
+        }
+        const aTime = a.createdAt?.getTime() || 0;
+        const bTime = b.createdAt?.getTime() || 0;
+        return bTime - aTime;
+      });
+  }
+
+  async getActiveBrochures(): Promise<Brochure[]> {
+    return this.brochuresData
+      .filter(brochure => brochure.active)
+      .sort((a, b) => {
+        if (a.sortOrder !== b.sortOrder) {
+          return (a.sortOrder || 0) - (b.sortOrder || 0);
+        }
+        const aTime = a.createdAt?.getTime() || 0;
+        const bTime = b.createdAt?.getTime() || 0;
+        return bTime - aTime;
+      });
+  }
+
   async getBrochureById(id: string): Promise<Brochure | undefined> {
     return this.brochuresData.find(brochure => brochure.id === id);
   }
@@ -1277,7 +1410,8 @@ export class MemStorage implements IStorage {
     
     this.brochuresData[index] = {
       ...this.brochuresData[index],
-      ...brochure
+      ...brochure,
+      updatedAt: new Date()
     };
     return this.brochuresData[index];
   }
@@ -1343,8 +1477,54 @@ export class MemStorage implements IStorage {
       this.brochureCategoriesData.splice(index, 1);
     }
   }
+  
+  // Project methods
+  async getAllProjects(): Promise<Project[]> {
+    return this.projectsData.sort((a, b) => {
+      const aTime = a.createdAt?.getTime() || 0;
+      const bTime = b.createdAt?.getTime() || 0;
+      return bTime - aTime;
+    });
+  }
 
+  async getProject(id: number): Promise<Project | undefined> {
+    return this.projectsData.find(project => project.id === id);
+  }
 
+  async createProject(project: InsertProject): Promise<Project> {
+    const newProject: Project = {
+      ...project,
+      id: this.projectsData.length + 1,
+      description: project.description ?? null,
+      imageUrl: project.imageUrl ?? null,
+      pdfUrl: project.pdfUrl ?? null,
+      status: project.status ?? null,
+      sortOrder: project.sortOrder ?? 0,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.projectsData.push(newProject);
+    return newProject;
+  }
+
+  async updateProject(id: number, project: Partial<InsertProject>): Promise<Project> {
+    const index = this.projectsData.findIndex(p => p.id === id);
+    if (index === -1) throw new Error('Project not found');
+    
+    this.projectsData[index] = {
+      ...this.projectsData[index],
+      ...project,
+      updatedAt: new Date()
+    };
+    return this.projectsData[index];
+  }
+
+  async deleteProject(id: number): Promise<void> {
+    const index = this.projectsData.findIndex(p => p.id === id);
+    if (index !== -1) {
+      this.projectsData.splice(index, 1);
+    }
+  }
   
   // Team methods
   async getAllTeams(): Promise<Team[]> {
@@ -1666,58 +1846,6 @@ export class MemStorage implements IStorage {
 
   async deleteBrevoConfig(id: number): Promise<void> {
     this.brevoConfigData = null;
-  }
-
-  // Project methods - in-memory storage for development
-  async getAllProjects(): Promise<Project[]> {
-    return this.projectsData.sort((a, b) => {
-      const aTime = a.createdAt?.getTime() || 0;
-      const bTime = b.createdAt?.getTime() || 0;
-      return bTime - aTime;
-    });
-  }
-
-  async getProject(id: number): Promise<Project | undefined> {
-    return this.projectsData.find(project => project.id === id);
-  }
-
-  async createProject(project: InsertProject): Promise<Project> {
-    const newProject: Project = {
-      ...project,
-      id: this.projectsData.length + 1,
-      description: project.description ?? null,
-      imageUrl: project.imageUrl ?? null,
-      pdfUrl: project.pdfUrl ?? null,
-      status: project.status ?? null,
-      sortOrder: project.sortOrder ?? 0,
-      translations: (project as any).translations || {},
-      defaultLanguage: (project as any).defaultLanguage || "en",
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.projectsData.push(newProject);
-    return newProject;
-  }
-
-  async updateProject(id: number, project: Partial<InsertProject>): Promise<Project> {
-    const index = this.projectsData.findIndex(p => p.id === id);
-    if (index === -1) throw new Error('Project not found');
-    
-    this.projectsData[index] = {
-      ...this.projectsData[index],
-      ...project,
-      translations: (project as any).translations || this.projectsData[index].translations || {},
-      defaultLanguage: (project as any).defaultLanguage || this.projectsData[index].defaultLanguage || "en",
-      updatedAt: new Date()
-    };
-    return this.projectsData[index];
-  }
-
-  async deleteProject(id: number): Promise<void> {
-    const index = this.projectsData.findIndex(p => p.id === id);
-    if (index !== -1) {
-      this.projectsData.splice(index, 1);
-    }
   }
 }
 

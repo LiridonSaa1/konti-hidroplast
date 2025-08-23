@@ -1,10 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
-import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
+import {
+  Download,
+  Shield,
+  Award,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  ArrowRight,
+} from "lucide-react";
 
 // Product categories data
 const productCategories = [
