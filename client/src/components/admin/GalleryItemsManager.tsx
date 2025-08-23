@@ -137,20 +137,68 @@ export function GalleryItemsManager() {
   };
 
   const handleCreate = () => {
-    if (formData.categoryId === "") return;
+    // Validate categoryId is a valid number
+    if (formData.categoryId === "" || formData.categoryId === null || formData.categoryId === undefined) {
+      toast({
+        title: "Error",
+        description: "Please select a category",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    const categoryId = Number(formData.categoryId);
+    
+    // Validate categoryId is within reasonable bounds
+    if (isNaN(categoryId) || categoryId <= 0 || categoryId > 999999) {
+      toast({
+        title: "Error",
+        description: "Invalid category ID",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    console.log("Creating gallery item with categoryId:", categoryId);
+    
     createMutation.mutate({
       ...formData,
-      categoryId: Number(formData.categoryId)
+      categoryId: categoryId
     });
   };
 
   const handleUpdate = () => {
-    if (!selectedItem || formData.categoryId === "") return;
+    if (!selectedItem) return;
+    
+    // Validate categoryId is a valid number
+    if (formData.categoryId === "" || formData.categoryId === null || formData.categoryId === undefined) {
+      toast({
+        title: "Error",
+        description: "Please select a category",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    const categoryId = Number(formData.categoryId);
+    
+    // Validate categoryId is within reasonable bounds
+    if (isNaN(categoryId) || categoryId <= 0 || categoryId > 999999) {
+      toast({
+        title: "Error",
+        description: "Invalid category ID",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    console.log("Updating gallery item with categoryId:", categoryId);
+    
     updateMutation.mutate({ 
       id: selectedItem.id, 
       data: {
         ...formData,
-        categoryId: Number(formData.categoryId)
+        categoryId: categoryId
       }
     });
   };
@@ -253,7 +301,12 @@ export function GalleryItemsManager() {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="create-category">Category</Label>
-                <Select value={formData.categoryId.toString()} onValueChange={(value) => setFormData({ ...formData, categoryId: parseInt(value) })}>
+                <Select value={formData.categoryId.toString()} onValueChange={(value) => {
+                  const categoryId = parseInt(value);
+                  if (!isNaN(categoryId) && categoryId > 0) {
+                    setFormData({ ...formData, categoryId: categoryId });
+                  }
+                }}>
                   <SelectTrigger data-testid="select-create-category">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
@@ -272,9 +325,7 @@ export function GalleryItemsManager() {
                   label="Gallery Image"
                   value={formData.imageUrl}
                   onChange={(url) => setFormData({ ...formData, imageUrl: url })}
-                  type="image"
                   placeholder="Enter image URL or upload file"
-                  testId="input-create-image"
                 />
                 {formData.imageUrl && (
                   <div className="mt-2">
@@ -478,7 +529,12 @@ export function GalleryItemsManager() {
           <div className="space-y-4">
             <div>
               <Label htmlFor="edit-category">Category</Label>
-              <Select value={formData.categoryId.toString()} onValueChange={(value) => setFormData({ ...formData, categoryId: parseInt(value) })}>
+              <Select value={formData.categoryId.toString()} onValueChange={(value) => {
+                const categoryId = parseInt(value);
+                if (!isNaN(categoryId) && categoryId > 0) {
+                  setFormData({ ...formData, categoryId: categoryId });
+                }
+              }}>
                 <SelectTrigger data-testid="select-edit-category">
                   <SelectValue />
                 </SelectTrigger>
@@ -497,9 +553,7 @@ export function GalleryItemsManager() {
                 label="Gallery Image"
                 value={formData.imageUrl}
                 onChange={(url) => setFormData({ ...formData, imageUrl: url })}
-                type="image"
                 placeholder="Enter image URL or upload file"
-                testId="input-edit-image"
               />
               {formData.imageUrl && (
                 <div className="mt-2">

@@ -356,36 +356,12 @@ export default function KontiKanDrainagePage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                {t("drainage.contactTitle")}
+                {t("aboutUs.getInTouchTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              {t("drainage.contactDescriptionCableProtection")}
-            </p>
-            <a
-              href="/contact"
-              className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
-              data-testid="contact-button"
-            >
-              {t("drainage.contactUs")}
-            </a>
-          </div>
-        </div>
-      </section>
-      {/* Contact Section */}
-      <section className="py-20 bg-[#ffffff]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center mb-8">
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                {t("drainage.contactTitle")}
-              </h2>
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-            </div>
-            <p className="text-xl text-gray-600 mb-8">
-              {t("drainage.contactDescriptionDrainage")}
+              {t("productPages.needMoreInfo")} products and {t("productPages.solutions")}? {t("productPages.contactExperts")}.
             </p>
             <Button
               onClick={() => {
@@ -397,7 +373,7 @@ export default function KontiKanDrainagePage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              {t("drainage.contactUs")}
+              {t("aboutUs.contactUsButton")}
             </Button>
           </div>
         </div>

@@ -50,6 +50,7 @@ export function EnhancedBrochuresManager() {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isTranslationDialogOpen, setIsTranslationDialogOpen] = useState(false);
   const [selectedBrochure, setSelectedBrochure] = useState<Brochure | null>(null);
+  const [relatedBrochures, setRelatedBrochures] = useState<Brochure[]>([]);
   const [formData, setFormData] = useState<BrochureFormData>({
     name: "",
     category: "",
@@ -180,64 +181,68 @@ export function EnhancedBrochuresManager() {
     });
   };
 
-  const handleEdit = (brochure: Brochure) => {
-         console.log('Opening edit dialog for brochure:', brochure);
-     console.log('Brochure translations:', (brochure as any).translations);
+  const handleEdit = async (brochure: Brochure) => {
     
-         // Create proper translations object with the brochure name
-     const translations = {
-       en: { name: brochure.name },
-       mk: {},
-       de: {},
-       ...(brochure as any).translations
-     };
-     
-     // Ensure we preserve any existing translations and merge them properly
-     if ((brochure as any).translations) {
-       Object.keys((brochure as any).translations).forEach(lang => {
-         if (lang === 'en' || lang === 'mk' || lang === 'de') {
-           translations[lang] = {
-             ...translations[lang],
-             ...(brochure as any).translations[lang]
-           };
-         }
-       });
+     // Fetch all related brochures from the same translation group
+     let fetchedRelatedBrochures: Brochure[] = [];
+     if ((brochure as any).translationGroup) {
+       try {
+         const response = await apiRequest(`/api/admin/brochures/group/${(brochure as any).translationGroup}`, "GET");
+         fetchedRelatedBrochures = await response.json();
+       } catch (error) {
+         console.error('Failed to fetch related brochures:', error);
+       }
      }
      
-     console.log('Final translations object:', translations);
+     // Store related brochures in state for use in handleSubmit
+     setRelatedBrochures(fetchedRelatedBrochures);
     
-        const newFormData = {
-      name: brochure.name,
-      category: brochure.category,
-      status: brochure.status,
-      active: brochure.active ?? true,
-      sortOrder: brochure.sortOrder || 0,
-      entries: [{
-        id: "1",
-        pdfFile: null,
-        pdfUrl: brochure.pdfUrl || "",
-        imageFile: null,
-        imageUrl: brochure.imageUrl || "",
-        language: brochure.language || "en",
-        languageName: brochure.language === "mk" ? "Macedonian" : brochure.language === "de" ? "German" : "English"
-      }],
-      translations
-    };
+     // Create translations object from related brochures
+     const translations = {
+       en: { name: '' },
+       mk: { name: '' },
+       de: { name: '' }
+     };
+     
+     // Set the current brochure's name in its language
+     translations[brochure.language as keyof typeof translations] = { name: brochure.name };
+     
+     // Set names from related brochures
+     fetchedRelatedBrochures.forEach(relatedBrochure => {
+       if (relatedBrochure.language === 'en' || relatedBrochure.language === 'mk' || relatedBrochure.language === 'de') {
+         translations[relatedBrochure.language as keyof typeof translations] = { name: relatedBrochure.name };
+       }
+     });
+     
+     // Get the name for the current language being edited
+     const currentLanguageName = translations[brochure.language as keyof typeof translations]?.name || brochure.name;
+     
+     console.log('Brochure language:', brochure.language);
+     console.log('Translations object:', translations);
+     console.log('Current language name:', currentLanguageName);
     
-    console.log('Setting form data with language:', newFormData.entries[0].language);
+     const newFormData = {
+       name: currentLanguageName,
+       category: brochure.category,
+       status: brochure.status,
+       active: brochure.active ?? true,
+       sortOrder: brochure.sortOrder || 0,
+       entries: [{
+         id: "1",
+         pdfFile: null,
+         pdfUrl: brochure.pdfUrl || "",
+         imageFile: null,
+         imageUrl: brochure.imageUrl || "",
+         language: brochure.language || "en",
+         languageName: brochure.language === "mk" ? "Macedonian" : brochure.language === "de" ? "German" : "English"
+       }],
+       translations
+     };
+    
     setFormData(newFormData);
     
     setSelectedBrochure(brochure);
     setIsEditDialogOpen(true);
-    console.log('Edit dialog state set to true');
-    console.log('Form data set to:', {
-      name: brochure.name,
-      category: brochure.category,
-      status: brochure.status,
-      translations
-    });
-    console.log('Default language for TranslatableFieldEditor:', brochure.language || "en");
-    console.log('Form data entries after setFormData:', newFormData.entries);
   };
 
   const addEntry = () => {
@@ -382,9 +387,12 @@ export function EnhancedBrochuresManager() {
         }
       }
 
+      // Get the name for the current language being edited
+      const currentLanguageName = formData.translations[primaryEntry?.language || "en"]?.name || enName;
+      
       const submissionData = {
-        title: enName,
-        name: enName,
+        title: currentLanguageName,
+        name: currentLanguageName,
         category: formData.category,
         language: (primaryEntry?.language || "en") as "en" | "mk" | "de",
         pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
@@ -395,12 +403,56 @@ export function EnhancedBrochuresManager() {
         translations: formData.translations
       };
 
-      updateMutation.mutate({ id: selectedBrochure.id, data: submissionData });
+      // Update the current brochure
+      await updateMutation.mutateAsync({ id: selectedBrochure.id, data: submissionData });
+      
+      // Handle translations for other languages
+      const currentLanguage = primaryEntry?.language || "en";
+      const otherLanguages = ['en', 'mk', 'de'].filter(lang => lang !== currentLanguage);
+      
+             for (const lang of otherLanguages) {
+         const translationName = formData.translations[lang as keyof typeof formData.translations]?.name;
+         if (translationName && translationName.trim() !== '') {
+           // Check if a brochure for this language already exists in the same group
+           const existingBrochure = relatedBrochures.find(b => b.language === lang);
+          
+          if (existingBrochure) {
+            // Update existing brochure
+            await updateMutation.mutateAsync({
+              id: existingBrochure.id,
+              data: {
+                name: translationName,
+                title: translationName,
+                category: formData.category,
+                status: formData.status as "active" | "inactive" | "draft",
+                active: formData.active,
+                sortOrder: formData.sortOrder
+              }
+            });
+          } else {
+            // Create new brochure for this language
+            await createMutation.mutateAsync({
+              title: translationName,
+              name: translationName,
+              category: formData.category,
+              language: lang as "en" | "mk" | "de",
+              pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
+              imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
+              status: formData.status as "active" | "inactive" | "draft",
+              active: formData.active,
+              sortOrder: formData.sortOrder,
+              translationGroup: (selectedBrochure as any).translationGroup || selectedBrochure.id
+            });
+          }
+        }
+      }
+      
       return;
     }
 
     // For creating new brochures, handle multiple language entries
     try {
+      console.log('Creating new brochures with translations:', formData.translations);
       const translationGroupId = Date.now().toString(); // Generate a unique group ID
       const processedEntries = [];
 
@@ -445,10 +497,20 @@ export function EnhancedBrochuresManager() {
           imageUrl = uploadResult.url;
         }
 
+        // Get the appropriate name for this language
+        const languageName = formData.translations[entry.language as keyof typeof formData.translations]?.name || enName;
+        
+        console.log(`Creating brochure for language ${entry.language}:`, {
+          language: entry.language,
+          translationName: formData.translations[entry.language as keyof typeof formData.translations]?.name,
+          fallbackName: enName,
+          finalName: languageName
+        });
+        
         // Prepare the data for this language entry
         processedEntries.push({
-          title: enName,
-          name: enName,
+          title: languageName,
+          name: languageName,
           category: formData.category,
           language: entry.language as "en" | "mk" | "de",
           pdfUrl,
@@ -864,11 +926,11 @@ function BrochureFormDialog({
            originalValue={formData.name || ""}
            defaultLanguage={formData.entries[0]?.language || "en"}
            onChange={(translations) => {
-             console.log('Name translations changed:', translations);
+             console.log('Translations changed:', translations);
+             // Update the translations
              setFormData({ 
                ...formData, 
-               translations,
-               name: translations.en?.name || formData.name
+               translations
              });
            }}
          />

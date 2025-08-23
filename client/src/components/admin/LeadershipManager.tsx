@@ -12,13 +12,30 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { insertCompanyInfoSchema, type CompanyInfo, type InsertCompanyInfo, type Position } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
+import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function LeadershipManager() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [translations, setTranslations] = useState<{
+    en?: Record<string, string>;
+    mk?: Record<string, string>;
+    de?: Record<string, string>;
+  }>({});
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { user, isAuthenticated } = useAuth();
+
+  // Debug authentication state
+  useEffect(() => {
+    console.log("=== Authentication Debug ===");
+    console.log("User:", user);
+    console.log("Is Authenticated:", isAuthenticated);
+    console.log("Auth Token:", localStorage.getItem('authToken'));
+    console.log("========================");
+  }, [user, isAuthenticated]);
 
   const form = useForm<InsertCompanyInfo>({
     resolver: zodResolver(insertCompanyInfoSchema),
@@ -37,9 +54,13 @@ export function LeadershipManager() {
   });
 
   // Fetch leadership data
-  const { data: leadershipData, isLoading, refetch } = useQuery({
+  const { data: leadershipData, isLoading, refetch, error: leadershipError } = useQuery({
     queryKey: ["/api/admin/company-info", "leadership_message"],
     queryFn: async () => {
+      console.log("=== Fetching Leadership Data ===");
+      const token = localStorage.getItem('authToken');
+      console.log("Token for leadership fetch:", token);
+      
       try {
         const result = await apiRequest("/api/admin/company-info/leadership_message", "GET");
         console.log("Fetched leadership data:", result);
@@ -76,9 +97,18 @@ export function LeadershipManager() {
 
   const updateLeadershipMutation = useMutation({
     mutationFn: async (data: InsertCompanyInfo) => {
-      return await apiRequest("/api/admin/company-info", "POST", data);
+      console.log("=== updateLeadershipMutation.mutationFn called ===");
+      console.log("Data being sent to API:", data);
+      console.log("Current auth token:", localStorage.getItem('authToken'));
+      console.log("User authenticated:", isAuthenticated);
+      console.log("User:", user);
+      
+      const result = await apiRequest("/api/admin/company-info", "POST", data);
+      console.log("API response:", result);
+      return result;
     },
     onSuccess: async (result) => {
+      console.log("=== updateLeadershipMutation.onSuccess called ===");
       console.log("Leadership message save successful:", result);
       
       // Clear all related cache first
@@ -91,6 +121,7 @@ export function LeadershipManager() {
       setIsFormOpen(false);
       setSelectedImage(null);
       setImagePreview(null);
+      setTranslations({});
       
       toast({
         title: "Success",
@@ -98,6 +129,7 @@ export function LeadershipManager() {
       });
     },
     onError: (error) => {
+      console.error("=== updateLeadershipMutation.onError called ===");
       console.error("Leadership message save failed:", error);
       toast({
         title: "Error",
@@ -132,6 +164,10 @@ export function LeadershipManager() {
   };
 
   const handleSubmit = async (data: InsertCompanyInfo) => {
+    console.log("=== handleSubmit called ===");
+    console.log("Received data:", data);
+    console.log("Current translations state:", translations);
+    
     try {
       console.log("Leadership form submission started with data:", data);
       let imageUrl = "";
@@ -144,6 +180,7 @@ export function LeadershipManager() {
         imageUrl = currentData.leaderImage || "";
       }
 
+      // Parse the current data and update with new image
       const leadershipContent = JSON.parse(data.value);
       leadershipContent.leaderImage = imageUrl;
 
@@ -172,6 +209,34 @@ export function LeadershipManager() {
     
     if (leadershipData && typeof leadershipData === 'object' && 'value' in leadershipData) {
       const currentData = JSON.parse(leadershipData.value);
+      
+      console.log("handleEdit - current data:", currentData);
+      
+      // Initialize translations from the leadership data
+      const leadershipTranslations = {
+        en: { 
+          title: currentData.title || "",
+          description1: currentData.description1 || "",
+          description2: currentData.description2 || "",
+          leaderName: currentData.leaderName || ""
+        },
+        mk: { 
+          title: currentData.translations?.mk?.title || "",
+          description1: currentData.translations?.mk?.description1 || "",
+          description2: currentData.translations?.mk?.description2 || "",
+          leaderName: currentData.translations?.mk?.leaderName || ""
+        },
+        de: { 
+          title: currentData.translations?.de?.title || "",
+          description1: currentData.translations?.de?.description1 || "",
+          description2: currentData.translations?.de?.description2 || "",
+          leaderName: currentData.translations?.de?.leaderName || ""
+        }
+      };
+      
+      console.log("handleEdit - initialized translations:", leadershipTranslations);
+      setTranslations(leadershipTranslations);
+      
       form.reset({
         key: "leadership_message",
         category: "branding",
@@ -219,6 +284,69 @@ export function LeadershipManager() {
     return () => window.removeEventListener('focus', handleFocus);
   }, [refetch]);
 
+  // Debug translations state changes
+  useEffect(() => {
+    console.log("Translations state changed:", translations);
+  }, [translations]);
+
+  // Sync form data with translations changes
+  useEffect(() => {
+    if (Object.keys(translations).length > 0 && isFormOpen) {
+      const currentFormValue = form.getValues("value");
+      if (currentFormValue) {
+        try {
+          const currentContent = JSON.parse(currentFormValue);
+          const updatedContent = {
+            ...currentContent,
+            title: translations.en?.title || currentContent.title || "",
+            description1: translations.en?.description1 || currentContent.description1 || "",
+            description2: translations.en?.description2 || currentContent.description2 || "",
+            leaderName: translations.en?.leaderName || currentContent.leaderName || ""
+          };
+          
+          console.log("Syncing form data with translations:", updatedContent);
+          form.setValue("value", JSON.stringify(updatedContent));
+        } catch (error) {
+          console.error("Error syncing form data with translations:", error);
+        }
+      }
+    }
+  }, [translations, isFormOpen, form]);
+
+  // Initialize translations when component first loads
+  useEffect(() => {
+    if (leadershipData && typeof leadershipData === 'object' && 'value' in leadershipData && !isFormOpen) {
+      const currentData = JSON.parse(leadershipData.value);
+      
+      // Only initialize if translations are empty
+      if (Object.keys(translations).length === 0) {
+        const initialTranslations = {
+          en: { 
+            title: currentData.title || "",
+            description1: currentData.description1 || "",
+            description2: currentData.description2 || "",
+            leaderName: currentData.leaderName || ""
+          },
+          mk: { 
+            title: currentData.translations?.mk?.title || "",
+            description1: currentData.translations?.mk?.description1 || "",
+            description2: currentData.translations?.mk?.description2 || "",
+            leaderName: currentData.translations?.mk?.leaderName || ""
+          },
+          de: { 
+            title: currentData.translations?.de?.title || "",
+            description1: currentData.translations?.de?.description1 || "",
+            description2: currentData.translations?.de?.description2 || "",
+            leaderName: currentData.translations?.de?.leaderName || ""
+          }
+        };
+        
+        console.log("Initializing translations on component load:", initialTranslations);
+        setTranslations(initialTranslations);
+      }
+    }
+  }, [leadershipData, isFormOpen, translations]);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -242,6 +370,126 @@ export function LeadershipManager() {
 
   return (
     <div className="space-y-6">
+      {/* Authentication Status Debug */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-lg font-semibold text-blue-900">Authentication Status</h3>
+            <p className="text-blue-700">
+              User: {user?.username || 'Not logged in'} | 
+              Authenticated: {isAuthenticated ? 'Yes' : 'No'} | 
+              Token: {localStorage.getItem('authToken') ? 'Present' : 'Missing'}
+            </p>
+            {leadershipError && (
+              <p className="text-red-600 mt-2">
+                <strong>Leadership Data Error:</strong> {leadershipError.message}
+              </p>
+            )}
+          </div>
+          <div className="flex gap-2">
+            {!isAuthenticated && (
+              <div className="text-red-600 font-semibold">
+                ⚠️ Authentication Required
+              </div>
+            )}
+            <Button 
+              size="sm" 
+              variant="outline" 
+              onClick={async () => {
+                console.log("=== Testing Authentication ===");
+                const token = localStorage.getItem('authToken');
+                console.log("Token from localStorage:", token);
+                
+                try {
+                  const response = await fetch('/api/auth/me', {
+                    headers: {
+                      'Authorization': `Bearer ${token}`,
+                      'Content-Type': 'application/json'
+                    }
+                  });
+                  console.log("Auth test response status:", response.status);
+                  const data = await response.json();
+                  console.log("Auth test response data:", data);
+                } catch (error) {
+                  console.error("Auth test error:", error);
+                }
+              }}
+            >
+              Test Auth
+            </Button>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              onClick={async () => {
+                console.log("=== Testing Company Info API ===");
+                const token = localStorage.getItem('authToken');
+                console.log("Token for company-info test:", token);
+                
+                try {
+                  const response = await fetch('/api/admin/company-info', {
+                    method: 'GET',
+                    headers: {
+                      'Authorization': `Bearer ${token}`,
+                      'Content-Type': 'application/json'
+                    }
+                  });
+                  console.log("Company-info test response status:", response.status);
+                  const data = await response.json();
+                  console.log("Company-info test response data:", data);
+                } catch (error) {
+                  console.error("Company-info test error:", error);
+                }
+              }}
+            >
+              Test API
+            </Button>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              onClick={async () => {
+                console.log("=== Testing Simple Form Submission ===");
+                const token = localStorage.getItem('authToken');
+                console.log("Token for simple submission test:", token);
+                
+                const testData = {
+                  key: "leadership_message",
+                  category: "branding",
+                  value: JSON.stringify({
+                    title: "Test Title",
+                    description1: "Test Description 1",
+                    description2: "Test Description 2",
+                    leaderName: "Test Leader",
+                    leaderPosition: "Test Position",
+                    leaderImage: "",
+                    translations: {}
+                  })
+                };
+                
+                console.log("Test data to submit:", testData);
+                
+                try {
+                  const response = await fetch('/api/admin/company-info', {
+                    method: 'POST',
+                    headers: {
+                      'Authorization': `Bearer ${token}`,
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(testData)
+                  });
+                  console.log("Simple submission test response status:", response.status);
+                  const data = await response.json();
+                  console.log("Simple submission test response data:", data);
+                } catch (error) {
+                  console.error("Simple submission test error:", error);
+                }
+              }}
+            >
+              Test Submit
+            </Button>
+          </div>
+        </div>
+      </div>
+
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-slate-900" data-testid="leadership-title">Leadership Management</h2>
@@ -255,7 +503,7 @@ export function LeadershipManager() {
               Edit Leadership Message
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[700px]" data-testid="leadership-form-dialog">
+          <DialogContent className="sm:max-w-[800px]" data-testid="leadership-form-dialog">
             <DialogHeader>
               <DialogTitle data-testid="form-title">Edit Leadership Message</DialogTitle>
               <DialogDescription>
@@ -265,11 +513,50 @@ export function LeadershipManager() {
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit((data) => {
-                const content = JSON.parse(data.value);
+                console.log("=== FORM onSubmit triggered ===");
+                console.log("Form data received:", data);
+                console.log("Form errors:", form.formState.errors);
+                console.log("Form is valid:", form.formState.isValid);
+                console.log("Form is dirty:", form.formState.isDirty);
+                
+                // Check if user is authenticated
+                if (!isAuthenticated) {
+                  console.error("User is not authenticated!");
+                  toast({
+                    title: "Authentication Error",
+                    description: "Please log in again to continue",
+                    variant: "destructive",
+                  });
+                  return;
+                }
+                
+                // Get the current form data for position and image
+                const currentContent = JSON.parse(data.value);
+                
+                console.log("Form submission - translations state:", translations);
+                console.log("Form submission - current content:", currentContent);
+                
+                // Use translations if available, otherwise fallback to current content
+                const title = translations.en?.title || currentContent.title || "";
+                const description1 = translations.en?.description1 || currentContent.description1 || "";
+                const description2 = translations.en?.description2 || currentContent.description2 || "";
+                const leaderName = translations.en?.leaderName || currentContent.leaderName || "";
+                
+                console.log("Final values to save:", { title, description1, description2, leaderName });
+                
+                // Use the translations state directly instead of parsing data.value
                 handleSubmit({
                   key: "leadership_message",
                   category: "branding",
-                  value: JSON.stringify(content)
+                  value: JSON.stringify({
+                    title: title,
+                    description1: description1,
+                    description2: description2,
+                    leaderName: leaderName,
+                    leaderPosition: currentContent.leaderPosition || "",
+                    leaderImage: currentContent.leaderImage || "",
+                    translations: translations
+                  })
                 });
               })} className="space-y-4">
                 <FormField
@@ -279,71 +566,49 @@ export function LeadershipManager() {
                     const content = JSON.parse(field.value);
                     return (
                       <div className="space-y-4">
-                        <FormItem>
-                          <FormLabel>Title</FormLabel>
-                          <FormControl>
-                            <Input 
-                              value={content.title}
-                              onChange={(e) => {
-                                const updatedContent = { ...content, title: e.target.value };
-                                field.onChange(JSON.stringify(updatedContent));
-                              }}
-                              placeholder="Enter leadership title"
-                              data-testid="input-leadership-title"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+                        {/* Multi-language Title Field */}
+                        <TranslatableFieldEditor
+                          label="Title"
+                          fieldName="title"
+                          type="text"
+                          currentTranslations={translations}
+                          originalValue={translations.en?.title || ""}
+                          defaultLanguage="en"
+                          onChange={setTranslations}
+                        />
 
-                        <FormItem>
-                          <FormLabel>Description 1</FormLabel>
-                          <FormControl>
-                            <Textarea 
-                              value={content.description1}
-                              onChange={(e) => {
-                                const updatedContent = { ...content, description1: e.target.value };
-                                field.onChange(JSON.stringify(updatedContent));
-                              }}
-                              placeholder="Enter first description paragraph"
-                              rows={4}
-                              data-testid="input-leadership-description1"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+                        {/* Multi-language Description 1 Field */}
+                        <TranslatableFieldEditor
+                          label="Description 1"
+                          fieldName="description1"
+                          type="textarea"
+                          currentTranslations={translations}
+                          originalValue={translations.en?.description1 || ""}
+                          defaultLanguage="en"
+                          onChange={setTranslations}
+                        />
 
-                        <FormItem>
-                          <FormLabel>Description 2</FormLabel>
-                          <FormControl>
-                            <Textarea 
-                              value={content.description2}
-                              onChange={(e) => {
-                                const updatedContent = { ...content, description2: e.target.value };
-                                field.onChange(JSON.stringify(updatedContent));
-                              }}
-                              placeholder="Enter second description paragraph"
-                              rows={2}
-                              data-testid="input-leadership-description2"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+                        {/* Multi-language Description 2 Field */}
+                        <TranslatableFieldEditor
+                          label="Description 2"
+                          fieldName="description2"
+                          type="textarea"
+                          currentTranslations={translations}
+                          originalValue={translations.en?.description2 || ""}
+                          defaultLanguage="en"
+                          onChange={setTranslations}
+                        />
 
-                        <FormItem>
-                          <FormLabel>Leader Name</FormLabel>
-                          <FormControl>
-                            <Input 
-                              value={content.leaderName}
-                              onChange={(e) => {
-                                const updatedContent = { ...content, leaderName: e.target.value };
-                                field.onChange(JSON.stringify(updatedContent));
-                              }}
-                              placeholder="Enter leader name"
-                              data-testid="input-leader-name"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+                        {/* Multi-language Leader Name Field */}
+                        <TranslatableFieldEditor
+                          label="Leader Name"
+                          fieldName="leaderName"
+                          type="text"
+                          currentTranslations={translations}
+                          originalValue={translations.en?.leaderName || ""}
+                          defaultLanguage="en"
+                          onChange={setTranslations}
+                        />
 
                         <FormItem>
                           <FormLabel>Leader Position</FormLabel>
@@ -424,7 +689,7 @@ export function LeadershipManager() {
       </div>
 
       {/* Leadership Message Display */}
-      <div key={leadershipData?.id || 'default'} className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="leadership-display">
+      <div key={leadershipData && typeof leadershipData === 'object' && 'id' in leadershipData ? leadershipData.id : 'default'} className="bg-white rounded-lg border border-gray-200 overflow-hidden" data-testid="leadership-display">
         <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
           <div className="flex items-center justify-between">
             <div>

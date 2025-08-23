@@ -264,14 +264,14 @@ function BrochuresPage() {
               key={category.id}
               className={`${activeTab === category.id ? "block" : "hidden"} transition-all duration-500`}
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {category.brochures.map((brochure, index) => (
                   <div
                     key={index}
                     className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100"
                     data-testid={`brochure-${category.id}-${index}`}
                   >
-                    <div className="aspect-[3/4] bg-gray-100">
+                    <div className="aspect-[1/4] bg-gray-100">
                       <img
                         src={brochure.image}
                         alt={brochure.title}

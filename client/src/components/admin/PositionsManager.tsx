@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Trash2, Edit, Plus, Briefcase, Building, Star } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -16,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { insertPositionSchema, type Position, type InsertPosition } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
+import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
 
 const STATUS_OPTIONS = [
   { value: "active", label: "Active", color: "bg-green-100 text-green-800" },
@@ -27,6 +27,11 @@ const STATUS_OPTIONS = [
 export function PositionsManager() {
   const [editingPosition, setEditingPosition] = useState<Position | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [translations, setTranslations] = useState<{
+    en?: Record<string, string>;
+    mk?: Record<string, string>;
+    de?: Record<string, string>;
+  }>({});
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -34,7 +39,6 @@ export function PositionsManager() {
     resolver: zodResolver(insertPositionSchema),
     defaultValues: {
       title: "",
-      description: "",
       active: true,
       status: "active",
     },
@@ -46,12 +50,26 @@ export function PositionsManager() {
 
   const createPositionMutation = useMutation({
     mutationFn: async (positionData: InsertPosition) => {
-      return await apiRequest("/api/admin/positions", "POST", positionData);
+      // Get the English title from translations or fallback to the main title
+      const englishTitle = translations.en?.title || positionData.title;
+      
+      const dataToSend = {
+        ...positionData,
+        title: englishTitle,
+        translations: {
+          en: { title: englishTitle },
+          mk: { title: translations.mk?.title || "" },
+          de: { title: translations.de?.title || "" }
+        }
+      };
+      
+      return await apiRequest("/api/admin/positions", "POST", dataToSend);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/positions"] });
       setIsFormOpen(false);
       form.reset();
+      setTranslations({});
       toast({
         title: "Success",
         description: "Position created successfully",
@@ -68,13 +86,27 @@ export function PositionsManager() {
 
   const updatePositionMutation = useMutation({
     mutationFn: async ({ id, positionData }: { id: number; positionData: Partial<InsertPosition> }) => {
-      return await apiRequest(`/api/admin/positions/${id}`, "PATCH", positionData);
+      // Get the English title from translations or fallback to the main title
+      const englishTitle = translations.en?.title || positionData.title;
+      
+      const dataToSend = {
+        ...positionData,
+        title: englishTitle,
+        translations: {
+          en: { title: englishTitle },
+          mk: { title: translations.mk?.title || "" },
+          de: { title: translations.de?.title || "" }
+        }
+      };
+      
+      return await apiRequest(`/api/admin/positions/${id}`, "PATCH", dataToSend);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/positions"] });
       setIsFormOpen(false);
       setEditingPosition(null);
       form.reset();
+      setTranslations({});
       toast({
         title: "Success",
         description: "Position updated successfully",
@@ -120,9 +152,18 @@ export function PositionsManager() {
   const handleEdit = (position: Position) => {
     setEditingPosition(position);
     const derivedStatus = position.active ? 'active' : 'inactive';
+    
+    // Initialize translations from the position data
+    const positionTranslations = {
+      en: { title: position.title || "" },
+      mk: { title: (position.translations as any)?.mk?.title || "" },
+      de: { title: (position.translations as any)?.de?.title || "" }
+    };
+    
+    setTranslations(positionTranslations);
+    
     form.reset({
-      title: position.title,
-      description: position.description || "",
+      title: position.title || "",
       active: position.active || true,
       status: derivedStatus,
     });
@@ -136,10 +177,10 @@ export function PositionsManager() {
   const resetForm = () => {
     form.reset({
       title: "",
-      description: "",
       active: true,
       status: "active",
     });
+    setTranslations({});
     setEditingPosition(null);
     setIsFormOpen(false);
   };
@@ -183,38 +224,15 @@ export function PositionsManager() {
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Position Title</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter position title" {...field} data-testid="input-position-title" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Enter position description" 
-                          {...field}
-                          value={field.value || ""}
-                          rows={3}
-                          data-testid="input-position-description"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                {/* Multi-language Position Title Field */}
+                <TranslatableFieldEditor
+                  label="Position Title"
+                  fieldName="title"
+                  type="text"
+                  currentTranslations={translations}
+                  originalValue={translations.en?.title || ""}
+                  defaultLanguage="en"
+                  onChange={setTranslations}
                 />
 
                 <FormField
@@ -278,7 +296,6 @@ export function PositionsManager() {
             <TableHeader>
               <TableRow className="bg-gray-50">
                 <TableHead className="text-gray-600 font-medium px-6 py-3">Title</TableHead>
-                <TableHead className="text-gray-600 font-medium px-6 py-3">Description</TableHead>
                 <TableHead className="text-gray-600 font-medium px-6 py-3">Status</TableHead>
                 <TableHead className="text-gray-600 font-medium px-6 py-3 text-right">Actions</TableHead>
               </TableRow>
@@ -286,7 +303,7 @@ export function PositionsManager() {
             <TableBody>
               {positions.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={4} className="px-6 py-8 text-center">
+                  <TableCell colSpan={3} className="px-6 py-8 text-center">
                     <div className="text-gray-500">No positions found</div>
                   </TableCell>
                 </TableRow>
@@ -295,13 +312,6 @@ export function PositionsManager() {
                   <TableRow key={position.id} data-testid={`position-row-${position.id}`} className="hover:bg-gray-50">
                     <TableCell className="px-6 py-4" data-testid={`position-title-${position.id}`}>
                       <div className="font-medium text-gray-900">{position.title}</div>
-                    </TableCell>
-                    <TableCell className="px-6 py-4" data-testid={`position-description-${position.id}`}>
-                      {position.description ? (
-                        <div className="text-gray-600">{position.description}</div>
-                      ) : (
-                        <div className="text-gray-400 italic">No description</div>
-                      )}
                     </TableCell>
                     <TableCell className="px-6 py-4" data-testid={`position-status-${position.id}`}>
                       <Badge className={getStatusBadgeColor(position.active)}>

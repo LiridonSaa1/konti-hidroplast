@@ -16,6 +16,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { FileUpload } from "@/components/ui/file-upload";
 import { insertTeamSchema, type Team, type InsertTeam, type Position } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
+import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
 
 const STATUS_OPTIONS = [
   { value: "active", label: "Active", color: "bg-green-100 text-green-800" },
@@ -27,6 +28,11 @@ const STATUS_OPTIONS = [
 export function TeamsManager() {
   const [editingTeam, setEditingTeam] = useState<Team | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [translations, setTranslations] = useState<{
+    en?: Record<string, string>;
+    mk?: Record<string, string>;
+    de?: Record<string, string>;
+  }>({});
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -53,12 +59,25 @@ export function TeamsManager() {
 
   const createTeamMutation = useMutation({
     mutationFn: async (teamData: InsertTeam) => {
-      return await apiRequest("/api/admin/teams", "POST", teamData);
+      // Get the English name and position from translations or fallback to the main fields
+      const englishName = translations.en?.name || teamData.name;
+      const englishPosition = translations.en?.position || teamData.position;
+      
+      // For now, store the English values in the main fields
+      // In the future, when translations are supported, this can be updated
+      const dataToSend = {
+        ...teamData,
+        name: englishName,
+        position: englishPosition,
+      };
+      
+      return await apiRequest("/api/admin/teams", "POST", dataToSend);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/teams"] });
       setIsFormOpen(false);
       form.reset();
+      setTranslations({});
       toast({
         title: "Success",
         description: "Team member added successfully",
@@ -75,13 +94,26 @@ export function TeamsManager() {
 
   const updateTeamMutation = useMutation({
     mutationFn: async ({ id, teamData }: { id: number; teamData: Partial<InsertTeam> }) => {
-      return await apiRequest(`/api/admin/teams/${id}`, "PATCH", teamData);
+      // Get the English name and position from translations or fallback to the main fields
+      const englishName = translations.en?.name || teamData.name;
+      const englishPosition = translations.en?.position || teamData.position;
+      
+      // For now, store the English values in the main fields
+      // In the future, when translations are supported, this can be updated
+      const dataToSend = {
+        ...teamData,
+        name: englishName,
+        position: englishPosition,
+      };
+      
+      return await apiRequest(`/api/admin/teams/${id}`, "PATCH", dataToSend);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/teams"] });
       setIsFormOpen(false);
       setEditingTeam(null);
       form.reset();
+      setTranslations({});
       toast({
         title: "Success",
         description: "Team member updated successfully",
@@ -127,9 +159,29 @@ export function TeamsManager() {
   const handleEdit = (team: Team) => {
     setEditingTeam(team);
     const derivedStatus = team.active ? 'active' : 'inactive';
+    
+    // Initialize translations from the team data
+    // For now, we'll use the main fields as English translations
+    const teamTranslations = {
+      en: { 
+        name: team.name || "",
+        position: team.position || ""
+      },
+      mk: { 
+        name: "", // Will be empty for existing teams
+        position: ""
+      },
+      de: { 
+        name: "", // Will be empty for existing teams
+        position: ""
+      }
+    };
+    
+    setTranslations(teamTranslations);
+    
     form.reset({
-      name: team.name,
-      position: team.position,
+      name: team.name || "",
+      position: team.position || "",
       email: team.email,
       imageUrl: team.imageUrl || "",
       active: team.active || true,
@@ -153,6 +205,7 @@ export function TeamsManager() {
       sortOrder: 0,
       status: "active",
     });
+    setTranslations({});
     setEditingTeam(null);
     setIsFormOpen(false);
   };
@@ -184,7 +237,7 @@ export function TeamsManager() {
               Add Team Member
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]" data-testid="team-form-dialog">
+          <DialogContent className="sm:max-w-[700px]" data-testid="team-form-dialog">
             <DialogHeader>
               <DialogTitle data-testid="form-title">
                 {editingTeam ? "Edit Team Member" : "Add New Team Member"}
@@ -196,20 +249,18 @@ export function TeamsManager() {
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Full Name</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter full name" {...field} data-testid="input-team-name" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                {/* Multi-language Name Field */}
+                <TranslatableFieldEditor
+                  label="Full Name"
+                  fieldName="name"
+                  type="text"
+                  currentTranslations={translations}
+                  originalValue={translations.en?.name || ""}
+                  defaultLanguage="en"
+                  onChange={setTranslations}
                 />
 
+                {/* Position Field - Select from existing positions */}
                 <FormField
                   control={form.control}
                   name="position"
@@ -272,7 +323,6 @@ export function TeamsManager() {
                           value={field.value || ""}
                           onChange={field.onChange}
                           placeholder="Upload profile photo or enter image URL"
-                          testId="input-team-image"
                         />
                       </FormControl>
                       <FormMessage />

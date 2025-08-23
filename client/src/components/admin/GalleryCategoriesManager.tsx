@@ -25,12 +25,18 @@ import {
   ArrowUp,
   ArrowDown,
 } from "lucide-react";
+import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
 
 interface CategoryFormData {
   title: string;
   imageUrl: string;
   status: string;
   sortOrder: number;
+  translations: {
+    en?: Record<string, string>;
+    mk?: Record<string, string>;
+    de?: Record<string, string>;
+  };
 }
 
 export function GalleryCategoriesManager() {
@@ -45,7 +51,12 @@ export function GalleryCategoriesManager() {
     title: "",
     imageUrl: "",
     status: "active",
-    sortOrder: 0
+    sortOrder: 0,
+    translations: {
+      en: {},
+      mk: {},
+      de: {}
+    }
   });
 
   const { toast } = useToast();
@@ -57,7 +68,13 @@ export function GalleryCategoriesManager() {
 
   const createMutation = useMutation({
     mutationFn: async (data: InsertGalleryCategory) => {
+      console.log("=== Creating Gallery Category ===");
+      console.log("Data received by mutationFn:", data);
+      console.log("Data type:", typeof data);
+      console.log("Data keys:", Object.keys(data));
+      
       const result = await apiRequest("/api/admin/gallery-categories", "POST", data);
+      console.log("API response:", result);
       return result.json();
     },
     onSuccess: () => {
@@ -69,8 +86,11 @@ export function GalleryCategoriesManager() {
         description: "Gallery category created successfully",
       });
     },
-    onError: (error) => {
-      console.error("Creation error:", error);
+    onError: (error: any) => {
+      console.error("=== Creation Error ===");
+      console.error("Error object:", error);
+      console.error("Error message:", error.message);
+      console.error("Error details:", error.details);
       toast({
         title: "Error",
         description: `Failed to create gallery category: ${error.message || 'Unknown error'}`,
@@ -81,7 +101,14 @@ export function GalleryCategoriesManager() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: number; data: Partial<InsertGalleryCategory> }) => {
+      console.log("=== Updating Gallery Category ===");
+      console.log("ID:", id);
+      console.log("Data received by mutationFn:", data);
+      console.log("Data type:", typeof data);
+      console.log("Data keys:", Object.keys(data));
+      
       const result = await apiRequest(`/api/admin/gallery-categories/${id}`, "PATCH", data);
+      console.log("API response:", result);
       return result.json();
     },
     onSuccess: () => {
@@ -94,7 +121,11 @@ export function GalleryCategoriesManager() {
         description: "Gallery category updated successfully",
       });
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error("=== Update Error ===");
+      console.error("Error object:", error);
+      console.error("Error message:", error.message);
+      console.error("Error details:", error.details);
       toast({
         title: "Error",
         description: "Failed to update gallery category",
@@ -124,33 +155,101 @@ export function GalleryCategoriesManager() {
   });
 
   const resetForm = () => {
-    setFormData({
+    console.log("=== Resetting Form ===");
+    console.log("Form data before reset:", formData);
+    
+    const cleanFormData = {
       title: "",
       imageUrl: "",
       status: "active",
-      sortOrder: 0
-    });
+      sortOrder: 0,
+      translations: {
+        en: {},
+        mk: {},
+        de: {}
+      }
+    };
+    
+    console.log("Clean form data:", cleanFormData);
+    setFormData(cleanFormData);
   };
 
   const handleCreate = () => {
-    createMutation.mutate(formData);
+    console.log("=== Form Data Before Processing ===");
+    console.log("Original formData:", formData);
+    
+    // Get the English title from translations or fallback to the main title
+    const englishTitle = formData.translations.en?.title || formData.title;
+    
+    // Validate sortOrder is within reasonable bounds
+    const sortOrder = Math.max(0, Math.min(formData.sortOrder, 999999));
+    
+    // Only send the fields that are expected by the InsertGalleryCategory schema
+    const dataToSend = {
+      title: englishTitle,
+      imageUrl: formData.imageUrl,
+      status: formData.status,
+      sortOrder: sortOrder,
+      translations: formData.translations,
+      defaultLanguage: "en"
+    };
+    
+    console.log("=== Data Being Sent ===");
+    console.log("Data being sent to create gallery category:", dataToSend);
+    console.log("Data type:", typeof dataToSend);
+    console.log("Data keys:", Object.keys(dataToSend));
+    
+    createMutation.mutate(dataToSend);
   };
 
   const handleUpdate = () => {
     if (!selectedCategory) return;
+    
+    // Get the English title from translations or fallback to the main title
+    const englishTitle = formData.translations.en?.title || formData.title;
+    
+    // Validate sortOrder is within reasonable bounds
+    const sortOrder = Math.max(0, Math.min(formData.sortOrder, 999999));
+    
+    // Only send the fields that are expected by the InsertGalleryCategory schema
+    const dataToSend = {
+      title: englishTitle,
+      imageUrl: formData.imageUrl,
+      status: formData.status,
+      sortOrder: sortOrder,
+      translations: formData.translations,
+      defaultLanguage: "en"
+    };
+    
+    console.log("Data being sent to update gallery category:", dataToSend);
     updateMutation.mutate({ 
       id: selectedCategory.id, 
-      data: formData 
+      data: dataToSend
     });
   };
 
   const handleEdit = (category: GalleryCategory) => {
     setSelectedCategory(category);
+    
+    // Initialize translations from the category data
+    const categoryTranslations = {
+      en: { 
+        title: category.title || ""
+      },
+      mk: { 
+        title: (category.translations as any)?.mk?.title || ""
+      },
+      de: { 
+        title: (category.translations as any)?.de?.title || ""
+      }
+    };
+    
     setFormData({
       title: category.title,
       imageUrl: category.imageUrl || "",
       status: category.status || "active",
       sortOrder: category.sortOrder || 0,
+      translations: categoryTranslations
     });
     setIsEditDialogOpen(true);
   };
@@ -227,19 +326,20 @@ export function GalleryCategoriesManager() {
               Add Category
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle>Create Gallery Category</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="create-title">Title</Label>
-                <Input
-                  id="create-title"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  placeholder="Category title"
-                  data-testid="input-create-title"
+                <TranslatableFieldEditor
+                  label="Title"
+                  fieldName="title"
+                  type="text"
+                  currentTranslations={formData.translations}
+                  originalValue={formData.translations.en?.title || ""}
+                  defaultLanguage="en"
+                  onChange={(translations) => setFormData({ ...formData, translations })}
                 />
               </div>
               
@@ -248,9 +348,7 @@ export function GalleryCategoriesManager() {
                   label="Category Image"
                   value={formData.imageUrl}
                   onChange={(url) => setFormData({ ...formData, imageUrl: url })}
-                  type="image"
                   placeholder="Enter image URL or upload file"
-                  testId="input-create-image"
                 />
                 {formData.imageUrl && (
                   <div className="mt-2">
@@ -293,7 +391,7 @@ export function GalleryCategoriesManager() {
 
               <Button
                 onClick={handleCreate}
-                disabled={!formData.title.trim() || createMutation.isPending}
+                disabled={!formData.translations.en?.title?.trim() || createMutation.isPending}
                 className="w-full"
                 data-testid="button-save-create"
               >
@@ -439,19 +537,20 @@ export function GalleryCategoriesManager() {
 
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Edit Gallery Category</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div>
-              <Label htmlFor="edit-title">Title</Label>
-              <Input
-                id="edit-title"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="Category title"
-                data-testid="input-edit-title"
+              <TranslatableFieldEditor
+                label="Title"
+                fieldName="title"
+                type="text"
+                currentTranslations={formData.translations}
+                originalValue={formData.translations.en?.title || ""}
+                defaultLanguage="en"
+                onChange={(translations) => setFormData({ ...formData, translations })}
               />
             </div>
             
@@ -460,9 +559,7 @@ export function GalleryCategoriesManager() {
                 label="Category Image"
                 value={formData.imageUrl}
                 onChange={(url) => setFormData({ ...formData, imageUrl: url })}
-                type="image"
                 placeholder="Enter image URL or upload file"
-                testId="input-edit-image"
               />
               {formData.imageUrl && (
                 <div className="mt-2">
@@ -505,7 +602,7 @@ export function GalleryCategoriesManager() {
 
             <Button
               onClick={handleUpdate}
-              disabled={!formData.title.trim() || updateMutation.isPending}
+              disabled={!formData.translations.en?.title?.trim() || updateMutation.isPending}
               className="w-full"
               data-testid="button-save-edit"
             >
