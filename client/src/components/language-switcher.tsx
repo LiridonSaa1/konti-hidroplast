@@ -38,9 +38,7 @@ export function LanguageSwitcher() {
         className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-gray-700 hover:text-konti-blue transition-colors duration-200 bg-white/80 backdrop-blur-sm rounded-lg border border-gray-200/50 hover:border-konti-blue/30"
         data-testid="language-switcher-button"
       >
-        <Globe className="w-4 h-4" />
         <span className="hidden sm:inline">{currentLanguage?.flag}</span>
-        <span className="hidden md:inline">{currentLanguage?.name}</span>
         <svg
           className={`w-4 h-4 transform transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
