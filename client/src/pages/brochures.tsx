@@ -187,7 +187,7 @@ function BrochuresPage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
+            <div className="text-center mb-4">
               <span className="text-sm font-medium">{t("productPages.productDocumentation")}</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
@@ -197,11 +197,8 @@ function BrochuresPage() {
                 {t("productPages.andCatalogs")}
               </span>
             </h1>
-            <p
-              className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
-              data-testid="hero-description"
-            >
-{t("productPages.brochuresDescription")}
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+              {t("productPages.brochuresDescription")}
             </p>
           </div>
         </div>
@@ -293,7 +290,7 @@ function BrochuresPage() {
                         data-testid={`download-${category.id}-${index}`}
                       >
                         <Download className="w-4 h-4 mr-2" />
-{t("productPages.downloadPdf")}
+                        {t("productPages.downloadPdf")}
                       </a>
                     </div>
                   </div>
@@ -327,7 +324,7 @@ function BrochuresPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-{t("aboutUs.contactUsButton")}
+              {t("aboutUs.contactUsButton")}
             </Button>
           </div>
         </div>

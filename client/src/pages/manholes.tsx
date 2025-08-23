@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { useCompanyInfo } from "@/hooks/use-company-info";
-import { Download, Check } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
+import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
+import {
+  Download,
+  Shield,
+  Award,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 // Manholes translation helper function
 const translateManholesText = (text: string, t: any) => {
@@ -92,8 +101,6 @@ const translateManholesText = (text: string, t: any) => {
   };
   return translations[text] || text;
 };
-import { Button } from "@/components/ui/button";
-import { useLocation } from "wouter";
 
 // Manholes specifications data
 const manholesSpecifications = [
@@ -256,7 +263,7 @@ export default function ManholesPage() {
             <div>
               <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
                 <span className="text-sm font-medium">
-{t("manholes.engineeredForExcellence")}
+                  {t("manholes.engineeredForExcellence")}
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
@@ -266,17 +273,17 @@ export default function ManholesPage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-{translateManholesText("Both PP (Polypropylene) and HDPE (High-Density Polyethylene) manholes are widely used in modern drainage and sewage systems, offering a range of advantages in terms of durability, efficiency, and ease of installation.", t)}
+                {translateManholesText("Both PP (Polypropylene) and HDPE (High-Density Polyethylene) manholes are widely used in modern drainage and sewage systems, offering a range of advantages in terms of durability, efficiency, and ease of installation.", t)}
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
-                  <Check className="w-5 h-5" />
+                  <CheckCircle className="w-5 h-5" />
                   <span className="text-sm font-medium">
-{t("manholes.yearsLifespan")}
+                    {t("manholes.yearsLifespan")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
-                  <Check className="w-5 h-5" />
+                  <CheckCircle className="w-5 h-5" />
                   <span className="text-sm font-medium">{t("manholes.recyclable")}</span>
                 </div>
               </div>
@@ -308,14 +315,14 @@ export default function ManholesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-{translateManholesText("Structural Forms", t)}
+                {translateManholesText("Structural Forms", t)}
               </h2>
               <div className="space-y-4 text-gray-700">
                 <p>{translateManholesText("By structural form, HDPE and PP manholes can be:", t)}</p>
                 <div className="space-y-3">
                   {structuralForms.map((form, index) => (
                     <div key={index} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                       <span>{translateManholesText(form, t)}</span>
                     </div>
                   ))}
@@ -325,12 +332,12 @@ export default function ManholesPage() {
 
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-{translateManholesText("Key Applications", t)}
+                {translateManholesText("Key Applications", t)}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {applications.slice(0, 8).map((app, index) => (
                   <div key={index} className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
+                    <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
                     <span className="text-gray-700 text-sm">{translateManholesText(app, t)}</span>
                   </div>
                 ))}
@@ -347,7 +354,7 @@ export default function ManholesPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
-{translateManholesText("Manholes Types", t)}
+                {translateManholesText("Manholes Types", t)}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -392,7 +399,7 @@ export default function ManholesPage() {
                   <div className="space-y-3 mb-8">
                     {spec.features.map((feature, index) => (
                       <div key={index} className="flex items-start gap-3">
-                        <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                         <span className="text-[#ffffff]">{translateManholesText(feature, t)}</span>
                       </div>
                     ))}
@@ -406,7 +413,7 @@ export default function ManholesPage() {
                       className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
-{t("manholes.downloadBrochure")}
+                      {t("manholes.downloadBrochure")}
                     </a>
                   </div>
                 </div>
@@ -433,7 +440,7 @@ export default function ManholesPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{translateManholesText("Advantages of KONTI Rigid PP Manholes", t)}
+                {translateManholesText("Advantages of KONTI Rigid PP Manholes", t)}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -446,7 +453,7 @@ export default function ManholesPage() {
                 className="bg-white p-6 rounded-xl shadow-sm border border-gray-100"
               >
                 <h3 className="font-semibold text-[#1c2d56] mb-3">
-{translateManholesText(advantage.title, t)}
+                  {translateManholesText(advantage.title, t)}
                 </h3>
                 <p className="text-gray-700 text-sm">{translateManholesText(advantage.description, t)}</p>
               </div>
@@ -456,10 +463,10 @@ export default function ManholesPage() {
           {/* Connection Types */}
           <div className="bg-white rounded-2xl p-8 shadow-sm">
             <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-{translateManholesText("Connection Compatibility", t)}
+              {translateManholesText("Connection Compatibility", t)}
             </h3>
             <p className="text-gray-700 mb-6">
-{translateManholesText("Connection can be made with different kind of pipes:", t)}
+              {translateManholesText("Connection can be made with different kind of pipes:", t)}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {connectionTypes.map((type, index) => (
@@ -467,7 +474,7 @@ export default function ManholesPage() {
                   key={index}
                   className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
                 >
-                  <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
                   <span className="text-gray-700 text-sm">{translateManholesText(type, t)}</span>
                 </div>
               ))}
@@ -482,12 +489,12 @@ export default function ManholesPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("manholes.contactTitle")}
+                {t("manholes.contactTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-{t("manholes.contactDescription")}
+              {t("manholes.contactDescription")}
             </p>
             <Button
               onClick={() => {
@@ -499,7 +506,7 @@ export default function ManholesPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-{t("manholes.contactUs")}
+              {t("manholes.contactUs")}
             </Button>
           </div>
         </div>

@@ -9,13 +9,13 @@ import { Badge } from '@/components/ui/badge';
 interface TranslatableFieldEditorProps {
   label: string;
   fieldName: string;
-  type?: 'text' | 'textarea';
-  currentTranslations?: {
+  type: "text" | "textarea";
+  currentTranslations: {
     en?: Record<string, string>;
     mk?: Record<string, string>;
     de?: Record<string, string>;
   };
-  originalValue?: string;
+  originalValue: string;
   onChange: (translations: {
     en?: Record<string, string>;
     mk?: Record<string, string>;

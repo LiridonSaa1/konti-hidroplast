@@ -344,13 +344,13 @@ function WaterSupplySystemsPage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-{t("waterSupply.heroDescription")}
+                {t("waterSupply.heroDescription")}
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
                   <Check className="w-5 h-5" />
                   <span className="text-sm font-medium">
-{t("waterSupply.yearsLifespan")}
+                    {t("waterSupply.yearsLifespan")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
@@ -432,7 +432,7 @@ function WaterSupplySystemsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
-{t("waterSupply.peWaterSupplyPipes")}
+                {t("waterSupply.peWaterSupplyPipes")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -466,7 +466,7 @@ function WaterSupplySystemsPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
                   <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
-{translateFittingName(spec.title, t)}
+                    {translateFittingName(spec.title, t)}
                   </h3>
                   <p className="text-[#ffffff] mb-6">{translateFittingName(spec.description, t)}</p>
 
@@ -522,7 +522,7 @@ function WaterSupplySystemsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("waterSupply.peFittings")}
+                {t("waterSupply.peFittings")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -540,7 +540,7 @@ function WaterSupplySystemsPage() {
 
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
               <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
-{translateFittingName(fittingTypes[activeFittingTabIndex].title, t)}
+                {translateFittingName(fittingTypes[activeFittingTabIndex].title, t)}
               </h3>
               <div className="flex justify-center space-x-1 mt-3">
                 {fittingTypes.map((_, index) => (
@@ -581,7 +581,7 @@ function WaterSupplySystemsPage() {
                   {/* Left Column - Fittings List */}
                   <div>
                     <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
-{translateFittingName(fitting.title, t)}
+                      {translateFittingName(fitting.title, t)}
                     </h3>
 
                     <div className="space-y-3">
@@ -601,7 +601,7 @@ function WaterSupplySystemsPage() {
                                 <Download className="w-3 h-3 text-white" />
                               </div>
                               <span className="text-sm font-medium">
-{translateFittingName(item.name, t)}
+                                {translateFittingName(item.name, t)}
                               </span>
                             </a>
                           ) : (
@@ -640,32 +640,7 @@ function WaterSupplySystemsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("aboutUs.getInTouchTitle")}
-              </h2>
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-            </div>
-            <p className="text-xl text-gray-600 mb-8">
-              Need more information about our cable protection solutions?
-              Contact our team of experts.
-            </p>
-            <a
-              href="/contact"
-              className="inline-flex items-center px-8 py-4 text-white rounded-lg bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors text-lg font-semibold"
-              data-testid="contact-button"
-            >
-{t("aboutUs.contactUsButton")}
-            </a>
-          </div>
-        </div>
-      </section>
-      {/* Contact Section */}
-      <section className="py-20 bg-[#ffffff]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="flex items-center justify-center mb-8">
-              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("aboutUs.getInTouchTitle")}
+                {t("aboutUs.getInTouchTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -682,7 +657,7 @@ function WaterSupplySystemsPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-{t("aboutUs.contactUsButton")}
+              {t("aboutUs.contactUsButton")}
             </Button>
           </div>
         </div>

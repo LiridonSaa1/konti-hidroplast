@@ -1,9 +1,18 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
-import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Footer } from "@/components/footer";
-import { Download, Check } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
+import { Button } from "@/components/ui/button";
+import { useLocation } from "wouter";
+import {
+  Download,
+  Shield,
+  Award,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 // Drainage translation helper function
 const translateDrainageText = (text: string, t: any) => {
@@ -58,8 +67,6 @@ const translateDrainageText = (text: string, t: any) => {
   };
   return translations[text] || text;
 };
-import { Button } from "@/components/ui/button";
-import { useLocation } from "wouter";
 
 // KONTI KAN DRAINAGE specifications data
 const drainageSpecifications = [
@@ -156,11 +163,11 @@ export default function KontiKanDrainagePage() {
             <div>
               <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
                 <span className="text-sm font-medium">
-{t("drainage.engineeredForExcellence")}
+                  {t("drainage.engineeredForExcellence")}
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-{translateDrainageText("KONTIKAN", t)}
+                {translateDrainageText("KONTIKAN", t)}
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
                   {translateDrainageText("DRAINAGE", t)}
@@ -170,17 +177,17 @@ export default function KontiKanDrainagePage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-{translateDrainageText("Drainage Polypropylene (PP) pipes are widely used in drainage systems for managing groundwater, excess surface water, and wastewater. These pipes are designed with precision slots or perforations to allow water infiltration.", t)}
+                {translateDrainageText("Drainage Polypropylene (PP) pipes are widely used in drainage systems for managing groundwater, excess surface water, and wastewater. These pipes are designed with precision slots or perforations to allow water infiltration.", t)}
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
-                  <Check className="w-5 h-5" />
+                  <CheckCircle className="w-5 h-5" />
                   <span className="text-sm font-medium">
-{t("drainage.yearsLifespan")}
+                    {t("drainage.yearsLifespan")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
-                  <Check className="w-5 h-5" />
+                  <CheckCircle className="w-5 h-5" />
                   <span className="text-sm font-medium">{t("drainage.recyclable")}</span>
                 </div>
               </div>
@@ -212,7 +219,7 @@ export default function KontiKanDrainagePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-{translateDrainageText("Standards & Compliance", t)}
+                {translateDrainageText("Standards & Compliance", t)}
               </h2>
               <div className="space-y-4 text-gray-700">
                 <p>
@@ -226,16 +233,16 @@ export default function KontiKanDrainagePage() {
 
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-{translateDrainageText("Slot Patterns Available", t)}
+                {translateDrainageText("Slot Patterns Available", t)}
               </h3>
               <div className="space-y-4">
                 {slotPatterns.map((pattern, index) => (
                   <div key={index} className="border-l-4 border-blue-500 pl-4">
                     <h4 className="font-semibold text-[#1c2d56] mb-1">
-{translateDrainageText(pattern.name, t)}
+                      {translateDrainageText(pattern.name, t)}
                     </h4>
                     <p className="text-gray-600 text-sm">
-{translateDrainageText(pattern.description, t)}
+                      {translateDrainageText(pattern.description, t)}
                     </p>
                   </div>
                 ))}
@@ -250,10 +257,10 @@ export default function KontiKanDrainagePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-{translateDrainageText("Key Applications", t)}
+              {translateDrainageText("Key Applications", t)}
             </h2>
             <p className="text-gray-600 max-w-3xl mx-auto">
-{translateDrainageText("Suitable for agriculture (irrigation), infrastructure projects (road and slope drainage), and residential or commercial water management systems. Can be easily connected to other drainage components, such as catch basins and manholes, using standard fittings.", t)}
+              {translateDrainageText("Suitable for agriculture (irrigation), infrastructure projects (road and slope drainage), and residential or commercial water management systems. Can be easily connected to other drainage components, such as catch basins and manholes, using standard fittings.", t)}
             </p>
           </div>
 
@@ -264,7 +271,7 @@ export default function KontiKanDrainagePage() {
                 className="bg-white p-6 rounded-xl shadow-sm border border-gray-100"
               >
                 <div className="flex items-center gap-3 mb-2">
-                  <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
                   <span className="text-[#1c2d56] font-medium">{translateDrainageText(app, t)}</span>
                 </div>
               </div>
@@ -280,7 +287,7 @@ export default function KontiKanDrainagePage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
-{translateDrainageText("KONTI DREN", t)}
+                {translateDrainageText("KONTI DREN", t)}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -290,20 +297,20 @@ export default function KontiKanDrainagePage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
-{translateDrainageText(drainageSpecifications[0].title, t)}
+                {translateDrainageText(drainageSpecifications[0].title, t)}
               </h3>
               <p className="text-[#ffffff] mb-6">
-{translateDrainageText(drainageSpecifications[0].description, t)}
+                {translateDrainageText(drainageSpecifications[0].description, t)}
               </p>
 
               <p className="text-[#ffffff] mb-6">
-{translateDrainageText(drainageSpecifications[0].additionalInfo, t)}
+                {translateDrainageText(drainageSpecifications[0].additionalInfo, t)}
               </p>
 
               <div className="space-y-3 mb-8">
                 {drainageSpecifications[0].features.map((feature, index) => (
                   <div key={index} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                     <span className="text-[#ffffff]">{translateDrainageText(feature, t)}</span>
                   </div>
                 ))}
@@ -317,7 +324,7 @@ export default function KontiKanDrainagePage() {
                   className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-[#ffffff] rounded-lg transition-colors"
                 >
                   <Download className="w-4 h-4 mr-2" />
-{t("drainage.downloadSpecs")}
+                  {t("drainage.downloadSpecs")}
                 </a>
                 <a
                   href={drainageSpecifications[0].brochure}
@@ -326,7 +333,7 @@ export default function KontiKanDrainagePage() {
                   className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                 >
                   <Download className="w-4 h-4 mr-2" />
-{t("drainage.downloadBrochure")}
+                  {t("drainage.downloadBrochure")}
                 </a>
               </div>
             </div>
@@ -335,7 +342,7 @@ export default function KontiKanDrainagePage() {
               <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <img
                   src={drainageSpecifications[0].images[0]}
-alt={translateDrainageText(drainageSpecifications[0].title, t)}
+                  alt={translateDrainageText(drainageSpecifications[0].title, t)}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -349,7 +356,7 @@ alt={translateDrainageText(drainageSpecifications[0].title, t)}
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("drainage.contactTitle")}
+                {t("drainage.contactTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -361,7 +368,7 @@ alt={translateDrainageText(drainageSpecifications[0].title, t)}
               className="inline-flex items-center px-8 py-4 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white rounded-lg transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
-{t("drainage.contactUs")}
+              {t("drainage.contactUs")}
             </a>
           </div>
         </div>
@@ -373,12 +380,12 @@ alt={translateDrainageText(drainageSpecifications[0].title, t)}
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("drainage.contactTitle")}
+                {t("drainage.contactTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-{t("drainage.contactDescriptionDrainage")}
+              {t("drainage.contactDescriptionDrainage")}
             </p>
             <Button
               onClick={() => {
@@ -390,7 +397,7 @@ alt={translateDrainageText(drainageSpecifications[0].title, t)}
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-{t("drainage.contactUs")}
+              {t("drainage.contactUs")}
             </Button>
           </div>
         </div>

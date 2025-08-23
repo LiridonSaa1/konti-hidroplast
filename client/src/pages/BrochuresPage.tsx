@@ -38,6 +38,36 @@ function BrochuresPage() {
     return item[field] || fallback;
   };
 
+  // Helper function to get default description by category
+  const getDefaultDescription = (category: string) => {
+    const descriptions = {
+      en: {
+        'Water-supply systems': 'High-quality pipes and fittings for reliable water supply systems. Professional grade materials with European standards compliance.',
+        'Sewerage systems': 'Durable sewerage pipes and components for efficient wastewater management. Built to withstand heavy loads and chemical exposure.',
+        'Gas': 'Premium gas pipeline systems designed for safe and efficient gas distribution. Meets all safety standards and regulations.',
+        'Cable protection': 'Protective conduits and ducting systems for cable installations. Ensures long-term protection against environmental factors.',
+        'default': 'Professional pipe solutions engineered for durability and performance. Manufactured to European quality standards.'
+      },
+      mk: {
+        'Water-supply systems': 'Висококвалитетни цевки и фитинзи за сигурни системи за водоснабдување. Професионални материјали со европски стандарди.',
+        'Sewerage systems': 'Издржливи канализациски цевки за ефикасно управување со отпадни води. Изградени да издржат големи оптоварувања.',
+        'Gas': 'Премиум системи за гасоводи дизајнирани за безбедна дистрибуција на гас. Ги исполнува сите безбедносни стандарди.',
+        'Cable protection': 'Заштитни системи за кабли и инсталации. Обезбедува долгорочна заштита од környезетски фактори.',
+        'default': 'Професионални решенија за цевки инженерирани за издржливост и перформанси. Произведени според европски стандарди.'
+      },
+      de: {
+        'Water-supply systems': 'Hochwertige Rohre und Fittings für zuverlässige Wasserversorgungssysteme. Professionelle Materialien nach europäischen Standards.',
+        'Sewerage systems': 'Langlebige Abwasserrohre für effizientes Abwassermanagement. Entwickelt für hohe Belastungen und Chemikalienbeständigkeit.',
+        'Gas': 'Premium-Gaspipelinesysteme für sichere Gasverteilung. Erfüllt alle Sicherheitsstandards und Vorschriften.',
+        'Cable protection': 'Schutzrohre und Kanalsysteme für Kabelinstallationen. Gewährleistet langfristigen Schutz vor Umwelteinflüssen.',
+        'default': 'Professionelle Rohrlösungen für Langlebigkeit und Leistung. Nach europäischen Qualitätsstandards hergestellt.'
+      }
+    };
+    
+    const langDescriptions = descriptions[language as keyof typeof descriptions] || descriptions.en;
+    return langDescriptions[category as keyof typeof langDescriptions] || langDescriptions.default;
+  };
+
   // Group brochures by category - show all active brochures, not filtered by language
   const groupedBrochures = categories.map(category => {
     const categoryBrochures = brochures
@@ -123,22 +153,22 @@ function BrochuresPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
-              <span className="text-sm font-medium">{t("productPages.productDocumentation")}</span>
+              <span className="text-sm font-medium">PRODUCT DOCUMENTATION</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-              {t("productPages.productBrochures")}<span className="text-red-500"> </span>
+              PRODUCT<span className="text-red-500"> BROCHURES</span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                {t("productPages.andCatalogs")}
+                & CATALOGS
               </span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-{t("productPages.brochuresDescription")}
+              Download comprehensive product documentation, technical specifications, and catalogs for all our pipe and fitting solutions.
             </p>
             
             {/* Language indicator */}
             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-              <span className="text-sm">{t("brochures.currentLanguage")}</span>
+              <span className="text-sm">Current Language:</span>
               <span className="font-medium">
                 {language === 'en' ? '🇺🇸 English' : 
                  language === 'mk' ? '🇲🇰 Macedonian' : 
@@ -156,7 +186,7 @@ function BrochuresPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("brochures.productBrochures")}
+                Product Brochures
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -164,9 +194,9 @@ function BrochuresPage() {
             {groupedBrochures.length === 0 && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-md mx-auto">
                 <FileText className="h-12 w-12 text-blue-600 mx-auto mb-3" />
-                <p className="text-blue-800 font-medium">{t("brochures.noBrochuresAvailable")} {language === 'mk' ? 'Macedonian' : language === 'de' ? 'German' : 'English'}</p>
+                <p className="text-blue-800 font-medium">No brochures available for {language === 'mk' ? 'Macedonian' : language === 'de' ? 'German' : 'English'}</p>
                 <p className="text-blue-600 text-sm mt-2">
-{t("brochures.switchLanguages")}
+                  Switch languages or check back later for updated content.
                 </p>
               </div>
             )}
@@ -245,11 +275,10 @@ function BrochuresPage() {
                         <h3 className="text-sm font-semibold text-[#1c2d56] mb-3 line-clamp-2 min-h-[2.5rem]">
                           {getTranslatedText(brochure, 'name', brochure.title || brochure.name)}
                         </h3>
-                        {getTranslatedText(brochure, 'description', brochure.description) && (
-                          <p className="text-xs text-gray-600 mb-3 line-clamp-2">
-                            {getTranslatedText(brochure, 'description', brochure.description)}
-                          </p>
-                        )}
+                        <p className="text-xs text-gray-600 mb-3 line-clamp-2 min-h-[2.5rem]">
+                          {getTranslatedText(brochure, 'description', brochure.description || '') || 
+                           getDefaultDescription(brochure.category)}
+                        </p>
                         {brochure.pdfUrl ? (
                           <a
                             href={brochure.pdfUrl}
@@ -259,12 +288,12 @@ function BrochuresPage() {
                             data-testid={`download-${brochure.id}`}
                           >
                             <Download className="w-3 h-3 mr-2" />
-{t("productPages.download")}
+                            Download
                           </a>
                         ) : (
                           <div className="inline-flex items-center w-full justify-center px-3 py-2 bg-gray-300 text-gray-500 text-sm rounded-lg cursor-not-allowed">
                             <Download className="w-3 h-3 mr-2" />
-{t("brochures.noPdfAvailable")}
+                            No PDF Available
                           </div>
                         )}
                       </div>
@@ -276,10 +305,10 @@ function BrochuresPage() {
               {/* Total count */}
               <div className="text-center mt-12">
                 <p className="text-gray-600">
-                  {t("brochures.currentLanguage")} {language === 'en' ? '🇺🇸 English' : language === 'mk' ? '🇲🇰 Macedonian' : language === 'de' ? '🇩🇪 German' : language}
-                  <br />
                   Showing {groupedBrochures[activeTabIndex]?.brochures.length || 0} brochures 
                   {groupedBrochures.length > 1 && ` in ${groupedBrochures[activeTabIndex]?.title || 'this category'}`}
+                  {' '}for{' '}
+                  {language === 'en' ? 'English' : language === 'mk' ? 'Macedonian' : language === 'de' ? 'German' : language}
                 </p>
               </div>
             </>

@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { Download, CheckCircle, Shield, Award, Check } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { useCompanyInfo } from "@/hooks/use-company-info";
-import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
-import { ChevronDown, Download, Play, Check } from "lucide-react";
 
 import ductCloseUpImage from "@assets/duct-close-up-min-400x400_1755282820012.jpg";
 import opticCableImage from "@assets/KONTI-KAN-DUCT-Double-layered-corrugated-pipes-min-400x400_1755282822315.jpg";
@@ -144,23 +145,8 @@ const productTypes = [
 
 function CableProtectionPage() {
   const { t } = useLanguage();
-  const [, setLocation] = useLocation();
-  const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("konti-kan-duct");
-
-  useEffect(() => {
-    // Set page title
-    document.title = `Cable Protection - ${companyInfo.companyName || "Konti Hidroplast"}`;
-
-    // Add meta description
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute(
-        "content",
-        "High-Density Polyethylene (HDPE) pipes for cable protection. Konti Kan Duct and Konti Kan Optic solutions for electrical power cables, fiber optics, and telecommunication infrastructure.",
-      );
-    }
-  }, []);
+  const [location, setLocation] = useLocation();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -177,7 +163,7 @@ function CableProtectionPage() {
             <div>
               <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
                 <span className="text-sm font-medium">
-                  {t("productPages.engineeredForExcellence")}
+                  ENGINEERED FOR EXCELLENCE
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
@@ -191,19 +177,21 @@ function CableProtectionPage() {
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-{t("cableProtection.heroDescription")}
+                High-Density Polyethylene (HDPE) pipes with externally smooth
+                and internally ribbed surfaces in the 32–75 mm diameter range
+                designed for cable protection purposes.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
                   <Check className="w-5 h-5" />
                   <span className="text-sm font-medium">
-{t("cableProtection.undergroundInstallation")}
+                    Underground Installation
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
                   <Check className="w-5 h-5" />
                   <span className="text-sm font-medium">
-{t("cableProtection.corrosionResistant")}
+                    Corrosion Resistant
                   </span>
                 </div>
               </div>
@@ -222,7 +210,7 @@ function CableProtectionPage() {
                 />
               </div>
               <div className="absolute -bottom-4 -right-4 text-white px-4 py-2 rounded-full shadow-lg bg-[#ef4444]">
-                <span className="text-sm font-medium">{t("cableProtection.premiumQuality")}</span>
+                <span className="text-sm font-medium">Premium Quality</span>
               </div>
             </div>
           </div>
@@ -234,22 +222,31 @@ function CableProtectionPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-                {t("cableProtection.cableProtection")}
+                Cable Protection
               </h2>
               <div className="space-y-4 text-gray-700">
                 <p>
-{t("cableProtection.mainDescription")}
+                  High-Density Polyethylene (HDPE) pipes with externally smooth
+                  and internally ribbed surfaces in the 32–75 mm diameter range
+                  are designed for cable protection purposes. Polyethylene pipes
+                  for cable protection can be:
                 </p>
                 <p>
-                  <b>{t("cableProtection.kontiKanDuct")}</b><br/>
-                  <b>{t("cableProtection.kontiKanOptic")}</b>
+                  <b>Konti Kan Duct Cable protection</b> – Polyethylene pipes,
+                  HDPE, externally smooth, internally serrated with a small
+                  diameter.
+                  <b>
+                    Konti Kan Optic Cable protection– Polyethylene
+                    double-layered corrugated pipes with outer corrugated and
+                    inner smooth surface.
+                  </b>
                 </p>
               </div>
             </div>
 
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-{t("cableProtection.dividedIn")}
+                These pipes are divided in:
               </h3>
               <div className="space-y-3">
                 {productTypes.map((type, index) => (
@@ -270,7 +267,7 @@ function CableProtectionPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
-{t("cableProtection.products")}
+                Cable Protection Products
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -289,7 +286,7 @@ function CableProtectionPage() {
                       : "text-gray-600 hover:text-[#1c2d56]"
                   }`}
                 >
-{translateCableProtectionText(product.title, t)}
+                  {translateCableProtectionText(product.title, t)}
                 </button>
               ))}
             </div>
@@ -304,7 +301,7 @@ function CableProtectionPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
                   <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
-  {translateCableProtectionText(product.title, t)}
+                    {translateCableProtectionText(product.title, t)}
                   </h3>
                   <p className="text-[#ffffff] mb-6">{translateCableProtectionText(product.description, t)}</p>
 
@@ -329,14 +326,14 @@ function CableProtectionPage() {
                     {/* Applications */}
                     <div>
                       <h4 className="text-xl font-semibold text-[#ffffff] mb-3">
-{translateCableProtectionText("Applications", t)}
+                        {translateCableProtectionText("Applications", t)}
                       </h4>
                       <div className="space-y-2">
                         {product.applications.map((application, index) => (
                           <div key={index} className="flex items-start gap-3">
                             <Check className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
                             <span className="text-[#ffffff] text-sm">
-{translateCableProtectionText(application, t)}
+                              {translateCableProtectionText(application, t)}
                             </span>
                           </div>
                         ))}
@@ -346,7 +343,7 @@ function CableProtectionPage() {
                     {/* Material Properties or Characteristics */}
                     <div>
                       <h4 className="text-xl font-semibold text-[#ffffff] mb-3">
-{product.materialProperties
+                        {product.materialProperties
                           ? translateCableProtectionText("Material Properties", t)
                           : translateCableProtectionText("Characteristics", t)}
                       </h4>
@@ -357,7 +354,7 @@ function CableProtectionPage() {
                           <div key={index} className="flex items-start gap-3">
                             <Check className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
                             <span className="text-[#ffffff] text-sm">
-{translateCableProtectionText(item, t)}
+                              {translateCableProtectionText(item, t)}
                             </span>
                           </div>
                         ))}
@@ -368,14 +365,14 @@ function CableProtectionPage() {
                     {product.dimensions && (
                       <div>
                         <h4 className="text-xl font-semibold text-[#ffffff] mb-3">
-{translateCableProtectionText("Dimensions", t)}
+                          {translateCableProtectionText("Dimensions", t)}
                         </h4>
                         <div className="space-y-2">
                           {product.dimensions.map((dimension, index) => (
                             <div key={index} className="flex items-start gap-3">
                               <Check className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
                               <span className="text-[#ffffff] text-sm">
-{translateCableProtectionText(dimension, t)}
+                                {translateCableProtectionText(dimension, t)}
                               </span>
                             </div>
                           ))}
@@ -393,7 +390,7 @@ function CableProtectionPage() {
                       data-testid="download-specs"
                     >
                       <Download className="w-4 h-4 mr-2" />
-{t("cableProtection.downloadSpecs")}
+                      Download Specs
                     </a>
                     <a
                       href={product.brochure}
@@ -403,7 +400,7 @@ function CableProtectionPage() {
                       data-testid="download-brochure"
                     >
                       <Download className="w-4 h-4 mr-2" />
-{t("cableProtection.downloadBrochure")}
+                      Download Brochure
                     </a>
                   </div>
                 </div>
@@ -428,19 +425,20 @@ function CableProtectionPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("cableProtection.contactTitle")}
+                Get in Touch: Connect with Us Today!
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-{t("cableProtection.contactDescription")}
+              Need more information about our cable protection solutions?
+              Contact our team of experts.
             </p>
             <a
               href="/contact"
               className="inline-flex items-center px-8 py-4 text-white rounded-lg bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors text-lg font-semibold"
               data-testid="contact-button"
             >
-{t("cableProtection.contactUs")}
+              Contact Us
             </a>
           </div>
         </div>
@@ -452,12 +450,13 @@ function CableProtectionPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-{t("cableProtection.contactTitle")}
+                Get in Touch: Connect with Us Today!
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-{t("cableProtection.contactDescription")}
+              Need more information about our cable protection solutions?
+              Contact our team of experts.
             </p>
             <Button
               onClick={() => {
@@ -469,7 +468,7 @@ function CableProtectionPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-{t("cableProtection.contactUs")}
+              Contact Us
             </Button>
           </div>
         </div>
