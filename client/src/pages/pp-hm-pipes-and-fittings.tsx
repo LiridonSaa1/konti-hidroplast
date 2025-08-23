@@ -6,13 +6,93 @@ import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import {
-  ChevronDown,
   Download,
-  Play,
-  Check,
+  Shield,
+  Award,
+  CheckCircle,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+
+// PP-HM pipes translation helper function
+const translatePPHMPipeText = (text: string, t: any) => {
+  const translations: { [key: string]: string } = {
+    // Page titles and headers
+    "PP-HM": t("ppHMPipes.ppHm"),
+    "PP-HM PIPES": t("ppHMPipes.ppHmPipes"),
+    "PP-HM FITTINGS": t("ppHMPipes.ppHmFittings"),
+    "PP-HM Manufacturing": t("ppHMPipes.ppHmManufacturing"),
+    
+    // Descriptions
+    "PP-HM (Polypropylene High Modulus) pipes are high-performance thermoplastic pipes designed for demanding applications in sewage, drainage, and industrial systems.": t("ppHMPipes.heroDescription"),
+    "PP-HM pipes offer exceptional strength, chemical resistance, and durability, making them ideal for both pressure and non-pressure applications in challenging environments.": t("ppHMPipes.pipeDescription"),
+    "PP-HM pipes are manufactured using high-modulus polypropylene, providing superior mechanical properties and long-term performance in demanding applications.": t("ppHMPipes.manufacturingDescription"),
+    
+    // Technical specifications and features
+    "Common stiffness classes include SN 2, SN 4, SN 8, SN 12.5, or higher for specific applications": t("ppHMPipes.stiffnessClasses"),
+    "Suitable for pipes with diameters ranging from Ø 110 – 1200 mm": t("ppHMPipes.diameterRange"),
+    "Color: Black (other color on request)": t("ppHMPipes.color"),
+    "Length: 6m": t("ppHMPipes.length"),
+    "Service life of over 50 years under normal conditions": t("ppHMPipes.serviceLife"),
+    "Fully recyclable": t("ppHMPipes.fullyRecyclable"),
+    "Color: Black (other color on request) | Length: 6m": t("ppHMPipes.colorLength"),
+    
+    // Material properties
+    "Polypropylene High Modulus (PP-HM)": t("ppHMPipes.ppHmMaterial"),
+    "High stiffness and strength for demanding applications": t("ppHMPipes.highStiffnessStrength"),
+    "Excellent resistance to chemicals and biological degradation": t("ppHMPipes.chemicalBiologicalResistance"),
+    "Superior dimensional stability and creep resistance": t("ppHMPipes.dimensionalStability"),
+    
+    // Applications
+    "Sewerage and stormwater drainage systems": t("ppHMPipes.sewerageStormwater"),
+    "Industrial effluent and chemical waste pipelines": t("ppHMPipes.industrialEffluent"),
+    "High-temperature applications": t("ppHMPipes.highTemperature"),
+    "Chemical processing plants": t("ppHMPipes.chemicalProcessing"),
+    "Municipal infrastructure projects": t("ppHMPipes.municipalInfrastructure"),
+    "Agricultural drainage systems": t("ppHMPipes.agriculturalDrainage"),
+    
+    // Characteristics
+    "High ring stiffness for structural integrity": t("ppHMPipes.highRingStiffness"),
+    "Excellent chemical resistance to acids, bases, and solvents": t("ppHMPipes.excellentChemicalResistance"),
+    "Superior temperature resistance up to 90°C": t("ppHMPipes.temperatureResistance"),
+    "Low thermal expansion coefficient": t("ppHMPipes.lowThermalExpansion"),
+    "High impact resistance and toughness": t("ppHMPipes.highImpactResistance"),
+    "Smooth inner surface for optimal flow": t("ppHMPipes.smoothInnerSurface"),
+    "UV-stabilized for outdoor applications": t("ppHMPipes.uvStabilized"),
+    "Lightweight and easy to handle": t("ppHMPipes.lightweightEasyHandle"),
+    
+    // Fittings
+    "Injection Molding": t("ppHMPipes.injectionMolding"),
+    "Precision injection molded fittings for reliable connections": t("ppHMPipes.injectionMoldingDescription"),
+    "Welded Fittings": t("ppHMPipes.weldedFittings"),
+    "High-strength welded fittings for permanent connections": t("ppHMPipes.weldedFittingsDescription"),
+    "Connection Components": t("ppHMPipes.connectionComponents"),
+    "Essential components for secure pipe connections": t("ppHMPipes.connectionComponentsDescription"),
+    
+    // Individual fittings
+    "Injection molding elbow": t("ppHMPipes.injectionMoldingElbow"),
+    "Injection molding Y-branch": t("ppHMPipes.injectionMoldingYBranch"),
+    "Injection molding Y-branch Reducer": t("ppHMPipes.injectionMoldingYBranchReducer"),
+    "Injection molding TEE Reducer": t("ppHMPipes.injectionMoldingTeeReducer"),
+    "Injection molding Reducer": t("ppHMPipes.injectionMoldingReducer"),
+    "Welded elbow 11": t("ppHMPipes.weldedElbow11"),
+    "Welded elbow 60": t("ppHMPipes.weldedElbow60"),
+    "Welded elbow 90": t("ppHMPipes.weldedElbow90"),
+    "Welded Y-branch": t("ppHMPipes.weldedYBranch"),
+    "Welded Y-branch Reducer": t("ppHMPipes.weldedYBranchReducer"),
+    "Welded Reducer": t("ppHMPipes.weldedReducer"),
+    "Welded End cap": t("ppHMPipes.weldedEndCap"),
+    "Socket": t("ppHMPipes.socket"),
+    "Flex Adapter": t("ppHMPipes.flexAdapter"),
+    "Gasket": t("ppHMPipes.gasket"),
+    
+    // Section headers
+    "Material Properties:": t("ppHMPipes.materialProperties"),
+    "Application:": t("ppHMPipes.application"),
+    "Characteristics:": t("ppHMPipes.characteristics"),
+  };
+  return translations[text] || text;
+};
 
 // PP HM Pipe specifications data
 const pipeSpecifications = [
@@ -231,13 +311,13 @@ function PPHMPipesAndFittingsPage() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
-                  <Check className="w-5 h-5" />
+                  <CheckCircle className="w-5 h-5" />
                   <span className="text-sm font-medium">
                     50+ Years Lifespan
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
-                  <Check className="w-5 h-5" />
+                  <CheckCircle className="w-5 h-5" />
                   <span className="text-sm font-medium">100% Recyclable</span>
                 </div>
               </div>
@@ -337,7 +417,7 @@ function PPHMPipesAndFittingsPage() {
                     "More rigid and durable in higher temperatures than HDPE",
                   ].map((property, index) => (
                     <div key={index} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                       <span className="text-white">{property}</span>
                     </div>
                   ))}
@@ -353,7 +433,7 @@ function PPHMPipesAndFittingsPage() {
                     "Road and rail infrastructure, as culverts and drainage pipes",
                   ].map((application, index) => (
                     <div key={index} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                       <span className="text-white">{application}</span>
                     </div>
                   ))}
@@ -377,7 +457,7 @@ function PPHMPipesAndFittingsPage() {
                     "Fully recyclable, making it an eco-friendly option",
                   ].map((characteristic, index) => (
                     <div key={index} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
                       <span className="text-white">{characteristic}</span>
                     </div>
                   ))}

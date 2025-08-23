@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Search, BookOpen, Download, Eye, Upload, Image, FileText, X } from "lucide-react";
+import { Plus, Edit, Trash2, Search, BookOpen, Download, Eye, Upload, Image, FileText, Languages, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import type { Brochure, InsertBrochure, BrochureCategory } from "@shared/schema";
-
+import { TranslationHelper } from "./TranslationHelper";
 import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
 
 interface BrochureEntry {
@@ -31,6 +31,7 @@ interface BrochureEntry {
 interface BrochureFormData {
   name: string;
   category: string;
+  description: string;
   status: string;
   active: boolean;
   sortOrder: number;
@@ -48,12 +49,12 @@ export function EnhancedBrochuresManager() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-
+  const [isTranslationDialogOpen, setIsTranslationDialogOpen] = useState(false);
   const [selectedBrochure, setSelectedBrochure] = useState<Brochure | null>(null);
-  const [editingLanguage, setEditingLanguage] = useState<string>('en');
   const [formData, setFormData] = useState<BrochureFormData>({
     name: "",
     category: "",
+    description: "",
     status: "active",
     active: true,
     sortOrder: 0,
@@ -102,14 +103,10 @@ export function EnhancedBrochuresManager() {
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: Partial<InsertBrochure> }) => {
-      console.log("Update mutation - making API request:", { id, data });
       const result = await apiRequest(`/api/admin/brochures/${id}`, "PUT", data);
-      const responseData = await result.json();
-      console.log("Update mutation - API response:", responseData);
-      return responseData;
+      return result.json();
     },
-    onSuccess: (data) => {
-      console.log("Update mutation - Success:", data);
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/brochures"] });
       setIsEditDialogOpen(false);
       setSelectedBrochure(null);
@@ -119,11 +116,10 @@ export function EnhancedBrochuresManager() {
         description: "Brochure updated successfully",
       });
     },
-    onError: (error) => {
-      console.error("Update mutation - Error:", error);
+    onError: () => {
       toast({
         title: "Error",
-        description: `Failed to update brochure: ${error.message}`,
+        description: "Failed to update brochure",
         variant: "destructive",
       });
     },
@@ -162,6 +158,7 @@ export function EnhancedBrochuresManager() {
     setFormData({
       name: "",
       category: "",
+      description: "",
       status: "active",
       active: true,
       sortOrder: 0,
@@ -180,126 +177,28 @@ export function EnhancedBrochuresManager() {
         de: {}
       }
     });
-    setEditingLanguage('en');
   };
 
-  const handleEdit = async (brochure: Brochure) => {
-    try {
-      // Extract existing translation metadata or create default structure
-      const existingTranslations = (brochure as any).translationMetadata || {
-        en: {},
-        mk: {},
-        de: {}
-      };
-      
-      // Populate current language data in translations
-      const currentLang = brochure.language || "en";
-      const updatedTranslations = {
-        ...existingTranslations,
-        [currentLang]: {
-          name: brochure.name
-        }
-      };
-      
-      console.log("handleEdit - Setting up translations:", {
-        brochure: brochure,
-        currentLang,
-        existingTranslations,
-        updatedTranslations
-      });
-
-      // If brochure has a translation group, fetch all related brochures and build complete translations
-      let entries: BrochureEntry[] = [];
-      let completeTranslations = { ...updatedTranslations };
-      
-      if (brochure.translationGroup) {
-        try {
-          const response = await apiRequest(`/api/admin/brochures/group/${brochure.translationGroup}`, "GET");
-          const groupBrochures: Brochure[] = await response.json();
-          
-          // Build complete translations from all brochures in the group
-          groupBrochures.forEach(groupBrochure => {
-            const lang = groupBrochure.language || "en";
-            completeTranslations[lang] = {
-              ...completeTranslations[lang],
-              name: groupBrochure.name
-            };
-          });
-          
-          // Create entries from all brochures in the group
-          entries = groupBrochures.map((groupBrochure, index) => ({
-            id: (index + 1).toString(),
-            pdfFile: null,
-            pdfUrl: groupBrochure.pdfUrl || "",
-            imageFile: null,
-            imageUrl: groupBrochure.imageUrl || "",
-            language: groupBrochure.language || "en",
-            languageName: getLanguageName(groupBrochure.language || "en")
-          }));
-        } catch (error) {
-          console.error("Error fetching translation group:", error);
-          // Show more specific error message
-          if (error.message.includes('<!DOCTYPE')) {
-            console.error("API returned HTML instead of JSON - likely authentication or routing issue");
-          }
-          // Fallback to single entry if group fetch fails
-          entries = [{
-            id: "1",
-            pdfFile: null,
-            pdfUrl: brochure.pdfUrl || "",
-            imageFile: null,
-            imageUrl: brochure.imageUrl || "",
-            language: brochure.language || "en",
-            languageName: getLanguageName(brochure.language || "en")
-          }];
-        }
-      } else {
-        // Single brochure entry
-        entries = [{
-          id: "1",
-          pdfFile: null,
-          pdfUrl: brochure.pdfUrl || "",
-          imageFile: null,
-          imageUrl: brochure.imageUrl || "",
-          language: brochure.language || "en",
-          languageName: getLanguageName(brochure.language || "en")
-        }];
-      }
-
-      setFormData({
-        name: brochure.name,
-        category: brochure.category,
-        status: brochure.status,
-        active: brochure.active ?? true,
-        sortOrder: brochure.sortOrder || 0,
-        entries,
-        translations: completeTranslations
-      });
-      setSelectedBrochure(brochure);
-      setEditingLanguage(brochure.language || 'en');
-      setIsEditDialogOpen(true);
-    } catch (error) {
-      console.error("Error setting up edit form:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load brochure data for editing",
-        variant: "destructive",
-      });
-    }
-  };
-
-  // Helper function to get language name
-  const getLanguageName = (language: string): string => {
-    const languageMap: Record<string, string> = {
-      "en": "English",
-      "mk": "Macedonian", 
-      "de": "German",
-      "fr": "French",
-      "al": "Albanian",
-      "it": "Italian",
-      "es": "Spanish"
-    };
-    return languageMap[language] || "English";
+  const handleEdit = (brochure: Brochure) => {
+    setFormData({
+      name: brochure.name,
+      category: brochure.category,
+      description: brochure.description || "",
+      status: brochure.status,
+      active: brochure.active ?? true,
+      sortOrder: brochure.sortOrder || 0,
+      entries: [{
+        id: "1",
+        pdfFile: null,
+        pdfUrl: brochure.pdfUrl || "",
+        imageFile: null,
+        imageUrl: brochure.imageUrl || "",
+        language: brochure.language || "en",
+        languageName: brochure.language === "mk" ? "Macedonian" : brochure.language === "de" ? "German" : "English"
+      }]
+    });
+    setSelectedBrochure(brochure);
+    setIsEditDialogOpen(true);
   };
 
   const addEntry = () => {
@@ -310,7 +209,7 @@ export function EnhancedBrochuresManager() {
       imageFile: null,
       imageUrl: "",
       language: "en",
-      languageName: getLanguageName("en")
+      languageName: "English"
     };
     setFormData({
       ...formData,
@@ -319,11 +218,21 @@ export function EnhancedBrochuresManager() {
   };
 
   const updateEntryLanguage = (entryId: string, language: string) => {
+    const languageMap = {
+      "en": "English",
+      "mk": "Macedonian", 
+      "de": "German",
+      "fr": "French",
+      "al": "Albanian",
+      "it": "Italian",
+      "es": "Spanish"
+    };
+    
     setFormData({
       ...formData,
       entries: formData.entries.map(entry => 
         entry.id === entryId 
-          ? { ...entry, language, languageName: getLanguageName(language) }
+          ? { ...entry, language, languageName: languageMap[language as keyof typeof languageMap] || language }
           : entry
       )
     });
@@ -350,6 +259,7 @@ export function EnhancedBrochuresManager() {
   const handleSubmit = async () => {
     // Get the name from translations or fallback to the direct name input (matching categories pattern)
     const enName = formData.translations?.en?.name || formData.name;
+    const enDescription = formData.translations?.en?.description || formData.description;
     
     if (!enName.trim() || !formData.category) {
       toast({
@@ -441,17 +351,13 @@ export function EnhancedBrochuresManager() {
         language: (primaryEntry?.language || "en") as "en" | "mk" | "de",
         pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
         imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
+        description: enDescription || undefined,
         status: formData.status as "active" | "inactive" | "draft",
         active: formData.active,
         sortOrder: formData.sortOrder,
-        translationGroup: selectedBrochure?.translationGroup, // Preserve existing translation group
-        translationMetadata: formData.translations
+        translations: formData.translations
       };
 
-      console.log("Updating brochure:", { 
-        id: selectedBrochure.id, 
-        data: submissionData 
-      });
       updateMutation.mutate({ id: selectedBrochure.id, data: submissionData });
       return;
     }
@@ -510,11 +416,12 @@ export function EnhancedBrochuresManager() {
           language: entry.language as "en" | "mk" | "de",
           pdfUrl,
           imageUrl,
+          description: enDescription || undefined,
           status: formData.status as "active" | "inactive" | "draft",
           active: formData.active,
           sortOrder: formData.sortOrder,
           translationGroup: translationGroupId,
-          translationMetadata: formData.translations
+          translations: formData.translations
         });
       }
 
@@ -648,6 +555,7 @@ export function EnhancedBrochuresManager() {
                   <TableHead>Name</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Language</TableHead>
+                  <TableHead>Description</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>PDF</TableHead>
                   <TableHead>Image</TableHead>
@@ -673,6 +581,15 @@ export function EnhancedBrochuresManager() {
                          brochure.language === "de" ? "German" : 
                          brochure.language?.toUpperCase() || "EN"}
                       </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {brochure.description ? (
+                        <span className="text-sm line-clamp-2 max-w-xs">
+                          {brochure.description}
+                        </span>
+                      ) : (
+                        <span className="text-slate-400 text-sm">No description</span>
+                      )}
                     </TableCell>
                     <TableCell>
                       <Badge variant={brochure.active ? "default" : "secondary"}>
@@ -725,6 +642,17 @@ export function EnhancedBrochuresManager() {
                           onClick={() => window.open(brochure.pdfUrl, '_blank')}
                         >
                           <Download className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            setSelectedBrochure(brochure);
+                            setIsTranslationDialogOpen(true);
+                          }}
+                          title="Translate PDF"
+                        >
+                          <Languages className="h-4 w-4 text-blue-600" />
                         </Button>
                         <Button
                           variant="ghost"
@@ -805,7 +733,6 @@ export function EnhancedBrochuresManager() {
           }}
           isLoading={updateMutation.isPending}
           categories={categories}
-          editingLanguage={editingLanguage}
           addEntry={addEntry}
           removeEntry={removeEntry}
           updateEntry={updateEntry}
@@ -813,7 +740,17 @@ export function EnhancedBrochuresManager() {
         />
       </Dialog>
 
-
+      {/* Translation Helper Dialog */}
+      {selectedBrochure && (
+        <TranslationHelper
+          brochure={selectedBrochure}
+          isOpen={isTranslationDialogOpen}
+          onClose={() => {
+            setIsTranslationDialogOpen(false);
+            setSelectedBrochure(null);
+          }}
+        />
+      )}
     </div>
   );
 }
@@ -827,7 +764,6 @@ interface BrochureFormDialogProps {
   onCancel: () => void;
   isLoading: boolean;
   categories: BrochureCategory[];
-  editingLanguage?: string;
   addEntry: () => void;
   removeEntry: (entryId: string) => void;
   updateEntry: (entryId: string, field: keyof BrochureEntry, value: any) => void;
@@ -843,7 +779,6 @@ function BrochureFormDialog({
   onCancel,
   isLoading,
   categories,
-  editingLanguage = 'en',
   addEntry,
   removeEntry,
   updateEntry,
@@ -870,7 +805,7 @@ function BrochureFormDialog({
   };
 
   return (
-    <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto">
+    <DialogContent className="max-w-6xl">
       <DialogHeader>
         <DialogTitle>{title}</DialogTitle>
       </DialogHeader>
@@ -880,14 +815,9 @@ function BrochureFormDialog({
           label="Brochure Name *"
           fieldName="name"
           type="text"
-          defaultLanguage={editingLanguage}
           currentTranslations={formData.translations}
           originalValue={formData.name}
           onChange={(translations) => {
-            console.log("TranslatableFieldEditor onChange:", {
-              translations,
-              currentFormData: formData
-            });
             setFormData({ 
               ...formData, 
               translations,
@@ -915,7 +845,21 @@ function BrochureFormDialog({
           </Select>
         </div>
 
-
+        {/* Multi-language Description Field */}
+        <TranslatableFieldEditor
+          label="Description"
+          fieldName="description"
+          type="textarea"
+          currentTranslations={formData.translations}
+          originalValue={formData.description}
+          onChange={(translations) => {
+            setFormData({ 
+              ...formData, 
+              translations,
+              description: translations.en?.description || formData.description
+            });
+          }}
+        />
 
         {/* Dynamic Entries Table */}
         <Card>

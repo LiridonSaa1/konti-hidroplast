@@ -5,22 +5,83 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
-import { ChevronDown, Download, Play, Check } from "lucide-react";
+import {
+  Download,
+  Shield,
+  Award,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
-// PP ML Compact Pipe specifications data
+// PP-HM Smooth OD pipes translation helper function
+const translatePpHmSmoothODText = (text: string, t: any) => {
+  const translations: { [key: string]: string } = {
+    // Page titles and headers
+    "PP-HM SMOOTH OD": t("ppHmSmoothOD.ppHmSmoothOd"),
+    "PP-HM SMOOTH OD Pipes": t("ppHmSmoothOD.ppHmSmoothOdPipes"),
+    "PP-HM SMOOTH OD Manufacturing": t("ppHmSmoothOD.ppHmSmoothOdManufacturing"),
+    
+    // Descriptions
+    "PP-HM (Polypropylene High Modulus) smooth OD pipes are high-performance thermoplastic pipes designed for demanding applications in sewage, drainage, and industrial systems.": t("ppHmSmoothOD.heroDescription"),
+    "PP-HM smooth OD pipes offer exceptional strength, chemical resistance, and durability, making them ideal for both pressure and non-pressure applications in challenging environments.": t("ppHmSmoothOD.pipeDescription"),
+    "PP-HM smooth OD pipes are manufactured using high-modulus polypropylene, providing superior mechanical properties and long-term performance in demanding applications.": t("ppHmSmoothOD.manufacturingDescription"),
+    
+    // Technical specifications and features
+    "Common stiffness classes include SN 2, SN 4, SN 8, SN 12.5, or higher for specific applications": t("ppHmSmoothOD.stiffnessClasses"),
+    "Suitable for pipes with diameters ranging from Ø 110 – 500 mm": t("ppHmSmoothOD.diameterRange"),
+    "Color: Black (other color on request)": t("ppHmSmoothOD.color"),
+    "Length: 6m": t("ppHmSmoothOD.length"),
+    "Service life of over 50 years under normal conditions": t("ppHmSmoothOD.serviceLife"),
+    "Fully recyclable": t("ppHmSmoothOD.fullyRecyclable"),
+    "Color: Black (other color on request) | Length: 6m": t("ppHmSmoothOD.colorLength"),
+    
+    // Material properties
+    "Polypropylene High Modulus (PP-HM)": t("ppHmSmoothOD.ppHmMaterial"),
+    "High stiffness and strength for demanding applications": t("ppHmSmoothOD.highStiffnessStrength"),
+    "Excellent resistance to chemicals and biological degradation": t("ppHmSmoothOD.chemicalBiologicalResistance"),
+    "Superior dimensional stability and creep resistance": t("ppHmSmoothOD.dimensionalStability"),
+    
+    // Applications
+    "Sewerage and stormwater drainage systems": t("ppHmSmoothOD.sewerageStormwater"),
+    "Industrial effluent and chemical waste pipelines": t("ppHmSmoothOD.industrialEffluent"),
+    "High-temperature applications": t("ppHmSmoothOD.highTemperature"),
+    "Chemical processing plants": t("ppHmSmoothOD.chemicalProcessing"),
+    "Municipal infrastructure projects": t("ppHmSmoothOD.municipalInfrastructure"),
+    "Agricultural drainage systems": t("ppHmSmoothOD.agriculturalDrainage"),
+    
+    // Characteristics
+    "High ring stiffness for structural integrity": t("ppHmSmoothOD.highRingStiffness"),
+    "Excellent chemical resistance to acids, bases, and solvents": t("ppHmSmoothOD.excellentChemicalResistance"),
+    "Superior temperature resistance up to 90°C": t("ppHmSmoothOD.temperatureResistance"),
+    "Low thermal expansion coefficient": t("ppHmSmoothOD.lowThermalExpansion"),
+    "High impact resistance and toughness": t("ppHmSmoothOD.highImpactResistance"),
+    "Smooth inner surface for optimal flow": t("ppHmSmoothOD.smoothInnerSurface"),
+    "UV-stabilized for outdoor applications": t("ppHmSmoothOD.uvStabilized"),
+    "Lightweight and easy to handle": t("ppHmSmoothOD.lightweightEasyHandle"),
+    
+    // Section headers
+    "Material Properties:": t("ppHmSmoothOD.materialProperties"),
+    "Application:": t("ppHmSmoothOD.application"),
+    "Characteristics:": t("ppHmSmoothOD.characteristics"),
+  };
+  return translations[text] || text;
+};
+
+// PP-HM Smooth OD specifications data
 const pipeSpecifications = [
   {
-    id: "pp-ml",
-    title: "PP ML COMPACT PIPE",
+    id: "pp-hm-smooth-od",
+    title: "PP-HM SMOOTH OD",
     description:
-      "PP ML (Polypropylene Multi-Layer) solid pipes are designed specifically for sewage and drainage systems, offering a combination of durability, efficiency, and environmental sustainability.",
+      "PP-HM (Polypropylene High Modulus) smooth OD pipes are high-performance thermoplastic pipes designed for demanding applications in sewage, drainage, and industrial systems.",
     features: [
-      "Available in different classes: SN 8, SN 10, SN 12, SN 16 KN/m²",
-      "Dimension range: DN/OD 160-500mm", 
-      "Color: Outer orange-brown/middle black and inner light color",
-      "Triple-layered construction for enhanced performance",
-      "Manning's coefficient typically around 0.009",
-      "50+ years expected service life",
+      "Common stiffness classes include SN 2, SN 4, SN 8, SN 12.5, or higher for specific applications",
+      "Suitable for pipes with diameters ranging from Ø 110 – 500 mm",
+      "Color: Black (other color on request)",
+      "Length: 6m",
+      "Service life of over 50 years under normal conditions",
+      "Fully recyclable",
     ],
     image:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/PPHM-SMOOTH-WALL-min.jpg",
@@ -35,18 +96,18 @@ function PPHMSmoothODPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
   const { data: companyInfo } = useCompanyInfo();
-  const [activeTab, setActiveTab] = useState("pp-ml");
+  const [activeTab, setActiveTab] = useState("pp-hm-smooth-od");
 
   useEffect(() => {
     // Set page title
-    document.title = `PP ML COMPACT PIPE - ${companyInfo.companyName || "Konti Hidroplast"}`;
+    document.title = `PP-HM SMOOTH OD - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
     // Add meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "PP ML (Polypropylene Multi-Layer) solid pipes are designed specifically for sewage and drainage systems, offering a combination of durability, efficiency, and environmental sustainability.",
+        "PP-HM (Polypropylene High Modulus) smooth OD pipes are high-performance thermoplastic pipes designed for demanding applications in sewage, drainage, and industrial systems.",
       );
     }
   }, []);
@@ -71,34 +132,34 @@ function PPHMSmoothODPage() {
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                PP ML
+                PP-HM SMOOTH OD
                 <br />
-                <span className="text-red-500">COMPACT</span>
+                <span className="text-red-500">PIPES</span>
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  PIPE
+                  MANUFACTURING
                 </span>
               </h1>
               <p
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                PP ML (Polypropylene Multi-Layer) solid pipes are designed specifically for sewage and drainage systems, offering a combination of durability, efficiency, and environmental sustainability.
+                PP-HM (Polypropylene High Modulus) smooth OD pipes are high-performance thermoplastic pipes designed for demanding applications in sewage, drainage, and industrial systems.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
-                  <Check className="w-5 h-5" />
+                  <CheckCircle className="w-5 h-5" />
                   <span className="text-sm font-medium">
                     50+ Years Lifespan
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
-                  <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">100% Recyclable</span>
+                  <CheckCircle className="w-5 h-5" />
+                  <span className="text-sm font-medium">Fully Recyclable</span>
                 </div>
                 <div className="flex items-center gap-2 text-yellow-300">
-                  <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">Triple-Layered</span>
+                  <CheckCircle className="w-5 h-5" />
+                  <span className="text-sm font-medium">High Stiffness & Strength</span>
                 </div>
               </div>
             </div>
@@ -107,7 +168,7 @@ function PPHMSmoothODPage() {
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <img
                   src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/PPHM-SMOOTH-WALL-min.jpg"
-                  alt="PP ML COMPACT PIPE"
+                  alt="PP-HM SMOOTH OD"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -135,7 +196,7 @@ function PPHMSmoothODPage() {
           <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 max-w-6xl mx-auto">
             <div className="space-y-6 text-gray-700">
               <p className="text-lg leading-relaxed">
-                PP ML compact pipe is made of high module polypropylene (PP-HM) as its basic material, with three layers. Each of the three layers has a different modified formula of the basic material, which gives specific performances in the entire quality of the pipe.
+                PP-HM smooth OD pipes offer exceptional strength, chemical resistance, and durability, making them ideal for both pressure and non-pressure applications in challenging environments.
               </p>
               <p className="text-lg leading-relaxed">
                 <strong>Production standard:</strong> EN 13476-2:2007 (Type А1) and ONR 201513:2011
@@ -145,14 +206,14 @@ function PPHMSmoothODPage() {
         </div>
       </section>
 
-      {/* PP ML Compact Pipes Section */}
+      {/* PP-HM Smooth OD Pipes Section */}
       <section className="py-20 bg-[#1c2d56]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-white">
-                TRIPLE-LAYERED PIPE
+                Material Properties
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -163,24 +224,24 @@ function PPHMSmoothODPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div>
                 <p className="text-white mb-6">
-                  PP ML (Three-Layer) solid pipes provide a robust, efficient, and eco-friendly solution for modern sewage systems. Their combination of structural strength, hydraulic performance, and chemical resistance makes them ideal for both municipal and industrial wastewater applications.
+                  PP-HM smooth OD pipes are manufactured using high-modulus polypropylene, providing superior mechanical properties and long-term performance in demanding applications.
                 </p>
 
                 <h4 className="text-xl font-bold text-white mb-4">
-                  Layer Construction:
+                  Material Properties:
                 </h4>
                 <div className="space-y-4 mb-6">
                   <div className="p-4 bg-white/10 rounded-lg">
-                    <h5 className="font-bold text-orange-300 mb-2">INNER LAYER:</h5>
-                    <p className="text-white text-sm">Made of modified PP with guaranteed high chemical and abrasive resistance. The smooth surface ensures good flow and prevents deposits.</p>
+                    <h5 className="font-bold text-orange-300 mb-2">Polypropylene High Modulus (PP-HM):</h5>
+                    <p className="text-white text-sm">High stiffness and strength for demanding applications</p>
                   </div>
                   <div className="p-4 bg-white/10 rounded-lg">
-                    <h5 className="font-bold text-gray-300 mb-2">MIDDLE LAYER:</h5>
-                    <p className="text-white text-sm">Impact resistant layer, even at low temperatures.</p>
+                    <h5 className="font-bold text-gray-300 mb-2">High stiffness and strength for demanding applications:</h5>
+                    <p className="text-white text-sm">Excellent resistance to chemicals and biological degradation</p>
                   </div>
                   <div className="p-4 bg-white/10 rounded-lg">
-                    <h5 className="font-bold text-yellow-300 mb-2">OUTER LAYER:</h5>
-                    <p className="text-white text-sm">Made of high quality PP, filled with mineral modifier; highly resistant to atmospheric agents and surface damaging. The modified PP formula ensures high UV protection, allowing external storage.</p>
+                    <h5 className="font-bold text-yellow-300 mb-2">Superior dimensional stability and creep resistance:</h5>
+                    <p className="text-white text-sm">Superior dimensional stability and creep resistance</p>
                   </div>
                 </div>
 
@@ -189,13 +250,15 @@ function PPHMSmoothODPage() {
                 </h4>
                 <div className="space-y-3 mb-6">
                   {[
-                    "Residential, municipal, and industrial wastewater systems",
-                    "Stormwater management and subsoil drainage", 
-                    "Transport of chemical effluents and process water",
-                    "High-load applications like culverts under roads and railways",
+                    "Sewerage and stormwater drainage systems",
+                    "Industrial effluent and chemical waste pipelines",
+                    "High-temperature applications",
+                    "Chemical processing plants",
+                    "Municipal infrastructure projects",
+                    "Agricultural drainage systems",
                   ].map((application, index) => (
                     <div key={index} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
                       <span className="text-white">{application}</span>
                     </div>
                   ))}
@@ -206,17 +269,17 @@ function PPHMSmoothODPage() {
                 </h4>
                 <div className="space-y-3 mb-8">
                   {[
-                    "Color: Outer orange-brown/middle black and inner light color",
-                    "Dimensions: from DN / OD 160 to 500 mm with complete range of fittings",
-                    "Available in different classes: SN 8, SN 10, SN 12, SN 16 KN/m²",
-                    "Manning's coefficient typically around 0.009, reducing clogging",
-                    "Expected service life exceeds 50 years under normal conditions", 
-                    "Suitable for above-ground and exposed installations with UV-stabilized outer layers",
-                    "Can operate between -20°C and +90°C",
-                    "Fully recyclable material and energy-efficient production",
+                    "High ring stiffness for structural integrity",
+                    "Excellent chemical resistance to acids, bases, and solvents",
+                    "Superior temperature resistance up to 90°C",
+                    "Low thermal expansion coefficient",
+                    "High impact resistance and toughness",
+                    "Smooth inner surface for optimal flow",
+                    "UV-stabilized for outdoor applications",
+                    "Lightweight and easy to handle",
                   ].map((characteristic, index) => (
                     <div key={index} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
                       <span className="text-white">{characteristic}</span>
                     </div>
                   ))}
@@ -249,14 +312,14 @@ function PPHMSmoothODPage() {
                   <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
                     <img
                       src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/pphm-smooth1-min.jpg"
-                      alt="PP ML COMPACT PIPE Installation"
+                      alt="PP-HM SMOOTH OD Installation"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
                     <img
                       src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/pphm-smooth-2-min.jpg"
-                      alt="PP ML COMPACT PIPE Cross Section"
+                      alt="PP-HM SMOOTH OD Cross Section"
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -279,7 +342,7 @@ function PPHMSmoothODPage() {
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our PP ML COMPACT PIPE solutions?
+              Need more information about our PP-HM SMOOTH OD solutions?
               Contact our team of experts.
             </p>
             <a

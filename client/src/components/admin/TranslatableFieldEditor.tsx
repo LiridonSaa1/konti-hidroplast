@@ -9,14 +9,13 @@ import { Badge } from '@/components/ui/badge';
 interface TranslatableFieldEditorProps {
   label: string;
   fieldName: string;
-  type?: 'text' | 'textarea';
-  defaultLanguage?: string;
-  currentTranslations?: {
+  type: "text" | "textarea";
+  currentTranslations: {
     en?: Record<string, string>;
     mk?: Record<string, string>;
     de?: Record<string, string>;
   };
-  originalValue?: string;
+  originalValue: string;
   onChange: (translations: {
     en?: Record<string, string>;
     mk?: Record<string, string>;
@@ -34,12 +33,12 @@ export function TranslatableFieldEditor({
   label, 
   fieldName, 
   type = 'text',
-  defaultLanguage = 'en',
   currentTranslations = {}, 
   originalValue = '',
   onChange 
 }: TranslatableFieldEditorProps) {
   const handleFieldChange = (languageCode: string, value: string) => {
+    console.log(`TranslatableFieldEditor: Field ${fieldName} changed for language ${languageCode} to: "${value}"`);
     const updatedTranslations = {
       ...currentTranslations,
       [languageCode]: {
@@ -47,6 +46,7 @@ export function TranslatableFieldEditor({
         [fieldName]: value
       }
     };
+    console.log('TranslatableFieldEditor: Updated translations:', updatedTranslations);
     onChange(updatedTranslations);
   };
 
@@ -78,7 +78,7 @@ export function TranslatableFieldEditor({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue={defaultLanguage} className="w-full">
+        <Tabs defaultValue="en" className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-4">
             {languages.map((lang) => {
               const status = getTranslationStatus(lang.code);

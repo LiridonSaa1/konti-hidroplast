@@ -301,7 +301,6 @@ export const insertBrochureSchema = createInsertSchema(brochures, {
   active: z.boolean().default(true),
   sortOrder: z.number().int().default(0),
   translationGroup: z.string().optional(),
-  translationMetadata: z.record(z.any()).optional(),
 }).omit({
   id: true,
   createdAt: true,
@@ -394,16 +393,12 @@ export const insertProjectSchema = createInsertSchema(projects).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
-  translations: true,
-  defaultLanguage: true,
 });
 
 export const insertGalleryCategorySchema = createInsertSchema(galleryCategories).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
-  translations: true,
-  defaultLanguage: true,
 });
 
 export const insertGalleryItemSchema = createInsertSchema(galleryItems).omit({
@@ -459,8 +454,6 @@ export const insertPositionSchema = createInsertSchema(positions).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
-  translations: true,
-  defaultLanguage: true,
 });
 
 export type InsertPosition = z.infer<typeof insertPositionSchema>;

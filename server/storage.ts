@@ -1477,7 +1477,7 @@ export class MemStorage implements IStorage {
       this.brochureCategoriesData.splice(index, 1);
     }
   }
-
+  
   // Project methods
   async getAllProjects(): Promise<Project[]> {
     return this.projectsData.sort((a, b) => {

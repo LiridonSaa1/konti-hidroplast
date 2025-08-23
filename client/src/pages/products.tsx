@@ -1,10 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
-import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
+import {
+  Download,
+  Shield,
+  Award,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  ArrowRight,
+} from "lucide-react";
 
 // Product categories data
 const productCategories = [
@@ -100,7 +109,7 @@ function ProductsPage() {
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "Explore our comprehensive range of PE and PP pipes for water supply, sewerage, gas pipeline systems, and cable protection. Quality products meeting international standards.",
+        t("productsPage.metaDescription"),
       );
     }
   }, []);
@@ -119,7 +128,7 @@ function ProductsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <div className="mb-6 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full inline-block">
-                <span className="text-sm font-medium">HIGH-QUALITY PIPES</span>
+                <span className="text-sm font-medium">{t("productsPage.heroHighQualityPipes")}</span>
               </div>
               <h1
                 className="text-5xl md:text-6xl font-bold mb-8 leading-tight"
@@ -141,11 +150,11 @@ function ProductsPage() {
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
                   <span className="text-sm font-medium">
-                    Manufacturing Excellence
+                    {t("productsPage.heroManufacturingExcellence")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
-                  <span className="text-sm font-medium">ISO Certified</span>
+                  <span className="text-sm font-medium">{t("productsPage.heroIsoCertified")}</span>
                 </div>
               </div>
             </div>
@@ -154,13 +163,13 @@ function ProductsPage() {
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <img
                   src="/attached_assets/Discovering-min_1755249567212.png"
-                  alt="High-quality PE and PP pipe systems in manufacturing facility"
+                  alt={t("productsPage.heroImageAlt")}
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="absolute -bottom-4 -right-4 bg-red-600 text-white px-4 py-2 rounded-full shadow-lg">
                 <span className="text-sm font-medium">
-                  Driving Progress With Innovation
+                  {t("productsPage.heroDrivingProgress")}
                 </span>
               </div>
             </div>
@@ -174,25 +183,16 @@ function ProductsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Product Range
+                {t("productsPage.productRange")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 mb-12">
-              <p className="text-lg">
-                Konti Hidroplast products find a broad range of applications in
-                the industrial and utilities market on a worldwide scale. The
-                water and gas distribution enterprises are important sectors for
-                high integrity products where the maintenance of water quality
-                and the safe transport of gaseous fuels are of paramount
-                importance.
+              <p className="text-lg mb-4">
+                {t("productsPage.applicationDescription1")}
               </p>
-              <p></p>
               <p className="text-lg">
-                Industrial applications include alternative energy installations
-                in landfill gas systems to effluent transportation and mineral
-                slurry. Products are widely used in pipeline installation,
-                repair and maintenance.
+                {t("productsPage.applicationDescription2")}
               </p>
             </div>
           </div>
@@ -204,7 +204,7 @@ function ProductsPage() {
         <div className="absolute inset-0">
           <img
             src="/attached_assets/download_1755250894007.png"
-            alt="PE Pipe Technical Specifications Diagram"
+            alt={t("productsPage.peTechnicalAlt")}
             className="w-full h-full object-cover opacity-20"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-white via-white/95 to-white/90"></div>
@@ -221,7 +221,7 @@ function ProductsPage() {
                 <div className="relative w-full max-w-5xl">
                   <img
                     src="/attached_assets/PE_1755262086355.png"
-                    alt="PE Technical Specifications Flow Diagram"
+                    alt={t("productsPage.peFlowAlt")}
                     className="w-full h-auto object-contain"
                     data-testid="pe-flow-diagram"
                   />
@@ -240,7 +240,7 @@ function ProductsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Products
+                {t("aboutUs.productsTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -267,7 +267,7 @@ function ProductsPage() {
 
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    WATER SUPPLY SYSTEMS
+                    {t("aboutUs.waterSupplySystems")}
                   </h3>
 
                   {/* Learn More Button */}
@@ -314,7 +314,7 @@ function ProductsPage() {
 
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    SEWERAGE SYSTEMS
+                    {t("aboutUs.sewerageSystems")}
                   </h3>
 
                   {/* Learn More Button */}
@@ -357,7 +357,7 @@ function ProductsPage() {
 
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    GAS PIPELINE SYSTEM
+                    {t("aboutUs.gasPipelineSystem")}
                   </h3>
 
                   {/* Learn More Button */}
@@ -400,7 +400,7 @@ function ProductsPage() {
 
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    CABLE PROTECTION
+                    {t("aboutUs.cableProtection")}
                   </h3>
 
                   {/* Learn More Button */}
@@ -433,13 +433,12 @@ function ProductsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+                {t("aboutUs.getInTouchTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our cable protection solutions?
-              Contact our team of experts.
+              {t("aboutUs.getInTouchDescription")}
             </p>
             <Button
               onClick={() => {
@@ -451,7 +450,7 @@ function ProductsPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              Contact Us
+              {t("aboutUs.contactUsButton")}
             </Button>
           </div>
         </div>

@@ -7,6 +7,96 @@ import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { ChevronDown, Download, Play, Check } from "lucide-react";
 
+// KONTI KAN SPIRAL pipes translation helper function
+const translateSpiralPipeText = (text: string, t: any) => {
+  const translations: { [key: string]: string } = {
+    // Page titles and headers
+    "KONTI KAN SPIRAL": t("spiralPipes.kontiKanSpiral"),
+    "KONTI KAN SPIRAL Pipes": t("spiralPipes.kontiKanSpiralPipes"),
+    "KONTI KAN SPIRAL Manufacturing": t("spiralPipes.kontiKanSpiralManufacturing"),
+    
+    // Descriptions
+    "Clients and engineers as ideal pipe material for many pressure and non-pressure applications such as water distribution; gravity sewer, rehabilitation projects and manholes recognize polyethylene.": t("spiralPipes.heroDescription"),
+    "KONTI KAN SPIRAL PIPE is made of PEHD profile spirally wound on a drum with a specific diameter. It contains all technical advantages of equivalent polyethylene pipes with full walls significantly decreasing the weight, providing much easier installation and increased efficiency.": t("spiralPipes.pipeDescription"),
+    "Latest development of production of Konti Hidroplast is manufacturing sewage pipes for non-pressure applications. Konti Kan Spiral pipe and complete range of Konti Kan Spiral fittings.": t("spiralPipes.latestDevelopment"),
+    "Konti Kan Spiral pipes are made of hollow PE-HD sections helically wound on a drum with a specific diameter. Konti Kan Spiral Pipe provides all technical advantages of equivalent polyethylene solid wall pipe with substantial saving in weight combining greater ease of installation with increased cost effectiveness. Its unique structure can offer a range of pipe sizes and ring stiffness, depending of customers requirements.": t("spiralPipes.constructionDescription"),
+    "The characteristics of raw material and the technology of production are combined to insure application in:": t("spiralPipes.rawMaterialCharacteristics"),
+    "Konti Kan Spiral provides all technical advantages as well as polyethylene or polypropylene pipes with solid wall, the only difference is that Konti Kan Spiral are significantly lighter in weight and thus for the installation, which is also financially viable.": t("spiralPipes.technicalAdvantages"),
+    
+    // Technical specifications and features
+    "Common stiffness classes include SN 2, SN 4, SN 8, SN 12.5, or even higher for specific applications": t("spiralPipes.stiffnessClasses"),
+    "Suitable for pipes with diameters ranging from Ø 1300 – 2000 mm": t("spiralPipes.diameterRange"),
+    "Color: Black (other color on request)": t("spiralPipes.color"),
+    "Length: 6m": t("spiralPipes.length"),
+    "Service life of over 50 years under normal conditions": t("spiralPipes.serviceLife"),
+    "Fully recyclable": t("spiralPipes.fullyRecyclable"),
+    "Color: Black (other color on request) | Length: 6m": t("spiralPipes.colorLength"),
+    
+    // Material properties
+    "High-Density Polyethylene (HDPE)": t("spiralPipes.hdpeMaterial"),
+    "Lightweight but strong, with high tensile strength": t("spiralPipes.lightweightStrong"),
+    "Excellent resistance to chemical and biological degradation": t("spiralPipes.chemicalBiologicalResistance"),
+    "Flexible and resistant to environmental stress cracking": t("spiralPipes.flexibleResistant"),
+    
+    // Applications
+    "Sewerage and stormwater drainage systems": t("spiralPipes.sewerageStormwater"),
+    "Large-scale water transport and storage": t("spiralPipes.waterTransportStorage"),
+    "Industrial effluent pipelines": t("spiralPipes.industrialEffluent"),
+    "Culverts and irrigation systems": t("spiralPipes.culvertsIrrigation"),
+    "Ventilation ducts in mines": t("spiralPipes.ventilationDucts"),
+    "Municipality for infrastructure objects": t("spiralPipes.municipalityInfrastructure"),
+    "Industry": t("spiralPipes.industry"),
+    "Roads building": t("spiralPipes.roadsBuilding"),
+    "Reconstruction": t("spiralPipes.reconstruction"),
+    
+    // Characteristics
+    "Resistant to both acidic and alkaline environments": t("spiralPipes.acidAlkalineResistance"),
+    "Can be used above ground with UV-stabilized formulations": t("spiralPipes.aboveGroundUse"),
+    "Functional between -40°C to +60°C": t("spiralPipes.temperatureRange"),
+    
+    // Connection methods
+    "For connection of the pipes and fittings Konti Kan spiral pipe are use the following methods:": t("spiralPipes.connectionMethods"),
+    "Connection with socket +EPDM gasket": t("spiralPipes.socketEpdm"),
+    "Extrusion welding from both side": t("spiralPipes.extrusionWeldingBoth"),
+    "Extrusion welding inside": t("spiralPipes.extrusionWeldingInside"),
+    "Connection with thread with inside welding or with thermo shrink tape": t("spiralPipes.threadConnection"),
+    "Electro fusion connection": t("spiralPipes.electroFusion"),
+    "Connection with metal part with inside rubber layer": t("spiralPipes.metalConnection"),
+    "But welding": t("spiralPipes.buttWelding"),
+    "Connection Methods": t("spiralPipes.connectionMethodsStandards"),
+    "Various connection methods for Konti Kan spiral pipes": t("spiralPipes.connectionMethods"),
+    
+    // Standards table
+    "Connection Methods & Standards": t("spiralPipes.connectionMethodsStandards"),
+    "Reference Standards": t("spiralPipes.referenceStandards"),
+    "Application": t("spiralPipes.applicationColumn"),
+    "EN 13476-1:2007": t("spiralPipes.standardEN13476_1"),
+    "Sewage System – waste water and combined systems": t("spiralPipes.sewageSystem"),
+    "EN 13476-2:2007": t("spiralPipes.standardEN13476_2"),
+    "When building highways": t("spiralPipes.buildingHighways"),
+    "EN 476:2001": t("spiralPipes.standardEN476"),
+    "Drainage of surface water": t("spiralPipes.drainageSurfaceWater"),
+    "EN 1610:2002": t("spiralPipes.standardEN1610"),
+    "Residential drainage systems": t("spiralPipes.residentialDrainage"),
+    "EN 1852-1:1999": t("spiralPipes.standardEN1852"),
+    "Industrial pipelines": t("spiralPipes.industrialPipelines"),
+    "ENV 1046:2002 (Y)": t("spiralPipes.standardENV1046"),
+    "Underwater installations": t("spiralPipes.underwaterInstallations"),
+    "SFS 5906:2004": t("spiralPipes.standardSFS5906"),
+    "Renovation": t("spiralPipes.renovation"),
+    
+    // Section headers
+    "Material Properties:": t("spiralPipes.materialProperties"),
+    "Application:": t("spiralPipes.application"),
+    "Characteristics:": t("spiralPipes.characteristics"),
+    
+    // Missing characteristics that need mapping
+    "Suitable for pipes with diameters ranging from Ø 1300 – 2000 mm, often used in large-scale infrastructure projects.": t("spiralPipes.diameterRange"),
+    "Industry, Roads building, Reconstruction": "Industry, Roads building, Reconstruction", // This seems to be a concatenated string, handle individually
+  };
+  return translations[text] || text;
+};
+
 // Konti Kan Spiral Pipe specifications data
 const pipeSpecifications = [
   {
@@ -367,7 +457,7 @@ function KontiKanSpiralPipesPage() {
                   ].map((property, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-white">{property}</span>
+                      <span className="text-white">{translateSpiralPipeText(property, t)}</span>
                     </div>
                   ))}
                 </div>
@@ -385,7 +475,7 @@ function KontiKanSpiralPipesPage() {
                   ].map((application, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-white">{application}</span>
+                      <span className="text-white">{translateSpiralPipeText(application, t)}</span>
                     </div>
                   ))}
                 </div>
@@ -409,7 +499,7 @@ function KontiKanSpiralPipesPage() {
                   ].map((characteristic, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <Check className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
-                      <span className="text-white">{characteristic}</span>
+                      <span className="text-white">{translateSpiralPipeText(characteristic, t)}</span>
                     </div>
                   ))}
                 </div>
@@ -519,10 +609,10 @@ function KontiKanSpiralPipesPage() {
                   ].map((item, index) => (
                     <tr key={index} className="hover:bg-gray-50">
                       <td className="border border-gray-300 px-6 py-4 text-sm font-medium text-[#1c2d56]">
-                        {item.standard}
+                        {translateSpiralPipeText(item.standard, t)}
                       </td>
                       <td className="border border-gray-300 px-6 py-4 text-sm text-gray-700">
-                        {item.application}
+                        {translateSpiralPipeText(item.application, t)}
                       </td>
                     </tr>
                   ))}

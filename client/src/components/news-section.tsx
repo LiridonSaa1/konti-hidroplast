@@ -71,7 +71,7 @@ export function NewsSection() {
         {/* Error state */}
         {error && (
           <div className="text-center py-8">
-            <p className="text-gray-600">{t('news.errorLoading') || 'Failed to load news articles'}</p>
+            <p className="text-gray-600">{t('news.errorLoading')}</p>
           </div>
         )}
 
@@ -126,7 +126,7 @@ export function NewsSection() {
         {/* No articles message */}
         {!isLoading && !error && newsArticles.length === 0 && (
           <div className="text-center py-8">
-            <p className="text-gray-600">{t('news.noArticles') || 'No news articles available'}</p>
+            <p className="text-gray-600">{t('news.noArticles')}</p>
           </div>
         )}
 

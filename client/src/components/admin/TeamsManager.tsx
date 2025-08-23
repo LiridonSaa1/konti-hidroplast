@@ -184,7 +184,7 @@ export function TeamsManager() {
               Add Team Member
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto" data-testid="team-form-dialog">
+          <DialogContent className="sm:max-w-[600px]" data-testid="team-form-dialog">
             <DialogHeader>
               <DialogTitle data-testid="form-title">
                 {editingTeam ? "Edit Team Member" : "Add New Team Member"}

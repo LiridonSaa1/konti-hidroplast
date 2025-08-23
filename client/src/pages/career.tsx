@@ -179,38 +179,33 @@ function CareerPage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
-              <span className="text-sm font-medium">JOIN OUR TEAM</span>
+            <div className="text-center mb-4">
+              <span className="text-sm font-medium">{t("careerPage.joinOurTeam")}</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-              <span className="text-red-500">ALWAYS</span> ON THE
+              <span className="text-red-500">{t("careerPage.alwaysOnLookout")}</span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                LOOKOUT FOR
+                {t("careerPage.lookoutFor")}
               </span>
               <br />
-              <span className="text-white">TOP TALENT</span>
+              <span className="text-white">{t("careerPage.topTalent")}</span>
             </h1>
-            <p
-              className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
-              data-testid="hero-description"
-            >
-              Join Konti Hidroplast and become part of a team dedicated to
-              excellence in pipe manufacturing. We're looking for talented
-              professionals to grow with us.
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+              {t("careerPage.heroDescription")}
             </p>
             <div className="flex justify-center space-x-8 text-sm">
               <div className="flex items-center">
                 <Users className="w-5 h-5 mr-2 text-blue-400" />
-                Dynamic Team
+                {t("careerPage.dynamicTeam")}
               </div>
               <div className="flex items-center">
                 <Award className="w-5 h-5 mr-2 text-yellow-400" />
-                Professional Growth
+                {t("careerPage.professionalGrowth")}
               </div>
               <div className="flex items-center">
                 <TrendingUp className="w-5 h-5 mr-2 text-green-400" />
-                Career Development
+                {t("careerPage.careerDevelopment")}
               </div>
             </div>
           </div>
@@ -223,12 +218,11 @@ function CareerPage() {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">Apply</h2>
+              <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">{t("careerPage.apply")}</h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
-              Submit your application to join our team of talented
-              professionals.
+              {t("careerPage.applyDescription")}
             </p>
           </div>
 
@@ -241,7 +235,7 @@ function CareerPage() {
                       type="text"
                       id="fullName"
                       {...form.register("fullName")}
-                      placeholder="Full Name*"
+                      placeholder={t("careerPage.fullName")}
                       className="w-full px-4 py-4 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56]"
                       data-testid="input-full-name"
                     />
@@ -257,7 +251,7 @@ function CareerPage() {
                       type="email"
                       id="email"
                       {...form.register("email")}
-                      placeholder="E-mail*"
+                      placeholder={t("careerPage.email")}
                       className="w-full px-4 py-4 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56]"
                       data-testid="input-email"
                     />
@@ -273,7 +267,7 @@ function CareerPage() {
                       type="tel"
                       id="phoneNumber"
                       {...form.register("phoneNumber")}
-                      placeholder="Phone number*"
+                      placeholder={t("careerPage.phoneNumber")}
                       className="w-full px-4 py-4 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56]"
                       data-testid="input-phone"
                     />
@@ -366,7 +360,7 @@ function CareerPage() {
                   id="coverLetter"
                   {...form.register("coverLetter")}
                   rows={4}
-                  placeholder="Message"
+                  placeholder={t("careerPage.message")}
                   className="w-full px-4 py-4 border-2 border-gray-300 rounded-md focus:ring-[#1c2d56] focus:ring-[#1c2d56] focus:border-[#1c2d56] resize-none"
                   data-testid="textarea-message"
                 />

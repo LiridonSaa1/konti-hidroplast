@@ -35,6 +35,7 @@ interface BrochureFormData {
   pdfUrl: string;
   imageFile: File | null;
   imageUrl: string;
+  description: string;
   status: string;
   active: boolean;
   sortOrder: number;
@@ -62,6 +63,7 @@ export function BrochuresManager() {
     pdfUrl: "",
     imageFile: null,
     imageUrl: "",
+    description: "",
     status: "active",
     active: true,
     sortOrder: 0,
@@ -174,9 +176,10 @@ export function BrochuresManager() {
       language: "en",
       pdfFile: null,
       pdfUrl: "",
-      imageFile: null,
-      imageUrl: "",
-      status: "active",
+          imageFile: null,
+    imageUrl: "",
+    description: "",
+    status: "active",
       active: true,
       sortOrder: 0,
       entries: [{
@@ -205,6 +208,7 @@ export function BrochuresManager() {
       pdfUrl: brochure.pdfUrl || "",
       imageFile: null, // Will be handled separately for existing files
       imageUrl: brochure.imageUrl || "",
+      description: brochure.description || "",
       status: brochure.status || "active",
       active: brochure.active ?? true,
       sortOrder: brochure.sortOrder || 0,
@@ -216,7 +220,7 @@ export function BrochuresManager() {
         imageUrl: brochure.imageUrl || "",
         language: brochure.language || "en"
       }],
-      translations: (brochure as any).translationMetadata || {
+      translations: (brochure as any).translations || {
         en: {},
         mk: {},
         de: {}
@@ -304,6 +308,7 @@ export function BrochuresManager() {
 
     // Get the name from translations or fallback to the direct name input (matching categories pattern)
     const enName = formData.translations?.en?.name || formData.name;
+    const enDescription = formData.translations?.en?.description || formData.description;
 
     const submissionData = {
       title: enName, // Use name as title
@@ -312,10 +317,11 @@ export function BrochuresManager() {
       language: formData.language as "en" | "mk" | "de",
       pdfUrl: pdfUrl || (selectedBrochure?.pdfUrl || ""),
       imageUrl: imageUrl || (selectedBrochure?.imageUrl || ""),
+      description: enDescription || undefined,
       status: formData.status as "active" | "inactive" | "draft",
       active: formData.active,
       sortOrder: formData.sortOrder,
-      translationMetadata: formData.translations
+      translations: formData.translations
     };
 
     if (selectedBrochure) {
@@ -690,7 +696,6 @@ function BrochureFormDialog({
           label="Brochure Name *"
           fieldName="name"
           type="text"
-          defaultLanguage={formData.language}
           currentTranslations={formData.translations}
           originalValue={formData.name}
           onChange={(translations) => {
@@ -860,7 +865,21 @@ function BrochureFormDialog({
           </div>
         </div>
 
-
+        {/* Multi-language Description Field */}
+        <TranslatableFieldEditor
+          label="Description"
+          fieldName="description"
+          type="textarea"
+          currentTranslations={formData.translations}
+          originalValue={formData.description}
+          onChange={(translations) => {
+            setFormData({ 
+              ...formData, 
+              translations,
+              description: translations.en?.description || formData.description
+            });
+          }}
+        />
 
         <div className="grid grid-cols-3 gap-4">
           <div className="space-y-2">

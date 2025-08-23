@@ -384,7 +384,7 @@ function ProductFormDialog({
   isLoading: boolean;
 }) {
   return (
-    <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" data-testid="product-form-dialog">
+    <DialogContent className="max-w-2xl" data-testid="product-form-dialog">
       <DialogHeader>
         <DialogTitle data-testid="product-form-title">{title}</DialogTitle>
       </DialogHeader>

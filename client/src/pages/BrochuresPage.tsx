@@ -13,28 +13,14 @@ function BrochuresPage() {
   const [activeTab, setActiveTab] = useState("water-supply");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
-  // Fetch brochures from public API with language filtering
+  // Fetch brochures from API
   const { data: brochures = [], isLoading: brochuresLoading } = useQuery<Brochure[]>({
-    queryKey: ['/api/brochures', language],
-    queryFn: async () => {
-      const response = await fetch(`/api/brochures?language=${language}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch brochures');
-      }
-      return response.json();
-    },
+    queryKey: ['/api/admin/brochures'],
   });
 
-  // Fetch brochure categories from public API
+  // Fetch brochure categories from API
   const { data: categories = [] } = useQuery<BrochureCategory[]>({
-    queryKey: ['/api/brochure-categories'],
-    queryFn: async () => {
-      const response = await fetch('/api/brochure-categories');
-      if (!response.ok) {
-        throw new Error('Failed to fetch brochure categories');
-      }
-      return response.json();
-    },
+    queryKey: ['/api/admin/brochure-categories'],
   });
 
   // Helper function to get translated text
@@ -43,8 +29,12 @@ function BrochuresPage() {
     if (item.translations && item.translations[language] && item.translations[language][field]) {
       return item.translations[language][field];
     }
-    // For brochures - since we're getting language-specific brochures from API, use the direct field value
-    // as it's already in the correct language
+    // For brochures (use 'translationMetadata' field)
+    const translations = item.translationMetadata;
+    if (translations && translations[language] && translations[language][field]) {
+      return translations[language][field];
+    }
+    // Fallback to the base field value
     return item[field] || fallback;
   };
 
@@ -78,7 +68,7 @@ function BrochuresPage() {
     return langDescriptions[category as keyof typeof langDescriptions] || langDescriptions.default;
   };
 
-  // Group brochures by category - now shows language-specific brochures
+  // Group brochures by category - show all active brochures, not filtered by language
   const groupedBrochures = categories.map(category => {
     const categoryBrochures = brochures
       .filter(brochure => 
@@ -286,7 +276,7 @@ function BrochuresPage() {
                           {getTranslatedText(brochure, 'name', brochure.title || brochure.name)}
                         </h3>
                         <p className="text-xs text-gray-600 mb-3 line-clamp-2 min-h-[2.5rem]">
-                          {getTranslatedText(brochure, 'description', brochure.description) || 
+                          {getTranslatedText(brochure, 'description', brochure.description || '') || 
                            getDefaultDescription(brochure.category)}
                         </p>
                         {brochure.pdfUrl ? (

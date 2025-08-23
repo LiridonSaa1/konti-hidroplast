@@ -1,8 +1,16 @@
 import OpenAI from "openai";
 
-const openai = process.env.OPENAI_API_KEY ? new OpenAI({ 
-  apiKey: process.env.OPENAI_API_KEY 
-}) : null;
+// Only create OpenAI client if API key is available
+let openai: OpenAI | null = null;
+try {
+  if (process.env.OPENAI_API_KEY) {
+    openai = new OpenAI({ 
+      apiKey: process.env.OPENAI_API_KEY 
+    });
+  }
+} catch (error) {
+  console.warn("OpenAI client initialization failed:", error);
+}
 
 interface TranslationResult {
   originalText: string;
@@ -51,15 +59,7 @@ export class TranslationService {
     targetLanguage: string
   ): Promise<TranslationResult> {
     if (!openai) {
-      // Return fallback when OpenAI is not available
-      const wordCount = text.split(/\s+/).length;
-      return {
-        originalText: text,
-        translatedText: `[Translation unavailable - OpenAI API key not configured] ${text}`,
-        sourceLanguage,
-        targetLanguage,
-        wordCount
-      };
+      throw new Error("OpenAI API key not configured. Please set OPENAI_API_KEY environment variable.");
     }
 
     try {
@@ -117,12 +117,7 @@ Translated text:`;
     targetLanguage: string
   ): Promise<{ name: string; description: string; category: string }> {
     if (!openai) {
-      // Return originals when OpenAI is not available
-      return {
-        name: originalName,
-        description: originalDescription,
-        category: originalCategory
-      };
+      throw new Error("OpenAI API key not configured. Please set OPENAI_API_KEY environment variable.");
     }
 
     try {

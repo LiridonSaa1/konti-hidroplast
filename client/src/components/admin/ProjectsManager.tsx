@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, FileUp, Image as ImageIcon, Eye, Search, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Plus, Edit, Trash2, FileUp, Image as ImageIcon, Eye, Search, ArrowUpDown, ArrowUp, ArrowDown, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { FileUpload } from "@/components/ui/file-upload";
+import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
+import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { insertProjectSchema, type Project, type InsertProject } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 
@@ -25,8 +27,18 @@ export function ProjectsManager() {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<keyof Project>("sortOrder");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+  const [translations, setTranslations] = useState<{
+    en?: Record<string, string>;
+    mk?: Record<string, string>;
+    de?: Record<string, string>;
+  }>({
+    en: { title: "", description: "" },
+    mk: { title: "", description: "" },
+    de: { title: "", description: "" }
+  });
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { language, setLanguage } = useLanguage();
 
   const form = useForm<InsertProject>({
     resolver: zodResolver(insertProjectSchema),
@@ -40,6 +52,43 @@ export function ProjectsManager() {
     },
   });
 
+  // Sync translations with form data
+  useEffect(() => {
+    console.log('ProjectsManager: Translations changed:', translations);
+    if (translations.en?.title !== undefined) {
+      form.setValue("title", translations.en.title);
+    }
+    if (translations.en?.description !== undefined) {
+      form.setValue("description", translations.en.description);
+    }
+  }, [translations, form]);
+
+  // Helper function to get localized text for projects
+  const getLocalizedText = (project: Project, field: 'title' | 'description') => {
+    if (project.translations && typeof project.translations === 'object') {
+      const translations = project.translations as any;
+      if (translations[language] && translations[language][field]) {
+        return translations[language][field];
+      }
+    }
+    // Fallback to original field
+    return project[field] || '';
+  };
+
+  // Helper function to get translation status
+  const getTranslationStatus = (project: Project) => {
+    if (!project.translations || typeof project.translations !== 'object') {
+      return { en: false, mk: false, de: false };
+    }
+    
+    const translations = project.translations as any;
+    return {
+      en: !!(translations.en?.title && translations.en?.description),
+      mk: !!(translations.mk?.title && translations.mk?.description),
+      de: !!(translations.de?.title && translations.de?.description)
+    };
+  };
+
   const { data: projects = [], isLoading } = useQuery<Project[]>({
     queryKey: ["/api/admin/projects"],
   });
@@ -47,8 +96,8 @@ export function ProjectsManager() {
   // Filter and sort projects
   const filteredAndSortedProjects = useMemo(() => {
     let filtered = projects.filter((project) =>
-      project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (project.description && project.description.toLowerCase().includes(searchTerm.toLowerCase()))
+      getLocalizedText(project, "title").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (getLocalizedText(project, "description") && getLocalizedText(project, "description").toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     // Sort projects
@@ -162,15 +211,46 @@ export function ProjectsManager() {
   });
 
   const handleSubmit = (data: InsertProject) => {
+    console.log('ProjectsManager: Form data received:', data);
+    console.log('ProjectsManager: Current translations state:', translations);
+    
+    // Extract title and description from translations (English as primary)
+    const title = translations.en?.title || data.title || "";
+    const description = translations.en?.description || data.description || "";
+    
+    // Prepare the project data with translations
+    const projectDataWithTranslations = {
+      ...data,
+      title: title,
+      description: description,
+      translations: translations,
+      defaultLanguage: "en"
+    };
+
+    console.log('ProjectsManager: Submitting project with data:', projectDataWithTranslations);
+
     if (editingProject) {
-      updateProjectMutation.mutate({ id: editingProject.id, projectData: data });
+      updateProjectMutation.mutate({ id: editingProject.id, projectData: projectDataWithTranslations });
     } else {
-      createProjectMutation.mutate(data);
+      createProjectMutation.mutate(projectDataWithTranslations);
     }
   };
 
   const handleEdit = (project: Project) => {
     setEditingProject(project);
+    
+    // Load translations if they exist
+    if (project.translations) {
+      setTranslations(project.translations as any);
+    } else {
+      // Initialize with default structure
+      setTranslations({
+        en: { title: project.title, description: project.description || "" },
+        mk: { title: "", description: "" },
+        de: { title: "", description: "" }
+      });
+    }
+    
     form.reset({
       title: project.title,
       description: project.description || "",
@@ -211,6 +291,11 @@ export function ProjectsManager() {
       status: "active",
       sortOrder: 0,
     });
+    setTranslations({
+      en: { title: "", description: "" },
+      mk: { title: "", description: "" },
+      de: { title: "", description: "" }
+    });
     setEditingProject(null);
     setIsFormOpen(false);
   };
@@ -250,38 +335,24 @@ export function ProjectsManager() {
             
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Project Title</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter project title" {...field} data-testid="input-project-title" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                {/* Multilingual Title Field */}
+                <TranslatableFieldEditor
+                  label="Project Title"
+                  fieldName="title"
+                  type="text"
+                  currentTranslations={translations}
+                  originalValue={translations.en?.title || ""}
+                  onChange={setTranslations}
                 />
 
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Description</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Enter project description" 
-                          {...field}
-                          value={field.value || ""}
-                          rows={3}
-                          data-testid="input-project-description"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                {/* Multilingual Description Field */}
+                <TranslatableFieldEditor
+                  label="Project Description"
+                  fieldName="description"
+                  type="textarea"
+                  currentTranslations={translations}
+                  originalValue={translations.en?.description || ""}
+                  onChange={setTranslations}
                 />
 
                 <FormField
@@ -294,9 +365,7 @@ export function ProjectsManager() {
                           label="Image URL"
                           value={field.value || ""}
                           onChange={field.onChange}
-                          type="image"
                           placeholder="Enter image URL or upload image"
-                          testId="input-project-image"
                         />
                       </FormControl>
                       <FormMessage />
@@ -314,9 +383,7 @@ export function ProjectsManager() {
                           label="PDF Document URL"
                           value={field.value || ""}
                           onChange={field.onChange}
-                          type="pdf"
                           placeholder="Enter PDF URL or upload document"
-                          testId="input-project-pdf"
                         />
                       </FormControl>
                       <FormMessage />
@@ -413,6 +480,21 @@ export function ProjectsManager() {
                 />
               </div>
             </div>
+            
+            {/* Language Selector */}
+            <div className="flex items-center gap-2">
+              <Globe className="h-4 w-4 text-slate-500" />
+              <Select value={language} onValueChange={(value: Language) => setLanguage(value)}>
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="en">🇺🇸 English</SelectItem>
+                  <SelectItem value="mk">🇲🇰 Македонски</SelectItem>
+                  <SelectItem value="de">🇩🇪 Deutsch</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -451,6 +533,7 @@ export function ProjectsManager() {
                     </TableHead>
                     <TableHead>Image</TableHead>
                     <TableHead>PDF</TableHead>
+                    <TableHead>Translations</TableHead>
                     <TableHead>
                       <Button
                         variant="ghost"
@@ -480,11 +563,11 @@ export function ProjectsManager() {
                       <TableCell>
                         <div>
                           <div className="font-medium" data-testid={`project-title-${project.id}`}>
-                            {project.title}
+                            {getLocalizedText(project, "title")}
                           </div>
-                          {project.description && (
+                          {getLocalizedText(project, "description") && (
                             <div className="text-sm text-slate-600 truncate max-w-xs">
-                              {project.description}
+                              {getLocalizedText(project, "description")}
                             </div>
                           )}
                         </div>
@@ -506,7 +589,7 @@ export function ProjectsManager() {
                           <div className="flex items-center gap-1">
                             <img 
                               src={project.imageUrl} 
-                              alt={project.title}
+                              alt={getLocalizedText(project, "title")}
                               className="h-8 w-8 object-cover rounded"
                             />
                             <Button
@@ -539,6 +622,24 @@ export function ProjectsManager() {
                         )}
                       </TableCell>
                       <TableCell>
+                        {(() => {
+                          const status = getTranslationStatus(project);
+                          return (
+                            <div className="flex flex-wrap gap-1">
+                              {Object.entries(status).map(([lang, hasTranslation]) => (
+                                <Badge 
+                                  key={lang} 
+                                  variant={hasTranslation ? "default" : "secondary"}
+                                  className={hasTranslation ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-600"}
+                                >
+                                  {lang === 'en' ? '🇺🇸' : lang === 'mk' ? '🇲🇰' : '🇩🇪'} {lang.toUpperCase()}
+                                </Badge>
+                              ))}
+                            </div>
+                          );
+                        })()}
+                      </TableCell>
+                      <TableCell>
                         {project.sortOrder || 0}
                       </TableCell>
                       <TableCell className="text-sm text-slate-600" data-testid={`project-date-${project.id}`}>
@@ -569,7 +670,7 @@ export function ProjectsManager() {
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Delete Project</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Are you sure you want to delete "{project.title}"? This action cannot be undone.
+                                  Are you sure you want to delete "{getLocalizedText(project, "title")}"? This action cannot be undone.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>

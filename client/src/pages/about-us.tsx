@@ -1,7 +1,7 @@
 import { Navigation } from "@/components/navigation";
 import { CertificationsSection } from "@/components/certifications-section";
 import { Footer } from "@/components/footer";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -28,6 +28,8 @@ import {
   Wrench,
   FileText,
   Image,
+  Globe,
+  Phone,
 } from "lucide-react";
 
 const timelineData = [
@@ -149,7 +151,7 @@ const timelineData = [
     title: "New Corrugated Pipe Line and New Machines",
     description:
       "A new high-productivity, energy-efficient production line for corrugated pipes in the 160-315 mm dimensional range. Improvement of the corrugated pipe production process by enhancing the welding of fittings, including the acquisition of three automatic inline welding machines for fitting attachment to pipes.",
-  },
+  }
 ];
 
 // Fetch team members from database
@@ -190,7 +192,7 @@ function useTeamData() {
 }
 
 export default function AboutUs() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [, setLocation] = useLocation();
   const [activeYear, setActiveYear] = useState("1990");
   const [sliderValue, setSliderValue] = useState([0]);
@@ -203,8 +205,75 @@ export default function AboutUs() {
   const { data: projects = [], isLoading: isProjectsLoading } = useQuery<
     Project[]
   >({
-    queryKey: ["/api/admin/projects"],
+    queryKey: ["/api/projects"],
   });
+
+  // Debug: Log projects data to see what we're getting
+  useEffect(() => {
+    if (projects.length > 0) {
+      console.log('=== PROJECTS DEBUG ===');
+      console.log('Total projects fetched:', projects.length);
+      console.log('Current language:', language);
+      console.log('All projects data:', projects);
+      
+      projects.forEach((project, index) => {
+        console.log(`\n--- Project ${index + 1} ---`);
+        console.log('ID:', project.id);
+        console.log('Title (original):', project.title);
+        console.log('Description (original):', project.description);
+        console.log('Translations object:', project.translations);
+        console.log('Default language:', project.defaultLanguage);
+        
+        // Check each language
+        ['en', 'mk', 'de'].forEach(lang => {
+          const translations = project.translations as any;
+          if (translations && translations[lang]) {
+            console.log(`${lang.toUpperCase()} - Title:`, translations[lang].title);
+            console.log(`${lang.toUpperCase()} - Description:`, translations[lang].description);
+          } else {
+            console.log(`${lang.toUpperCase()} - No translations available`);
+          }
+        });
+        
+        // Show what getLocalizedText returns
+        console.log('getLocalizedText(title):', getLocalizedText(project, 'title'));
+        console.log('getLocalizedText(description):', getLocalizedText(project, 'description'));
+      });
+      console.log('=== END DEBUG ===');
+    }
+  }, [projects, language]);
+
+  // Helper function to get localized text for projects
+  const getLocalizedText = (project: Project, field: 'title' | 'description') => {
+    console.log(`getLocalizedText called for project ${project.id}, field: ${field}, language: ${language}`);
+    
+    if (project.translations && typeof project.translations === 'object') {
+      const translations = project.translations as any;
+      console.log('Translations available:', translations);
+      
+      if (translations[language] && translations[language][field]) {
+        console.log(`Found ${language} translation for ${field}:`, translations[language][field]);
+        return translations[language][field];
+      } else {
+        console.log(`No ${language} translation for ${field}, checking fallback`);
+      }
+    } else {
+      console.log('No translations object found');
+    }
+    
+    // Fallback to original field
+    console.log(`Using fallback for ${field}:`, project[field]);
+    return project[field] || '';
+  };
+
+  // Helper function to get localized timeline text
+  const getTimelineText = (item: any, field: 'title' | 'description') => {
+    if (item.translations && item.translations[language] && item.translations[language][field]) {
+      return item.translations[language][field];
+    }
+    // Fallback to English or original field
+    return item.translations?.en?.[field] || item[field] || item.year;
+  };
 
   // Fetch gallery categories (public endpoint)
   const { data: galleryCategories = [], isLoading: isGalleryLoading } =
@@ -311,7 +380,7 @@ export default function AboutUs() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <Badge className="mb-6 bg-red-600 hover:bg-red-700 text-white px-4 py-2">
-                Since 1975
+                {t("aboutUs.since1975")}
               </Badge>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
                 {t("aboutUs.title").toUpperCase()}{" "}
@@ -450,6 +519,20 @@ export default function AboutUs() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-8">
+            {/* Timeline Header with Language Indicator */}
+            <div className="text-center mb-8">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                {t("aboutUs.timelineTitle")}
+              </h2>
+              {/* Language Indicator */}
+              <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+                <Globe className="h-4 w-4" />
+                <span>
+                  {t("aboutUs.displayingIn")} {language === 'en' ? t("aboutUs.englishLang") : language === 'mk' ? t("aboutUs.macedonianLang") : t("aboutUs.germanLang")}
+                </span>
+              </div>
+            </div>
+            
             {/* Timeline Slider */}
             <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8">
               <div className="flex items-center justify-between mb-6">
@@ -521,12 +604,17 @@ export default function AboutUs() {
                             {item.year}
                           </h3>
                           <h4 className="text-xl font-semibold text-[#1c2d56]">
-                            {item.title}
+                            {getTimelineText(item, 'title')}
+                            {item.translations && !item.translations[language]?.title && (
+                              <Badge variant="outline" className="ml-2 text-xs">
+                                {language === 'en' ? 'EN' : language === 'mk' ? 'MK' : 'DE'} {t("aboutUs.fallback")}
+                              </Badge>
+                            )}
                           </h4>
                         </div>
                       </div>
                       <p className="text-gray-600 leading-relaxed text-lg">
-                        {item.description}
+                        {getTimelineText(item, 'description')}
                       </p>
                     </CardContent>
                   </Card>
@@ -576,35 +664,35 @@ export default function AboutUs() {
               <div className="space-y-4">
                 <div className="inline-block px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
                   <span className="text-sm font-medium text-white/90">
-                    Leadership Message
+                    {t("aboutUs.leadershipMessage")}
                   </span>
                 </div>
 
                 <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
                   {leadershipContent.title ||
-                    "Building the Future of Infrastructure"}
+                    t("aboutUs.leadershipTitle")}
                 </h2>
               </div>
 
               <div className="space-y-6 text-lg leading-relaxed text-white/90">
                 <p>
                   {leadershipContent.description1 ||
-                    "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow."}
+                    t("aboutUs.leadershipDescription1")}
                 </p>
 
                 <p>
                   {leadershipContent.description2 ||
-                    "Together, we build not just for today, but for a future our next generations will be proud of."}
+                    t("aboutUs.leadershipDescription2")}
                 </p>
               </div>
 
               <div className="pt-4">
                 <div className="space-y-2">
                   <h3 className="text-2xl font-bold text-white">
-                    {leadershipContent.leaderName || "Boris Madjunkov"}
+                    {leadershipContent.leaderName || t("aboutUs.leaderName")}
                   </h3>
                   <p className="text-blue-200 font-semibold text-lg">
-                    {leadershipContent.leaderPosition || "General Director"}
+                    {leadershipContent.leaderPosition || t("aboutUs.leaderPosition")}
                   </p>
                 </div>
 
@@ -629,7 +717,7 @@ export default function AboutUs() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold text-gray-900 mx-8">
-                Our Team
+                {t("aboutUs.teamTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -736,7 +824,7 @@ export default function AboutUs() {
                           }
                         >
                           <Mail className="h-4 w-4 mr-2" />
-                          Contact Us
+                          {t("aboutUs.contactUsButton")}
                         </Button>
                       )}
                     </CardContent>
@@ -748,11 +836,10 @@ export default function AboutUs() {
             <div className="text-center py-12">
               <Users className="h-16 w-16 mx-auto text-gray-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                No Team Members Yet
+                {t("aboutUs.noTeamMembers")}
               </h3>
               <p className="text-gray-500">
-                Team members will appear here once they are added to the
-                database.
+                {t("aboutUs.teamMembersDescription")}
               </p>
             </div>
           )}
@@ -767,9 +854,16 @@ export default function AboutUs() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold text-gray-900 mx-8">
-                Projects
+                {t("aboutUs.projectsTitle") || t("aboutUs.productsTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+            {/* Language Indicator */}
+            <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+              <Globe className="h-4 w-4" />
+              <span>
+                {t("aboutUs.displayingIn")} {language === 'en' ? t("aboutUs.englishLang") : language === 'mk' ? t("aboutUs.macedonianLang") : t("aboutUs.germanLang")}
+              </span>
             </div>
           </div>
 
@@ -803,7 +897,7 @@ export default function AboutUs() {
                       {project.imageUrl ? (
                         <img
                           src={project.imageUrl}
-                          alt={project.title}
+                          alt={getLocalizedText(project, 'title')}
                           className="w-full h-full object-cover"
                         />
                       ) : (
@@ -815,11 +909,16 @@ export default function AboutUs() {
                     </div>
                     <CardContent className="p-6 bg-white">
                       <h3 className="font-bold text-gray-900 mb-2 text-[15px]">
-                        {project.title}
+                        {getLocalizedText(project, 'title')}
+                        {project.translations && !(project.translations as any)[language]?.title && (
+                          <Badge variant="outline" className="ml-2 text-xs">
+                            {language === 'en' ? 'EN' : language === 'mk' ? 'MK' : 'DE'} {t("aboutUs.fallback")}
+                          </Badge>
+                        )}
                       </h3>
                       {project.description && (
                         <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                          {project.description}
+                          {getLocalizedText(project, 'description')}
                         </p>
                       )}
 
@@ -833,7 +932,7 @@ export default function AboutUs() {
                             window.open(project.pdfUrl, "_blank")
                           }
                         >
-                          Download PDF
+                          {t("aboutUs.downloadPdf")}
                         </Button>
                       )}
                     </CardContent>
@@ -844,10 +943,10 @@ export default function AboutUs() {
             <div className="text-center py-12">
               <FileText className="h-16 w-16 mx-auto text-gray-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                No Projects Available
+                {t("aboutUs.noProjectsAvailable")}
               </h3>
               <p className="text-gray-500">
-                Projects will appear here once they are added to the database.
+                {t("aboutUs.projectsDescription")}
               </p>
             </div>
           )}
@@ -860,7 +959,7 @@ export default function AboutUs() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
-                Products
+                {t("aboutUs.productsTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -887,7 +986,7 @@ export default function AboutUs() {
 
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    WATER SUPPLY SYSTEMS
+                    {t("aboutUs.waterSupplySystems")}
                   </h3>
 
                   {/* Learn More Button */}
@@ -932,7 +1031,7 @@ export default function AboutUs() {
 
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    SEWERAGE SYSTEMS
+                    {t("aboutUs.sewerageSystems")}
                   </h3>
 
                   {/* Learn More Button */}
@@ -977,7 +1076,7 @@ export default function AboutUs() {
 
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    GAS PIPELINE SYSTEM
+                    {t("aboutUs.gasPipelineSystem")}
                   </h3>
 
                   {/* Learn More Button */}
@@ -1022,7 +1121,7 @@ export default function AboutUs() {
 
                 <div className="mt-4">
                   <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                    CABLE PROTECTION
+                    {t("aboutUs.cableProtection")}
                   </h3>
 
                   {/* Learn More Button */}
@@ -1056,7 +1155,7 @@ export default function AboutUs() {
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-              <h2 className="text-4xl font-bold text-gray-900 mx-8">Gallery</h2>
+              <h2 className="text-4xl font-bold text-gray-900 mx-8">{t("aboutUs.galleryTitle")}</h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
           </div>
@@ -1118,7 +1217,7 @@ export default function AboutUs() {
                           href={`/gallery/${category.title.toLowerCase().replace(/\s+/g, "-")}`}
                           className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
                         >
-                          <span>View Gallery</span>
+                          <span>{t("aboutUs.viewGallery")}</span>
                           <ChevronRight className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300" />
                         </a>
                       </div>
@@ -1130,10 +1229,10 @@ export default function AboutUs() {
             <div className="text-center py-12">
               <Image className="h-16 w-16 mx-auto text-gray-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                No Gallery Categories
+                {t("aboutUs.noGalleryCategories")}
               </h3>
               <p className="text-gray-500">
-                Gallery categories will appear here once they are added.
+                {t("aboutUs.galleryCategoriesDescription")}
               </p>
             </div>
           )}
@@ -1145,13 +1244,12 @@ export default function AboutUs() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Get in Touch: Connect with Us Today!
+                {t("aboutUs.getInTouchTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Need more information about our cable protection solutions?
-              Contact our team of experts.
+              {t("aboutUs.getInTouchDescription")}
             </p>
             <Button
               onClick={() => {
@@ -1163,7 +1261,7 @@ export default function AboutUs() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              Contact Us
+              {t("aboutUs.contactUsButton")}
             </Button>
           </div>
         </div>

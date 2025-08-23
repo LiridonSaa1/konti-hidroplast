@@ -24,7 +24,7 @@ export function HeroSection() {
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <iframe
           src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=1&playlist=R7b9-m_EM2s&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
-          title="Konti Hidroplast Corporate Video"
+          title={t("hero.videoTitle")}
           className="video-fullscreen"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen

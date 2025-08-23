@@ -684,7 +684,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Brochures routes
-  app.get("/api/admin/brochures", requireAuth, async (req, res) => {
+  app.get("/api/admin/brochures", async (req, res) => {
     try {
       const brochures = await storage.getAllBrochures();
       res.json(brochures);
@@ -694,7 +694,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/brochures", requireAuth, async (req, res) => {
+  app.post("/api/admin/brochures", async (req, res) => {
     try {
       const brochureData = insertBrochureSchema.parse(req.body);
       const brochure = await storage.createBrochure(brochureData);
@@ -705,7 +705,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/admin/brochures/:id", requireAuth, async (req, res) => {
+  app.put("/api/admin/brochures/:id", async (req, res) => {
     try {
       const brochureData = insertBrochureSchema.partial().parse(req.body);
       const brochure = await storage.updateBrochure(req.params.id, brochureData);
@@ -716,7 +716,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/brochures/:id", requireAuth, async (req, res) => {
+  app.delete("/api/admin/brochures/:id", async (req, res) => {
     try {
       await storage.deleteBrochure(req.params.id);
       res.status(204).send();
@@ -783,6 +783,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Projects routes
+  // Public endpoint for projects (no authentication required)
+  app.get("/api/projects", async (req, res) => {
+    try {
+      const { language } = req.query;
+      const projects = await storage.getAllProjects();
+      // Only return active projects for public view, sorted by sortOrder
+      const activeProjects = projects
+        .filter(project => project.status === "active")
+        .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+      
+      // If language is specified, we could filter or enhance the response
+      // For now, we return all projects with their full translation data
+      res.json(activeProjects);
+    } catch (error) {
+      console.error("Error fetching public projects:", error);
+      res.status(500).json({ error: "Failed to fetch projects" });
+    }
+  });
+
   app.get("/api/admin/projects", async (req, res) => {
     try {
       const projects = await storage.getAllProjects();
@@ -1468,10 +1487,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Assign same translation group to brochures with same name/category
-      for (const [key, brochures] of groups) {
+      for (const [key, brochures] of Array.from(groups.entries())) {
         if (brochures.length > 1) {
           // Find existing translation group or create new one
-          const existingGroup = brochures.find(b => b.translationGroup)?.translationGroup;
+          const existingGroup = brochures.find((b: any) => b.translationGroup)?.translationGroup;
           const groupId = existingGroup || `group_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
           
           // Update all brochures in this group

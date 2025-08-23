@@ -513,7 +513,7 @@ export function NewsManager() {
 
       {/* Create Dialog */}
       <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto mx-4 w-[calc(100vw-2rem)] sm:mx-auto sm:w-full">
+        <DialogContent className="max-w-6xl mx-4 w-[calc(100vw-2rem)] sm:mx-auto sm:w-full">
           <DialogHeader>
             <DialogTitle>Create News Article</DialogTitle>
           </DialogHeader>
@@ -742,7 +742,7 @@ export function NewsManager() {
 
       {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto mx-4 w-[calc(100vw-2rem)] sm:mx-auto sm:w-full">
+        <DialogContent className="max-w-6xl mx-4 w-[calc(100vw-2rem)] sm:mx-auto sm:w-full">
           <DialogHeader>
             <DialogTitle>Edit News Article</DialogTitle>
           </DialogHeader>
