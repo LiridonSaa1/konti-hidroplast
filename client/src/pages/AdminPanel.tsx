@@ -377,19 +377,6 @@ export default function AdminPanel() {
                 
                 <Button
                   variant="ghost"
-                  className={`w-full justify-start text-sm ${activeTab === "certificates" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => {
-                    setActiveTab("certificates");
-                    setIsMobileMenuOpen(false);
-                  }}
-                  data-testid="nav-certificates-items"
-                >
-                  <Award className={`h-3 w-3 mr-2 ${activeTab === "certificates" ? "text-blue-600" : ""}`} />
-                  Certificates
-                </Button>
-                
-                <Button
-                  variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "subcategory-items" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
                   onClick={() => {
                     setActiveTab("subcategory-items");
@@ -399,6 +386,19 @@ export default function AdminPanel() {
                 >
                   <Package className={`h-3 w-3 mr-2 ${activeTab === "subcategory-items" ? "text-blue-600" : ""}`} />
                   Subcategory Items
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "certificates" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => {
+                    setActiveTab("certificates");
+                    setIsMobileMenuOpen(false);
+                  }}
+                  data-testid="nav-certificates-items"
+                >
+                  <Award className={`h-3 w-3 mr-2 ${activeTab === "certificates" ? "text-blue-600" : ""}`} />
+                  Certificates
                 </Button>
               </CollapsibleContent>
             </Collapsible>
