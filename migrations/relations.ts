@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm/relations";
-import { galleryCategories, galleryItems, certificateCategories, certificateSubcategories, certificates } from "./schema";
+import { galleryCategories, galleryItems, certificateCategories, certificateSubcategories, certificates, subcategoryItems } from "./schema";
 
 export const galleryItemsRelations = relations(galleryItems, ({one}) => ({
 	galleryCategory: one(galleryCategories, {
@@ -34,4 +34,20 @@ export const certificatesRelations = relations(certificates, ({one}) => ({
 		fields: [certificates.subcategoryId],
 		references: [certificateSubcategories.id]
 	}),
+	subcategoryItem: one(subcategoryItems, {
+		fields: [certificates.subcategoryItemId],
+		references: [subcategoryItems.id]
+	}),
+}));
+
+export const subcategoryItemsRelations = relations(subcategoryItems, ({one, many}) => ({
+	certificateCategory: one(certificateCategories, {
+		fields: [subcategoryItems.categoryId],
+		references: [certificateCategories.id]
+	}),
+	certificateSubcategory: one(certificateSubcategories, {
+		fields: [subcategoryItems.subcategoryId],
+		references: [certificateSubcategories.id]
+	}),
+	certificates: many(certificates),
 }));

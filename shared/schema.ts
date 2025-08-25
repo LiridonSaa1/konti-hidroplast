@@ -132,6 +132,7 @@ export const certificates = pgTable("certificates", {
   id: serial("id").primaryKey(),
   categoryId: integer("category_id").references(() => certificateCategories.id),
   subcategoryId: integer("subcategory_id").references(() => certificateSubcategories.id),
+  subcategoryItemId: integer("subcategory_item_id").references(() => subcategoryItems.id),
   title: text("title").notNull(),
   imageUrl: text("image_url").notNull(),
   downloadUrl: text("download_url"),

@@ -229,10 +229,37 @@ export const jobApplications = pgTable("job_applications", {
 	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow(),
 });
 
+export const subcategoryItems = pgTable("subcategory_items", {
+	id: serial().primaryKey().notNull(),
+	categoryId: integer("category_id").notNull(),
+	subcategoryId: integer("subcategory_id").notNull(),
+	title: text().notNull(),
+	description: text(),
+	imageUrl: text(),
+	sortOrder: integer("sort_order").default(0),
+	active: boolean().default(true),
+	translations: jsonb().default({}),
+	defaultLanguage: text("default_language").default('en').notNull(),
+	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow(),
+	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow(),
+}, (table) => [
+	foreignKey({
+			columns: [table.categoryId],
+			foreignColumns: [certificateCategories.id],
+			name: "subcategory_items_category_id_certificate_categories_id_fk"
+		}),
+	foreignKey({
+			columns: [table.subcategoryId],
+			foreignColumns: [certificateSubcategories.id],
+			name: "subcategory_items_subcategory_id_certificate_subcategories_id_fk"
+		}),
+]);
+
 export const certificates = pgTable("certificates", {
 	id: serial().primaryKey().notNull(),
 	categoryId: integer("category_id"),
 	subcategoryId: integer("subcategory_id"),
+	subcategoryItemId: integer("subcategory_item_id"),
 	imageUrl: text("image_url").notNull(),
 	sortOrder: integer("sort_order").default(0),
 	status: text().default('active').notNull(),
@@ -252,6 +279,11 @@ export const certificates = pgTable("certificates", {
 			columns: [table.subcategoryId],
 			foreignColumns: [certificateSubcategories.id],
 			name: "certificates_subcategory_id_certificate_subcategories_id_fk"
+		}),
+	foreignKey({
+			columns: [table.subcategoryItemId],
+			foreignColumns: [subcategoryItems.id],
+			name: "certificates_subcategory_item_id_subcategory_items_id_fk"
 		}),
 ]);
 

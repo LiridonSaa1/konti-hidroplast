@@ -67,6 +67,7 @@ type Certificate = {
   title: string;
   categoryId: number;
   subcategoryId?: number;
+  subcategoryItemId?: number;
   imageUrl: string;
   sortOrder: number;
   status: string;
@@ -74,11 +75,27 @@ type Certificate = {
   defaultLanguage?: string;
 };
 
+type SubcategoryItem = {
+  id: number;
+  title: string;
+  description?: string;
+  imageUrl?: string;
+  categoryId: number;
+  subcategoryId: number;
+  sortOrder: number;
+  active: boolean;
+  translations?: any;
+  defaultLanguage?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 // Local form schema with custom validation
 const certificateFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   categoryId: z.number().min(1, "Category is required"),
   subcategoryId: z.number().optional(),
+  subcategoryItemId: z.number().optional(),
   imageUrl: z.string().min(1, "Image is required"),
   sortOrder: z.number().int().min(0).default(0),
   status: z.enum(["active", "inactive"]).default("active"),
@@ -115,6 +132,7 @@ export function CertificatesManager() {
       title: "",
       categoryId: 0,
       subcategoryId: undefined,
+      subcategoryItemId: undefined,
       imageUrl: "",
       sortOrder: 0,
       status: "active",
@@ -135,6 +153,12 @@ export function CertificatesManager() {
 
   const { data: subcategories = [] } = useQuery({
     queryKey: ["/api/admin/certificate-subcategories"],
+  });
+
+  // Add query for subcategory items
+  const { data: subcategoryItems = [] } = useQuery<SubcategoryItem[]>({
+    queryKey: ["/api/admin/subcategory-items"],
+    enabled: !!selectedCategoryId && !!form.watch("subcategoryId"),
   });
 
   const { data: certificates = [], isLoading, refetch } = useQuery({
@@ -267,31 +291,24 @@ export function CertificatesManager() {
   };
 
   const handleEdit = (certificate: Certificate) => {
-    setEditingCertificate(certificate);
-    
-    // Get existing translations or create defaults
-    const existingTranslations = certificate.translations || {};
+    const existingTranslations = (certificate.translations as any) || {};
     
     form.reset({
-      title: certificate.title,
+      title: existingTranslations.en?.title || certificate.title || "",
       categoryId: certificate.categoryId,
       subcategoryId: certificate.subcategoryId || undefined,
+      subcategoryItemId: certificate.subcategoryItemId || undefined,
       imageUrl: certificate.imageUrl,
       sortOrder: certificate.sortOrder,
       status: certificate.status as "active" | "inactive",
       translations: {
-        en: { 
-          title: existingTranslations.en?.title || certificate.title 
-        },
-        mk: { 
-          title: existingTranslations.mk?.title || "" 
-        },
-        de: { 
-          title: existingTranslations.de?.title || "" 
-        },
+        en: { title: existingTranslations.en?.title || certificate.title || "" },
+        mk: { title: existingTranslations.mk?.title || "" },
+        de: { title: existingTranslations.de?.title || "" },
       },
       defaultLanguage: certificate.defaultLanguage || "en",
     });
+    setEditingCertificate(certificate);
     setIsOpen(true);
   };
 
@@ -324,6 +341,7 @@ export function CertificatesManager() {
         title: "",
         categoryId: 0,
         subcategoryId: undefined,
+        subcategoryItemId: undefined,
         imageUrl: "",
         sortOrder: 0,
         status: "active",
@@ -507,6 +525,46 @@ export function CertificatesManager() {
                       )}
                     />
                   </div>
+
+                  {/* Subcategory Items Field */}
+                  {selectedCategoryId && form.watch("subcategoryId") && (
+                    <FormField
+                      control={form.control}
+                      name="subcategoryItemId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Subcategory Items</FormLabel>
+                          <Select 
+                            onValueChange={(value) => {
+                              if (value === "none") {
+                                field.onChange(undefined);
+                              } else {
+                                field.onChange(parseInt(value));
+                              }
+                            }} 
+                            defaultValue={field.value?.toString() || "none"}
+                          >
+                            <FormControl>
+                              <SelectTrigger data-testid="select-subcategory-items">
+                                <SelectValue placeholder="Select subcategory items (optional)" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="none">None (No specific items)</SelectItem>
+                              {subcategoryItems
+                                .filter(item => item.categoryId === selectedCategoryId && item.subcategoryId === form.watch("subcategoryId"))
+                                .map((item) => (
+                                  <SelectItem key={item.id} value={item.id.toString()}>
+                                    {item.title}
+                                  </SelectItem>
+                                ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
 
                   <FormField
                     control={form.control}
