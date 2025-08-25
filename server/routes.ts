@@ -987,9 +987,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/projects", async (req, res) => {
+  app.get("/api/admin/projects", requireAuth, async (req: any, res) => {
     try {
+      console.log("=== Fetching projects ===");
+      console.log("User ID:", req.userId);
       const projects = await storage.getAllProjects();
+      console.log("Projects fetched:", projects.length);
+      console.log("First project:", projects[0]);
       res.json(projects);
     } catch (error) {
       console.error("Error fetching projects:", error);
@@ -997,7 +1001,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/admin/projects", async (req, res) => {
+  app.get("/api/admin/projects/:id", requireAuth, async (req: any, res) => {
+    try {
+      console.log("=== Fetching single project ===");
+      console.log("Project ID:", req.params.id);
+      console.log("User ID:", req.userId);
+      const project = await storage.getProject(parseInt(req.params.id));
+      console.log("Project found:", project);
+      if (!project) {
+        return res.status(404).json({ error: "Project not found" });
+      }
+      res.json(project);
+    } catch (error) {
+      console.error("Error fetching project:", error);
+      res.status(500).json({ error: "Failed to fetch project" });
+    }
+  });
+
+  app.post("/api/admin/projects", requireAuth, async (req, res) => {
     try {
       const projectData = insertProjectSchema.parse(req.body);
       const project = await storage.createProject(projectData);
@@ -1008,7 +1029,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.patch("/api/admin/projects/:id", async (req, res) => {
+  app.patch("/api/admin/projects/:id", requireAuth, async (req, res) => {
     try {
       const projectData = insertProjectSchema.partial().parse(req.body);
       const project = await storage.updateProject(parseInt(req.params.id), projectData);
@@ -1019,7 +1040,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/projects/:id", async (req, res) => {
+  app.delete("/api/admin/projects/:id", requireAuth, async (req, res) => {
     try {
       await storage.deleteProject(parseInt(req.params.id));
       res.status(204).send();

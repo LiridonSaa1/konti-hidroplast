@@ -662,13 +662,29 @@ export class DatabaseStorage implements IStorage {
   // Project methods
   async getAllProjects(): Promise<Project[]> {
     if (!db) throw new Error('Database not available');
-    return await db.select().from(projects).orderBy(desc(projects.createdAt));
+    console.log("=== Storage: getAllProjects called ===");
+    try {
+      const result = await db.select().from(projects).orderBy(desc(projects.createdAt));
+      console.log("Storage: Projects fetched successfully:", result.length);
+      return result;
+    } catch (error) {
+      console.error("Storage: Error fetching projects:", error);
+      throw error;
+    }
   }
 
   async getProject(id: number): Promise<Project | undefined> {
     if (!db) throw new Error('Database not available');
-    const [project] = await db.select().from(projects).where(eq(projects.id, id));
-    return project || undefined;
+    console.log("=== Storage: getProject called ===");
+    console.log("Project ID:", id);
+    try {
+      const [project] = await db.select().from(projects).where(eq(projects.id, id));
+      console.log("Storage: Project found:", project);
+      return project || undefined;
+    } catch (error) {
+      console.error("Storage: Error fetching project:", error);
+      throw error;
+    }
   }
 
   async createProject(project: InsertProject): Promise<Project> {

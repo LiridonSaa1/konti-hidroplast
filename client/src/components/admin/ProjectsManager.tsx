@@ -91,6 +91,22 @@ export function ProjectsManager() {
 
   const { data: projects = [], isLoading } = useQuery<Project[]>({
     queryKey: ["/api/admin/projects"],
+    queryFn: async () => {
+      console.log("=== Fetching projects from API ===");
+      try {
+        const response = await apiRequest("/api/admin/projects", "GET");
+        const data = await response.json();
+        console.log("Projects API response:", data);
+        console.log("Number of projects:", data.length);
+        if (data.length > 0) {
+          console.log("First project:", data[0]);
+        }
+        return data;
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+        throw error;
+      }
+    },
   });
 
   // Filter and sort projects
@@ -147,9 +163,20 @@ export function ProjectsManager() {
 
   const createProjectMutation = useMutation({
     mutationFn: async (projectData: InsertProject) => {
-      return await apiRequest("/api/admin/projects", "POST", projectData);
+      console.log('=== createProjectMutation.mutateFn called ===');
+      console.log('Creating project with data:', projectData);
+      try {
+        const response = await apiRequest("/api/admin/projects", "POST", projectData);
+        console.log('Create response:', response);
+        return response;
+      } catch (error) {
+        console.error('Error in createProjectMutation:', error);
+        throw error;
+      }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('=== createProjectMutation.onSuccess ===');
+      console.log('Create successful, data:', data);
       queryClient.invalidateQueries({ queryKey: ["/api/admin/projects"] });
       setIsFormOpen(false);
       form.reset();
@@ -159,6 +186,8 @@ export function ProjectsManager() {
       });
     },
     onError: (error) => {
+      console.error('=== createProjectMutation.onError ===');
+      console.error('Create failed:', error);
       toast({
         title: "Error",
         description: "Failed to create project",
@@ -169,9 +198,21 @@ export function ProjectsManager() {
 
   const updateProjectMutation = useMutation({
     mutationFn: async ({ id, projectData }: { id: number; projectData: Partial<InsertProject> }) => {
-      return await apiRequest(`/api/admin/projects/${id}`, "PATCH", projectData);
+      console.log('=== updateProjectMutation.mutateFn called ===');
+      console.log('Updating project ID:', id);
+      console.log('Project data to update:', projectData);
+      try {
+        const response = await apiRequest(`/api/admin/projects/${id}`, "PATCH", projectData);
+        console.log('Update response:', response);
+        return response;
+      } catch (error) {
+        console.error('Error in updateProjectMutation:', error);
+        throw error;
+      }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('=== updateProjectMutation.onSuccess ===');
+      console.log('Update successful, data:', data);
       queryClient.invalidateQueries({ queryKey: ["/api/admin/projects"] });
       setIsFormOpen(false);
       setEditingProject(null);
@@ -182,6 +223,8 @@ export function ProjectsManager() {
       });
     },
     onError: (error) => {
+      console.error('=== updateProjectMutation.onError ===');
+      console.error('Update failed:', error);
       toast({
         title: "Error",
         description: "Failed to update project",
@@ -211,8 +254,10 @@ export function ProjectsManager() {
   });
 
   const handleSubmit = (data: InsertProject) => {
+    console.log('=== handleSubmit called ===');
     console.log('ProjectsManager: Form data received:', data);
     console.log('ProjectsManager: Current translations state:', translations);
+    console.log('ProjectsManager: editingProject state:', editingProject);
     
     // Extract title and description from translations (English as primary)
     const title = translations.en?.title || data.title || "";
@@ -230,19 +275,29 @@ export function ProjectsManager() {
     console.log('ProjectsManager: Submitting project with data:', projectDataWithTranslations);
 
     if (editingProject) {
+      console.log('Updating existing project with ID:', editingProject.id);
       updateProjectMutation.mutate({ id: editingProject.id, projectData: projectDataWithTranslations });
     } else {
+      console.log('Creating new project');
       createProjectMutation.mutate(projectDataWithTranslations);
     }
   };
 
   const handleEdit = (project: Project) => {
+    console.log("=== handleEdit called ===");
+    console.log("Project to edit:", project);
+    console.log("Project ID:", project.id);
+    console.log("Project title:", project.title);
+    console.log("Project translations:", project.translations);
+    
     setEditingProject(project);
     
     // Load translations if they exist
     if (project.translations) {
+      console.log("Setting translations from project:", project.translations);
       setTranslations(project.translations as any);
     } else {
+      console.log("No translations found, initializing default structure");
       // Initialize with default structure
       setTranslations({
         en: { title: project.title, description: project.description || "" },
@@ -251,6 +306,7 @@ export function ProjectsManager() {
       });
     }
     
+    console.log("Resetting form with project data");
     form.reset({
       title: project.title,
       description: project.description || "",
@@ -260,6 +316,7 @@ export function ProjectsManager() {
       sortOrder: project.sortOrder || 0,
     });
     setIsFormOpen(true);
+    console.log("Form opened, editingProject state set to:", project);
   };
 
   const handleSort = (field: keyof Project) => {
@@ -283,6 +340,7 @@ export function ProjectsManager() {
   };
 
   const resetForm = () => {
+    console.log('=== resetForm called ===');
     form.reset({
       title: "",
       description: "",
@@ -298,6 +356,7 @@ export function ProjectsManager() {
     });
     setEditingProject(null);
     setIsFormOpen(false);
+    console.log('Form reset, editingProject cleared');
   };
 
   if (isLoading) {
@@ -316,7 +375,11 @@ export function ProjectsManager() {
           <p className="text-slate-600" data-testid="projects-description">Manage your company projects with images and PDF documents</p>
         </div>
         
-        <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <Dialog open={isFormOpen} onOpenChange={(open) => {
+          console.log('=== Dialog onOpenChange ===');
+          console.log('Form open state changing to:', open);
+          setIsFormOpen(open);
+        }}>
           <DialogTrigger asChild>
             <Button onClick={() => resetForm()} data-testid="button-add-project">
               <Plus className="h-4 w-4 mr-2" />
@@ -334,7 +397,11 @@ export function ProjectsManager() {
             </DialogHeader>
             
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+              <form onSubmit={(e) => {
+                console.log('=== Form onSubmit ===');
+                console.log('Form event:', e);
+                form.handleSubmit(handleSubmit)(e);
+              }} className="space-y-4">
                 {/* Multilingual Title Field */}
                 <TranslatableFieldEditor
                   label="Project Title"
@@ -342,7 +409,11 @@ export function ProjectsManager() {
                   type="text"
                   currentTranslations={translations}
                   originalValue={translations.en?.title || ""}
-                  onChange={setTranslations}
+                  onChange={(newTranslations) => {
+                    console.log('=== Title translations changed ===');
+                    console.log('New translations:', newTranslations);
+                    setTranslations(newTranslations);
+                  }}
                 />
 
                 {/* Multilingual Description Field */}
@@ -352,7 +423,11 @@ export function ProjectsManager() {
                   type="textarea"
                   currentTranslations={translations}
                   originalValue={translations.en?.description || ""}
-                  onChange={setTranslations}
+                  onChange={(newTranslations) => {
+                    console.log('=== Description translations changed ===');
+                    console.log('New translations:', newTranslations);
+                    setTranslations(newTranslations);
+                  }}
                 />
 
                 <FormField
@@ -451,6 +526,12 @@ export function ProjectsManager() {
                     type="submit" 
                     disabled={createProjectMutation.isPending || updateProjectMutation.isPending}
                     data-testid="button-save-project"
+                    onClick={() => {
+                      console.log('=== Submit button clicked ===');
+                      console.log('Form state:', form.getValues());
+                      console.log('Current translations:', translations);
+                      console.log('Editing project:', editingProject);
+                    }}
                   >
                     {createProjectMutation.isPending || updateProjectMutation.isPending 
                       ? "Saving..." 
