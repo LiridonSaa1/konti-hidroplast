@@ -48,6 +48,18 @@ try {
     console.log('attached_assets directory not found, skipping...');
   }
   
+  // Copy uploads to dist/public
+  const srcUploads = path.join(__dirname, 'uploads');
+  const destUploads = path.join(__dirname, 'dist', 'public', 'uploads');
+  
+  if (fs.existsSync(srcUploads)) {
+    console.log('Copying uploads to dist/public...');
+    copyDir(srcUploads, destUploads);
+    console.log('Uploads copied successfully!');
+  } else {
+    console.log('uploads directory not found, skipping...');
+  }
+  
   console.log('Build completed successfully!');
 } catch (error) {
   console.error('Build failed:', error.message);
