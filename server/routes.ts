@@ -4,6 +4,7 @@ import { createServer, type Server } from "http";
 import multer from "multer";
 import path from "path";
 import { promises as fs } from "fs";
+import fsSync from "fs";
 import bcrypt from "bcryptjs";
 import { storage } from "./storage";
 import { translationService } from "./services/translationService";
@@ -316,12 +317,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const fileExtension = path.extname(req.file.originalname);
       const fileName = `${req.file.filename}${fileExtension}`;
       const oldPath = req.file.path;
-      const newPath = path.join(uploadDir, fileName);
+      
+      // Save to root uploads directory (for development)
+      const rootUploadPath = path.join(uploadDir, fileName);
+      
+      // Save to dist/public/uploads directory (for production)
+      const distUploadPath = path.join(__dirname, '..', 'dist', 'public', 'uploads', fileName);
+      
+      console.log('File paths:', { 
+        oldPath, 
+        rootUploadPath, 
+        distUploadPath, 
+        fileName 
+      });
 
-      console.log('File paths:', { oldPath, newPath, fileName });
-
-      // Rename file to include extension
-      await fs.rename(oldPath, newPath);
+      // Rename file to include extension in root uploads
+      await fs.rename(oldPath, rootUploadPath);
+      
+      // Copy to dist/public/uploads for production
+      try {
+        // Ensure dist/public/uploads directory exists
+        const distUploadsDir = path.dirname(distUploadPath);
+        if (!fsSync.existsSync(distUploadsDir)) {
+          await fs.mkdir(distUploadsDir, { recursive: true });
+          console.log('Created dist/public/uploads directory');
+        }
+        
+        // Copy file to production directory
+        await fs.copyFile(rootUploadPath, distUploadPath);
+        console.log('✅ File copied to production directory:', distUploadPath);
+      } catch (copyError) {
+        console.log('⚠️ Warning: Could not copy to production directory:', (copyError as Error).message);
+        console.log('This is normal during development if dist folder doesn\'t exist yet');
+      }
 
       // Return the public URL
       const fileUrl = `/uploads/${fileName}`;
