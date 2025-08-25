@@ -1849,5 +1849,25 @@ export class MemStorage implements IStorage {
   }
 }
 
-// Use in-memory storage for development, or database storage if DATABASE_URL is provided
-export const storage = process.env.DATABASE_URL ? new DatabaseStorage() : new MemStorage();
+// Create storage instance lazily to ensure environment variables are loaded
+let _storage: IStorage | null = null;
+
+function getStorage(): IStorage {
+  if (!_storage) {
+    console.log("=== STORAGE INITIALIZATION ===");
+    console.log("process.env.DATABASE_URL exists:", !!process.env.DATABASE_URL);
+    console.log("process.env.DATABASE_URL value:", process.env.DATABASE_URL);
+    console.log("process.env.NODE_ENV:", process.env.NODE_ENV);
+    console.log("=================================");
+    
+    _storage = process.env.DATABASE_URL ? new DatabaseStorage() : new MemStorage();
+  }
+  return _storage;
+}
+
+// Export storage as a getter that initializes when first accessed
+export const storage = new Proxy({} as IStorage, {
+  get(target, prop) {
+    return getStorage()[prop as keyof IStorage];
+  }
+});

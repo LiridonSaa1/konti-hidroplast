@@ -1,3 +1,7 @@
+// Load environment variables from .env file FIRST, before any other imports
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express, { type Request, Response, NextFunction } from "express";
 import path from "path";
 import { fileURLToPath } from 'url';

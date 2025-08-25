@@ -1,12 +1,57 @@
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-serverless';
-import ws from "ws";
+import { Pool } from 'pg';
+import { drizzle } from 'drizzle-orm/node-postgres';
 import * as schema from "@shared/schema";
 
-neonConfig.webSocketConstructor = ws;
+// Lazy database connection to ensure environment variables are loaded
+let _pool: Pool | null = null;
+let _db: any = null;
 
-// Only connect to database if DATABASE_URL is provided
-// Otherwise, the application will use in-memory storage
+function getPool(): Pool | null {
+  if (!_pool && process.env.DATABASE_URL) {
+    console.log("=== DATABASE CONNECTION INITIALIZATION ===");
+    console.log("Creating database connection...");
+    
+    _pool = new Pool({ 
+      connectionString: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false
+      },
+      // Connection pooling and security settings
+      max: 10, // Maximum number of connections
+      idleTimeoutMillis: 30000, // Close idle connections after 30 seconds
+      connectionTimeoutMillis: 2000, // Connection timeout
+      // Security: Only allow connections from your application
+      application_name: 'konti-hidroplast-app',
+      // Prevent SQL injection and other attacks
+      statement_timeout: 30000, // 30 second query timeout
+    });
+    
+    console.log("Database connection created successfully!");
+    console.log("=========================================");
+  }
+  return _pool;
+}
 
-export const pool = process.env.DATABASE_URL ? new Pool({ connectionString: process.env.DATABASE_URL }) : null;
-export const db = pool ? drizzle({ client: pool, schema }) : null;
+function getDb() {
+  if (!_db) {
+    const pool = getPool();
+    if (pool) {
+      _db = drizzle(pool, { schema });
+    }
+  }
+  return _db;
+}
+
+export const pool = new Proxy({} as Pool, {
+  get(target, prop) {
+    const pool = getPool();
+    return pool ? pool[prop as keyof Pool] : undefined;
+  }
+});
+
+export const db = new Proxy({} as any, {
+  get(target, prop) {
+    const db = getDb();
+    return db ? db[prop] : undefined;
+  }
+});
