@@ -36,6 +36,23 @@ import {
 // Configure multer for file uploads
 const uploadDir = path.join(process.cwd(), 'uploads');
 
+// Get current directory path for ES modules compatibility
+const getCurrentDir = () => {
+  try {
+    // For ES modules, use import.meta.url
+    if (typeof import.meta !== 'undefined' && import.meta.url) {
+      return path.dirname(new URL(import.meta.url).pathname);
+    }
+    // Fallback for CommonJS
+    return __dirname;
+  } catch {
+    // Final fallback
+    return process.cwd();
+  }
+};
+
+const currentDir = getCurrentDir();
+
 // Ensure upload directory exists
 async function ensureUploadDir() {
   try {
@@ -149,7 +166,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     console.log('🔧 Development mode: Serving uploads from multiple locations');
     
     // First, try to serve from dist/public/uploads (production build location)
-    const distUploadsPath = path.join(__dirname, '..', 'dist', 'public', 'uploads');
+    const distUploadsPath = path.join(currentDir, '..', 'dist', 'public', 'uploads');
     if (fsSync.existsSync(distUploadsPath)) {
       console.log('✅ Serving from dist/public/uploads:', distUploadsPath);
       app.use('/uploads', express.static(distUploadsPath));
@@ -164,7 +181,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Health check endpoint
   app.get("/api/health", (req, res) => {
-    const distUploadsPath = path.join(__dirname, '..', 'dist', 'public', 'uploads');
+    const distUploadsPath = path.join(currentDir, '..', 'dist', 'public', 'uploads');
     const rootUploadsExists = fsSync.existsSync(uploadDir);
     const distUploadsExists = fsSync.existsSync(distUploadsPath);
     
@@ -342,7 +359,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const rootUploadPath = path.join(uploadDir, fileName);
       
       // Save to dist/public/uploads directory (for production)
-      const distUploadPath = path.join(__dirname, '..', 'dist', 'public', 'uploads', fileName);
+      const distUploadPath = path.join(currentDir, '..', 'dist', 'public', 'uploads', fileName);
       
       console.log('File paths:', { 
         oldPath, 
