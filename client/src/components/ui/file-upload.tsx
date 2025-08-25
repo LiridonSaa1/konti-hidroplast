@@ -64,6 +64,15 @@ export function FileUpload({
       }
 
       console.log('Uploading to /api/upload with token:', token ? 'Present' : 'Missing');
+      console.log('FormData contents:', Array.from(formData.entries()));
+
+      // Check if server is reachable first
+      try {
+        const healthCheck = await fetch("/api/health", { method: "GET" });
+        console.log('Server health check status:', healthCheck.status);
+      } catch (healthError) {
+        console.warn('Server health check failed:', healthError);
+      }
 
       const response = await fetch("/api/upload", {
         method: "POST",
@@ -76,7 +85,7 @@ export function FileUpload({
       console.log('Upload response headers:', response.headers);
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = await response.json().catch(() => ({ error: `HTTP ${response.status}` }));
         console.error('Upload error response:', errorData);
         throw new Error(errorData.error || `HTTP ${response.status}`);
       }
@@ -92,9 +101,19 @@ export function FileUpload({
       });
     } catch (error: any) {
       console.error("Upload error:", error);
+      
+      // Provide more specific error messages
+      let errorMessage = "Failed to upload file";
+      
+      if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
+        errorMessage = "Network error: Unable to connect to server. Please check your internet connection and try again.";
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       toast({
-        title: "Error",
-        description: error.message || "Failed to upload file",
+        title: "Upload Failed",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {

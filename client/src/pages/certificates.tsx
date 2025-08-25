@@ -20,11 +20,13 @@ import type { CertificateCategory, CertificateSubcategory, Certificate } from "@
 interface OrganizedCategory {
   id: number;
   title: string;
-  certificates?: Certificate[];
+  description?: string;
+  certificates?: Array<Certificate & { translatedTitle: string }>;
   subsections?: {
     id: number;
     title: string;
-    certificates: Certificate[];
+    description?: string;
+    certificates: Array<Certificate & { translatedTitle: string }>;
   }[];
 }
 
@@ -51,11 +53,28 @@ function useCertificateData() {
   };
 }
 
+// Utility function to get translated title
+function getTranslatedTitle(item: { title: string; translations?: any }, language: string): string {
+  if (!item.translations || !item.translations[language]?.title) {
+    return item.title; // Fallback to default title
+  }
+  return item.translations[language].title;
+}
+
+// Utility function to get translated description
+function getTranslatedDescription(item: { description?: string | null; translations?: any }, language: string): string {
+  if (!item.translations || !item.translations[language]?.description) {
+    return item.description || ""; // Fallback to default description
+  }
+  return item.translations[language].description;
+}
+
 // Organize data into the structure needed for display
 function organizeData(
   categories: CertificateCategory[],
   subcategories: CertificateSubcategory[],
-  certificates: Certificate[]
+  certificates: Certificate[],
+  language: string
 ): OrganizedCategory[] {
   const organizedCategories: OrganizedCategory[] = [];
   
@@ -68,8 +87,14 @@ function organizeData(
       const subsections = categorySubcategories
         .map(subcategory => ({
           id: subcategory.id,
-          title: subcategory.title,
-          certificates: certificates.filter(cert => cert.subcategoryId === subcategory.id),
+          title: getTranslatedTitle(subcategory, language),
+          description: getTranslatedDescription(subcategory, language),
+          certificates: certificates
+            .filter(cert => cert.subcategoryId === subcategory.id)
+            .map(cert => ({
+              ...cert,
+              translatedTitle: getTranslatedTitle(cert, language)
+            })),
         }))
         .filter(subsection => subsection.certificates.length > 0); // Only include subcategories with certificates
 
@@ -77,7 +102,8 @@ function organizeData(
       if (subsections.length > 0) {
         organizedCategories.push({
           id: category.id,
-          title: category.title,
+          title: getTranslatedTitle(category, language),
+          description: getTranslatedDescription(category, language),
           subsections,
         });
       }
@@ -86,8 +112,12 @@ function organizeData(
       if (categoryCertificates.length > 0) {
         organizedCategories.push({
           id: category.id,
-          title: category.title,
-          certificates: categoryCertificates,
+          title: getTranslatedTitle(category, language),
+          description: getTranslatedDescription(category, language),
+          certificates: categoryCertificates.map(cert => ({
+            ...cert,
+            translatedTitle: getTranslatedTitle(cert, language)
+          })),
         });
       }
     }
@@ -684,7 +714,7 @@ const legacyCertificateCategories = [
 ];
 
 function CertificatesPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [, setLocation] = useLocation();
   const { data: companyInfo } = useCompanyInfo();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
@@ -694,8 +724,15 @@ function CertificatesPage() {
   
   // Organize data for display
   const organizedData = categories.data && subcategories.data && certificates.data 
-    ? organizeData(categories.data, subcategories.data, certificates.data)
+    ? organizeData(categories.data, subcategories.data, certificates.data, language)
     : [] as OrganizedCategory[];
+
+  // Reset active tab when language changes to avoid out-of-bounds errors
+  useEffect(() => {
+    if (organizedData.length > 0 && activeTabIndex >= organizedData.length) {
+      setActiveTabIndex(0);
+    }
+  }, [language, organizedData.length, activeTabIndex]);
 
   const nextTab = () => {
     setActiveTabIndex((prev) =>
@@ -724,55 +761,60 @@ function CertificatesPage() {
   }, []);
 
   const CertificateCard = ({ certificate, categoryId, index }: { 
-    certificate: Certificate | { title: string; image?: string; imageUrl?: string; downloadUrl?: string; };
+    certificate: (Certificate & { translatedTitle: string }) | { title: string; image?: string; imageUrl?: string; downloadUrl?: string; };
     categoryId: number | string;
     index: number;
-  }) => (
-    <div
-      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100"
-      data-testid={`certificate-${categoryId}-${index}`}
-    >
-      <div className="aspect-[3/4] bg-gray-100">
-        <img
-          src={('image' in certificate ? certificate.image : certificate.imageUrl) || '/placeholder-certificate.jpg'}
-          alt={certificate.title}
-          className="w-full h-full object-cover"
-          loading="lazy"
-        />
+  }) => {
+    // Get the title to display - use translatedTitle if available, otherwise fall back to title
+    const displayTitle = 'translatedTitle' in certificate ? certificate.translatedTitle : certificate.title;
+    
+    return (
+      <div
+        className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100"
+        data-testid={`certificate-${categoryId}-${index}`}
+      >
+        <div className="aspect-[3/4] bg-gray-100">
+          <img
+            src={('image' in certificate ? certificate.image : certificate.imageUrl) || '/placeholder-certificate.jpg'}
+            alt={displayTitle}
+            className="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+        <div className="p-4">
+          <h3 className="text-sm font-semibold text-[#1c2d56] mb-3 line-clamp-2 min-h-[2.5rem]">
+            {displayTitle}
+          </h3>
+          {certificate.downloadUrl && certificate.downloadUrl !== "#" ? (
+            <a
+              href={certificate.downloadUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center w-full justify-center px-3 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm rounded-lg transition-colors"
+              data-testid={`download-${categoryId}-${index}`}
+            >
+              <Download className="w-3 h-3 mr-2" />
+              {t("certificates.download")}
+            </a>
+          ) : (
+            <button
+              onClick={() => {
+                const imageUrl = 'image' in certificate ? certificate.image : certificate.imageUrl;
+                if (imageUrl) {
+                  window.open(imageUrl, '_blank', 'noopener,noreferrer');
+                }
+              }}
+              className="inline-flex items-center w-full justify-center px-3 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm rounded-lg transition-colors"
+              data-testid={`certificate-${categoryId}-${index}`}
+            >
+              <Shield className="w-3 h-3 mr-2" />
+              {t("productPages.certificateOnly")}
+            </button>
+          )}
+        </div>
       </div>
-      <div className="p-4">
-        <h3 className="text-sm font-semibold text-[#1c2d56] mb-3 line-clamp-2 min-h-[2.5rem]">
-          {certificate.title}
-        </h3>
-        {certificate.downloadUrl && certificate.downloadUrl !== "#" ? (
-          <a
-            href={certificate.downloadUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center w-full justify-center px-3 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm rounded-lg transition-colors"
-            data-testid={`download-${categoryId}-${index}`}
-          >
-            <Download className="w-3 h-3 mr-2" />
-            {t("productPages.download")}
-          </a>
-        ) : (
-          <button
-            onClick={() => {
-              const imageUrl = 'image' in certificate ? certificate.image : certificate.imageUrl;
-              if (imageUrl) {
-                window.open(imageUrl, '_blank', 'noopener,noreferrer');
-              }
-            }}
-            className="inline-flex items-center w-full justify-center px-3 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm rounded-lg transition-colors"
-            data-testid={`certificate-${categoryId}-${index}`}
-          >
-            <Shield className="w-3 h-3 mr-2" />
-            {t("productPages.certificateOnly")}
-          </button>
-        )}
-      </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -838,14 +880,14 @@ function CertificatesPage() {
           {isLoading && (
             <div className="text-center py-12">
               <div className="animate-spin w-12 h-12 border-4 border-[#1c2d56] border-t-transparent rounded-full mx-auto mb-4"></div>
-              <p className="text-gray-600">{t("productPages.loadingCertificates")}</p>
+              <p className="text-gray-600">{t("certificates.loading")}</p>
             </div>
           )}
 
           {/* Error state */}
           {error && (
             <div className="text-center py-12">
-              <p className="text-red-600 mb-4">{t("productPages.errorLoadingCertificates")}</p>
+              <p className="text-red-600 mb-4">{t("certificates.error")}</p>
             </div>
           )}
 

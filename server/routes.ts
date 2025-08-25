@@ -1,4 +1,4 @@
-import type { Express } from "express";
+import type { Express, Request, Response, NextFunction } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import multer from "multer";
@@ -51,6 +51,12 @@ const upload = multer({
     fileSize: 100 * 1024 * 1024, // 100MB limit (increased from 10MB)
   },
   fileFilter: (req, file, cb) => {
+    console.log('Multer file filter:', {
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+      fieldname: file.fieldname
+    });
+    
     const allowedTypes = /jpeg|jpg|png|gif|pdf/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
@@ -58,10 +64,25 @@ const upload = multer({
     if (mimetype && extname) {
       return cb(null, true);
     } else {
-      cb(new Error('Only images (jpeg, jpg, png, gif) and PDFs are allowed'));
+      cb(new Error(`File type not allowed. Got: ${file.mimetype}, ${path.extname(file.originalname)}. Allowed: ${allowedTypes.source}`));
     }
   }
 });
+
+// Error handling middleware for multer
+const handleMulterError = (err: any, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof multer.MulterError) {
+    console.error('Multer error:', err);
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ error: 'File too large. Maximum size is 100MB.' });
+    }
+    return res.status(400).json({ error: `Upload error: ${err.message}` });
+  } else if (err) {
+    console.error('File upload error:', err);
+    return res.status(400).json({ error: err.message });
+  }
+  next();
+};
 
 // Session management with simple in-memory store for now
 const sessions = new Map<string, { userId: string; expiresAt: number }>();
@@ -97,6 +118,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Serve uploaded files statically
   app.use('/uploads', express.static(uploadDir));
+
+  // Health check endpoint
+  app.get("/api/health", (req, res) => {
+    res.json({ 
+      status: "ok", 
+      timestamp: new Date().toISOString(),
+      uploadDir: uploadDir,
+      serverTime: Date.now()
+    });
+  });
 
   // Initialize admin user if none exists
   async function initializeAdminUser() {
@@ -233,7 +264,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // File upload endpoint
-  app.post("/api/upload", upload.single('file'), async (req, res) => {
+  app.post("/api/upload", upload.single('file'), handleMulterError, async (req, res) => {
     try {
       console.log('=== File Upload Request ===');
       console.log('Headers:', req.headers);
@@ -637,6 +668,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Certificates routes
   app.get("/api/admin/certificates", async (req, res) => {
     try {
+      // Set cache-busting headers to prevent 304 responses
+      res.set({
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'ETag': `"${Date.now()}"` // Dynamic ETag to prevent caching
+      });
+      
       const categoryId = req.query.categoryId as string;
       const subcategoryId = req.query.subcategoryId as string;
       
@@ -657,6 +696,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/admin/certificates/:id", async (req, res) => {
     try {
+      // Set cache-busting headers to prevent 304 responses
+      res.set({
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
+        'ETag': `"${Date.now()}"` // Dynamic ETag to prevent caching
+      });
+      
       const certificate = await storage.getCertificate(parseInt(req.params.id));
       if (!certificate) {
         return res.status(404).json({ error: "Certificate not found" });
@@ -670,8 +717,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/certificates", async (req, res) => {
     try {
+      console.log('=== Certificate Create Request ===');
+      console.log('Request body:', JSON.stringify(req.body, null, 2));
+      
       const certificateData = insertCertificateSchema.parse(req.body);
+      console.log('Parsed certificate data:', JSON.stringify(certificateData, null, 2));
+      
       const certificate = await storage.createCertificate(certificateData);
+      console.log('Created certificate result:', JSON.stringify(certificate, null, 2));
+      
       res.status(201).json(certificate);
     } catch (error) {
       console.error("Error creating certificate:", error);
@@ -681,8 +735,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.put("/api/admin/certificates/:id", async (req, res) => {
     try {
-      const certificateData = insertCertificateSchema.partial().parse(req.body);
+      console.log('=== Certificate Update Request ===');
+      console.log('Certificate ID:', req.params.id);
+      console.log('Request body:', JSON.stringify(req.body, null, 2));
+      
+      const certificateData = insertCertificateSchema.parse(req.body);
+      console.log('Parsed certificate data:', JSON.stringify(certificateData, null, 2));
+      
       const certificate = await storage.updateCertificate(parseInt(req.params.id), certificateData);
+      console.log('Updated certificate result:', JSON.stringify(certificate, null, 2));
+      
       res.json(certificate);
     } catch (error) {
       console.error("Error updating certificate:", error);

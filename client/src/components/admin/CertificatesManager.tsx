@@ -41,6 +41,12 @@ import { Plus, Edit, Trash2, Search, ArrowUpDown, Image as ImageIcon } from "luc
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { FileUpload } from "@/components/ui/file-upload";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 
 
 type CertificateCategory = {
@@ -58,22 +64,36 @@ type CertificateSubcategory = {
 
 type Certificate = {
   id: number;
+  title: string;
   categoryId: number;
-  subcategoryId: number;
+  subcategoryId?: number;
   imageUrl: string;
   sortOrder: number;
   status: string;
-  createdAt: Date;
-  updatedAt: Date;
+  translations?: any;
+  defaultLanguage?: string;
 };
 
 // Local form schema with custom validation
 const certificateFormSchema = z.object({
+  title: z.string().min(1, "Title is required"),
   categoryId: z.number().min(1, "Category is required"),
-  subcategoryId: z.number().optional(), // Make subcategory optional
+  subcategoryId: z.number().optional(),
   imageUrl: z.string().min(1, "Image is required"),
   sortOrder: z.number().int().min(0).default(0),
   status: z.enum(["active", "inactive"]).default("active"),
+  translations: z.object({
+    en: z.object({
+      title: z.string().optional(),
+    }).optional(),
+    mk: z.object({
+      title: z.string().optional(),
+    }).optional(),
+    de: z.object({
+      title: z.string().optional(),
+    }).optional(),
+  }).optional(),
+  defaultLanguage: z.string().default("en"),
 });
 
 type CertificateForm = z.infer<typeof certificateFormSchema>;
@@ -92,11 +112,18 @@ export function CertificatesManager() {
   const form = useForm<CertificateForm>({
     resolver: zodResolver(certificateFormSchema),
     defaultValues: {
+      title: "",
       categoryId: 0,
       subcategoryId: undefined,
       imageUrl: "",
       sortOrder: 0,
       status: "active",
+      translations: {
+        en: { title: "" },
+        mk: { title: "" },
+        de: { title: "" },
+      },
+      defaultLanguage: "en",
     },
   });
 
@@ -110,15 +137,29 @@ export function CertificatesManager() {
     queryKey: ["/api/admin/certificate-subcategories"],
   });
 
-  const { data: certificates = [], isLoading } = useQuery({
+  const { data: certificates = [], isLoading, refetch } = useQuery({
     queryKey: ["/api/admin/certificates"],
+    staleTime: 0, // Always consider data stale
+    gcTime: 0, // Don't cache data
+    refetchOnMount: true, // Refetch when component mounts
+    refetchOnWindowFocus: true, // Refetch when window regains focus
   });
 
   const createMutation = useMutation({
     mutationFn: (data: CertificateForm) =>
       apiRequest("/api/admin/certificates", "POST", data),
     onSuccess: () => {
+      // Invalidate and refetch all related queries
       queryClient.invalidateQueries({ queryKey: ["/api/admin/certificates"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/certificate-categories"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/certificate-subcategories"] });
+      
+      // Force immediate refetch
+      queryClient.refetchQueries({ queryKey: ["/api/admin/certificates"] });
+      
+      // Also call the local refetch function
+      refetch();
+      
       setIsOpen(false);
       form.reset();
       toast({ title: "Certificate created successfully" });
@@ -132,7 +173,17 @@ export function CertificatesManager() {
     mutationFn: ({ id, data }: { id: number; data: CertificateForm }) =>
       apiRequest(`/api/admin/certificates/${id}`, "PUT", data),
     onSuccess: () => {
+      // Invalidate and refetch all related queries
       queryClient.invalidateQueries({ queryKey: ["/api/admin/certificates"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/certificate-categories"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/certificate-subcategories"] });
+      
+      // Force immediate refetch
+      queryClient.refetchQueries({ queryKey: ["/api/admin/certificates"] });
+      
+      // Also call the local refetch function
+      refetch();
+      
       setIsOpen(false);
       setEditingCertificate(null);
       form.reset();
@@ -147,7 +198,17 @@ export function CertificatesManager() {
     mutationFn: (id: number) =>
       apiRequest(`/api/admin/certificates/${id}`, "DELETE"),
     onSuccess: () => {
+      // Invalidate and refetch all related queries
       queryClient.invalidateQueries({ queryKey: ["/api/admin/certificates"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/certificate-categories"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/certificate-subcategories"] });
+      
+      // Force immediate refetch
+      queryClient.refetchQueries({ queryKey: ["/api/admin/certificates"] });
+      
+      // Also call the local refetch function
+      refetch();
+      
       toast({ title: "Certificate deleted successfully" });
     },
     onError: () => {
@@ -160,7 +221,8 @@ export function CertificatesManager() {
     return category?.title || "Unknown";
   };
 
-  const getSubcategoryName = (subcategoryId: number) => {
+  const getSubcategoryName = (subcategoryId: number | undefined) => {
+    if (!subcategoryId) return "No subcategory";
     const subcategory = (subcategories as CertificateSubcategory[]).find((s: CertificateSubcategory) => s.id === subcategoryId);
     return subcategory?.title || "Unknown";
   };
@@ -178,7 +240,7 @@ export function CertificatesManager() {
         categoryName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         subcategoryName.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = !categoryFilter || categoryFilter === "all" || certificate.categoryId.toString() === categoryFilter;
-      const matchesSubcategory = !subcategoryFilter || subcategoryFilter === "all" || certificate.subcategoryId.toString() === subcategoryFilter;
+      const matchesSubcategory = !subcategoryFilter || subcategoryFilter === "all" || (certificate.subcategoryId ? certificate.subcategoryId.toString() === subcategoryFilter : subcategoryFilter === "all");
       return matchesSearch && matchesCategory && matchesSubcategory;
     })
     .sort((a: Certificate, b: Certificate) => {
@@ -206,12 +268,29 @@ export function CertificatesManager() {
 
   const handleEdit = (certificate: Certificate) => {
     setEditingCertificate(certificate);
+    
+    // Get existing translations or create defaults
+    const existingTranslations = certificate.translations || {};
+    
     form.reset({
+      title: certificate.title,
       categoryId: certificate.categoryId,
       subcategoryId: certificate.subcategoryId || undefined,
       imageUrl: certificate.imageUrl,
       sortOrder: certificate.sortOrder,
       status: certificate.status as "active" | "inactive",
+      translations: {
+        en: { 
+          title: existingTranslations.en?.title || certificate.title 
+        },
+        mk: { 
+          title: existingTranslations.mk?.title || "" 
+        },
+        de: { 
+          title: existingTranslations.de?.title || "" 
+        },
+      },
+      defaultLanguage: certificate.defaultLanguage || "en",
     });
     setIsOpen(true);
   };
@@ -223,9 +302,16 @@ export function CertificatesManager() {
   };
 
   const onSubmit = (data: CertificateForm) => {
+    console.log('=== Form Submission Data ===');
+    console.log('Raw form data:', data);
+    console.log('Translations:', data.translations);
+    console.log('Default language:', data.defaultLanguage);
+    
     if (editingCertificate) {
+      console.log('Updating certificate with ID:', editingCertificate.id);
       updateMutation.mutate({ id: editingCertificate.id, data });
     } else {
+      console.log('Creating new certificate');
       createMutation.mutate(data);
     }
   };
@@ -234,7 +320,20 @@ export function CertificatesManager() {
     setIsOpen(open);
     if (!open) {
       setEditingCertificate(null);
-      form.reset();
+      form.reset({
+        title: "",
+        categoryId: 0,
+        subcategoryId: undefined,
+        imageUrl: "",
+        sortOrder: 0,
+        status: "active",
+        translations: {
+          en: { title: "" },
+          mk: { title: "" },
+          de: { title: "" },
+        },
+        defaultLanguage: "en",
+      });
     }
   };
 
@@ -263,139 +362,216 @@ export function CertificatesManager() {
               Add Certificate
             </Button>
           </DialogTrigger>
-          <DialogContent className="max-w-md">
+          <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>
-                {editingCertificate ? "Edit Certificate" : "Add Certificate"}
+                {editingCertificate ? "Edit Certificate" : "Add New Certificate"}
               </DialogTitle>
             </DialogHeader>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="categoryId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Category</FormLabel>
-                      <Select 
-                        onValueChange={(value) => {
-                          const categoryId = parseInt(value);
-                          field.onChange(categoryId);
-                          form.setValue("subcategoryId", undefined); // Reset subcategory when category changes
-                        }}
-                        defaultValue={field.value?.toString()}
-                      >
-                        <FormControl>
-                          <SelectTrigger data-testid="select-category">
-                            <SelectValue placeholder="Select a category" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {(categories as CertificateCategory[]).map((category: CertificateCategory) => (
-                            <SelectItem key={category.id} value={category.id.toString()}>
-                              {category.title}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="subcategoryId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Subcategory</FormLabel>
-                      <Select 
-                        onValueChange={(value) => {
-                          if (value === "none") {
-                            field.onChange(undefined);
-                          } else {
-                            field.onChange(parseInt(value));
-                          }
-                        }} 
-                        defaultValue={field.value?.toString() || "none"}
-                        disabled={!selectedCategoryId}
-                      >
-                        <FormControl>
-                          <SelectTrigger data-testid="select-subcategory">
-                            <SelectValue placeholder="Select a subcategory" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="none">None (No subcategory)</SelectItem>
-                          {getFilteredSubcategories().map((subcategory: CertificateSubcategory) => (
-                            <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
-                              {subcategory.title}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Certificate Image</FormLabel>
-                      <FormControl>
-                        <FileUpload
-                          label=""
-                          value={field.value}
-                          onChange={handleImageUpload}
-                          accept="image/*"
-                          placeholder="Upload certificate image or enter URL"
-                          data-testid="file-upload-image"
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <div className="space-y-6">
+                  {/* Title with Language Tabs */}
+                  <div className="space-y-3">
+                    <FormLabel className="text-base font-medium">Title</FormLabel>
+                    <Tabs defaultValue="en" className="w-full">
+                      <TabsList className="grid w-full grid-cols-3">
+                        <TabsTrigger value="en" className="text-xs">🇺🇸 EN</TabsTrigger>
+                        <TabsTrigger value="mk" className="text-xs">🇲🇰 MK</TabsTrigger>
+                        <TabsTrigger value="de" className="text-xs">🇩🇪 DE</TabsTrigger>
+                      </TabsList>
+                      
+                      <TabsContent value="en" className="mt-3">
+                        <FormField
+                          control={form.control}
+                          name="title"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input 
+                                  placeholder="Enter title in English" 
+                                  {...field} 
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="sortOrder"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Sort Order</FormLabel>
-                      <FormControl>
-                        <Input
-                          data-testid="input-sort-order"
-                          type="number"
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                      </TabsContent>
+                      
+                      <TabsContent value="mk" className="mt-3">
+                        <FormField
+                          control={form.control}
+                          name="translations.mk.title"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input 
+                                  placeholder="Enter title in Macedonian" 
+                                  {...field}
+                                  value={field.value || ""}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Status</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      </TabsContent>
+                      
+                      <TabsContent value="de" className="mt-3">
+                        <FormField
+                          control={form.control}
+                          name="translations.de.title"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <Input 
+                                  placeholder="Enter title in German" 
+                                  {...field}
+                                  value={field.value || ""}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </TabsContent>
+                    </Tabs>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="categoryId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Category</FormLabel>
+                          <Select 
+                            onValueChange={(value) => {
+                              const categoryId = parseInt(value);
+                              field.onChange(categoryId);
+                              form.setValue("subcategoryId", undefined); // Reset subcategory when category changes
+                            }}
+                            defaultValue={field.value?.toString()}
+                          >
+                            <FormControl>
+                              <SelectTrigger data-testid="select-category">
+                                <SelectValue placeholder="Select a category" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {(categories as CertificateCategory[]).map((category: CertificateCategory) => (
+                                <SelectItem key={category.id} value={category.id.toString()}>
+                                  {category.title}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="subcategoryId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Subcategory</FormLabel>
+                          <Select 
+                            onValueChange={(value) => {
+                              if (value === "none") {
+                                field.onChange(undefined);
+                              } else {
+                                field.onChange(parseInt(value));
+                              }
+                            }} 
+                            defaultValue={field.value?.toString() || "none"}
+                            disabled={!selectedCategoryId}
+                          >
+                            <FormControl>
+                              <SelectTrigger data-testid="select-subcategory">
+                                <SelectValue placeholder="Select a subcategory" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="none">None (No subcategory)</SelectItem>
+                              {getFilteredSubcategories().map((subcategory: CertificateSubcategory) => (
+                                <SelectItem key={subcategory.id} value={subcategory.id.toString()}>
+                                  {subcategory.title}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  <FormField
+                    control={form.control}
+                    name="imageUrl"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Certificate Image</FormLabel>
                         <FormControl>
-                          <SelectTrigger data-testid="select-status">
-                            <SelectValue />
-                          </SelectTrigger>
+                          <FileUpload
+                            label=""
+                            value={field.value}
+                            onChange={handleImageUpload}
+                            accept="image/*"
+                            placeholder="Upload certificate image or enter URL"
+                            data-testid="file-upload-image"
+                          />
                         </FormControl>
-                        <SelectContent>
-                          <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="inactive">Inactive</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="sortOrder"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Sort Order</FormLabel>
+                          <FormControl>
+                            <Input
+                              data-testid="input-sort-order"
+                              type="number"
+                              {...field}
+                              onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="status"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Status</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger data-testid="select-status">
+                                <SelectValue />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="active">Active</SelectItem>
+                              <SelectItem value="inactive">Inactive</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
                 <div className="flex justify-end gap-2">
                   <Button
                     type="button"

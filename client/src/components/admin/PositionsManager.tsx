@@ -237,7 +237,6 @@ export function PositionsManager() {
                   type="text"
                   currentTranslations={translations}
                   originalValue={translations.en?.title || ""}
-                  defaultLanguage="en"
                   onChange={setTranslations}
                 />
 

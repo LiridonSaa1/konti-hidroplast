@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Edit, Trash2, Search, FileText, Calendar, User, X, MoveUp, MoveDown, Eye } from "lucide-react";
+import { Plus, Edit, Trash2, Search, FileText, Calendar, User, X, MoveUp, MoveDown, Eye, Globe, Languages } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,8 @@ import { apiRequest } from "@/lib/queryClient";
 import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { FileUpload } from "@/components/ui/file-upload";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TranslatableFieldEditor } from "@/components/admin/TranslatableFieldEditor";
 import type { NewsArticle, InsertNewsArticle } from "@shared/schema";
 
 interface ArticleSection {
@@ -27,18 +29,39 @@ interface ArticleSection {
   imagePosition?: 'left' | 'right';
 }
 
+interface MultiLanguageContent {
+  en: string;
+  mk: string;
+  de: string;
+}
+
+interface MultiLanguageSection {
+  id: string;
+  type: 'text' | 'image' | 'text-with-image';
+  title: MultiLanguageContent;
+  content: MultiLanguageContent;
+  imageUrl?: string;
+  imagePosition?: 'left' | 'right';
+}
+
 interface NewsFormData {
   title: string;
   description: string;
   imageUrl: string;
   published: boolean;
   sortOrder: number;
-  sections: ArticleSection[];
+  sections: MultiLanguageSection[];
+  translations: {
+    en?: Record<string, string>;
+    mk?: Record<string, string>;
+    de?: Record<string, string>;
+  };
 }
 
 export function NewsManager() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [languageFilter, setLanguageFilter] = useState<string>("all");
   const [sortBy, setSortBy] = useState<string>("newest");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
@@ -49,11 +72,35 @@ export function NewsManager() {
     imageUrl: "",
     published: false,
     sortOrder: 0,
-    sections: []
+    sections: [],
+    translations: {
+      en: { title: "", description: "" },
+      mk: { title: "", description: "" },
+      de: { title: "", description: "" }
+    }
   });
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Debug effect to track form data changes
+  useEffect(() => {
+    // Form data tracking removed for cleaner console
+  }, [formData, selectedArticle]);
+
+  // Effect to ensure form data is synchronized when editing
+  useEffect(() => {
+    if (isEditDialogOpen && selectedArticle) {
+      // Edit dialog synchronization removed for cleaner console
+    }
+  }, [isEditDialogOpen, selectedArticle, formData]);
+
+  // Additional effect to monitor form data changes specifically for editing
+  useEffect(() => {
+    if (isEditDialogOpen && selectedArticle && formData.translations) {
+      // Form data monitoring removed for cleaner console
+    }
+  }, [formData.translations, isEditDialogOpen, selectedArticle]);
 
   const { data: news = [], isLoading } = useQuery<NewsArticle[]>({
     queryKey: ["/api/admin/news"]
@@ -137,7 +184,11 @@ export function NewsManager() {
       const matchesStatus = statusFilter === "all" ||
                            (statusFilter === "published" && article.published) ||
                            (statusFilter === "draft" && !article.published);
-      return matchesSearch && matchesStatus;
+      const matchesLanguage = languageFilter === "all" ||
+                              (languageFilter === "en" && (article.defaultLanguage === "en" || (article.translations && (article.translations as any).en))) ||
+                              (languageFilter === "mk" && (article.defaultLanguage === "mk" || (article.translations && (article.translations as any).mk))) ||
+                              (languageFilter === "de" && (article.defaultLanguage === "de" || (article.translations && (article.translations as any).de)));
+      return matchesSearch && matchesStatus && matchesLanguage;
     })
     .sort((a, b) => {
       switch (sortBy) {
@@ -171,17 +222,23 @@ export function NewsManager() {
       imageUrl: "",
       published: false,
       sortOrder: 0,
-      sections: []
+      sections: [],
+      translations: {
+        en: { title: "", description: "" },
+        mk: { title: "", description: "" },
+        de: { title: "", description: "" }
+      }
     });
     setSelectedArticle(null);
+    // setEditKey(0); // This line is removed
   };
 
   const addSection = (type: ArticleSection['type']) => {
-    const newSection: ArticleSection = {
+    const newSection: MultiLanguageSection = {
       id: `section-${Date.now()}`,
       type,
-      title: "",
-      content: "",
+      title: { en: "", mk: "", de: "" },
+      content: { en: "", mk: "", de: "" },
       imageUrl: "",
       imagePosition: 'right'
     };
@@ -191,7 +248,7 @@ export function NewsManager() {
     }));
   };
 
-  const updateSection = (sectionId: string, updates: Partial<ArticleSection>) => {
+  const updateSection = (sectionId: string, updates: Partial<MultiLanguageSection>) => {
     setFormData(prev => ({
       ...prev,
       sections: prev.sections.map(section =>
@@ -236,7 +293,7 @@ export function NewsManager() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title.trim()) {
+    if (!formData.title) {
       toast({
         title: "Error",
         description: "Title is required",
@@ -246,14 +303,23 @@ export function NewsManager() {
     }
 
     const articleData: InsertNewsArticle = {
-      title: formData.title.trim(),
+      title: formData.title,
       subtitle: null,
       description: formData.description || null,
       imageUrl: formData.imageUrl || null,
       author: null,
       published: formData.published,
       sortOrder: formData.sortOrder,
-      sections: formData.sections
+      sections: formData.sections.map(section => ({
+        id: section.id,
+        type: section.type,
+        title: section.title.en,
+        content: section.content.en,
+        imageUrl: section.imageUrl,
+        imagePosition: section.imagePosition
+      })),
+      translations: formData.translations,
+      defaultLanguage: 'en'
     };
 
     if (selectedArticle) {
@@ -264,15 +330,54 @@ export function NewsManager() {
   };
 
   const handleEdit = (article: NewsArticle) => {
-    setSelectedArticle(article);
-    setFormData({
-      title: article.title,
-      description: article.description || "",
+    // Extract translations from the article, with proper fallbacks
+    const translations = (article.translations as any) || {};
+    
+    // Ensure we have the correct structure for each language
+    const structuredTranslations = {
+      en: {
+        title: translations.en?.title || article.title || "",
+        description: translations.en?.description || article.description || ""
+      },
+      mk: {
+        title: translations.mk?.title || "",
+        description: translations.mk?.description || ""
+      },
+      de: {
+        title: translations.de?.title || "",
+        description: translations.de?.description || ""
+      }
+    };
+    
+    // Prepare the form data with proper translations structure
+    const newFormData = {
+      title: structuredTranslations.en.title, 
+      description: structuredTranslations.en.description, 
       imageUrl: article.imageUrl || "",
       published: article.published || false,
       sortOrder: article.sortOrder || 0,
-      sections: (article.sections as ArticleSection[]) || []
-    });
+      sections: (article.sections as any)?.map((section: any) => ({
+        id: section.id || crypto.randomUUID(),
+        type: section.type || 'text',
+        title: {
+          en: section.title?.en || section.title || "",
+          mk: section.title?.mk || "",
+          de: section.title?.de || ""
+        },
+        content: {
+          en: section.content?.en || section.content || "",
+          mk: section.content?.mk || "",
+          de: section.content?.de || ""
+        },
+        imageUrl: section.imageUrl || "",
+        imagePosition: section.imagePosition || 'right'
+      })) || [],
+      translations: structuredTranslations
+    };
+    
+    // Set the form data and open the dialog
+    setFormData(newFormData);
+    setSelectedArticle(article);
     setIsEditDialogOpen(true);
   };
 
@@ -327,6 +432,21 @@ export function NewsManager() {
               </Select>
             </div>
 
+            {/* Language Filter */}
+            <div className="sm:w-48">
+              <Select value={languageFilter} onValueChange={setLanguageFilter}>
+                <SelectTrigger data-testid="select-language-filter">
+                  <SelectValue placeholder="Filter by language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Languages</SelectItem>
+                  <SelectItem value="en">🇺🇸 English</SelectItem>
+                  <SelectItem value="mk">🇲🇰 Macedonian</SelectItem>
+                  <SelectItem value="de">🇩🇪 German</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* Sort By */}
             <div className="sm:w-48">
               <Select value={sortBy} onValueChange={setSortBy}>
@@ -360,9 +480,19 @@ export function NewsManager() {
           <CardHeader>
             <CardTitle data-testid="news-table-title">
               News Articles ({filteredNews.length})
+              {languageFilter !== "all" && (
+                <span className="text-sm font-normal text-slate-500 ml-2">
+                  • Filtered by {languageFilter === 'en' ? 'English' : languageFilter === 'mk' ? 'Macedonian' : 'German'}
+                </span>
+              )}
             </CardTitle>
             <CardDescription>
               All news articles in your database
+              {languageFilter !== "all" && (
+                <span className="text-slate-500">
+                  {" "}• Showing only {languageFilter === 'en' ? 'English' : languageFilter === 'mk' ? 'Macedonian' : 'German'} content
+                </span>
+              )}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -371,6 +501,7 @@ export function NewsManager() {
                 <TableRow>
                   <TableHead>Title</TableHead>
                   <TableHead>Description</TableHead>
+                  <TableHead>Languages</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Published Date</TableHead>
                   <TableHead>Image</TableHead>
@@ -394,6 +525,21 @@ export function NewsManager() {
                       ) : (
                         <span className="text-slate-400 text-sm">No description</span>
                       )}
+                    </TableCell>
+                    <TableCell data-testid={`news-languages-${article.id}`}>
+                      <div className="flex items-center gap-1">
+                        {article.translations && Object.keys(article.translations).length > 0 ? (
+                          Object.keys(article.translations).map((lang, index) => (
+                            <Badge key={lang} variant="secondary" className="text-xs">
+                              {lang.toUpperCase()}
+                            </Badge>
+                          ))
+                        ) : (
+                          <Badge variant="secondary" className="text-xs">
+                            No Translations
+                          </Badge>
+                        )}
+                      </div>
                     </TableCell>
                     <TableCell>
                       <Badge 
@@ -496,12 +642,33 @@ export function NewsManager() {
             <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No articles found</h3>
             <p className="text-gray-600 mb-4">
-              {searchTerm || statusFilter !== "all" 
-                ? "Try adjusting your search or filter criteria"
+              {searchTerm || statusFilter !== "all" || languageFilter !== "all"
+                ? "Try adjusting your search, status, or language filter criteria"
                 : "Get started by creating your first news article"
               }
             </p>
-            {!searchTerm && statusFilter === "all" && (
+            {(searchTerm || statusFilter !== "all" || languageFilter !== "all") && (
+              <div className="flex gap-2 justify-center">
+                <Button 
+                  variant="outline" 
+                  onClick={() => {
+                    setSearchTerm("");
+                    setStatusFilter("all");
+                    setLanguageFilter("all");
+                  }}
+                  data-testid="button-reset-filters"
+                >
+                  Reset All Filters
+                </Button>
+                {!searchTerm && statusFilter === "all" && languageFilter === "all" && (
+                  <Button onClick={() => setIsCreateDialogOpen(true)} data-testid="button-create-first-article">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Your First Article
+                  </Button>
+                )}
+              </div>
+            )}
+            {!searchTerm && statusFilter === "all" && languageFilter === "all" && (
               <Button onClick={() => setIsCreateDialogOpen(true)} data-testid="button-create-first-article">
                 <Plus className="h-4 w-4 mr-2" />
                 Create Your First Article
@@ -518,63 +685,90 @@ export function NewsManager() {
             <DialogTitle>Create News Article</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Basic Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="title">Title *</Label>
-                  <Input
-                    id="title"
-                    value={formData.title}
-                    onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                    placeholder="Enter article title"
-                    data-testid="input-title"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="description">Description</Label>
-                  <Input
-                    id="description"
-                    value={formData.description}
-                    onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                    placeholder="Enter article description (optional)"
-                    data-testid="input-description"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="sortOrder">Sort Order</Label>
-                  <Input
-                    id="sortOrder"
-                    type="number"
-                    value={formData.sortOrder}
-                    onChange={(e) => setFormData(prev => ({ ...prev, sortOrder: parseInt(e.target.value) || 0 }))}
-                    placeholder="Enter sort order (0 = first)"
-                    data-testid="input-sort-order"
-                  />
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="published"
-                    checked={formData.published}
-                    onCheckedChange={(checked) => setFormData(prev => ({ ...prev, published: checked }))}
-                    data-testid="switch-published"
-                  />
-                  <Label htmlFor="published">Publish immediately</Label>
-                </div>
+            {/* Multi-Language Content */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="text-lg font-medium flex items-center gap-2">
+                  <Languages className="h-5 w-5" />
+                  Multi-Language Content
+                </Label>
+                <Badge variant="outline" className="capitalize">
+                  Default: English
+                </Badge>
               </div>
 
+              {/* Title Field */}
+              <TranslatableFieldEditor
+                label="Article Title"
+                fieldName="title"
+                type="text"
+                currentTranslations={formData.translations}
+                originalValue={formData.translations.en?.title || ""}
+                onChange={(translations) => {
+                  setFormData(prev => {
+                    const newData = {
+                      ...prev,
+                      title: translations.en?.title || "",
+                      translations
+                    };
+                    return newData;
+                  });
+                }}
+              />
+
+              {/* Description Field */}
+              <TranslatableFieldEditor
+                label="Article Description"
+                fieldName="description"
+                type="textarea"
+                currentTranslations={formData.translations}
+                originalValue={formData.translations.en?.description || ""}
+                onChange={(translations) => {
+                  setFormData(prev => {
+                    const newData = {
+                      ...prev,
+                      description: translations.en?.description || "",
+                      translations
+                    };
+                    return newData;
+                  });
+                }}
+              />
+            </div>
+
+            {/* Additional Settings */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <FileUpload
-                  value={formData.imageUrl}
-                  onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
-                  label="Main Article Image"
-                  placeholder="Enter image URL or upload file"
+                <Label htmlFor="sortOrder">Sort Order</Label>
+                <Input
+                  id="sortOrder"
+                  type="number"
+                  value={formData.sortOrder}
+                  onChange={(e) => setFormData(prev => ({ ...prev, sortOrder: parseInt(e.target.value) || 0 }))}
+                  placeholder="Enter sort order (0 = first)"
+                  data-testid="input-sort-order"
                 />
               </div>
+
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="published"
+                  checked={formData.published}
+                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, published: checked }))}
+                  data-testid="switch-published"
+                />
+                <Label htmlFor="published">Publish immediately</Label>
+              </div>
+            </div>
+
+            {/* Main Article Image */}
+            <div>
+              <FileUpload
+                value={formData.imageUrl}
+                onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+                label="Main Article Image"
+                placeholder="Enter image URL or upload file"
+              />
             </div>
 
             {/* Article Sections */}
@@ -649,23 +843,68 @@ export function NewsManager() {
                   </div>
 
                   <div className="space-y-4">
+                    {/* Multi-Language Section Title */}
                     <div>
-                      <Label>Section Title</Label>
-                      <Input
-                        value={section.title}
-                        onChange={(e) => updateSection(section.id, { title: e.target.value })}
-                        placeholder="Enter section title"
-                      />
+                      <Label className="flex items-center gap-2">
+                        <Globe className="h-4 w-4" />
+                        Section Title (Multi-Language)
+                      </Label>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
+                        <Input
+                          value={section.title.en}
+                          onChange={(e) => updateSection(section.id, { title: { ...section.title, en: e.target.value } })}
+                          placeholder="English title"
+                          className="text-sm"
+                        />
+                        <Input
+                          value={section.title.mk}
+                          onChange={(e) => updateSection(section.id, { title: { ...section.title, mk: e.target.value } })}
+                          placeholder="Macedonian title"
+                          className="text-sm"
+                        />
+                        <Input
+                          value={section.title.de}
+                          onChange={(e) => updateSection(section.id, { title: { ...section.title, de: e.target.value } })}
+                          placeholder="German title"
+                          className="text-sm"
+                        />
+                      </div>
                     </div>
 
                     {(section.type === 'text' || section.type === 'text-with-image') && (
                       <div>
-                        <Label>Content</Label>
-                        <RichTextEditor
-                          value={section.content}
-                          onChange={(content) => updateSection(section.id, { content })}
-                          placeholder="Enter section content with rich formatting"
-                        />
+                        <Label className="flex items-center gap-2">
+                          <Globe className="h-4 w-4" />
+                          Content (Multi-Language)
+                        </Label>
+                        <Tabs defaultValue="en" className="w-full mt-2">
+                          <TabsList className="grid w-full grid-cols-3">
+                            <TabsTrigger value="en" className="text-xs">🇺🇸 EN</TabsTrigger>
+                            <TabsTrigger value="mk" className="text-xs">🇲🇰 MK</TabsTrigger>
+                            <TabsTrigger value="de" className="text-xs">🇩🇪 DE</TabsTrigger>
+                          </TabsList>
+                          <TabsContent value="en" className="mt-2">
+                            <RichTextEditor
+                              value={section.content.en}
+                              onChange={(content) => updateSection(section.id, { content: { ...section.content, en: content } })}
+                              placeholder="Enter section content in English"
+                            />
+                          </TabsContent>
+                          <TabsContent value="mk" className="mt-2">
+                            <RichTextEditor
+                              value={section.content.mk}
+                              onChange={(content) => updateSection(section.id, { content: { ...section.content, mk: content } })}
+                              placeholder="Enter section content in Macedonian"
+                            />
+                          </TabsContent>
+                          <TabsContent value="de" className="mt-2">
+                            <RichTextEditor
+                              value={section.content.de}
+                              onChange={(content) => updateSection(section.id, { content: { ...section.content, de: content } })}
+                              placeholder="Enter section content in German"
+                            />
+                          </TabsContent>
+                        </Tabs>
                       </div>
                     )}
 
@@ -747,63 +986,90 @@ export function NewsManager() {
             <DialogTitle>Edit News Article</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Basic Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="edit-title">Title *</Label>
-                  <Input
-                    id="edit-title"
-                    value={formData.title}
-                    onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                    placeholder="Enter article title"
-                    data-testid="input-edit-title"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="edit-description">Description</Label>
-                  <Input
-                    id="edit-description"
-                    value={formData.description}
-                    onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                    placeholder="Enter article description (optional)"
-                    data-testid="input-edit-description"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="edit-sortOrder">Sort Order</Label>
-                  <Input
-                    id="edit-sortOrder"
-                    type="number"
-                    value={formData.sortOrder}
-                    onChange={(e) => setFormData(prev => ({ ...prev, sortOrder: parseInt(e.target.value) || 0 }))}
-                    placeholder="Enter sort order (0 = first)"
-                    data-testid="input-edit-sort-order"
-                  />
-                </div>
-
-                <div className="flex items-center space-x-2">
-                  <Switch
-                    id="edit-published"
-                    checked={formData.published}
-                    onCheckedChange={(checked) => setFormData(prev => ({ ...prev, published: checked }))}
-                    data-testid="switch-edit-published"
-                  />
-                  <Label htmlFor="edit-published">Publish immediately</Label>
-                </div>
+            {/* Multi-Language Content */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <Label className="text-lg font-medium flex items-center gap-2">
+                  <Languages className="h-5 w-5" />
+                  Multi-Language Content
+                </Label>
+                <Badge variant="outline" className="capitalize">
+                  Default: English
+                </Badge>
               </div>
 
+              {/* Title Field */}
+              <TranslatableFieldEditor
+                label="Article Title"
+                fieldName="title"
+                type="text"
+                currentTranslations={formData.translations}
+                originalValue={formData.translations.en?.title || ""}
+                onChange={(translations) => {
+                  setFormData(prev => {
+                    const newData = {
+                      ...prev,
+                      title: translations.en?.title || "",
+                      translations
+                    };
+                    return newData;
+                  });
+                }}
+              />
+
+              {/* Description Field */}
+              <TranslatableFieldEditor
+                label="Article Description"
+                fieldName="description"
+                type="textarea"
+                currentTranslations={formData.translations}
+                originalValue={formData.translations.en?.description || ""}
+                onChange={(translations) => {
+                  setFormData(prev => {
+                    const newData = {
+                      ...prev,
+                      description: translations.en?.description || "",
+                      translations
+                    };
+                    return newData;
+                  });
+                }}
+              />
+            </div>
+
+            {/* Additional Settings */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <FileUpload
-                  value={formData.imageUrl}
-                  onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
-                  label="Main Article Image"
-                  placeholder="Enter image URL or upload file"
+                <Label htmlFor="edit-sortOrder">Sort Order</Label>
+                <Input
+                  id="edit-sortOrder"
+                  type="number"
+                  value={formData.sortOrder}
+                  onChange={(e) => setFormData(prev => ({ ...prev, sortOrder: parseInt(e.target.value) || 0 }))}
+                  placeholder="Enter sort order (0 = first)"
+                  data-testid="input-edit-sort-order"
                 />
               </div>
+
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="edit-published"
+                  checked={formData.published}
+                  onCheckedChange={(checked) => setFormData(prev => ({ ...prev, published: checked }))}
+                  data-testid="switch-edit-published"
+                />
+                <Label htmlFor="edit-published">Publish immediately</Label>
+              </div>
+            </div>
+
+            {/* Main Article Image */}
+            <div>
+              <FileUpload
+                value={formData.imageUrl}
+                onChange={(url) => setFormData(prev => ({ ...prev, imageUrl: url }))}
+                label="Main Article Image"
+                placeholder="Enter image URL or upload file"
+              />
             </div>
 
             {/* Article Sections */}
@@ -878,23 +1144,68 @@ export function NewsManager() {
                   </div>
 
                   <div className="space-y-4">
+                    {/* Multi-Language Section Title */}
                     <div>
-                      <Label>Section Title</Label>
-                      <Input
-                        value={section.title}
-                        onChange={(e) => updateSection(section.id, { title: e.target.value })}
-                        placeholder="Enter section title"
-                      />
+                      <Label className="flex items-center gap-2">
+                        <Globe className="h-4 w-4" />
+                        Section Title (Multi-Language)
+                      </Label>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-2">
+                        <Input
+                          value={section.title.en}
+                          onChange={(e) => updateSection(section.id, { title: { ...section.title, en: e.target.value } })}
+                          placeholder="English title"
+                          className="text-sm"
+                        />
+                        <Input
+                          value={section.title.mk}
+                          onChange={(e) => updateSection(section.id, { title: { ...section.title, mk: e.target.value } })}
+                          placeholder="Macedonian title"
+                          className="text-sm"
+                        />
+                        <Input
+                          value={section.title.de}
+                          onChange={(e) => updateSection(section.id, { title: { ...section.title, de: e.target.value } })}
+                          placeholder="German title"
+                          className="text-sm"
+                        />
+                      </div>
                     </div>
 
                     {(section.type === 'text' || section.type === 'text-with-image') && (
                       <div>
-                        <Label>Content</Label>
-                        <RichTextEditor
-                          value={section.content}
-                          onChange={(content) => updateSection(section.id, { content })}
-                          placeholder="Enter section content with rich formatting"
-                        />
+                        <Label className="flex items-center gap-2">
+                          <Globe className="h-4 w-4" />
+                          Content (Multi-Language)
+                        </Label>
+                        <Tabs defaultValue="en" className="w-full mt-2">
+                          <TabsList className="grid w-full grid-cols-3">
+                            <TabsTrigger value="en" className="text-xs">🇺🇸 EN</TabsTrigger>
+                            <TabsTrigger value="mk" className="text-xs">🇲🇰 MK</TabsTrigger>
+                            <TabsTrigger value="de" className="text-xs">🇩🇪 DE</TabsTrigger>
+                          </TabsList>
+                          <TabsContent value="en" className="mt-2">
+                            <RichTextEditor
+                              value={section.content.en}
+                              onChange={(content) => updateSection(section.id, { content: { ...section.content, en: content } })}
+                              placeholder="Enter section content in English"
+                            />
+                          </TabsContent>
+                          <TabsContent value="mk" className="mt-2">
+                            <RichTextEditor
+                              value={section.content.mk}
+                              onChange={(content) => updateSection(section.id, { content: { ...section.content, mk: content } })}
+                              placeholder="Enter section content in Macedonian"
+                            />
+                          </TabsContent>
+                          <TabsContent value="de" className="mt-2">
+                            <RichTextEditor
+                              value={section.content.de}
+                              onChange={(content) => updateSection(section.id, { content: { ...section.content, de: content } })}
+                              placeholder="Enter section content in German"
+                            />
+                          </TabsContent>
+                        </Tabs>
                       </div>
                     )}
 

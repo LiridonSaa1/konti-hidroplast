@@ -24,12 +24,6 @@ interface TranslatableFieldEditorProps {
   }) => void;
 }
 
-const languages = [
-  { code: 'en', name: 'English', flag: '🇺🇸', required: true },
-  { code: 'mk', name: 'Македонски', flag: '🇲🇰', required: false },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪', required: false }
-];
-
 export function TranslatableFieldEditor({ 
   label, 
   fieldName, 
@@ -39,143 +33,74 @@ export function TranslatableFieldEditor({
   defaultLanguage = 'en',
   onChange 
 }: TranslatableFieldEditorProps) {
-  console.log('TranslatableFieldEditor render:', { label, fieldName, defaultLanguage, currentTranslations });
-  
   const [activeTab, setActiveTab] = React.useState(defaultLanguage || 'en');
-  
+
   // Update active tab when defaultLanguage changes
   React.useEffect(() => {
-    console.log('TranslatableFieldEditor: defaultLanguage changed to:', defaultLanguage);
     if (defaultLanguage && defaultLanguage !== activeTab) {
       setActiveTab(defaultLanguage);
     }
   }, [defaultLanguage]);
-  
+
   const handleFieldChange = (languageCode: string, value: string) => {
     const updatedTranslations = {
       ...currentTranslations,
       [languageCode]: {
-        ...(currentTranslations[languageCode as keyof typeof currentTranslations] || {}),
+        ...(currentTranslations[languageCode as 'en' | 'mk' | 'de'] || {}),
         [fieldName]: value
       }
     };
     onChange(updatedTranslations);
   };
 
-  const getTranslationStatus = (langCode: string) => {
-    const translation = currentTranslations[langCode as keyof typeof currentTranslations]?.[fieldName];
-    if (!translation || translation.trim() === '') {
-      return langCode === 'en' ? 'missing' : 'empty';
-    }
-    return 'complete';
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'complete': return 'bg-green-100 text-green-800';
-      case 'missing': return 'bg-red-100 text-red-800';
-      case 'empty': return 'bg-gray-100 text-gray-600';
-      default: return 'bg-gray-100 text-gray-600';
-    }
-  };
+  const languages = [
+    { code: 'en', name: 'English', flag: '🇺🇸' },
+    { code: 'mk', name: 'Macedonian', flag: '🇲🇰' },
+    { code: 'de', name: 'German', flag: '🇩🇪' }
+  ];
 
   return (
-    <Card className="w-full">
-      <CardHeader className="pb-4">
-        <CardTitle className="text-sm font-medium flex items-center gap-2">
-          {label}
-          <Badge variant="outline" className="text-xs">
-            Multi-language
-          </Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Tabs value={activeTab || 'en'} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-4">
-            {languages.map((lang) => {
-              const status = getTranslationStatus(lang.code);
-              return (
-                <TabsTrigger 
-                  key={lang.code} 
-                  value={lang.code}
-                  className="relative"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-lg">{lang.flag}</span>
-                    <span className="hidden sm:inline">{lang.name}</span>
-                    <span className="sm:hidden">{lang.code.toUpperCase()}</span>
-                  </div>
-                  <Badge 
-                    className={`ml-2 text-xs h-4 px-1 ${getStatusColor(status)}`}
-                    variant="secondary"
-                  >
-                    {status === 'complete' ? '✓' : '○'}
-                  </Badge>
-                </TabsTrigger>
-              );
-            })}
-          </TabsList>
-          
-          {languages.map((lang) => {
-            return (
-              <TabsContent key={lang.code} value={lang.code} className="space-y-3">
-                <div className="flex items-center justify-between mb-2">
-                  <Label htmlFor={`${lang.code}-${fieldName}`} className="text-sm font-medium flex items-center gap-2">
-                    <span className="text-base">{lang.flag}</span>
-                    {lang.name} Translation
-                    {lang.required && <span className="text-red-500 ml-1">*</span>}
-                  </Label>
-                  <Badge className={getStatusColor(getTranslationStatus(lang.code))}>
-                    {getTranslationStatus(lang.code)}
-                  </Badge>
-                </div>
-                
-                {/* Show original value for reference */}
-                {lang.code !== 'en' && originalValue && (
-                  <div className="bg-gray-50 p-3 rounded-md border">
-                    <Label className="text-xs text-gray-600 mb-1 block">Original (English):</Label>
-                    <p className="text-sm text-gray-800">{originalValue}</p>
-                  </div>
-                )}
-                
-                {type === 'textarea' ? (
-                  <Textarea
-                    id={`${lang.code}-${fieldName}`}
-                    value={currentTranslations[lang.code as keyof typeof currentTranslations]?.[fieldName] || ''}
-                    onChange={(e) => handleFieldChange(lang.code, e.target.value)}
-                    placeholder={lang.code === 'en' 
-                      ? `Enter ${label.toLowerCase()} in English`
-                      : `Translate ${label.toLowerCase()} to ${lang.name}`
-                    }
-                    className="min-h-[100px]"
-                    data-testid={`translation-${fieldName}-${lang.code}`}
-                  />
-                ) : (
-                  <Input
-                    id={`${lang.code}-${fieldName}`}
-                    value={currentTranslations[lang.code as keyof typeof currentTranslations]?.[fieldName] || ''}
-                    onChange={(e) => handleFieldChange(lang.code, e.target.value)}
-                    placeholder={lang.code === 'en' 
-                      ? `Enter ${label.toLowerCase()} in English`
-                      : `Translate ${label.toLowerCase()} to ${lang.name}`
-                    }
-                    data-testid={`translation-${fieldName}-${lang.code}`}
-                  />
-                )}
-                
-
-                
-                {/* Show translation tips for non-English languages */}
-                {lang.code !== 'en' && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    Tip: Leave empty to fallback to English version
-                  </p>
-                )}
-              </TabsContent>
-            );
-          })}
-        </Tabs>
-      </CardContent>
-    </Card>
+    <div className="space-y-3">
+      <Label className="text-base font-medium">{label}</Label>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-3">
+          {languages.map((lang) => (
+            <TabsTrigger key={lang.code} value={lang.code} className="text-xs">
+              {lang.flag} {lang.code.toUpperCase()}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        
+        {languages.map((lang) => (
+          <TabsContent key={lang.code} value={lang.code} className="mt-3">
+            {type === 'textarea' ? (
+              <Textarea
+                id={`${lang.code}-${fieldName}`}
+                value={currentTranslations[lang.code as keyof typeof currentTranslations]?.[fieldName] || ''}
+                onChange={(e) => handleFieldChange(lang.code, e.target.value)}
+                placeholder={lang.code === 'en' 
+                  ? `Enter ${label.toLowerCase()} in English`
+                  : `Translate ${label.toLowerCase()} to ${lang.name}`
+                }
+                className="min-h-[100px]"
+                data-testid={`translation-${fieldName}-${lang.code}`}
+              />
+            ) : (
+              <Input
+                id={`${lang.code}-${fieldName}`}
+                type="text"
+                value={currentTranslations[lang.code as keyof typeof currentTranslations]?.[fieldName] || ''}
+                onChange={(e) => handleFieldChange(lang.code, e.target.value)}
+                placeholder={lang.code === 'en' 
+                  ? `Enter ${label.toLowerCase()} in English`
+                  : `Translate ${label.toLowerCase()} to ${lang.name}`
+                }
+                data-testid={`translation-${fieldName}-${lang.code}`}
+              />
+            )}
+          </TabsContent>
+        ))}
+      </Tabs>
+    </div>
   );
 }

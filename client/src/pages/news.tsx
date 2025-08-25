@@ -9,6 +9,24 @@ import { useLocation } from "wouter";
 import { Calendar, User, ArrowRight, Loader2 } from "lucide-react";
 import type { NewsArticle } from "@shared/schema";
 
+// Utility function to get translated content from news article
+const getTranslatedContent = (article: NewsArticle, language: string, field: 'title' | 'description') => {
+  if (!article.translations) return null;
+  
+  const translations = article.translations as any;
+  if (translations[language] && translations[language][field]) {
+    return translations[language][field];
+  }
+  
+  // Fallback to English if translation not available
+  if (translations.en && translations.en[field]) {
+    return translations.en[field];
+  }
+  
+  // Final fallback to the main field
+  return field === 'title' ? article.title : article.description;
+};
+
 // Utility function to truncate text
 const truncateText = (text: string, maxLength: number) => {
   if (text.length <= maxLength) return text;
@@ -26,10 +44,8 @@ const formatDate = (dateString: string | Date | null) => {
   });
 };
 
-
-
 function NewsPage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [, setLocation] = useLocation();
   const { data: companyInfo } = useCompanyInfo();
   const [visibleArticles, setVisibleArticles] = useState(6);
@@ -64,67 +80,73 @@ function NewsPage() {
   };
 
   // New 3-section design NewsCard component matching the mockup
-  const NewsCard = ({ article }: { article: NewsArticle }) => (
-    <article
-      className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
-      data-testid={`news-card-${article.id}`}
-    >
-      {/* Section 3: Main Article Image */}
-      <div className="aspect-[4/3] overflow-hidden bg-gray-100">
-        {article.imageUrl ? (
-          <img
-            src={article.imageUrl}
-            alt={article.title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f1f5f9'/%3E%3Ctext x='200' y='150' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='16'%3ENo Image%3C/text%3E%3C/svg%3E";
-            }}
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gray-100">
-            <span className="text-gray-400 text-sm">{t("newsPage.noImage")}</span>
-          </div>
-        )}
-      </div>
-      
-      <div className="p-6">
-        {/* News Category Label */}
-        <div className="mb-3">
-          <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
-            {t("newsPage.newsCategory")}
-          </span>
+  const NewsCard = ({ article }: { article: NewsArticle }) => {
+    // Get translated content for the current language
+    const translatedTitle = getTranslatedContent(article, language, 'title');
+    const translatedDescription = getTranslatedContent(article, language, 'description');
+    
+    return (
+      <article
+        className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 group border border-gray-200"
+        data-testid={`news-card-${article.id}`}
+      >
+        {/* Section 3: Main Article Image */}
+        <div className="aspect-[4/3] overflow-hidden bg-gray-100">
+          {article.imageUrl ? (
+            <img
+              src={article.imageUrl}
+              alt={translatedTitle || article.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f1f5f9'/%3E%3Ctext x='200' y='150' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='16'%3ENo Image%3C/text%3E%3C/svg%3E";
+              }}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gray-100">
+              <span className="text-gray-400 text-sm">{t("newsPage.noImage")}</span>
+            </div>
+          )}
         </div>
         
-        {/* Section 1: Title */}
-        <h3 className="text-xl font-bold text-[#1c2d56] mb-3 leading-tight">
-          {truncateText(article.title, 60)}
-        </h3>
-        
-        {/* Section 2: Description */}
-        <p className="text-gray-600 mb-6 leading-relaxed">
-          {article.description ? truncateText(article.description, 120) : t("newsPage.noDescription")}
-        </p>
+        <div className="p-6">
+          {/* News Category Label */}
+          <div className="mb-3">
+            <span className="text-sm font-medium text-gray-500 uppercase tracking-wide">
+              {t("newsPage.newsCategory")}
+            </span>
+          </div>
+          
+          {/* Section 1: Title */}
+          <h3 className="text-xl font-bold text-[#1c2d56] mb-3 leading-tight">
+            {truncateText(translatedTitle || article.title, 60)}
+          </h3>
+          
+          {/* Section 2: Description */}
+          <p className="text-gray-600 mb-6 leading-relaxed">
+            {translatedDescription ? truncateText(translatedDescription, 120) : t("newsPage.noDescription")}
+          </p>
 
-        {/* Date and Read More */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <Calendar className="h-4 w-4" />
-            <span>{formatDate(article.createdAt)}</span>
+          {/* Date and Read More */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2 text-sm text-gray-500">
+              <Calendar className="h-4 w-4" />
+              <span>{formatDate(article.createdAt)}</span>
+            </div>
+            <a
+              href={`/news/${article.id}`}
+              className="inline-flex items-center px-4 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm font-medium rounded transition-colors"
+              data-testid={`read-more-${article.id}`}
+            >
+              {t("newsPage.readMore")}
+              <ArrowRight className="w-4 h-4 ml-2" />
+            </a>
           </div>
-          <a
-            href={`/news/${article.id}`}
-            className="inline-flex items-center px-4 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm font-medium rounded transition-colors"
-            data-testid={`read-more-${article.id}`}
-          >
-            {t("newsPage.readMore")}
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </a>
         </div>
-      </div>
-    </article>
-  );
+      </article>
+    );
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -162,6 +184,22 @@ function NewsPage() {
       {/* News Articles Section */}
       <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Language Indicator */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md border border-gray-200">
+              <span className="text-sm font-medium text-gray-600">Viewing in:</span>
+              <span className="text-sm font-semibold text-[#1c2d56]">
+                {language === 'en' ? '🇺🇸 English' : language === 'mk' ? '🇲🇰 Macedonian' : '🇩🇪 German'}
+              </span>
+            </div>
+            <p className="text-sm text-gray-500 mt-2">
+              {language === 'en' 
+                ? 'Original content in English' 
+                : 'Translated content - some articles may show English if translation is not available'
+              }
+            </p>
+          </div>
+          
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>

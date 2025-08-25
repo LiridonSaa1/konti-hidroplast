@@ -1092,6 +1092,11 @@ const translations = {
     "certificates.environmental": "Environmental Standards",
     "certificates.safety": "Safety Certifications",
     "certificates.product": "Product Certifications",
+    "certificates.download": "Download",
+    "certificates.view": "View Certificate",
+    "certificates.noCertificates": "No certificates available",
+    "certificates.loading": "Loading certificates...",
+    "certificates.error": "Error loading certificates",
 
     // Brochures Page
     "brochures.title": "Product Brochures",
@@ -2391,6 +2396,11 @@ const translations = {
     "certificates.environmental": "Еколошки стандарди",
     "certificates.safety": "Безбедносни сертификати",
     "certificates.product": "Сертификати за производи",
+    "certificates.download": "Преземи",
+    "certificates.view": "Види сертификат",
+    "certificates.noCertificates": "Нема достапни сертификати",
+    "certificates.loading": "Се вчитуваат сертификати...",
+    "certificates.error": "Грешка при вчитување на сертификати",
 
     // Brochures Page
     "brochures.title": "Брошури за производи",
@@ -3690,6 +3700,11 @@ const translations = {
     "certificates.environmental": "Umweltstandards",
     "certificates.safety": "Sicherheitszertifikate",
     "certificates.product": "Produktzertifikate",
+    "certificates.download": "Herunterladen",
+    "certificates.view": "Zertifikat anzeigen",
+    "certificates.noCertificates": "Keine Zertifikate verfügbar",
+    "certificates.loading": "Zertifikate werden geladen...",
+    "certificates.error": "Fehler beim Laden der Zertifikate",
 
     // Brochures Page
     "brochures.title": "Produktbroschüren",

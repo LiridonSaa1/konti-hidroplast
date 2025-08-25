@@ -19,6 +19,44 @@ interface ArticleSection {
   imagePosition?: "left" | "right";
 }
 
+// Utility function to get translated content from news article
+const getTranslatedContent = (article: NewsArticle, language: string, field: 'title' | 'description') => {
+  if (!article.translations) return null;
+  
+  const translations = article.translations as any;
+  if (translations[language] && translations[language][field]) {
+    return translations[language][field];
+  }
+  
+  // Fallback to English if translation not available
+  if (translations.en && translations.en[field]) {
+    return translations.en[field];
+  }
+  
+  // Final fallback to the main field
+  return field === 'title' ? article.title : article.description;
+};
+
+// Utility function to get translated section content
+const getTranslatedSectionContent = (section: any, language: string, field: 'title' | 'content') => {
+  if (!section) return '';
+  
+  // Check if section has multi-language structure
+  if (section[field] && typeof section[field] === 'object') {
+    const multiLangContent = section[field] as any;
+    if (multiLangContent[language]) {
+      return multiLangContent[language];
+    }
+    // Fallback to English
+    if (multiLangContent.en) {
+      return multiLangContent.en;
+    }
+  }
+  
+  // Fallback to the main field
+  return section[field] || '';
+};
+
 // Format date helper
 const formatDate = (dateString: string | Date | null) => {
   if (!dateString) return "";
@@ -31,7 +69,7 @@ const formatDate = (dateString: string | Date | null) => {
 };
 
 function NewsArticlePage() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { data: companyInfo } = useCompanyInfo();
   const { slug } = useParams(); // This will be the article ID
 
@@ -47,20 +85,23 @@ function NewsArticlePage() {
 
   useEffect(() => {
     if (article) {
-      document.title = `${article.title} - ${companyInfo.companyName || "Konti Hidroplast"}`;
+      // Get translated title for page title
+      const translatedTitle = getTranslatedContent(article, language, 'title') || article.title;
+      document.title = `${translatedTitle} - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
       const metaDescription = document.querySelector(
         'meta[name="description"]',
       );
       if (metaDescription) {
+        const translatedDescription = getTranslatedContent(article, language, 'description') || article.description;
         metaDescription.setAttribute(
           "content",
-          article.description ||
-            `${article.title} - Latest news from Konti Hidroplast`,
+          translatedDescription ||
+            `${translatedTitle} - Latest news from Konti Hidroplast`,
         );
       }
     }
-  }, [article]);
+  }, [article, language]);
 
   if (isLoading) {
     return (
@@ -125,12 +166,12 @@ function NewsArticlePage() {
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-            {article.title}
+            {getTranslatedContent(article, language, 'title') || article.title}
           </h1>
 
-          {article.description && (
+          {getTranslatedContent(article, language, 'description') && (
             <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-              {article.description}
+              {getTranslatedContent(article, language, 'description')}
             </p>
           )}
 
@@ -142,6 +183,51 @@ function NewsArticlePage() {
             <div className="flex items-center gap-2">
               <User className="w-5 h-5" />
               <span>Konti Hidroplast Team</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Article Content */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Language Indicator */}
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-full shadow-sm border border-gray-200">
+              <span className="text-sm font-medium text-gray-600">Viewing in:</span>
+              <span className="text-sm font-semibold text-[#1c2d56]">
+                {language === 'en' ? '🇺🇸 English' : language === 'mk' ? '🇲🇰 Macedonian' : '🇩🇪 German'}
+              </span>
+            </div>
+            <p className="text-sm text-gray-500 mt-2">
+              {language === 'en' 
+                ? 'Original content in English' 
+                : 'Translated content - some sections may show English if translation is not available'
+              }
+            </p>
+          </div>
+          
+          {/* Article Header */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+              {getTranslatedContent(article, language, 'title') || article.title}
+            </h1>
+
+            {getTranslatedContent(article, language, 'description') && (
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                {getTranslatedContent(article, language, 'description')}
+              </p>
+            )}
+
+            <div className="flex items-center justify-center gap-6 text-gray-500">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-5 h-5" />
+                <span>{formatDate(article.createdAt)}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <User className="w-5 h-5" />
+                <span>Konti Hidroplast Team</span>
+              </div>
             </div>
           </div>
         </div>
@@ -163,15 +249,13 @@ function NewsArticlePage() {
                     {/* Text Only Section */}
                     {section.type === "text" && (
                       <div className="px-8 py-8">
-                        {section.title && (
-                          <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
-                            {section.title}
-                          </h2>
-                        )}
+                        <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
+                          {getTranslatedSectionContent(section, language, 'title')}
+                        </h2>
                         <div
                           className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
                           dangerouslySetInnerHTML={{
-                            __html: section.content.replace(/\n/g, "<br>"),
+                            __html: getTranslatedSectionContent(section, language, 'content').replace(/\n/g, "<br>"),
                           }}
                         />
                       </div>
@@ -180,14 +264,12 @@ function NewsArticlePage() {
                     {/* Image Only Section */}
                     {section.type === "image" && section.imageUrl && (
                       <div className="px-8 py-8">
-                        {section.title && (
-                          <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
-                            {section.title}
-                          </h2>
-                        )}
+                        <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
+                          {getTranslatedSectionContent(section, language, 'title')}
+                        </h2>
                         <img
                           src={section.imageUrl}
-                          alt={section.title || `Section ${index + 1}`}
+                          alt={getTranslatedSectionContent(section, language, 'title') || `Section ${index + 1}`}
                           className="w-full h-[28rem] object-cover rounded-lg shadow-md"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement;
@@ -215,15 +297,13 @@ function NewsArticlePage() {
                                 : "md:order-1"
                             }`}
                           >
-                            {section.title && (
-                              <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
-                                {section.title}
-                              </h2>
-                            )}
+                            <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
+                              {getTranslatedSectionContent(section, language, 'title')}
+                            </h2>
                             <div
                               className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
                               dangerouslySetInnerHTML={{
-                                __html: section.content.replace(/\n/g, "<br>"),
+                                __html: getTranslatedSectionContent(section, language, 'content').replace(/\n/g, "<br>"),
                               }}
                             />
                           </div>
@@ -239,7 +319,7 @@ function NewsArticlePage() {
                             >
                               <img
                                 src={section.imageUrl}
-                                alt={section.title || `Section ${index + 1}`}
+                                alt={getTranslatedSectionContent(section, language, 'title') || `Section ${index + 1}`}
                                 className="w-full h-[28rem] object-cover rounded-lg shadow-md"
                                 onError={(e) => {
                                   const target = e.target as HTMLImageElement;

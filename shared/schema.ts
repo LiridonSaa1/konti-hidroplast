@@ -261,32 +261,24 @@ export const insertNewsArticleSchema = createInsertSchema(newsArticles).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
-  translations: true,
-  defaultLanguage: true,
 });
 
 export const insertCertificateCategorySchema = createInsertSchema(certificateCategories).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
-  translations: true,
-  defaultLanguage: true,
 });
 
 export const insertCertificateSubcategorySchema = createInsertSchema(certificateSubcategories).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
-  translations: true,
-  defaultLanguage: true,
 });
 
 export const insertCertificateSchema = createInsertSchema(certificates).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
-  translations: true,
-  defaultLanguage: true,
 });
 
 export const insertBrochureSchema = createInsertSchema(brochures, {
