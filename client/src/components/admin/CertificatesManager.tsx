@@ -91,7 +91,7 @@ type SubcategoryItem = {
   updatedAt: string;
 };
 
-// Local form schema with custom validation
+// Local form schema
 const certificateFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   categoryId: z.number().min(1, "Category is required"),
@@ -113,9 +113,6 @@ const certificateFormSchema = z.object({
     }).optional(),
   }).optional(),
   defaultLanguage: z.string().default("en"),
-}).refine((data) => data.imageUrl || data.pdfUrl, {
-  message: "Either an image or PDF file is required",
-  path: ["imageUrl", "pdfUrl"],
 });
 
 type CertificateForm = z.infer<typeof certificateFormSchema>;
@@ -328,8 +325,20 @@ export function CertificatesManager() {
   const onSubmit = (data: CertificateForm) => {
     console.log('=== Form Submission Data ===');
     console.log('Raw form data:', data);
+    console.log('Image URL:', data.imageUrl);
+    console.log('PDF URL:', data.pdfUrl);
     console.log('Translations:', data.translations);
     console.log('Default language:', data.defaultLanguage);
+    
+    // Ensure at least one file is provided
+    if (!data.imageUrl && !data.pdfUrl) {
+      toast({ 
+        title: "File Required", 
+        description: "Please upload either an image or PDF file",
+        variant: "destructive"
+      });
+      return;
+    }
     
     if (editingCertificate) {
       console.log('Updating certificate with ID:', editingCertificate.id);
@@ -363,16 +372,7 @@ export function CertificatesManager() {
     }
   };
 
-  const handleFileUpload = (url: string) => {
-    // Determine if it's a PDF or image based on the URL
-    if (url.toLowerCase().endsWith('.pdf') || url.includes('pdf')) {
-      form.setValue("pdfUrl", url);
-      form.setValue("imageUrl", "");
-    } else {
-      form.setValue("imageUrl", url);
-      form.setValue("pdfUrl", "");
-    }
-  };
+
 
   if (isLoading) {
     return <div data-testid="loading">Loading certificates...</div>;
@@ -581,26 +581,43 @@ export function CertificatesManager() {
                     />
                   )}
 
-                  <FormField
-                    control={form.control}
-                    name="imageUrl"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Certificate File (Image or PDF)</FormLabel>
-                        <FormControl>
-                          <FileUpload
-                            label="Certificate File (Image or PDF)"
-                            value={field.value || form.watch("pdfUrl") || ""}
-                            onChange={handleFileUpload}
-                            accept="image/*,.pdf"
-                            placeholder="Upload certificate image or PDF, or enter URL"
-                            data-testid="file-upload-certificate"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <FormItem>
+                    <FormLabel>Certificate File (Image or PDF)</FormLabel>
+                    <FormControl>
+                      <FileUpload
+                        label="Certificate File (Image or PDF)"
+                        value={form.watch("imageUrl") || form.watch("pdfUrl") || ""}
+                        onChange={(url) => {
+                          console.log('File upload onChange called with URL:', url);
+                          if (url === "") {
+                            // Clear both fields when removing file
+                            console.log('Clearing both file fields');
+                            form.setValue("imageUrl", "");
+                            form.setValue("pdfUrl", "");
+                          } else {
+                            // Determine if it's a PDF or image based on the URL
+                            const isPDF = url.toLowerCase().endsWith('.pdf') || 
+                                        url.includes('pdf') || 
+                                        url.includes('application/pdf') ||
+                                        url.includes('type=pdf');
+                            if (isPDF) {
+                              console.log('Setting PDF URL:', url);
+                              form.setValue("pdfUrl", url);
+                              form.setValue("imageUrl", "");
+                            } else {
+                              console.log('Setting Image URL:', url);
+                              form.setValue("imageUrl", url);
+                              form.setValue("pdfUrl", "");
+                            }
+                          }
+                        }}
+                        accept="image/*,.pdf"
+                        placeholder="Upload certificate image or PDF, or enter URL"
+                        data-testid="file-upload-certificate"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
 
                   <div className="grid grid-cols-2 gap-4">
                     <FormField
