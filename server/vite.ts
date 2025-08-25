@@ -90,12 +90,12 @@ export function serveStatic(app: Express) {
   app.use(express.static(distPath));
   
   // Serve uploaded files from the uploads directory (now in dist/public/uploads)
-  // if (fs.existsSync(uploadsPath)) {
-  //   app.use('/uploads', express.static(uploadsPath));
-  //   console.log('✅ Uploads directory served from:', uploadsPath);
-  // } else {
-  //   console.log('❌ Uploads directory not found at:', uploadsPath);
-  // }
+  if (fs.existsSync(uploadsPath)) {
+    app.use('/uploads', express.static(uploadsPath));
+    console.log('✅ Uploads directory served from:', uploadsPath);
+  } else {
+    console.log('❌ Uploads directory not found at:', uploadsPath);
+  }
 
   // fall through to index.html if the file doesn't exist
   app.use("*", (_req, res) => {

@@ -140,14 +140,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Determine if we're in production mode
   const isProduction = process.env.NODE_ENV === 'production';
   
-  // if (isProduction) {
-  //   // In production, serve from dist/public/uploads (handled by serveStatic in vite.ts)
-  //   console.log('🚀 Production mode: Uploads will be served from dist/public/uploads');
-  // } else {
-  //   // In development, serve from root uploads directory
-  //   console.log('🔧 Development mode: Serving uploads from root uploads directory');
-  //   app.use('/uploads', express.static(uploadDir));
-  // }
+  if (isProduction) {
+    // In production, serve from dist/public/uploads (handled by serveStatic in vite.ts)
+    console.log('🚀 Production mode: Uploads will be served from dist/public/uploads');
+  } else {
+    // In development, serve from root uploads directory
+    console.log('🔧 Development mode: Serving uploads from root uploads directory');
+    app.use('/uploads', express.static(uploadDir));
+  }
 
   // Health check endpoint
   app.get("/api/health", (req, res) => {
