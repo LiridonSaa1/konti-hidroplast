@@ -53,18 +53,39 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     console.log('Multer file filter:', {
       originalname: file.originalname,
+      filename: file.filename,
       mimetype: file.mimetype,
       fieldname: file.fieldname
     });
     
-    const allowedTypes = /jpeg|jpg|png|gif|pdf/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
+    // More permissive MIME type checking
+    const allowedMimeTypes = [
+      'image/jpeg',
+      'image/jpg', 
+      'image/png',
+      'image/gif',
+      'image/webp',
+      'application/pdf'
+    ];
+    
+    const allowedExtensions = /\.(jpeg|jpg|png|gif|webp|pdf)$/i;
+    const hasValidExtension = allowedExtensions.test(file.originalname);
+    const hasValidMimeType = allowedMimeTypes.includes(file.mimetype);
+    
+    console.log('File validation:', {
+      hasValidExtension,
+      hasValidMimeType,
+      extension: path.extname(file.originalname).toLowerCase(),
+      mimetype: file.mimetype
+    });
 
-    if (mimetype && extname) {
+    // Accept file if either extension or MIME type is valid
+    if (hasValidExtension || hasValidMimeType) {
       return cb(null, true);
     } else {
-      cb(new Error(`File type not allowed. Got: ${file.mimetype}, ${path.extname(file.originalname)}. Allowed: ${allowedTypes.source}`));
+      const error = `File type not allowed. Got: ${file.mimetype}, ${path.extname(file.originalname)}. Allowed extensions: ${allowedExtensions.source}, Allowed MIME types: ${allowedMimeTypes.join(', ')}`;
+      console.error('File rejected:', error);
+      cb(new Error(error));
     }
   }
 });
