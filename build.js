@@ -28,11 +28,13 @@ function copyDir(src, dest) {
 try {
   console.log('Building project...');
   
-  // Run vite build
-  execSync('vite build', { stdio: 'inherit' });
+  // Run vite build using npm to ensure proper platform-specific dependencies
+  console.log('Building client with Vite...');
+  execSync('npm run vite:build', { stdio: 'inherit' });
   
-  // Run esbuild for server
-  execSync('esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist', { stdio: 'inherit' });
+  // Run esbuild for server using npm
+  console.log('Building server with esbuild...');
+  execSync('npm run esbuild:server', { stdio: 'inherit' });
   
   // Copy attached_assets to dist/public
   const srcAssets = path.join(__dirname, 'attached_assets');
