@@ -487,14 +487,22 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     console.log('=== Storage: Creating Certificate ===');
     console.log('Received certificate data:', JSON.stringify(certificate, null, 2));
+    console.log('Database connection status:', !!db);
     
-    const [newCertificate] = await db
-      .insert(certificates)
-      .values(certificate)
-      .returning();
-    
-    console.log('Created certificate result:', JSON.stringify(newCertificate, null, 2));
-    return newCertificate;
+    try {
+      const [newCertificate] = await db
+        .insert(certificates)
+        .values(certificate)
+        .returning();
+      
+      console.log('Created certificate result:', JSON.stringify(newCertificate, null, 2));
+      console.log('Translations field value:', newCertificate.translations);
+      console.log('Default language field value:', newCertificate.defaultLanguage);
+      return newCertificate;
+    } catch (error) {
+      console.error('Error creating certificate:', error);
+      throw error;
+    }
   }
 
   async updateCertificate(id: number, certificate: Partial<InsertCertificate>): Promise<Certificate> {
@@ -502,15 +510,23 @@ export class DatabaseStorage implements IStorage {
     console.log('=== Storage: Updating Certificate ===');
     console.log('Certificate ID:', id);
     console.log('Update data:', JSON.stringify(certificate, null, 2));
+    console.log('Database connection status:', !!db);
     
-    const [updated] = await db
-      .update(certificates)
-      .set(certificate)
-      .where(eq(certificates.id, id))
-      .returning();
-    
-    console.log('Updated certificate result:', JSON.stringify(updated, null, 2));
-    return updated;
+    try {
+      const [updated] = await db
+        .update(certificates)
+        .set(certificate)
+        .where(eq(certificates.id, id))
+        .returning();
+      
+      console.log('Updated certificate result:', JSON.stringify(updated, null, 2));
+      console.log('Translations field value:', updated.translations);
+      console.log('Default language field value:', updated.defaultLanguage);
+      return updated;
+    } catch (error) {
+      console.error('Error updating certificate:', error);
+      throw error;
+    }
   }
 
   async deleteCertificate(id: number): Promise<void> {

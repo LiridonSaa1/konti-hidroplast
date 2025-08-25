@@ -722,9 +722,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const certificateData = insertCertificateSchema.parse(req.body);
       console.log('Parsed certificate data:', JSON.stringify(certificateData, null, 2));
+      console.log('Image URL being stored:', certificateData.imageUrl);
       
       const certificate = await storage.createCertificate(certificateData);
       console.log('Created certificate result:', JSON.stringify(certificate, null, 2));
+      console.log('Final image URL in database:', certificate.imageUrl);
       
       res.status(201).json(certificate);
     } catch (error) {
@@ -741,9 +743,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       const certificateData = insertCertificateSchema.parse(req.body);
       console.log('Parsed certificate data:', JSON.stringify(certificateData, null, 2));
+      console.log('Image URL being stored:', certificateData.imageUrl);
       
       const certificate = await storage.updateCertificate(parseInt(req.params.id), certificateData);
       console.log('Updated certificate result:', JSON.stringify(certificate, null, 2));
+      console.log('Final image URL in database:', certificate.imageUrl);
       
       res.json(certificate);
     } catch (error) {
