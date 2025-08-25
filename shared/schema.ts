@@ -134,7 +134,8 @@ export const certificates = pgTable("certificates", {
   subcategoryId: integer("subcategory_id").references(() => certificateSubcategories.id),
   subcategoryItemId: integer("subcategory_item_id").references(() => subcategoryItems.id),
   title: text("title").notNull(),
-  imageUrl: text("image_url").notNull(),
+  imageUrl: text("image_url"), // Made optional since we now have both image and PDF
+  pdfUrl: text("pdf_url"), // Added PDF URL field
   downloadUrl: text("download_url"),
   sortOrder: integer("sort_order").default(0),
   status: text("status").notNull().default("active"), // active, inactive

@@ -69,6 +69,7 @@ type Certificate = {
   subcategoryId?: number;
   subcategoryItemId?: number;
   imageUrl: string;
+  pdfUrl: string; // Added pdfUrl to the type
   sortOrder: number;
   status: string;
   translations?: any;
@@ -96,7 +97,8 @@ const certificateFormSchema = z.object({
   categoryId: z.number().min(1, "Category is required"),
   subcategoryId: z.number().optional(),
   subcategoryItemId: z.number().optional(),
-  imageUrl: z.string().min(1, "Image is required"),
+  imageUrl: z.string().optional(), // Made optional since we now have both image and PDF
+  pdfUrl: z.string().optional(), // Added PDF URL field
   sortOrder: z.number().int().min(0).default(0),
   status: z.enum(["active", "inactive"]).default("active"),
   translations: z.object({
@@ -111,6 +113,9 @@ const certificateFormSchema = z.object({
     }).optional(),
   }).optional(),
   defaultLanguage: z.string().default("en"),
+}).refine((data) => data.imageUrl || data.pdfUrl, {
+  message: "Either an image or PDF file is required",
+  path: ["imageUrl", "pdfUrl"],
 });
 
 type CertificateForm = z.infer<typeof certificateFormSchema>;
@@ -134,6 +139,7 @@ export function CertificatesManager() {
       subcategoryId: undefined,
       subcategoryItemId: undefined,
       imageUrl: "",
+      pdfUrl: "", // Initialize pdfUrl
       sortOrder: 0,
       status: "active",
       translations: {
@@ -299,6 +305,7 @@ export function CertificatesManager() {
       subcategoryId: certificate.subcategoryId || undefined,
       subcategoryItemId: certificate.subcategoryItemId || undefined,
       imageUrl: certificate.imageUrl,
+      pdfUrl: certificate.pdfUrl, // Set pdfUrl for editing
       sortOrder: certificate.sortOrder,
       status: certificate.status as "active" | "inactive",
       translations: {
@@ -343,6 +350,7 @@ export function CertificatesManager() {
         subcategoryId: undefined,
         subcategoryItemId: undefined,
         imageUrl: "",
+        pdfUrl: "", // Reset pdfUrl
         sortOrder: 0,
         status: "active",
         translations: {
@@ -355,8 +363,15 @@ export function CertificatesManager() {
     }
   };
 
-  const handleImageUpload = (imageUrl: string) => {
-    form.setValue("imageUrl", imageUrl);
+  const handleFileUpload = (url: string) => {
+    // Determine if it's a PDF or image based on the URL
+    if (url.toLowerCase().endsWith('.pdf') || url.includes('pdf')) {
+      form.setValue("pdfUrl", url);
+      form.setValue("imageUrl", "");
+    } else {
+      form.setValue("imageUrl", url);
+      form.setValue("pdfUrl", "");
+    }
   };
 
   if (isLoading) {
@@ -571,15 +586,15 @@ export function CertificatesManager() {
                     name="imageUrl"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Certificate Image</FormLabel>
+                        <FormLabel>Certificate File (Image or PDF)</FormLabel>
                         <FormControl>
                           <FileUpload
-                            label=""
-                            value={field.value}
-                            onChange={handleImageUpload}
-                            accept="image/*"
-                            placeholder="Upload certificate image or enter URL"
-                            data-testid="file-upload-image"
+                            label="Certificate File (Image or PDF)"
+                            value={field.value || form.watch("pdfUrl") || ""}
+                            onChange={handleFileUpload}
+                            accept="image/*,.pdf"
+                            placeholder="Upload certificate image or PDF, or enter URL"
+                            data-testid="file-upload-certificate"
                           />
                         </FormControl>
                         <FormMessage />
@@ -733,7 +748,7 @@ export function CertificatesManager() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Image</TableHead>
+                  <TableHead>Files</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Subcategory</TableHead>
                   <TableHead
@@ -762,18 +777,37 @@ export function CertificatesManager() {
             <TableBody>
               {filteredCertificates.map((certificate: Certificate) => (
                 <TableRow key={certificate.id} data-testid={`row-certificate-${certificate.id}`}>
-                  <TableCell data-testid={`image-${certificate.id}`}>
-                    {certificate.imageUrl ? (
-                      <img
-                        src={certificate.imageUrl}
-                        alt="Certificate"
-                        className="w-12 h-12 object-cover rounded"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
-                        <ImageIcon className="w-6 h-6 text-gray-400" />
-                      </div>
-                    )}
+                  <TableCell data-testid={`files-${certificate.id}`}>
+                    <div className="flex flex-col gap-2">
+                      {/* Image Preview */}
+                      {certificate.imageUrl ? (
+                        <div className="relative">
+                          <img
+                            src={certificate.imageUrl}
+                            alt="Certificate Image"
+                            className="w-12 h-12 object-cover rounded"
+                          />
+                          <div className="text-xs text-gray-500 mt-1">Image</div>
+                        </div>
+                      ) : null}
+                      
+                      {/* PDF Preview */}
+                      {certificate.pdfUrl ? (
+                        <div className="relative">
+                          <div className="w-12 h-12 bg-red-100 border border-red-300 rounded flex items-center justify-center">
+                            <div className="text-red-600 font-bold text-xs">PDF</div>
+                          </div>
+                          <div className="text-xs text-gray-500 mt-1">PDF</div>
+                        </div>
+                      ) : null}
+                      
+                      {/* No files indicator */}
+                      {!certificate.imageUrl && !certificate.pdfUrl && (
+                        <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
+                          <ImageIcon className="w-6 h-6 text-gray-400" />
+                        </div>
+                      )}
+                    </div>
                   </TableCell>
                   <TableCell data-testid={`text-category-${certificate.id}`}>
                     {getCategoryName(certificate.categoryId)}

@@ -1,5 +1,5 @@
 import { useState, useRef, DragEvent } from "react";
-import { Upload, X, FileImage } from "lucide-react";
+import { Upload, X, FileImage, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -177,7 +177,7 @@ export function FileUpload({
             <Upload className="h-8 w-8 text-gray-400 mx-auto" />
             <div>
               <p className="text-sm text-gray-600">
-                Drag and drop an image here, or{" "}
+                Drag and drop a file here, or{" "}
                 <Button
                   type="button"
                   variant="link"
@@ -190,7 +190,7 @@ export function FileUpload({
                 </Button>
               </p>
               <p className="text-xs text-gray-500 mt-1">
-                PNG, JPG, GIF up to 100MB • Drag & drop or click to browse
+                {accept === '.pdf' ? 'PDF files up to 100MB' : accept === 'image/*,.pdf' ? 'Images (PNG, JPG, GIF) and PDF files up to 100MB' : 'PNG, JPG, GIF, PDF up to 100MB'} • Drag & drop or click to browse
               </p>
             </div>
           </div>
@@ -200,26 +200,38 @@ export function FileUpload({
           )}
         </div>
         
-        {/* Image Preview */}
+        {/* File Preview */}
         {value && (
           <div className="relative inline-block">
-            <img
-              src={value}
-              alt="Preview"
-              className="h-24 w-24 object-cover rounded-lg border"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' fill='%23f1f5f9'/%3E%3Ctext x='48' y='48' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='12'%3EInvalid Image%3C/text%3E%3C/svg%3E";
-              }}
-              data-testid="image-preview"
-            />
+            {/* Check if it's a PDF or image */}
+            {value.toLowerCase().endsWith('.pdf') || value.includes('pdf') ? (
+              // PDF Preview
+              <div className="h-24 w-24 bg-red-100 border border-red-300 rounded-lg flex items-center justify-center">
+                <div className="text-center">
+                  <FileText className="h-8 w-8 text-red-600 mx-auto mb-1" />
+                  <div className="text-xs text-red-600 font-medium">PDF</div>
+                </div>
+              </div>
+            ) : (
+              // Image Preview
+              <img
+                src={value}
+                alt="Preview"
+                className="h-24 w-24 object-cover rounded-lg border"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Crect width='96' height='96' fill='%23f1f5f9'/%3E%3Ctext x='48' y='48' text-anchor='middle' dy='.3em' fill='%236b7280' font-size='12'%3EInvalid Image%3C/text%3E%3C/svg%3E";
+                }}
+                data-testid="image-preview"
+              />
+            )}
             <Button
               type="button"
               variant="destructive"
               size="sm"
               className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
               onClick={() => onChange("")}
-              data-testid="button-remove-image"
+              data-testid="button-remove-file"
             >
               <X className="h-3 w-3" />
             </Button>
