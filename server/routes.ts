@@ -145,18 +145,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
     // In production, serve from dist/public/uploads (handled by serveStatic in vite.ts)
     console.log('🚀 Production mode: Uploads will be served from dist/public/uploads');
   } else {
-    // In development, serve from root uploads directory
-    console.log('🔧 Development mode: Serving uploads from root uploads directory');
+    // In development, serve from both locations for maximum compatibility
+    console.log('🔧 Development mode: Serving uploads from multiple locations');
+    
+    // First, try to serve from dist/public/uploads (production build location)
+    const distUploadsPath = path.join(__dirname, '..', 'dist', 'public', 'uploads');
+    if (fsSync.existsSync(distUploadsPath)) {
+      console.log('✅ Serving from dist/public/uploads:', distUploadsPath);
+      app.use('/uploads', express.static(distUploadsPath));
+    } else {
+      console.log('⚠️ dist/public/uploads not found, serving from root uploads');
+      app.use('/uploads', express.static(uploadDir));
+    }
+    
+    // Also serve from root uploads as fallback
     app.use('/uploads', express.static(uploadDir));
   }
 
   // Health check endpoint
   app.get("/api/health", (req, res) => {
+    const distUploadsPath = path.join(__dirname, '..', 'dist', 'public', 'uploads');
+    const rootUploadsExists = fsSync.existsSync(uploadDir);
+    const distUploadsExists = fsSync.existsSync(distUploadsPath);
+    
     res.json({ 
       status: "ok", 
       timestamp: new Date().toISOString(),
       uploadDir: uploadDir,
-      serverTime: Date.now()
+      distUploadsPath: distUploadsPath,
+      rootUploadsExists,
+      distUploadsExists,
+      serverTime: Date.now(),
+      environment: process.env.NODE_ENV || 'development'
     });
   });
 
@@ -340,12 +360,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const distUploadsDir = path.dirname(distUploadPath);
         if (!fsSync.existsSync(distUploadsDir)) {
           await fs.mkdir(distUploadsDir, { recursive: true });
-          console.log('Created dist/public/uploads directory');
+          console.log('✅ Created dist/public/uploads directory:', distUploadsDir);
         }
         
         // Copy file to production directory
         await fs.copyFile(rootUploadPath, distUploadPath);
         console.log('✅ File copied to production directory:', distUploadPath);
+        
+        // Verify the file was copied successfully
+        if (fsSync.existsSync(distUploadPath)) {
+          console.log('✅ File verification successful in production directory');
+        } else {
+          console.log('❌ File verification failed in production directory');
+        }
       } catch (copyError) {
         console.log('⚠️ Warning: Could not copy to production directory:', (copyError as Error).message);
         console.log('This is normal during development if dist folder doesn\'t exist yet');
