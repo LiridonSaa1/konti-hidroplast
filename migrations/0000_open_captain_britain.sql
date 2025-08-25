@@ -227,6 +227,21 @@ CREATE TABLE "certificates" (
 	"default_language" text DEFAULT 'en' NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE "subcategory_items" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"category_id" integer NOT NULL,
+	"subcategory_id" integer NOT NULL,
+	"title" text NOT NULL,
+	"description" text,
+	"image_url" text,
+	"sort_order" integer DEFAULT 0,
+	"active" boolean DEFAULT true,
+	"translations" jsonb DEFAULT '{}'::jsonb,
+	"default_language" text DEFAULT 'en' NOT NULL,
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
 CREATE TABLE "brochure_categories" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
@@ -244,4 +259,8 @@ ALTER TABLE "gallery_items" ADD CONSTRAINT "gallery_items_category_id_gallery_ca
 ALTER TABLE "certificate_subcategories" ADD CONSTRAINT "certificate_subcategories_category_id_certificate_categories_id" FOREIGN KEY ("category_id") REFERENCES "public"."certificate_categories"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "certificates" ADD CONSTRAINT "certificates_category_id_certificate_categories_id_fk" FOREIGN KEY ("category_id") REFERENCES "public"."certificate_categories"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "certificates" ADD CONSTRAINT "certificates_subcategory_id_certificate_subcategories_id_fk" FOREIGN KEY ("subcategory_id") REFERENCES "public"."certificate_subcategories"("id") ON DELETE no action ON UPDATE no action;
+--> statement-breakpoint
+ALTER TABLE "subcategory_items" ADD CONSTRAINT "subcategory_items_category_id_certificate_categories_id_fk" FOREIGN KEY ("category_id") REFERENCES "public"."certificate_categories"("id") ON DELETE no action ON UPDATE no action;
+--> statement-breakpoint
+ALTER TABLE "subcategory_items" ADD CONSTRAINT "subcategory_items_subcategory_id_certificate_subcategories_id_fk" FOREIGN KEY ("subcategory_id") REFERENCES "public"."certificate_subcategories"("id") ON DELETE no action ON UPDATE no action;
 */

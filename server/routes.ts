@@ -18,6 +18,9 @@ import {
   insertCertificateSchema,
   insertCertificateCategorySchema,
   insertCertificateSubcategorySchema,
+  insertSubcategoryItemSchema,
+  insertProductCategorySchema,
+  insertProductSubcategorySchema,
   insertBrochureSchema,
   insertBrochureCategorySchema,
   insertProjectSchema,
@@ -767,6 +770,72 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Subcategory Items routes
+  app.get("/api/admin/subcategory-items", async (req: Request, res: Response) => {
+    try {
+      const categoryId = req.query.categoryId as string;
+      const subcategoryId = req.query.subcategoryId as string;
+      
+      let items;
+      if (subcategoryId) {
+        items = await storage.getSubcategoryItemsBySubcategory(parseInt(subcategoryId));
+      } else if (categoryId) {
+        items = await storage.getSubcategoryItemsByCategory(parseInt(categoryId));
+      } else {
+        items = await storage.getAllSubcategoryItems();
+      }
+      res.json(items);
+    } catch (error) {
+      console.error("Error fetching subcategory items:", error);
+      res.status(500).json({ error: "Failed to fetch subcategory items" });
+    }
+  });
+
+  app.get("/api/admin/subcategory-items/:id", async (req: Request, res: Response) => {
+    try {
+      const item = await storage.getSubcategoryItem(parseInt(req.params.id));
+      if (!item) {
+        return res.status(404).json({ error: "Subcategory item not found" });
+      }
+      res.json(item);
+    } catch (error) {
+      console.error("Error fetching subcategory item:", error);
+      res.status(500).json({ error: "Failed to fetch subcategory item" });
+    }
+  });
+
+  app.post("/api/admin/subcategory-items", async (req: Request, res: Response) => {
+    try {
+      const itemData = insertSubcategoryItemSchema.parse(req.body);
+      const item = await storage.createSubcategoryItem(itemData);
+      res.status(201).json(item);
+    } catch (error) {
+      console.error("Error creating subcategory item:", error);
+      res.status(400).json({ error: "Invalid subcategory item data" });
+    }
+  });
+
+  app.put("/api/admin/subcategory-items/:id", async (req: Request, res: Response) => {
+    try {
+      const itemData = insertSubcategoryItemSchema.parse(req.body);
+      const item = await storage.updateSubcategoryItem(parseInt(req.params.id), itemData);
+      res.json(item);
+    } catch (error) {
+      console.error("Error updating subcategory item:", error);
+      res.status(400).json({ error: "Failed to update subcategory item" });
+    }
+  });
+
+  app.delete("/api/admin/subcategory-items/:id", async (req: Request, res: Response) => {
+    try {
+      await storage.deleteSubcategoryItem(parseInt(req.params.id));
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting subcategory item:", error);
+      res.status(500).json({ error: "Failed to delete subcategory item" });
+    }
+  });
+
   // Certificates routes
   app.get("/api/admin/certificates", async (req, res) => {
     try {
@@ -865,6 +934,124 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting certificate:", error);
       res.status(500).json({ error: "Failed to delete certificate" });
+    }
+  });
+
+  // Product Categories routes
+  app.get("/api/admin/product-categories", async (req, res) => {
+    try {
+      const categories = await storage.getAllProductCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error("Error fetching product categories:", error);
+      res.status(500).json({ error: "Failed to fetch product categories" });
+    }
+  });
+
+  app.get("/api/admin/product-categories/:id", async (req, res) => {
+    try {
+      const category = await storage.getProductCategory(parseInt(req.params.id));
+      if (!category) {
+        return res.status(404).json({ error: "Product category not found" });
+      }
+      res.json(category);
+    } catch (error) {
+      console.error("Error fetching product category:", error);
+      res.status(500).json({ error: "Failed to fetch product category" });
+    }
+  });
+
+  app.post("/api/admin/product-categories", async (req, res) => {
+    try {
+      const categoryData = insertProductCategorySchema.parse(req.body);
+      const category = await storage.createProductCategory(categoryData);
+      res.status(201).json(category);
+    } catch (error) {
+      console.error("Error creating product category:", error);
+      res.status(400).json({ error: "Invalid product category data" });
+    }
+  });
+
+  app.put("/api/admin/product-categories/:id", async (req, res) => {
+    try {
+      const categoryData = insertProductCategorySchema.parse(req.body);
+      const category = await storage.updateProductCategory(parseInt(req.params.id), categoryData);
+      res.json(category);
+    } catch (error) {
+      console.error("Error updating product category:", error);
+      res.status(400).json({ error: "Invalid product category data" });
+    }
+  });
+
+  app.delete("/api/admin/product-categories/:id", async (req, res) => {
+    try {
+      await storage.deleteProductCategory(parseInt(req.params.id));
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting product category:", error);
+      res.status(500).json({ error: "Failed to delete product category" });
+    }
+  });
+
+  // Product Subcategories routes
+  app.get("/api/admin/product-subcategories", async (req, res) => {
+    try {
+      const categoryId = req.query.categoryId as string;
+      let subcategories;
+      if (categoryId) {
+        subcategories = await storage.getProductSubcategoriesByCategory(parseInt(categoryId));
+      } else {
+        subcategories = await storage.getAllProductSubcategories();
+      }
+      res.json(subcategories);
+    } catch (error) {
+      console.error("Error fetching product subcategories:", error);
+      res.status(500).json({ error: "Failed to fetch product subcategories" });
+    }
+  });
+
+  app.get("/api/admin/product-subcategories/:id", async (req, res) => {
+    try {
+      const subcategory = await storage.getProductSubcategory(parseInt(req.params.id));
+      if (!subcategory) {
+        return res.status(404).json({ error: "Product subcategory not found" });
+      }
+      res.json(subcategory);
+    } catch (error) {
+      console.error("Error fetching product subcategory:", error);
+      res.status(500).json({ error: "Failed to fetch product subcategory" });
+    }
+  });
+
+  app.post("/api/admin/product-subcategories", async (req, res) => {
+    try {
+      const subcategoryData = insertProductSubcategorySchema.parse(req.body);
+      const subcategory = await storage.createProductSubcategory(subcategoryData);
+      res.status(201).json(subcategory);
+    } catch (error) {
+      console.error("Error creating product subcategory:", error);
+      res.status(400).json({ error: "Invalid product subcategory data" });
+    }
+  });
+
+  app.put("/api/admin/product-subcategories/:id", async (req, res) => {
+    try {
+      const subcategoryData = insertProductSubcategorySchema.parse(req.body);
+      const subcategory = await storage.updateProductSubcategory(parseInt(req.params.id), subcategoryData);
+      res.json(subcategory);
+    } catch (error) {
+      console.error("Error updating product subcategory:", error);
+      res.status(400).json({ error: "Invalid product subcategory data" });
+    }
+  });
+
+  app.delete("/api/admin/product-subcategories/:id", async (req, res) => {
+    try {
+      await storage.deleteProductSubcategory(parseInt(req.params.id));
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error deleting product subcategory:", error);
+      res.status(500).json({ error: "Failed to delete product subcategory" });
     }
   });
 

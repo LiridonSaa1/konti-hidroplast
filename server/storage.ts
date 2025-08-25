@@ -15,6 +15,12 @@ import {
   type InsertCertificateCategory,
   type CertificateSubcategory,
   type InsertCertificateSubcategory,
+  type SubcategoryItem,
+  type InsertSubcategoryItem,
+  type ProductCategory,
+  type InsertProductCategory,
+  type ProductSubcategory,
+  type InsertProductSubcategory,
   type Brochure,
   type InsertBrochure,
   type BrochureCategory,
@@ -43,6 +49,9 @@ import {
   certificates,
   certificateCategories,
   certificateSubcategories,
+  subcategoryItems,
+  productCategories,
+  productSubcategories,
   brochures,
   brochureCategories,
   projects,
@@ -106,6 +115,30 @@ export interface IStorage {
   createCertificateSubcategory(subcategory: InsertCertificateSubcategory): Promise<CertificateSubcategory>;
   updateCertificateSubcategory(id: number, subcategory: Partial<InsertCertificateSubcategory>): Promise<CertificateSubcategory>;
   deleteCertificateSubcategory(id: number): Promise<void>;
+
+  // Subcategory Items methods
+  getAllSubcategoryItems(): Promise<SubcategoryItem[]>;
+  getSubcategoryItemsByCategory(categoryId: number): Promise<SubcategoryItem[]>;
+  getSubcategoryItemsBySubcategory(subcategoryId: number): Promise<SubcategoryItem[]>;
+  getSubcategoryItem(id: number): Promise<SubcategoryItem | undefined>;
+  createSubcategoryItem(item: InsertSubcategoryItem): Promise<SubcategoryItem>;
+  updateSubcategoryItem(id: number, item: Partial<InsertSubcategoryItem>): Promise<SubcategoryItem>;
+  deleteSubcategoryItem(id: number): Promise<void>;
+
+  // Product Category methods
+  getAllProductCategories(): Promise<ProductCategory[]>;
+  getProductCategory(id: number): Promise<ProductCategory | undefined>;
+  createProductCategory(category: InsertProductCategory): Promise<ProductCategory>;
+  updateProductCategory(id: number, category: Partial<InsertProductCategory>): Promise<ProductCategory>;
+  deleteProductCategory(id: number): Promise<void>;
+
+  // Product Subcategory methods
+  getAllProductSubcategories(): Promise<ProductSubcategory[]>;
+  getProductSubcategoriesByCategory(categoryId: number): Promise<ProductSubcategory[]>;
+  getProductSubcategory(id: number): Promise<ProductSubcategory | undefined>;
+  createProductSubcategory(subcategory: InsertProductSubcategory): Promise<ProductSubcategory>;
+  updateProductSubcategory(id: number, subcategory: Partial<InsertProductSubcategory>): Promise<ProductSubcategory>;
+  deleteProductSubcategory(id: number): Promise<void>;
 
   // Certificate methods
   getAllCertificates(): Promise<Certificate[]>;
@@ -455,6 +488,135 @@ export class DatabaseStorage implements IStorage {
   async deleteCertificateSubcategory(id: number): Promise<void> {
     if (!db) throw new Error('Database not available');
     await db.delete(certificateSubcategories).where(eq(certificateSubcategories.id, id));
+  }
+
+  // Product Category methods
+  async getAllProductCategories(): Promise<ProductCategory[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(productCategories).orderBy(productCategories.sortOrder);
+  }
+
+  async getProductCategory(id: number): Promise<ProductCategory | undefined> {
+    if (!db) throw new Error('Database not available');
+    const result = await db.select().from(productCategories).where(eq(productCategories.id, id));
+    return result[0];
+  }
+
+  async createProductCategory(category: InsertProductCategory): Promise<ProductCategory> {
+    if (!db) throw new Error('Database not available');
+    const [newCategory] = await db
+      .insert(productCategories)
+      .values(category)
+      .returning();
+    return newCategory;
+  }
+
+  async updateProductCategory(id: number, category: Partial<InsertProductCategory>): Promise<ProductCategory> {
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(productCategories)
+      .set(category)
+      .where(eq(productCategories.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteProductCategory(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(productCategories).where(eq(productCategories.id, id));
+  }
+
+  // Product Subcategory methods
+  async getAllProductSubcategories(): Promise<ProductSubcategory[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(productSubcategories).orderBy(productSubcategories.sortOrder);
+  }
+
+  async getProductSubcategoriesByCategory(categoryId: number): Promise<ProductSubcategory[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(productSubcategories)
+      .where(eq(productSubcategories.categoryId, categoryId))
+      .orderBy(productSubcategories.sortOrder);
+  }
+
+  async getProductSubcategory(id: number): Promise<ProductSubcategory | undefined> {
+    if (!db) throw new Error('Database not available');
+    const result = await db.select().from(productSubcategories).where(eq(productSubcategories.id, id));
+    return result[0];
+  }
+
+  async createProductSubcategory(subcategory: InsertProductSubcategory): Promise<ProductSubcategory> {
+    if (!db) throw new Error('Database not available');
+    const [newSubcategory] = await db
+      .insert(productSubcategories)
+      .values(subcategory)
+      .returning();
+    return newSubcategory;
+  }
+
+  async updateProductSubcategory(id: number, subcategory: Partial<InsertProductSubcategory>): Promise<ProductSubcategory> {
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(productSubcategories)
+      .set(subcategory)
+      .where(eq(productSubcategories.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteProductSubcategory(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(productSubcategories).where(eq(productSubcategories.id, id));
+  }
+
+  // Subcategory Items methods
+  async getAllSubcategoryItems(): Promise<SubcategoryItem[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(subcategoryItems).orderBy(subcategoryItems.sortOrder);
+  }
+
+  async getSubcategoryItemsByCategory(categoryId: number): Promise<SubcategoryItem[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(subcategoryItems)
+      .where(eq(subcategoryItems.categoryId, categoryId))
+      .orderBy(subcategoryItems.sortOrder);
+  }
+
+  async getSubcategoryItemsBySubcategory(subcategoryId: number): Promise<SubcategoryItem[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(subcategoryItems)
+      .where(eq(subcategoryItems.subcategoryId, subcategoryId))
+      .orderBy(subcategoryItems.sortOrder);
+  }
+
+  async getSubcategoryItem(id: number): Promise<SubcategoryItem | undefined> {
+    if (!db) throw new Error('Database not available');
+    const result = await db.select().from(subcategoryItems).where(eq(subcategoryItems.id, id));
+    return result[0];
+  }
+
+  async createSubcategoryItem(item: InsertSubcategoryItem): Promise<SubcategoryItem> {
+    if (!db) throw new Error('Database not available');
+    const [newItem] = await db
+      .insert(subcategoryItems)
+      .values(item)
+      .returning();
+    return newItem;
+  }
+
+  async updateSubcategoryItem(id: number, item: Partial<InsertSubcategoryItem>): Promise<SubcategoryItem> {
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(subcategoryItems)
+      .set(item)
+      .where(eq(subcategoryItems.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteSubcategoryItem(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(subcategoryItems).where(eq(subcategoryItems.id, id));
   }
 
   // Certificate methods

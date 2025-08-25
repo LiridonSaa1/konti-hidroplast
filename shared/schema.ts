@@ -100,6 +100,33 @@ export const certificateSubcategories = pgTable("certificate_subcategories", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Product Categories table
+export const productCategories = pgTable("product_categories", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  sortOrder: integer("sort_order").default(0),
+  status: text("status").notNull().default("active"), // active, inactive
+  translations: jsonb("translations").default('{}'),
+  defaultLanguage: text("default_language").notNull().default("en"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Product Subcategories table
+export const productSubcategories = pgTable("product_subcategories", {
+  id: serial("id").primaryKey(),
+  categoryId: integer("category_id").references(() => productCategories.id),
+  title: text("title").notNull(),
+  description: text("description"),
+  sortOrder: integer("sort_order").default(0),
+  status: text("status").notNull().default("active"), // active, inactive
+  translations: jsonb("translations").default('{}'),
+  defaultLanguage: text("default_language").notNull().default("en"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Certificates table
 export const certificates = pgTable("certificates", {
   id: serial("id").primaryKey(),
@@ -110,6 +137,22 @@ export const certificates = pgTable("certificates", {
   downloadUrl: text("download_url"),
   sortOrder: integer("sort_order").default(0),
   status: text("status").notNull().default("active"), // active, inactive
+  translations: jsonb("translations").default('{}'),
+  defaultLanguage: text("default_language").notNull().default("en"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Subcategory Items table
+export const subcategoryItems = pgTable("subcategory_items", {
+  id: serial("id").primaryKey(),
+  categoryId: integer("category_id").references(() => certificateCategories.id).notNull(),
+  subcategoryId: integer("subcategory_id").references(() => certificateSubcategories.id).notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  imageUrl: text("image_url"),
+  sortOrder: integer("sort_order").default(0),
+  active: boolean("active").default(true),
   translations: jsonb("translations").default('{}'),
   defaultLanguage: text("default_language").notNull().default("en"),
   createdAt: timestamp("created_at").defaultNow(),
@@ -275,7 +318,25 @@ export const insertCertificateSubcategorySchema = createInsertSchema(certificate
   updatedAt: true,
 });
 
+export const insertProductCategorySchema = createInsertSchema(productCategories).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertProductSubcategorySchema = createInsertSchema(productSubcategories).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export const insertCertificateSchema = createInsertSchema(certificates).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertSubcategoryItemSchema = createInsertSchema(subcategoryItems).omit({
   id: true,
   createdAt: true,
   updatedAt: true,
@@ -334,8 +395,17 @@ export type CertificateCategory = typeof certificateCategories.$inferSelect;
 export type InsertCertificateSubcategory = z.infer<typeof insertCertificateSubcategorySchema>;
 export type CertificateSubcategory = typeof certificateSubcategories.$inferSelect;
 
+export type InsertProductCategory = z.infer<typeof insertProductCategorySchema>;
+export type ProductCategory = typeof productCategories.$inferSelect;
+
+export type InsertProductSubcategory = z.infer<typeof insertProductSubcategorySchema>;
+export type ProductSubcategory = typeof productSubcategories.$inferSelect;
+
 export type InsertCertificate = z.infer<typeof insertCertificateSchema>;
 export type Certificate = typeof certificates.$inferSelect;
+
+export type InsertSubcategoryItem = z.infer<typeof insertSubcategoryItemSchema>;
+export type SubcategoryItem = typeof subcategoryItems.$inferSelect;
 
 export type InsertBrochure = z.infer<typeof insertBrochureSchema>;
 export type Brochure = typeof brochures.$inferSelect;

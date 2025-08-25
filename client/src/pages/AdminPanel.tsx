@@ -48,6 +48,7 @@ import { CertificateSubcategoriesManager } from "@/components/admin/CertificateS
 import { ContactMessagesManager } from "@/components/admin/ContactMessagesManager";
 import { JobApplicationsManager } from "@/components/admin/JobApplicationsManager";
 import { BrevoConfigManager } from "@/components/admin/BrevoConfigManager";
+import { SubcategoryItemsManager } from "@/components/admin/SubcategoryItemsManager";
 
 export default function AdminPanel() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -231,7 +232,7 @@ export default function AdminPanel() {
   }
 
   // Auto-open certificates dropdown when certificates tabs are active
-  const certificateTabsActive = activeTab === "certificate-categories" || activeTab === "certificate-subcategories" || activeTab === "certificates";
+  const certificateTabsActive = activeTab === "certificate-categories" || activeTab === "certificate-subcategories" || activeTab === "certificates" || activeTab === "subcategory-items";
   if (certificateTabsActive && !isCertificatesDropdownOpen) {
     setIsCertificatesDropdownOpen(true);
   }
@@ -385,6 +386,19 @@ export default function AdminPanel() {
                 >
                   <Award className={`h-3 w-3 mr-2 ${activeTab === "certificates" ? "text-blue-600" : ""}`} />
                   Certificates
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "subcategory-items" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => {
+                    setActiveTab("subcategory-items");
+                    setIsMobileMenuOpen(false);
+                  }}
+                  data-testid="nav-subcategory-items"
+                >
+                  <Package className={`h-3 w-3 mr-2 ${activeTab === "subcategory-items" ? "text-blue-600" : ""}`} />
+                  Subcategory Items
                 </Button>
               </CollapsibleContent>
             </Collapsible>
@@ -1160,6 +1174,12 @@ export default function AdminPanel() {
           {activeTab === "certificates" && (
             <div data-testid="certificates-manager">
               <CertificatesManager />
+            </div>
+          )}
+
+          {activeTab === "subcategory-items" && (
+            <div data-testid="subcategory-items-manager">
+              <SubcategoryItemsManager />
             </div>
           )}
 
