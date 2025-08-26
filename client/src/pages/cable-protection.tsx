@@ -11,88 +11,33 @@ import { useLocation } from "wouter";
 import ductCloseUpImage from "@assets/duct-close-up-min-400x400_1755282820012.jpg";
 import opticCableImage from "@assets/KONTI-KAN-DUCT-Double-layered-corrugated-pipes-min-400x400_1755282822315.jpg";
 
-// Cable protection translation helper function
-const translateCableProtectionText = (text: string, t: any) => {
-  const translations: { [key: string]: string } = {
-    // Product titles
-    "Konti Kan Duct Cable Protection": t("cableProtection.kontiKanDuctProtection"),
-    "Konti Kan Optic Cable Protection": t("cableProtection.kontiKanOpticProtection"),
-    
-    // Descriptions
-    "The polyethylene pipes with small diameter are used for installing cable canalization, for underground placement. Mainly they are used as protection for optic cables, coaxial optic cables for distributive systems and other functional nets. They are also used for classical telecommunication cables with smaller diameter. Their exterior surface is smooth with longitudinal ribbed interior, and they are produced in coils up to 500 m.": t("cableProtection.ductDescription"),
-    "These HDPE pipes are used for protection or holders of the protection pipes, especially for passage of roads and bridges. They are double wall pipes within the smooth interior and the exterior surface is corrugated.Pipes with bigger diameters that are used for insertion of a bundle of pipes for protection of optic cables and for road or bridge passage. They are produced in black, red and yellow color, but also in any special color requested by the customer.": t("cableProtection.opticDescription"),
-    
-    // Applications
-    "Protection for electrical power cables, fiber optics, and telecommunication cables.": t("cableProtection.applicationElectrical"),
-    "Suitable for installation in urban, industrial, and rural infrastructure projects.": t("cableProtection.applicationInfrastructure"),
-    "Protecting power cables, telecommunication cables, and fiber optics": t("cableProtection.opticApplicationPower"),
-    "Suitable for underground installations in urban, rural, or industrial environments": t("cableProtection.opticApplicationUnderground"),
-    "Ideal for infrastructure projects requiring high mechanical protection": t("cableProtection.opticApplicationInfrastructure"),
-    
-    // Material Properties
-    "Made from high-density polyethylene (HDPE), resistant to corrosion, abrasion, and environmental stress cracking.": t("cableProtection.materialHDPE"),
-    "Excellent flexibility, making installation in curved pathways easier without the need for additional fittings.": t("cableProtection.flexibility"),
-    "Inert to most chemicals, ensuring longevity even in aggressive environments.": t("cableProtection.chemicalResistance"),
-    
-    // Dimensions
-    "Nominal outer diameter: 32–75 mm": t("cableProtection.nominalDiameter"),
-    "Single pipe in diameters 32, 40 and 50 mm": t("cableProtection.singlePipe"),
-    "Double (twin) pipe in diameters 32, 40, 50 mm": t("cableProtection.doublePipe"),
-    "Quadruple pipes, composed by two different dimensions of 32 and 40 mm": t("cableProtection.quadruplePipe"),
-    
-    // Optic characteristics
-    "Made from HDPE with exceptional resistance to wear, corrosion, and environmental degradation": t("cableProtection.madeFromHDPE"),
-    "Nominal Diameter Range: 75 mm to 200 mm (outer diameter)": t("cableProtection.nominalDiameterRange"),
-    "Produced in straight form of 6 and 12 m, or in 50 m coils": t("cableProtection.productionForm"),
-    "Inert to most chemicals, acids, and bases, making it suitable for diverse soil conditions": t("cableProtection.chemicalInert"),
-    "UV-stabilized variants are available for outdoor installations": t("cableProtection.uvStabilized"),
-    "Strong resistance to deformation under soil or static loads": t("cableProtection.deformationResistance"),
-    "Suitable for a wide temperature range (-40°C to +60°C)": t("cableProtection.temperatureRange"),
-    "Long service life (50+ years), reducing maintenance and replacement needs": t("cableProtection.serviceLife"),
-    "In compliance with international standards, such as EN 50086, EN 61386, EN 13476-3": t("cableProtection.compliance"),
-    
-    // Section titles
-    "Applications": t("cableProtection.applications"),
-    "Material Properties": t("cableProtection.materialProperties"),
-    "Dimensions": t("cableProtection.dimensions"),
-    "Characteristics": t("cableProtection.characteristics"),
-    
-    // Product types
-    "KONTI KAN ELECTRO FLEX 450 N": t("cableProtection.electroFlex450"),
-    "KONTI KAN ELECTRO FLEX 750 N": t("cableProtection.electroFlex750"),
-    "KONTI KAN OPTICAL": t("cableProtection.optical"),
-  };
-  return translations[text] || text;
-};
-
 // Cable Protection specifications data
-const cableProtectionProducts = [
+const getCableProtectionProducts = (t: any) => [
   {
     id: "konti-kan-duct",
-    title: "Konti Kan Duct Cable Protection",
-    description:
-      "The polyethylene pipes with small diameter are used for installing cable canalization, for underground placement. Mainly they are used as protection for optic cables, coaxial optic cables for distributive systems and other functional nets. They are also used for classical telecommunication cables with smaller diameter. Their exterior surface is smooth with longitudinal ribbed interior, and they are produced in coils up to 500 m.",
+    title: t("cableProtection.kontiKanDuctProtection"),
+    description: t("cableProtection.ductDescription"),
     applications: [
-      "Protection for electrical power cables, fiber optics, and telecommunication cables.",
-      "Suitable for installation in urban, industrial, and rural infrastructure projects.",
+      t("cableProtection.applicationElectrical"),
+      t("cableProtection.applicationInfrastructure"),
     ],
     materialProperties: [
-      "Made from high-density polyethylene (HDPE), resistant to corrosion, abrasion, and environmental stress cracking.",
-      "Excellent flexibility, making installation in curved pathways easier without the need for additional fittings.",
-      "Inert to most chemicals, ensuring longevity even in aggressive environments.",
+      t("cableProtection.materialHDPE"),
+      t("cableProtection.flexibility"),
+      t("cableProtection.chemicalResistance"),
     ],
     dimensions: [
-      "Nominal outer diameter: 32–75 mm",
-      "Single pipe in diameters 32, 40 and 50 mm",
-      "Double (twin) pipe in diameters 32, 40, 50 mm",
-      "Quadruple pipes, composed by two different dimensions of 32 and 40 mm",
+      t("cableProtection.nominalDiameter"),
+      t("cableProtection.singlePipe"),
+      t("cableProtection.doublePipe"),
+      t("cableProtection.quadruplePipe"),
     ],
     characteristics: [
-      "Compliance with relevant standards for cable ducting (e.g., EN 61386, EN 12201-2, or local equivalents)",
-      "Eco-friendly: recyclable and non-toxic material",
-      "UV-resistant variants available for outdoor installations",
-      "Performs well in a wide temperature range (-40°C to +60°C for general applications)",
-      "Resists deformation under soil and traffic loads, ensuring long-term stability in underground applications",
+      t("cableProtection.compliance"),
+      t("cableProtection.ecoFriendly"),
+      t("cableProtection.uvResistant"),
+      t("cableProtection.temperatureRange"),
+      t("cableProtection.deformationResistance"),
     ],
     image: ductCloseUpImage,
     specifications:
@@ -102,32 +47,31 @@ const cableProtectionProducts = [
   },
   {
     id: "konti-kan-optic",
-    title: "Konti Kan Optic Cable Protection",
-    description:
-      "These HDPE pipes are used for protection or holders of the protection pipes, especially for passage of roads and bridges. They are double wall pipes within the smooth interior and the exterior surface is corrugated.Pipes with bigger diameters that are used for insertion of a bundle of pipes for protection of optic cables and for road or bridge passage. They are produced in black, red and yellow color, but also in any special color requested by the customer.",
+    title: t("cableProtection.kontiKanOpticProtection"),
+    description: t("cableProtection.opticDescription"),
     features: [
-      "Double wall pipes with smooth interior and corrugated exterior surface",
-      "Used for protection or holders of the protection pipes",
-      "Especially for passage of roads and bridges",
-      "Produced in black, red and yellow color, or any special color requested",
-      "Pipes with bigger diameters for insertion of a bundle of pipes",
-      "Suitable for road or bridge passage",
+      t("cableProtection.doubleWallPipes"),
+      t("cableProtection.protectionHolders"),
+      t("cableProtection.roadsBridges"),
+      t("cableProtection.colorOptions"),
+      t("cableProtection.biggerDiameters"),
+      t("cableProtection.roadBridgePassage"),
     ],
     applications: [
-      "Protecting power cables, telecommunication cables, and fiber optics",
-      "Suitable for underground installations in urban, rural, or industrial environments",
-      "Ideal for infrastructure projects requiring high mechanical protection",
+      t("cableProtection.opticApplicationPower"),
+      t("cableProtection.opticApplicationUnderground"),
+      t("cableProtection.opticApplicationInfrastructure"),
     ],
     characteristics: [
-      "Made from HDPE with exceptional resistance to wear, corrosion, and environmental degradation",
-      "Nominal Diameter Range: 75 mm to 200 mm (outer diameter)",
-      "Produced in straight form of 6 and 12 m, or in 50 m coils",
-      "Inert to most chemicals, acids, and bases, making it suitable for diverse soil conditions",
-      "UV-stabilized variants are available for outdoor installations",
-      "Strong resistance to deformation under soil or static loads",
-      "Suitable for a wide temperature range (-40°C to +60°C)",
-      "Long service life (50+ years), reducing maintenance and replacement needs",
-      "In compliance with international standards, such as EN 50086, EN 61386, EN 13476-3",
+      t("cableProtection.madeFromHDPE"),
+      t("cableProtection.nominalDiameterRange"),
+      t("cableProtection.productionForm"),
+      t("cableProtection.chemicalInert"),
+      t("cableProtection.uvStabilized"),
+      t("cableProtection.deformationResistance"),
+      t("cableProtection.temperatureRange"),
+      t("cableProtection.serviceLife"),
+      t("cableProtection.compliance"),
     ],
     image: opticCableImage,
     specifications:
@@ -137,10 +81,10 @@ const cableProtectionProducts = [
   },
 ];
 
-const productTypes = [
-  "KONTI KAN ELECTRO FLEX 450 N",
-  "KONTI KAN ELECTRO FLEX 750 N",
-  "KONTI KAN OPTICAL",
+const getProductTypes = (t: any) => [
+  t("cableProtection.electroFlex450"),
+  t("cableProtection.electroFlex750"),
+  t("cableProtection.optical"),
 ];
 
 function CableProtectionPage() {
@@ -163,35 +107,33 @@ function CableProtectionPage() {
             <div>
               <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
                 <span className="text-sm font-medium">
-                  ENGINEERED FOR EXCELLENCE
+                  {t("cableProtection.engineeredForExcellence")}
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                CABLE<span className="text-red-500"> PROTECTION</span>
+                {t("cableProtection.cableProtection")}<span className="text-red-500"> {t("cableProtection.systems")}</span>
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  SYSTEMS
+                  {t("cableProtection.systems")}
                 </span>
               </h1>
               <p
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                High-Density Polyethylene (HDPE) pipes with externally smooth
-                and internally ribbed surfaces in the 32–75 mm diameter range
-                designed for cable protection purposes.
+                {t("cableProtection.heroDescription")}
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
                   <Check className="w-5 h-5" />
                   <span className="text-sm font-medium">
-                    Underground Installation
+                    {t("cableProtection.undergroundInstallation")}
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
                   <Check className="w-5 h-5" />
                   <span className="text-sm font-medium">
-                    Corrosion Resistant
+                    {t("cableProtection.corrosionResistant")}
                   </span>
                 </div>
               </div>
@@ -206,11 +148,11 @@ function CableProtectionPage() {
                   loop
                   playsInline
                   className="w-full h-full object-cover"
-                  aria-label="Konti Hidroplast cable protection systems manufacturing video"
+                  aria-label={`${t("cableProtection.kontiKanDuctProtection")} ${t("cableProtection.manufacturingVideo")}`}
                 />
               </div>
               <div className="absolute -bottom-4 -right-4 text-white px-4 py-2 rounded-full shadow-lg bg-[#ef4444]">
-                <span className="text-sm font-medium">Premium Quality</span>
+                <span className="text-sm font-medium">{t("cableProtection.premiumQuality")}</span>
               </div>
             </div>
           </div>
@@ -222,37 +164,28 @@ function CableProtectionPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-                Cable Protection
+                {t("cableProtection.cableProtection")}
               </h2>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  High-Density Polyethylene (HDPE) pipes with externally smooth
-                  and internally ribbed surfaces in the 32–75 mm diameter range
-                  are designed for cable protection purposes. Polyethylene pipes
-                  for cable protection can be:
+                  {t("cableProtection.mainDescription")}
                 </p>
                 <p>
-                  <b>Konti Kan Duct Cable protection</b> – Polyethylene pipes,
-                  HDPE, externally smooth, internally serrated with a small
-                  diameter.
-                  <b>
-                    Konti Kan Optic Cable protection– Polyethylene
-                    double-layered corrugated pipes with outer corrugated and
-                    inner smooth surface.
-                  </b>
+                  <b>{t("cableProtection.kontiKanDuct")}</b>
+                  <b>{t("cableProtection.kontiKanOptic")}</b>
                 </p>
               </div>
             </div>
 
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-                These pipes are divided in:
+                {t("cableProtection.dividedIn")}
               </h3>
               <div className="space-y-3">
-                {productTypes.map((type, index) => (
+                {getProductTypes(t).map((type, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <Check className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-gray-700">{translateCableProtectionText(type, t)}</span>
+                    <span className="text-gray-700">{type}</span>
                   </div>
                 ))}
               </div>
@@ -267,7 +200,7 @@ function CableProtectionPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#ffffff]">
-                Cable Protection Products
+                {t("cableProtection.products")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -276,7 +209,7 @@ function CableProtectionPage() {
           {/* Tabs */}
           <div className="flex justify-center mb-12">
             <div className="flex bg-gray-100 rounded-xl p-1">
-              {cableProtectionProducts.map((product) => (
+              {getCableProtectionProducts(t).map((product) => (
                 <button
                   key={product.id}
                   onClick={() => setActiveTab(product.id)}
@@ -286,14 +219,14 @@ function CableProtectionPage() {
                       : "text-gray-600 hover:text-[#1c2d56]"
                   }`}
                 >
-                  {translateCableProtectionText(product.title, t)}
+                  {product.title}
                 </button>
               ))}
             </div>
           </div>
 
           {/* Tab Content */}
-          {cableProtectionProducts.map((product) => (
+          {getCableProtectionProducts(t).map((product) => (
             <div
               key={product.id}
               className={`${activeTab === product.id ? "block" : "hidden"} transition-all duration-500`}
@@ -301,9 +234,9 @@ function CableProtectionPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
                   <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
-                    {translateCableProtectionText(product.title, t)}
+                    {product.title}
                   </h3>
-                  <p className="text-[#ffffff] mb-6">{translateCableProtectionText(product.description, t)}</p>
+                  <p className="text-[#ffffff] mb-6">{product.description}</p>
 
                   <div className="space-y-6">
                     {/* Features */}
@@ -326,14 +259,14 @@ function CableProtectionPage() {
                     {/* Applications */}
                     <div>
                       <h4 className="text-xl font-semibold text-[#ffffff] mb-3">
-                        {translateCableProtectionText("Applications", t)}
+                        {t("cableProtection.applications")}
                       </h4>
                       <div className="space-y-2">
                         {product.applications.map((application, index) => (
                           <div key={index} className="flex items-start gap-3">
                             <Check className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
                             <span className="text-[#ffffff] text-sm">
-                              {translateCableProtectionText(application, t)}
+                              {application}
                             </span>
                           </div>
                         ))}
@@ -344,8 +277,8 @@ function CableProtectionPage() {
                     <div>
                       <h4 className="text-xl font-semibold text-[#ffffff] mb-3">
                         {product.materialProperties
-                          ? translateCableProtectionText("Material Properties", t)
-                          : translateCableProtectionText("Characteristics", t)}
+                          ? t("cableProtection.materialProperties")
+                          : t("cableProtection.characteristics")}
                       </h4>
                       <div className="space-y-2">
                         {(
@@ -354,7 +287,7 @@ function CableProtectionPage() {
                           <div key={index} className="flex items-start gap-3">
                             <Check className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
                             <span className="text-[#ffffff] text-sm">
-                              {translateCableProtectionText(item, t)}
+                              {item}
                             </span>
                           </div>
                         ))}
@@ -365,14 +298,14 @@ function CableProtectionPage() {
                     {product.dimensions && (
                       <div>
                         <h4 className="text-xl font-semibold text-[#ffffff] mb-3">
-                          {translateCableProtectionText("Dimensions", t)}
+                          {t("cableProtection.dimensions")}
                         </h4>
                         <div className="space-y-2">
                           {product.dimensions.map((dimension, index) => (
                             <div key={index} className="flex items-start gap-3">
                               <Check className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
                               <span className="text-[#ffffff] text-sm">
-                                {translateCableProtectionText(dimension, t)}
+                                {dimension}
                               </span>
                             </div>
                           ))}
@@ -390,7 +323,7 @@ function CableProtectionPage() {
                       data-testid="download-specs"
                     >
                       <Download className="w-4 h-4 mr-2" />
-                      Download Specs
+                      {t("cableProtection.downloadSpecs")}
                     </a>
                     <a
                       href={product.brochure}
@@ -400,7 +333,7 @@ function CableProtectionPage() {
                       data-testid="download-brochure"
                     >
                       <Download className="w-4 h-4 mr-2" />
-                      Download Brochure
+                      {t("cableProtection.downloadBrochure")}
                     </a>
                   </div>
                 </div>
@@ -425,12 +358,12 @@ function CableProtectionPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                {t("aboutUs.getInTouchTitle")}
+                {t("cableProtection.contactTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              {t("productPages.needMoreInfo")} products and {t("productPages.solutions")}? {t("productPages.contactExperts")}.
+              {t("cableProtection.contactDescription")}
             </p>
             <Button
               onClick={() => {
@@ -442,7 +375,7 @@ function CableProtectionPage() {
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="contact-button"
             >
-              {t("aboutUs.contactUsButton")}
+              {t("cableProtection.contactUs")}
             </Button>
           </div>
         </div>
