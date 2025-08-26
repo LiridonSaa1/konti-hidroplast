@@ -43,9 +43,9 @@ type Certificate = {
   sortOrder: number;
   status: string;
   translations?: {
-    en?: { title?: string; pdfUrl?: string };
-    mk?: { title?: string; pdfUrl?: string };
-    de?: { title?: string; pdfUrl?: string };
+    en?: { title?: string };
+    mk?: { title?: string };
+    de?: { title?: string };
   };
   defaultLanguage?: string;
 };
@@ -82,15 +82,12 @@ const certificateFormSchema = z.object({
   translations: z.object({
     en: z.object({
       title: z.string().optional(),
-      pdfUrl: z.string().optional(),
     }).optional(),
     mk: z.object({
       title: z.string().optional(),
-      pdfUrl: z.string().optional(),
     }).optional(),
     de: z.object({
       title: z.string().optional(),
-      pdfUrl: z.string().optional(),
     }).optional(),
   }).optional(),
   defaultLanguage: z.string().default("en"),
@@ -122,9 +119,9 @@ export function CertificatesManager() {
       sortOrder: 0,
       status: "active",
       translations: {
-        en: { title: "", pdfUrl: "" },
-        mk: { title: "", pdfUrl: "" },
-        de: { title: "", pdfUrl: "" },
+        en: { title: "" },
+        mk: { title: "" },
+        de: { title: "" },
       },
       defaultLanguage: "en",
     },
@@ -293,15 +290,12 @@ export function CertificatesManager() {
       translations: {
         en: { 
           title: existingTranslations.en?.title || certificate.title || "",
-          pdfUrl: existingTranslations.en?.pdfUrl || certificate.pdfUrl || "",
         },
         mk: { 
           title: existingTranslations.mk?.title || "",
-          pdfUrl: existingTranslations.mk?.pdfUrl || "",
         },
         de: { 
           title: existingTranslations.de?.title || "",
-          pdfUrl: existingTranslations.de?.pdfUrl || "",
         },
       },
       defaultLanguage: certificate.defaultLanguage || "en",
@@ -357,9 +351,9 @@ export function CertificatesManager() {
         sortOrder: 0,
         status: "active",
         translations: {
-          en: { title: "", pdfUrl: "" },
-          mk: { title: "", pdfUrl: "" },
-          de: { title: "", pdfUrl: "" },
+          en: { title: "" },
+          mk: { title: "" },
+          de: { title: "" },
         },
         defaultLanguage: "en",
       });
@@ -613,76 +607,7 @@ export function CertificatesManager() {
                     </FormItem>
                   </div>
 
-                  {/* Multi-language PDF URLs */}
-                  <div className="space-y-3">
-                    <FormLabel className="text-base font-medium">{t('admin.certificates.pdfUrlsByLanguage')}</FormLabel>
-                    <Tabs defaultValue="en" className="w-full">
-                      <TabsList className="grid w-full grid-cols-3">
-                        <TabsTrigger value="en" className="text-xs">🇺🇸 EN</TabsTrigger>
-                        <TabsTrigger value="mk" className="text-xs">🇲🇰 MK</TabsTrigger>
-                        <TabsTrigger value="de" className="text-xs">🇩🇪 DE</TabsTrigger>
-                      </TabsList>
-                      
-                      <TabsContent value="en" className="mt-3">
-                        <FormField
-                          control={form.control}
-                          name="pdfUrl"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>{t('admin.certificates.englishPdfUrl')}</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  placeholder={t('admin.certificates.enterPdfUrlEnglish')} 
-                                  {...field} 
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </TabsContent>
-                      
-                      <TabsContent value="mk" className="mt-3">
-                        <FormField
-                          control={form.control}
-                          name="translations.mk.pdfUrl"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>{t('admin.certificates.macedonianPdfUrl')}</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  placeholder={t('admin.certificates.enterPdfUrlMacedonian')} 
-                                  {...field}
-                                  value={field.value || ""}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </TabsContent>
-                      
-                      <TabsContent value="de" className="mt-3">
-                        <FormField
-                          control={form.control}
-                          name="translations.de.pdfUrl"
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>{t('admin.certificates.germanPdfUrl')}</FormLabel>
-                              <FormControl>
-                                <Input 
-                                  placeholder={t('admin.certificates.enterPdfUrlGerman')} 
-                                  {...field}
-                                  value={field.value || ""}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                      </TabsContent>
-                    </Tabs>
-                  </div>
+
 
                   <div className="grid grid-cols-2 gap-4">
                     <FormField

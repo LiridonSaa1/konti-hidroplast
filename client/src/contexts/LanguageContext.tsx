@@ -400,6 +400,16 @@ const translations = {
     "gasPipeline.contactTitle": "Get in Touch: Connect with Us Today!",
     "gasPipeline.contactDescription": "Need more information about our gas pipeline solutions? Contact our team of experts.",
     "gasPipeline.contactUs": "Contact Us",
+    "gasPipeline.pipeline": "PIPELINE",
+    "gasPipeline.system": "SYSTEM",
+    "gasPipeline.buttWeldingDescription": "High-strength welded fittings for permanent gas pipe connections",
+    "gasPipeline.electrofusionDescription": "Electric welded fittings for automated and precise gas pipe joining",
+    "gasPipeline.electrofusionAdapterSocket": "Electrofusion Adapter Socket Integrated Welding Module Male Thread",
+    "gasPipeline.electrofusionAdapterElbow45": "Electrofusion Adapter Elbow 45° Integrated Welding Module Male Thread",
+    "gasPipeline.electrofusionAdapterElbow90": "Electrofusion Adapter Elbow 90° Integrated Welding Module Male Thread",
+    "gasPipeline.tappingSaddle": "Tapping Saddle With Electrofusion Sealing Cap",
+    "gasPipeline.universalTappingValve": "Universal Tapping Valve With Thread Insert",
+    "gasPipeline.plasticTappingValve": "Plastic Tapping Valve With Integrated Cutter",
     
     // Konti Petrol Pipes
     "gasPipeline.kontiPetrolDescription": "Konti Petrol gas pipe is a double-layered pipe with outer black surface made of PE100 standards, the same that apply for the classic PE i.e. EN 1555 or ISO 4437.",
@@ -608,6 +618,7 @@ const translations = {
     
     // Injection Molding Fittings
     "ppHmPipes.injectionMolding": "Injection Molding",
+    "ppHmPipes.injectionMoldingDescription": "Precision injection molded fittings for reliable connections",
     "ppHmPipes.injectionMoldingElbow": "Injection Molding Elbow",
     "ppHmPipes.injectionMoldingTee": "Injection Molding Tee",
     "ppHmPipes.injectionMoldingYBranch": "Injection Molding Y-branch",
@@ -617,6 +628,7 @@ const translations = {
     
     // Welded Fittings
     "ppHmPipes.weldedFittings": "Welded Fittings",
+    "ppHmPipes.weldedFittingsDescription": "High-strength welded fittings for permanent connections",
     "ppHmPipes.weldedElbow11": "Welded Elbow 11°",
     "ppHmPipes.weldedElbow22": "Welded Elbow 22°",
     "ppHmPipes.weldedElbow30": "Welded Elbow 30°",
@@ -632,6 +644,7 @@ const translations = {
     
     // Connection Components
     "ppHmPipes.connectionComponents": "Connection Components",
+    "ppHmPipes.connectionComponentsDescription": "Essential components for secure pipe connections",
     "ppHmPipes.socket": "Socket",
     "ppHmPipes.flexAdapter": "Flex Adapter",
     "ppHmPipes.gasket": "Gasket",
@@ -1808,6 +1821,16 @@ const translations = {
     "gasPipeline.contactTitle": "Стапете во контакт: Поврзете се со нас денес!",
     "gasPipeline.contactDescription": "Треба ви повеќе информации за нашите решенија за гасоводи? Контактирајте го нашиот тим на експерти.",
     "gasPipeline.contactUs": "Контактирајте нè",
+    "gasPipeline.pipeline": "ГАСОВОД",
+    "gasPipeline.system": "СИСТЕМ",
+    "gasPipeline.buttWeldingDescription": "Високо-јаки заварени фитинзи за трајни гасни врски на цевки",
+    "gasPipeline.electrofusionDescription": "Електрично заварени фитинзи за автоматизирано и прецизно спојување на гасни цевки",
+    "gasPipeline.electrofusionAdapterSocket": "Електрофузион адаптерска втулка интегриран заварен модул машки навој",
+    "gasPipeline.electrofusionAdapterElbow45": "Електрофузион адаптерски лакт 45° интегриран заварен модул машки навој",
+    "gasPipeline.electrofusionAdapterElbow90": "Електрофузион адаптерски лакт 90° интегриран заварен модул машки навој",
+    "gasPipeline.tappingSaddle": "Огрлица за бушење со вградена електрофузиона капа",
+    "gasPipeline.universalTappingValve": "Универзален вентил за бушење со навојна вметка",
+    "gasPipeline.plasticTappingValve": "Пластичен вентил за бушење со интегриран секач",
     
     // Konti Petrol Pipes
     "gasPipeline.kontiPetrolDescription": "Конти Петрол гасната цевка е двослојна цевка со надворешна црна површина направена од ПЕ100 стандарди, истите што важат за класичниот ПЕ т.е. EN 1555 или ISO 4437.",
@@ -2016,6 +2039,7 @@ const translations = {
     
     // Injection Molding Fittings
     "ppHmPipes.injectionMolding": "Инјекциско леење",
+    "ppHmPipes.injectionMoldingDescription": "Прецизни инјекциски леани фитинзи за сигурни поврзувања",
     "ppHmPipes.injectionMoldingElbow": "Инјекциски леан лакт",
     "ppHmPipes.injectionMoldingTee": "Инјекциски леан T-парче",
     "ppHmPipes.injectionMoldingYBranch": "Инјекциска леана Y-гранка",
@@ -2025,6 +2049,7 @@ const translations = {
     
     // Welded Fittings
     "ppHmPipes.weldedFittings": "Заварени фитинзи",
+    "ppHmPipes.weldedFittingsDescription": "Високо-јаки заварени фитинзи за трајни поврзувања",
     "ppHmPipes.weldedElbow11": "Заварен лакт 11°",
     "ppHmPipes.weldedElbow22": "Заварен лакт 22°",
     "ppHmPipes.weldedElbow30": "Заварен лакт 30°",
@@ -2040,6 +2065,7 @@ const translations = {
     
     // Connection Components
     "ppHmPipes.connectionComponents": "Компоненти за поврзување",
+    "ppHmPipes.connectionComponentsDescription": "Основни компоненти за сигурни поврзувања на цевки",
     "ppHmPipes.socket": "Штекер",
     "ppHmPipes.flexAdapter": "Флекс адаптер",
     "ppHmPipes.gasket": "Заптивка",
@@ -3217,6 +3243,16 @@ const translations = {
     "gasPipeline.contactTitle": "Kontakt aufnehmen: Verbinden Sie sich noch heute mit uns!",
     "gasPipeline.contactDescription": "Benötigen Sie weitere Informationen zu unseren Gaspipeline-Lösungen? Kontaktieren Sie unser Expertenteam.",
     "gasPipeline.contactUs": "Kontaktieren Sie uns",
+    "gasPipeline.pipeline": "PIPELINE",
+    "gasPipeline.system": "SYSTEM",
+    "gasPipeline.buttWeldingDescription": "Hochfeste Schweißarmaturen für dauerhafte Gasrohrverbindungen",
+    "gasPipeline.electrofusionDescription": "Elektrisch geschweißte Armaturen für automatisiertes und präzises Gasrohrverbinden",
+    "gasPipeline.electrofusionAdapterSocket": "Elektroschweiß-Adapter-Buchse integriertes Schweißmodul männliches Gewinde",
+    "gasPipeline.electrofusionAdapterElbow45": "Elektroschweiß-Adapter-Bogen 45° integriertes Schweißmodul männliches Gewinde",
+    "gasPipeline.electrofusionAdapterElbow90": "Elektroschweiß-Adapter-Bogen 90° integriertes Schweißmodul männliches Gewinde",
+    "gasPipeline.tappingSaddle": "Anbohrsattel mit Elektroschweiß-Dichtungskappe",
+    "gasPipeline.universalTappingValve": "Universales Anbohrventil mit Gewindeeinsatz",
+    "gasPipeline.plasticTappingValve": "Kunststoff-Anbohrventil mit integriertem Schneider",
     
     // Konti Petrol Pipes
     "gasPipeline.kontiPetrolDescription": "Konti Petrol Gasrohr ist ein doppelwandiges Rohr mit schwarzer Außenfläche aus PE100-Standards, dieselben, die für das klassische PE gelten, d.h. EN 1555 oder ISO 4437.",
@@ -3425,6 +3461,7 @@ const translations = {
     
     // Injection Molding Fittings
     "ppHmPipes.injectionMolding": "Spritzguss",
+    "ppHmPipes.injectionMoldingDescription": "Präzisions-Spritzguss-Fittings für zuverlässige Verbindungen",
     "ppHmPipes.injectionMoldingElbow": "Spritzguss-Bogen",
     "ppHmPipes.injectionMoldingTee": "Spritzguss-T-Stück",
     "ppHmPipes.injectionMoldingYBranch": "Spritzguss-Y-Abzweig",
@@ -3434,6 +3471,7 @@ const translations = {
     
     // Welded Fittings
     "ppHmPipes.weldedFittings": "Geschweißte Fittings",
+    "ppHmPipes.weldedFittingsDescription": "Hochfeste geschweißte Fittings für dauerhafte Verbindungen",
     "ppHmPipes.weldedElbow11": "Geschweißter Bogen 11°",
     "ppHmPipes.weldedElbow22": "Geschweißter Bogen 22°",
     "ppHmPipes.weldedElbow30": "Geschweißter Bogen 30°",
@@ -3449,6 +3487,7 @@ const translations = {
     
     // Connection Components
     "ppHmPipes.connectionComponents": "Verbindungskomponenten",
+    "ppHmPipes.connectionComponentsDescription": "Wesentliche Komponenten für sichere Rohrverbindungen",
     "ppHmPipes.socket": "Muffe",
     "ppHmPipes.flexAdapter": "Flex-Adapter",
     "ppHmPipes.gasket": "Dichtung",

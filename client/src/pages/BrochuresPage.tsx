@@ -263,7 +263,7 @@ function BrochuresPage() {
                          className="bg-white rounded-md shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300 border border-gray-100 w-full max-w-xs"
                          data-testid={`brochure-${brochure.id}`}
                        >
-                         <div className="aspect-[5/6] bg-gray-100">
+                         <div className="aspect-[3/4] bg-gray-100">
                         {brochure.imageUrl ? (
                           <img
                             src={brochure.imageUrl}
