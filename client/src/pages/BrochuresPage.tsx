@@ -304,24 +304,6 @@ function BrochuresPage() {
                 </div>
               )}
               
-              {/* Total count */}
-                             <div className="text-center mt-12">
-                 <p className="text-gray-600">
-                   {language === 'en' ? 'Showing' : 
-                    language === 'mk' ? 'Прикажувам' : 
-                    language === 'de' ? 'Zeige' : 'Showing'} {groupedBrochures[activeTabIndex]?.brochures.length || 0} {language === 'en' ? 'brochures' : 
-                    language === 'mk' ? 'брошури' : 
-                    language === 'de' ? 'Broschüren' : 'brochures'}
-                   {groupedBrochures.length > 1 && (language === 'en' ? ` in ${groupedBrochures[activeTabIndex]?.title || 'this category'}` : 
-                    language === 'mk' ? ` во ${groupedBrochures[activeTabIndex]?.title || 'оваа категорија'}` : 
-                    language === 'de' ? ` in ${groupedBrochures[activeTabIndex]?.title || 'diese Kategorie'}` : 
-                    ` in ${groupedBrochures[activeTabIndex]?.title || 'this category'}`)}
-                   {' '}{language === 'en' ? 'for' : 
-                    language === 'mk' ? 'за' : 
-                    language === 'de' ? 'für' : 'for'}{' '}
-                   {language === 'en' ? 'English' : language === 'mk' ? 'Macedonian' : language === 'de' ? 'German' : language}
-                 </p>
-               </div>
             </>
           )}
         </div>
