@@ -581,43 +581,43 @@ export function CertificatesManager() {
                     />
                   )}
 
-                  <FormItem>
-                    <FormLabel>Certificate File (Image or PDF)</FormLabel>
-                    <FormControl>
-                      <FileUpload
-                        label="Certificate File (Image or PDF)"
-                        value={form.watch("imageUrl") || form.watch("pdfUrl") || ""}
-                        onChange={(url) => {
-                          console.log('File upload onChange called with URL:', url);
-                          if (url === "") {
-                            // Clear both fields when removing file
-                            console.log('Clearing both file fields');
-                            form.setValue("imageUrl", "");
-                            form.setValue("pdfUrl", "");
-                          } else {
-                            // Determine if it's a PDF or image based on the URL
-                            const isPDF = url.toLowerCase().endsWith('.pdf') || 
-                                        url.includes('pdf') || 
-                                        url.includes('application/pdf') ||
-                                        url.includes('type=pdf');
-                            if (isPDF) {
-                              console.log('Setting PDF URL:', url);
-                              form.setValue("pdfUrl", url);
-                              form.setValue("imageUrl", "");
-                            } else {
-                              console.log('Setting Image URL:', url);
-                              form.setValue("imageUrl", url);
-                              form.setValue("pdfUrl", "");
-                            }
-                          }
-                        }}
-                        accept="image/*,.pdf"
-                        placeholder="Upload certificate image or PDF, or enter URL"
-                        data-testid="file-upload-certificate"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormItem>
+                      <FormLabel>Image (Optional)</FormLabel>
+                      <FormControl>
+                        <FileUpload
+                          label="Image"
+                          value={form.watch("imageUrl") || ""}
+                          onChange={(url) => {
+                            console.log('Image upload onChange called with URL:', url);
+                            form.setValue("imageUrl", url);
+                          }}
+                          accept="image/*"
+                          placeholder="Upload image or enter URL"
+                          data-testid="file-upload-image"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+
+                    <FormItem>
+                      <FormLabel>PDF (Optional)</FormLabel>
+                      <FormControl>
+                        <FileUpload
+                          label="PDF"
+                          value={form.watch("pdfUrl") || ""}
+                          onChange={(url) => {
+                            console.log('PDF upload onChange called with URL:', url);
+                            form.setValue("pdfUrl", url);
+                          }}
+                          accept=".pdf"
+                          placeholder="Upload PDF or enter URL"
+                          data-testid="file-upload-pdf"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <FormField
@@ -796,8 +796,9 @@ export function CertificatesManager() {
                 <TableRow key={certificate.id} data-testid={`row-certificate-${certificate.id}`}>
                   <TableCell data-testid={`files-${certificate.id}`}>
                     <div className="flex flex-col gap-2">
-                      {/* Image Preview */}
+                      {/* Smart Display Logic: Show image if available, otherwise show PDF */}
                       {certificate.imageUrl ? (
+                        // Show image if available
                         <div className="relative">
                           <img
                             src={certificate.imageUrl}
@@ -805,21 +806,23 @@ export function CertificatesManager() {
                             className="w-12 h-12 object-cover rounded"
                           />
                           <div className="text-xs text-gray-500 mt-1">Image</div>
+                          {/* Show PDF indicator if both exist */}
+                          {certificate.pdfUrl && (
+                            <div className="absolute -top-1 -right-1 bg-blue-100 border border-blue-300 rounded-full w-5 h-5 flex items-center justify-center">
+                              <div className="text-blue-600 text-xs font-bold">P</div>
+                            </div>
+                          )}
                         </div>
-                      ) : null}
-                      
-                      {/* PDF Preview */}
-                      {certificate.pdfUrl ? (
+                      ) : certificate.pdfUrl ? (
+                        // Show PDF if no image but PDF exists
                         <div className="relative">
                           <div className="w-12 h-12 bg-red-100 border border-red-300 rounded flex items-center justify-center">
                             <div className="text-red-600 font-bold text-xs">PDF</div>
                           </div>
                           <div className="text-xs text-gray-500 mt-1">PDF</div>
                         </div>
-                      ) : null}
-                      
-                      {/* No files indicator */}
-                      {!certificate.imageUrl && !certificate.pdfUrl && (
+                      ) : (
+                        // No files indicator
                         <div className="w-12 h-12 bg-gray-200 rounded flex items-center justify-center">
                           <ImageIcon className="w-6 h-6 text-gray-400" />
                         </div>
