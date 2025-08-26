@@ -1031,8 +1031,8 @@ function CertificatesPage() {
                 <div className="space-y-12">
                   {category.subsections.map((subsection, subsectionIndex) => (
                     <div key={subsectionIndex} className="space-y-6">
-                      {/* Subcategory Header with Blue Line */}
-                      <div className="pl-6 py-4 rounded-r-lg">
+                      {/* Subcategory Header */}
+                      <div className="pl-6 py-4">
                         <h3 className="text-xl font-semibold text-[#1c2d56]">
                           {subsection.title}
                         </h3>
