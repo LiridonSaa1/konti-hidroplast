@@ -1,8 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-// Dynamic import for pdfjs-dist to avoid build issues
-let pdfjsLib: any = null;
-
 interface PDFPreviewProps {
   url: string;
   className?: string;
@@ -17,25 +14,11 @@ export function PDFPreview({ url, className = "", alt = "PDF Preview" }: PDFPrev
   useEffect(() => {
     if (!url || !canvasRef.current) return;
 
-    const loadPDF = async () => {
+    // Define the function outside the block to avoid strict mode issues
+    const loadPDFDocument = async () => {
       try {
-        setIsLoading(true);
-        setError(null);
-
-        // Dynamically import pdfjs-dist if not already loaded
-        if (!pdfjsLib) {
-          try {
-            pdfjsLib = await import('pdfjs-dist');
-            // Set the worker source for PDF.js
-            pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-          } catch (importError) {
-            console.error('Failed to import pdfjs-dist:', importError);
-            setError('PDF library failed to load');
-            setIsLoading(false);
-            return;
-          }
-        }
-
+        const pdfjsLib = (window as any).pdfjsLib;
+        
         // Load the PDF document
         const loadingTask = pdfjsLib.getDocument(url);
         const pdf = await loadingTask.promise;
@@ -72,6 +55,39 @@ export function PDFPreview({ url, className = "", alt = "PDF Preview" }: PDFPrev
         setIsLoading(false);
       } catch (err) {
         console.error('Error loading PDF:', err);
+        setError('Failed to load PDF preview');
+        setIsLoading(false);
+      }
+    };
+
+    const loadPDF = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        // Load PDF.js from CDN if not already loaded
+        let pdfjsLib: any = (window as any).pdfjsLib;
+        
+        if (!pdfjsLib) {
+          // Load PDF.js script from CDN
+          const script = document.createElement('script');
+          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+          script.onload = async () => {
+            // Set worker source
+            (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            await loadPDFDocument();
+          };
+          script.onerror = () => {
+            setError('Failed to load PDF library');
+            setIsLoading(false);
+          };
+          document.head.appendChild(script);
+          return;
+        }
+
+        await loadPDFDocument();
+      } catch (err) {
+        console.error('Error in PDF preview:', err);
         setError('Failed to load PDF preview');
         setIsLoading(false);
       }
