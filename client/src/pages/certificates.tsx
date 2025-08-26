@@ -731,22 +731,37 @@ function CertificatesPage() {
     ? organizeData(categories.data, subcategories.data, certificates.data, language)
     : [] as OrganizedCategory[];
 
+  // Fallback to legacy data if no dynamic data available
+  const displayData = organizedData.length > 0 ? organizedData : legacyCertificateCategories;
+
+  // Debug logging
+  useEffect(() => {
+    if (categories.data && subcategories.data && certificates.data) {
+      console.log('=== Certificate Data Debug ===');
+      console.log('Categories:', categories.data);
+      console.log('Subcategories:', subcategories.data);
+      console.log('Certificates:', certificates.data);
+      console.log('Organized Data:', organizedData);
+      console.log('Display Data:', displayData);
+    }
+  }, [categories.data, subcategories.data, certificates.data, organizedData, displayData]);
+
   // Reset active tab when language changes to avoid out-of-bounds errors
   useEffect(() => {
-    if (organizedData.length > 0 && activeTabIndex >= organizedData.length) {
+    if (displayData.length > 0 && activeTabIndex >= displayData.length) {
       setActiveTabIndex(0);
     }
-  }, [language, organizedData.length, activeTabIndex]);
+  }, [language, displayData.length, activeTabIndex]);
 
   const nextTab = () => {
     setActiveTabIndex((prev) =>
-      prev === organizedData.length - 1 ? 0 : prev + 1,
+      prev === displayData.length - 1 ? 0 : prev + 1,
     );
   };
 
   const prevTab = () => {
     setActiveTabIndex((prev) =>
-      prev === 0 ? organizedData.length - 1 : prev - 1,
+      prev === 0 ? displayData.length - 1 : prev - 1,
     );
   };
 
@@ -833,7 +848,7 @@ function CertificatesPage() {
               href={hasPdf}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center w-full justify-center px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
+              className="inline-flex items-center w-full justify-center px-3 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm rounded-lg transition-colors"
               data-testid={`pdf-download-${categoryId}-${index}`}
             >
               <Download className="w-3 h-3 mr-2" />
@@ -934,7 +949,7 @@ function CertificatesPage() {
           )}
 
           {/* Tab Slider */}
-          {!isLoading && organizedData.length > 0 && (
+          {!isLoading && displayData.length > 0 && (
             <div className="flex items-center justify-center mb-12">
             <button
               onClick={prevTab}
@@ -946,10 +961,10 @@ function CertificatesPage() {
 
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
               <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
-                {organizedData[activeTabIndex]?.title || 'Loading...'}
+                {displayData[activeTabIndex]?.title || 'Loading...'}
               </h3>
               <div className="flex justify-center space-x-1 mt-3">
-                {organizedData.map((_, index) => (
+                {displayData.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setActiveTabIndex(index)}
@@ -975,22 +990,41 @@ function CertificatesPage() {
           )}
 
           {/* Tab Content */}
-          {!isLoading && organizedData.map((category, index) => (
+          {!isLoading && displayData.map((category, index) => (
             <div
               key={category.id}
               className={`${activeTabIndex === index ? "block animate-fadeIn" : "hidden"} transition-all duration-500`}
             >
+              {/* Category Header */}
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-[#1c2d56] mb-4">
+                  {category.title}
+                </h2>
+                {'description' in category && category.description && (
+                  <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                    {category.description}
+                  </p>
+                )}
+              </div>
+
               {/* Simple certificate grid for categories without subsections */}
               {category.certificates && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {category.certificates.map((certificate, index) => (
-                    <CertificateCard
-                      key={index}
-                      certificate={certificate}
-                      categoryId={category.id}
-                      index={index}
-                    />
-                  ))}
+                <div className="space-y-8">
+                  <div className="text-center mb-8">
+                    <h3 className="text-2xl font-semibold text-[#1c2d56]">
+                      Direct Certificates
+                    </h3>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                    {category.certificates.map((certificate, index) => (
+                      <CertificateCard
+                        key={index}
+                        certificate={certificate}
+                        categoryId={category.id}
+                        index={index}
+                      />
+                    ))}
+                  </div>
                 </div>
               )}
 
@@ -999,11 +1033,17 @@ function CertificatesPage() {
                 <div className="space-y-12">
                   {category.subsections.map((subsection, subsectionIndex) => (
                     <div key={subsectionIndex} className="space-y-6">
-                      <div className="border-l-4 border-red-600 pl-6">
+                      {/* Subcategory Header with Blue Line */}
+                      <div className="border-l-4 border-blue-600 pl-6 bg-blue-50 py-4 rounded-r-lg">
                         <h3 className="text-xl font-semibold text-[#1c2d56]">
                           {subsection.title}
                         </h3>
+                        {'description' in subsection && subsection.description && (
+                          <p className="text-gray-600 mt-2">{subsection.description}</p>
+                        )}
                       </div>
+                      
+                      {/* Certificates Grid */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
                         {subsection.certificates.map((certificate, index) => (
                           <CertificateCard
