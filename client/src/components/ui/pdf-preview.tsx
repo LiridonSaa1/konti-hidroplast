@@ -14,17 +14,66 @@ export function PDFPreview({ url, className = "", alt = "PDF Preview" }: PDFPrev
   useEffect(() => {
     if (!url || !canvasRef.current) return;
 
-    // Define the function outside the block to avoid strict mode issues
-    const loadPDFDocument = async () => {
+    const loadPDF = async () => {
       try {
-        const pdfjsLib = (window as any).pdfjsLib;
+        console.log('PDFPreview: Starting PDF load for URL:', url);
+        setIsLoading(true);
+        setError(null);
+
+        // Check if PDF.js is already loaded
+        let pdfjsLib = (window as any).pdfjsLib;
+        console.log('PDFPreview: PDF.js library available:', !!pdfjsLib);
         
+        if (!pdfjsLib) {
+          console.log('PDFPreview: Loading PDF.js from CDN...');
+          // Load PDF.js from CDN
+          await new Promise<void>((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+            script.onload = () => {
+              console.log('PDFPreview: PDF.js script loaded successfully');
+              // Set worker source
+              (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+              console.log('PDFPreview: Worker source set');
+              resolve();
+            };
+            script.onerror = () => {
+              console.error('PDFPreview: Failed to load PDF.js script from primary CDN, trying fallback...');
+              // Try fallback CDN
+              const fallbackScript = document.createElement('script');
+              fallbackScript.src = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.min.js';
+              fallbackScript.onload = () => {
+                console.log('PDFPreview: PDF.js script loaded from fallback CDN');
+                (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js';
+                console.log('PDFPreview: Fallback worker source set');
+                resolve();
+              };
+              fallbackScript.onerror = () => {
+                console.error('PDFPreview: Both CDNs failed');
+                reject(new Error('Failed to load PDF.js library from all sources'));
+              };
+              document.head.appendChild(fallbackScript);
+            };
+            document.head.appendChild(script);
+          });
+          
+          pdfjsLib = (window as any).pdfjsLib;
+          console.log('PDFPreview: PDF.js library loaded:', !!pdfjsLib);
+        }
+
+        if (!pdfjsLib) {
+          throw new Error('PDF.js library not available');
+        }
+
+        console.log('PDFPreview: Loading PDF document...');
         // Load the PDF document
         const loadingTask = pdfjsLib.getDocument(url);
         const pdf = await loadingTask.promise;
+        console.log('PDFPreview: PDF document loaded, pages:', pdf.numPages);
 
         // Get the first page
         const page = await pdf.getPage(1);
+        console.log('PDFPreview: First page loaded');
 
         // Set up canvas dimensions
         const canvas = canvasRef.current;
@@ -45,6 +94,7 @@ export function PDFPreview({ url, className = "", alt = "PDF Preview" }: PDFPrev
         canvas.width = scaledViewport.width;
         canvas.height = scaledViewport.height;
 
+        console.log('PDFPreview: Rendering page to canvas...');
         // Render the page
         const renderContext = {
           canvasContext: context,
@@ -52,42 +102,10 @@ export function PDFPreview({ url, className = "", alt = "PDF Preview" }: PDFPrev
         };
 
         await page.render(renderContext).promise;
+        console.log('PDFPreview: Page rendered successfully');
         setIsLoading(false);
       } catch (err) {
-        console.error('Error loading PDF:', err);
-        setError('Failed to load PDF preview');
-        setIsLoading(false);
-      }
-    };
-
-    const loadPDF = async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-
-        // Load PDF.js from CDN if not already loaded
-        let pdfjsLib: any = (window as any).pdfjsLib;
-        
-        if (!pdfjsLib) {
-          // Load PDF.js script from CDN
-          const script = document.createElement('script');
-          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-          script.onload = async () => {
-            // Set worker source
-            (window as any).pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-            await loadPDFDocument();
-          };
-          script.onerror = () => {
-            setError('Failed to load PDF library');
-            setIsLoading(false);
-          };
-          document.head.appendChild(script);
-          return;
-        }
-
-        await loadPDFDocument();
-      } catch (err) {
-        console.error('Error in PDF preview:', err);
+        console.error('PDFPreview: Error loading PDF:', err);
         setError('Failed to load PDF preview');
         setIsLoading(false);
       }
