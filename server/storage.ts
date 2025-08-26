@@ -889,7 +889,7 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     const [newTeam] = await db
       .insert(teams)
-      .values(team)
+      .values({ ...team, createdAt: new Date(), updatedAt: new Date() })
       .returning();
     return newTeam;
   }
@@ -898,7 +898,7 @@ export class DatabaseStorage implements IStorage {
     if (!db) throw new Error('Database not available');
     const [updated] = await db
       .update(teams)
-      .set(team)
+      .set({ ...team, updatedAt: new Date() })
       .where(eq(teams.id, id))
       .returning();
     return updated;

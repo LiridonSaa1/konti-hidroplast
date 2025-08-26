@@ -18,12 +18,7 @@ import { insertTeamSchema, type Team, type InsertTeam, type Position } from "@sh
 import { apiRequest } from "@/lib/queryClient";
 import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
 
-const STATUS_OPTIONS = [
-  { value: "active", label: "Active", color: "bg-green-100 text-green-800" },
-  { value: "inactive", label: "Inactive", color: "bg-red-100 text-red-800" },
-  { value: "draft", label: "Draft", color: "bg-yellow-100 text-yellow-800" },
-  { value: "archived", label: "Archived", color: "bg-gray-100 text-gray-800" }
-];
+
 
 export function TeamsManager() {
   const [editingTeam, setEditingTeam] = useState<Team | null>(null);
@@ -36,7 +31,7 @@ export function TeamsManager() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const form = useForm<InsertTeam & { status: string }>({
+  const form = useForm<InsertTeam>({
     resolver: zodResolver(insertTeamSchema),
     defaultValues: {
       name: "",
@@ -45,7 +40,6 @@ export function TeamsManager() {
       imageUrl: "",
       active: true,
       sortOrder: 0,
-      status: "active",
     },
   });
 
@@ -71,6 +65,7 @@ export function TeamsManager() {
         position: englishPosition,
       };
       
+      console.log('Sending create request with data:', dataToSend);
       return await apiRequest("/api/admin/teams", "POST", dataToSend);
     },
     onSuccess: () => {
@@ -84,6 +79,7 @@ export function TeamsManager() {
       });
     },
     onError: (error) => {
+      console.error('Create team error:', error);
       toast({
         title: "Error",
         description: "Failed to add team member",
@@ -106,6 +102,7 @@ export function TeamsManager() {
         position: englishPosition,
       };
       
+      console.log('Sending update request with data:', dataToSend);
       return await apiRequest(`/api/admin/teams/${id}`, "PATCH", dataToSend);
     },
     onSuccess: () => {
@@ -120,6 +117,7 @@ export function TeamsManager() {
       });
     },
     onError: (error) => {
+      console.error('Update team error:', error);
       toast({
         title: "Error",
         description: "Failed to update team member",
@@ -149,16 +147,21 @@ export function TeamsManager() {
   });
 
   const handleSubmit = (data: InsertTeam) => {
+    console.log('Form data being submitted:', data);
+    console.log('Current translations:', translations);
+    console.log('Form errors:', form.formState.errors);
+    
     if (editingTeam) {
+      console.log('Updating team with ID:', editingTeam.id);
       updateTeamMutation.mutate({ id: editingTeam.id, teamData: data });
     } else {
+      console.log('Creating new team');
       createTeamMutation.mutate(data);
     }
   };
 
   const handleEdit = (team: Team) => {
     setEditingTeam(team);
-    const derivedStatus = team.active ? 'active' : 'inactive';
     
     // Initialize translations from the team data
     // For now, we'll use the main fields as English translations
@@ -186,7 +189,6 @@ export function TeamsManager() {
       imageUrl: team.imageUrl || "",
       active: team.active || true,
       sortOrder: team.sortOrder || 0,
-      status: derivedStatus,
     });
     setIsFormOpen(true);
   };
@@ -203,7 +205,6 @@ export function TeamsManager() {
       imageUrl: "",
       active: true,
       sortOrder: 0,
-      status: "active",
     });
     setTranslations({});
     setEditingTeam(null);
@@ -212,6 +213,10 @@ export function TeamsManager() {
 
   const getStatusBadgeColor = (active: boolean) => {
     return active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800";
+  };
+
+  const getStatusLabel = (active: boolean) => {
+    return active ? "Active" : "Inactive";
   };
 
   if (isLoading || isLoadingPositions) {
@@ -248,7 +253,14 @@ export function TeamsManager() {
             </DialogHeader>
             
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+              <form 
+                onSubmit={(e) => {
+                  console.log('Form submit event triggered');
+                  form.handleSubmit(handleSubmit)(e);
+                }} 
+                className="space-y-4" 
+                data-testid="team-form"
+              >
                 {/* Multi-language Name Field */}
                 <TranslatableFieldEditor
                   label="Full Name"
@@ -259,6 +271,19 @@ export function TeamsManager() {
                   defaultLanguage="en"
                   onChange={setTranslations}
                 />
+                
+                {/* Debug: Show current form values */}
+                <div className="text-xs text-gray-500 p-2 bg-gray-100 rounded">
+                  <div>Form name: {form.watch("name")}</div>
+                  <div>Form position: {form.watch("position")}</div>
+                  <div>Form email: {form.watch("email")}</div>
+                  <div>Form active: {form.watch("active")?.toString()}</div>
+                  <div>Translations en name: {translations.en?.name}</div>
+                  <div>Translations en position: {translations.en?.position}</div>
+                  <div>Form is valid: {form.formState.isValid?.toString()}</div>
+                  <div>Form is dirty: {form.formState.isDirty?.toString()}</div>
+                  <div>Form errors: {JSON.stringify(form.formState.errors)}</div>
+                </div>
 
                 {/* Position Field - Select from existing positions */}
                 <FormField
@@ -354,16 +379,15 @@ export function TeamsManager() {
 
                   <FormField
                     control={form.control}
-                    name="status"
+                    name="active"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Status</FormLabel>
                         <FormControl>
                           <Select 
-                            value={field.value} 
+                            value={field.value ? "active" : "inactive"} 
                             onValueChange={(value) => {
-                              field.onChange(value);
-                              form.setValue("active", value === "active");
+                              field.onChange(value === "active");
                             }}
                             data-testid="select-team-status"
                           >
@@ -371,11 +395,8 @@ export function TeamsManager() {
                               <SelectValue placeholder="Select status" />
                             </SelectTrigger>
                             <SelectContent>
-                              {STATUS_OPTIONS.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                  {option.label}
-                                </SelectItem>
-                              ))}
+                              <SelectItem value="active">Active</SelectItem>
+                              <SelectItem value="inactive">Inactive</SelectItem>
                             </SelectContent>
                           </Select>
                         </FormControl>
@@ -389,8 +410,12 @@ export function TeamsManager() {
                   <Button type="button" variant="outline" onClick={resetForm} data-testid="button-cancel">
                     Cancel
                   </Button>
-                  <Button type="submit" data-testid="button-submit">
-                    {editingTeam ? "Update" : "Add"} Team Member
+                  <Button 
+                    type="submit" 
+                    data-testid="button-submit"
+                    disabled={form.formState.isSubmitting}
+                  >
+                    {form.formState.isSubmitting ? "Saving..." : editingTeam ? "Update" : "Add"} Team Member
                   </Button>
                 </div>
               </form>
