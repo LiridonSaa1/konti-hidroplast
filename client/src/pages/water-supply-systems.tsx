@@ -14,20 +14,19 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-// PE Pipe specifications data
-const pipeSpecifications = [
+// PE Pipe specifications data with translations
+const getPipeSpecifications = (t: any) => [
   {
     id: "pe-80",
-    title: "PE-80",
-    description:
-      "High density polyethylene pipes designed for medium-pressure water supply applications",
+    title: t("waterSupply.pe80"),
+    description: t("waterSupply.pe80Description"),
     features: [
-      "Design stress: σ=6.3МПа",
-      "MRS: 8",
-      "Factor of safety: C=1.25",
-      "Color: black with blue coextruded lines or light blue",
-      "Operating Temperature: -20°C to +60°C",
-      "Service life of 50+ years under normal operating conditions",
+      t("waterSupply.designStress"),
+      t("waterSupply.mrs"),
+      t("waterSupply.factorOfSafety"),
+      t("waterSupply.color"),
+      t("waterSupply.operatingTemperature"),
+      t("waterSupply.serviceLife"),
     ],
     image: "/attached_assets/PE80-2-min-400x300 (1)_1755267337767.jpg",
     specifications:
@@ -37,16 +36,15 @@ const pipeSpecifications = [
   },
   {
     id: "pe-100",
-    title: "PE-100",
-    description:
-      "Third generation PE of high density for high-pressure applications and critical utility services",
+    title: t("waterSupply.pe100"),
+    description: t("waterSupply.pe100Description"),
     features: [
-      "Design stress: σ=8.0 МПа",
-      "MRS: 10",
-      "Factor of safety: C=1.25",
-      "Color: black with blue coextruded lines or blue",
-      "Operating temperature: -40°C to +60°C",
-      "Pressure ratings up to PN 32",
+      t("waterSupply.pe100DesignStress"),
+      t("waterSupply.pe100MRS"),
+      t("waterSupply.pe100FactorOfSafety"),
+      t("waterSupply.pe100Color"),
+      t("waterSupply.pe100OperatingTemp"),
+      t("waterSupply.pe100PressureRatings"),
     ],
     image:
       "/attached_assets/Gogo_20240703_8990-Edit_1-400x400 (1)_1755267345589.jpg",
@@ -57,16 +55,15 @@ const pipeSpecifications = [
   },
   {
     id: "pe-100-rc",
-    title: "PE-100 RC",
-    description:
-      "Specialized variant with greater resistance to slow crack growth and environmental stress cracking",
+    title: t("waterSupply.pe100RC"),
+    description: t("waterSupply.pe100RCDescription"),
     features: [
-      "Material: High quality PE 100-RC material and PE 100",
-      "Standards: EN 12201-2 and PAS 1075",
-      "Project elongation: σ=8.0МПа",
-      "Factor of safety: C=1.25",
-      "Color: Black with yellow or orange lines, or entirely orange",
-      "Service life of 100+ years under normal operating conditions",
+      t("waterSupply.pe100RCMaterial"),
+      t("waterSupply.pe100RCStandards"),
+      t("waterSupply.pe100RCProjectElongation"),
+      t("waterSupply.pe100RCFactorOfSafety"),
+      t("waterSupply.pe100RCColor"),
+      t("waterSupply.pe100RCServiceLife"),
     ],
     image:
       "/attached_assets/Gogo_20240703_9065-Edit_1-min-400x400_1755267373881.jpg",
@@ -77,207 +74,159 @@ const pipeSpecifications = [
   },
 ];
 
-// Fitting types data
-const fittingTypes = [
+// Fitting types data with translations
+const getFittingTypes = (t: any) => [
   {
     id: "butt-welding",
-    title: "Butt Welding",
+    title: t("waterSupply.buttWelding"),
     description: "",
     image:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Butt-Wealding-min.png",
     items: [
       {
-        name: "Fitting Stub Ends (Welding Collars)",
+        name: t("waterSupply.fittingStubEnds"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/1.PE_Fitinzi_-_Adapter_flansa-1.pdf",
       },
       {
-        name: "Fitting – FF Piece",
+        name: t("waterSupply.fittingFFPiece"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/2.PE_Fitinzi_-_FF_Parce-1.pdf",
       },
       {
-        name: "Fitting – Metal Flange",
+        name: t("waterSupply.fittingMetalFlange"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/3.PE_Fitinzi_-_Flansa-1.pdf",
       },
       {
-        name: "Fitting – Elbow 11°-12°-30°",
+        name: t("waterSupply.fittingElbow11"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/4.PE_Fitinzi_-_Koleno_11-22-30-1.pdf",
       },
       {
-        name: "Fitting – Elbow 45°",
+        name: t("waterSupply.fittingElbow45"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/5.PE_Fitinzi_-_Koleno_45-1.pdf",
       },
       {
-        name: "Fitting – Elbow 60°",
+        name: t("waterSupply.fittingElbow60"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/6.PE_Fitinzi_-_Koleno_60-1.pdf",
       },
       {
-        name: "Fitting – Elbow 90°",
+        name: t("waterSupply.fittingElbow90"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/7.PE_Fitinzi_-_Koleno_90-1.pdf",
       },
       {
-        name: "Fitting – Concentric Reducer",
+        name: t("waterSupply.fittingConcentricReducer"),
         pdf: null,
       },
       {
-        name: "Fitting – End Cup",
+        name: t("waterSupply.fittingEndCup"),
         pdf: null,
       },
       {
-        name: "Fitting – Tee Outlet Without Reinforcement",
+        name: t("waterSupply.fittingTeeOutlet"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/8.PE_Fitinzi_-_Te_stek_nepojacan-1.pdf",
       },
       {
-        name: "Fitting – Tee Outlet Reducer",
+        name: t("waterSupply.fittingTeeOutletReducer"),
         pdf: null,
       },
     ],
   },
   {
     id: "mechanical-fittings",
-    title: "Mechanical Fittings",
-    description: "Compression fittings for quick and reliable pipe connections",
+    title: t("waterSupply.mechanicalFittings"),
+    description: t("waterSupply.mechanicalFittingsDescription"),
     image:
       "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Mechanical-fittings-min.png",
     items: [
       {
-        name: "Coupling",
+        name: t("waterSupply.coupling"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/1-spojka.pdf",
       },
       {
-        name: "Reducer Coupling",
+        name: t("waterSupply.reducerCoupling"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/2-reducir-spojka.pdf",
       },
       {
-        name: "Adapter Coupling Male",
+        name: t("waterSupply.adapterCouplingMale"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/3-adapter-spojka-m.pdf",
       },
       {
-        name: "Adapter Coupling Female",
+        name: t("waterSupply.adapterCouplingFemale"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/stopna.pdf",
       },
       {
-        name: "Line End",
+        name: t("waterSupply.lineEnd"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/4-stopna.pdf",
       },
       {
-        name: "Reducing Coupling 90°",
+        name: t("waterSupply.reducingCoupling90"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/5-te-reducir-90.pdf",
       },
       {
-        name: "Tee Male Thread 90°",
+        name: t("waterSupply.teeMaleThread90"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/6-te-stek-90-so-navoj-m.pdf",
       },
       {
-        name: "Tee Female Thread 90°",
+        name: t("waterSupply.teeFemaleThread90"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/7-te-stek-90-so-navoj-f.pdf",
       },
       {
-        name: "Equal Tee 90°",
+        name: t("waterSupply.equalTee90"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/8-te-stek-90.pdf",
       },
       {
-        name: "Elbow 90°",
+        name: t("waterSupply.elbow90"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/9-koleno-90.pdf",
       },
       {
-        name: "2 Bolt Saddle",
+        name: t("waterSupply.2BoltSaddle"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/12-ogrlica-so-2-navrtki.pdf",
       },
       {
-        name: "4 Bolt Saddle Female Thread",
+        name: t("waterSupply.4BoltSaddleFemaleThread"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/13-ogrlica-so-4-navrtki-so-zajaknat-nergosuvacki-metalen-prsten.pdf",
       },
       {
-        name: "6 Bolt Saddle Female Thread",
+        name: t("waterSupply.6BoltSaddleFemaleThread"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/14-ogrlica-so-6-navrtki-so-zajaknat-nergosuvacki-metalen-prsten.pdf",
       },
     ],
   },
   {
     id: "electrofusion-fittings",
-    title: "Electrofusion Fittings",
-    description:
-      "Electric welded fittings for automated and precise pipe joining",
+    title: t("waterSupply.electrofusionFittings"),
+    description: t("waterSupply.electrofusionFittingsDescription"),
     image: "/attached_assets/Electrofusion-fittings-min_1755268811656.png",
     items: [
       {
-        name: "Electrofusion Socket",
+        name: t("waterSupply.electrofusionSocket"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/1_str_Elektrofuzioni_fitinzi-elektrofuzionen_muf.pdf",
       },
       {
-        name: "Electrofusion Tee Outlet",
+        name: t("waterSupply.electrofusionTeeOutlet"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/2_str_Elektrofuzioni_fitinzi-elektrofuzionen_te_stek.pdf",
       },
       {
-        name: "Electrofusion Tee Reducer",
+        name: t("waterSupply.electrofusionTeeReducer"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/3_str_Elektrofuzioni_fitinzi-elektrofuzionen_te_stek_reducir.pdf",
       },
       {
-        name: "Electrofusion Elbow 45°",
+        name: t("waterSupply.electrofusionElbow45"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/4_str_Elektrofuzioni_fitinzi-elektrofuziono_koleno_45.pdf",
       },
       {
-        name: "Electrofusion Elbow 90°",
+        name: t("waterSupply.electrofusionElbow90"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/5_str_Elektrofuzioni_fitinzi-elektrofuziono_koleno_90.pdf",
       },
       {
-        name: "Electrofusion Reducer",
+        name: t("waterSupply.electrofusionReducer"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/6_str_Elektrofuzioni_fitinzi-elektrofuzionen_reducir.pdf",
       },
       {
-        name: "Electrofusion End Cap",
+        name: t("waterSupply.electrofusionEndCap"),
         pdf: "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/7_str_Elektrofuzioni_fitinzi-elektrofuziono_Cep.pdf",
       },
     ],
   },
 ];
-
-// Helper function to translate fitting names
-const translateFittingName = (name: string, t: any) => {
-  const translations: { [key: string]: string } = {
-    "Mechanical Fittings": t("waterSupply.mechanicalFittings"),
-    "Butt Welding": t("waterSupply.buttWelding"),
-    "Electrofusion Fittings": t("waterSupply.electrofusionFittings"),
-    "Coupling": t("waterSupply.coupling"),
-    "Reducer Coupling": t("waterSupply.reducerCoupling"),
-    "Adapter Coupling Male": t("waterSupply.adapterCouplingMale"),
-    "Adapter Coupling Female": t("waterSupply.adapterCouplingFemale"),
-    "Line End": t("waterSupply.lineEnd"),
-    "Reducing Coupling 90°": t("waterSupply.reducingCoupling90"),
-    "Tee Male Thread 90°": t("waterSupply.teeMaleThread90"),
-    "Tee Female Thread 90°": t("waterSupply.teeFemaleThread90"),
-    "Equal Tee 90°": t("waterSupply.equalTee90"),
-    "Elbow 90°": t("waterSupply.elbow90"),
-    "2 Bolt Saddle": t("waterSupply.2BoltSaddle"),
-    "4 Bolt Saddle Female Thread": t("waterSupply.4BoltSaddleFemaleThread"),
-    "6 Bolt Saddle Female Thread": t("waterSupply.6BoltSaddleFemaleThread"),
-    "Electrofusion Socket": t("waterSupply.electrofusionSocket"),
-    "Electrofusion Tee Outlet": t("waterSupply.electrofusionTeeOutlet"),
-    "Electrofusion Tee Reducer": t("waterSupply.electrofusionTeeReducer"),
-    "Electrofusion Elbow 45°": t("waterSupply.electrofusionElbow45"),
-    "Electrofusion Elbow 90°": t("waterSupply.electrofusionElbow90"),
-    "Electrofusion Reducer": t("waterSupply.electrofusionReducer"),
-    "Electrofusion End Cap": t("waterSupply.electrofusionEndCap"),
-    // PE Pipe Specifications
-    "PE-80": t("waterSupply.pe80"),
-    "PE-100": t("waterSupply.pe100"),
-    "PE-100 RC": t("waterSupply.pe100RC"),
-    "Third generation PE of high density for high-pressure applications and critical utility services": t("waterSupply.pe100Description"),
-    "Design stress: σ=8.0 МПа": t("waterSupply.pe100DesignStress"),
-    "MRS: 10": t("waterSupply.pe100MRS"),
-    "Factor of safety: C=1.25": t("waterSupply.pe100FactorOfSafety"),
-    "Color: black with blue coextruded lines or blue": t("waterSupply.pe100Color"),
-    "Operating temperature: -40°C to +60°C": t("waterSupply.pe100OperatingTemp"),
-    "Pressure ratings up to PN 32": t("waterSupply.pe100PressureRatings"),
-    "Specialized variant with greater resistance to slow crack growth and environmental stress cracking": t("waterSupply.pe100RCDescription"),
-    "Material: High quality PE 100-RC material and PE 100": t("waterSupply.pe100RCMaterial"),
-    "Standards: EN 12201-2 and PAS 1075": t("waterSupply.pe100RCStandards"),
-    "Project elongation: σ=8.0МПа": t("waterSupply.pe100RCProjectElongation"),
-    "Color: Black with yellow or orange lines, or entirely orange": t("waterSupply.pe100RCColor"),
-    "Service life of 100+ years under normal operating conditions": t("waterSupply.pe100RCServiceLife"),
-  };
-  return translations[name] || name;
-};
 
 function WaterSupplySystemsPage() {
   const { t } = useLanguage();
@@ -286,6 +235,10 @@ function WaterSupplySystemsPage() {
   const [activeTab, setActiveTab] = useState("pe-80");
   const [activeFittingTab, setActiveFittingTab] = useState("butt-welding");
   const [activeFittingTabIndex, setActiveFittingTabIndex] = useState(0);
+
+  // Get translated data
+  const pipeSpecifications = getPipeSpecifications(t);
+  const fittingTypes = getFittingTypes(t);
 
   const nextFittingTab = () => {
     const nextIndex =
@@ -299,25 +252,25 @@ function WaterSupplySystemsPage() {
   const prevFittingTab = () => {
     const prevIndex =
       activeFittingTabIndex === 0
-        ? fittingTypes.length - 1
-        : activeFittingTabIndex - 1;
+        ? 0
+        : fittingTypes.length - 1;
     setActiveFittingTabIndex(prevIndex);
     setActiveFittingTab(fittingTypes[prevIndex].id);
   };
 
   useEffect(() => {
     // Set page title
-    document.title = `Water Supply Systems - ${companyInfo.companyName || "Konti Hidroplast"}`;
+    document.title = `${t("waterSupply.waterSupplySystem")} - ${companyInfo.companyName || "Konti Hidroplast"}`;
 
     // Add meta description
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
       metaDescription.setAttribute(
         "content",
-        "Discover our comprehensive range of PE water supply pipes and fittings. PE-80, PE-100, and PE-100 RC pipes with various connection options for reliable water distribution systems.",
+        t("waterSupply.heroDescription"),
       );
     }
-  }, []);
+  }, [t, companyInfo.companyName]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -385,7 +338,7 @@ function WaterSupplySystemsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold text-[#1c2d56] mb-6">
-                {t("productPages.technicalSpecifications")}
+                {t("waterSupply.technicalSpecifications")}
               </h2>
               <div className="space-y-4 text-gray-700">
                 <p>
@@ -402,7 +355,7 @@ function WaterSupplySystemsPage() {
 
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8">
               <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
-                {t("productPages.generalProperties")}
+                {t("waterSupply.generalProperties")}
               </h3>
               <div className="space-y-3">
                 {[
@@ -466,15 +419,15 @@ function WaterSupplySystemsPage() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
                   <h3 className="text-3xl font-bold text-[#ffffff] mb-4">
-                    {translateFittingName(spec.title, t)}
+                    {spec.title}
                   </h3>
-                  <p className="text-[#ffffff] mb-6">{translateFittingName(spec.description, t)}</p>
+                  <p className="text-[#ffffff] mb-6">{spec.description}</p>
 
                   <div className="space-y-3 mb-8">
                     {spec.features.map((feature, index) => (
                       <div key={index} className="flex items-start gap-3">
                         <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
-                        <span className="text-[#ffffff]">{translateFittingName(feature, t)}</span>
+                        <span className="text-[#ffffff]">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -487,7 +440,7 @@ function WaterSupplySystemsPage() {
                       className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-[#ffffff] rounded-lg transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
-                      {t("productPages.downloadSpecs")}
+                      {t("waterSupply.downloadSpecs")}
                     </a>
                     <a
                       href={spec.brochure}
@@ -496,7 +449,7 @@ function WaterSupplySystemsPage() {
                       className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
-                      {t("productPages.downloadBrochure")}
+                      {t("waterSupply.downloadBrochure")}
                     </a>
                   </div>
                 </div>
@@ -540,7 +493,7 @@ function WaterSupplySystemsPage() {
 
             <div className="bg-white rounded-xl shadow-lg border border-gray-200 px-8 py-4 min-w-[300px] text-center">
               <h3 className="text-xl font-bold text-[#1c2d56] mb-1">
-                {translateFittingName(fittingTypes[activeFittingTabIndex].title, t)}
+                {fittingTypes[activeFittingTabIndex].title}
               </h3>
               <div className="flex justify-center space-x-1 mt-3">
                 {fittingTypes.map((_, index) => (
@@ -581,7 +534,7 @@ function WaterSupplySystemsPage() {
                   {/* Left Column - Fittings List */}
                   <div>
                     <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
-                      {translateFittingName(fitting.title, t)}
+                      {fitting.title}
                     </h3>
 
                     <div className="space-y-3">
@@ -601,7 +554,7 @@ function WaterSupplySystemsPage() {
                                 <Download className="w-3 h-3 text-white" />
                               </div>
                               <span className="text-sm font-medium">
-                                {translateFittingName(item.name, t)}
+                                {item.name}
                               </span>
                             </a>
                           ) : (
@@ -609,7 +562,7 @@ function WaterSupplySystemsPage() {
                               <div className="w-6 h-6 bg-gray-400 rounded flex items-center justify-center flex-shrink-0">
                                 <Download className="w-3 h-3 text-white" />
                               </div>
-                              <span className="text-sm">{translateFittingName(item.name, t)}</span>
+                              <span className="text-sm">{item.name}</span>
                             </div>
                           )}
                         </div>
@@ -645,7 +598,7 @@ function WaterSupplySystemsPage() {
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              {t("productPages.needMoreInfo")} water supply {t("productPages.solutions")}? {t("productPages.contactExperts")}.
+              {t("productPages.needMoreInfo")} {t("waterSupply.waterSupplySystem").toLowerCase()} {t("productPages.solutions")}? {t("productPages.contactExperts")}.
             </p>
             <Button
               onClick={() => {
