@@ -80,10 +80,9 @@ function organizeData(
   
   for (const category of categories) {
     const categorySubcategories = subcategories.filter(sub => sub.categoryId === category.id);
-    const categoryCertificates = certificates.filter(cert => cert.categoryId === category.id && !cert.subcategoryId);
-
+    
     if (categorySubcategories.length > 0) {
-      // Has subcategories - filter out subcategories with no certificates
+      // Has subcategories - organize certificates under subcategories
       const subsections = categorySubcategories
         .map(subcategory => ({
           id: subcategory.id,
@@ -108,16 +107,21 @@ function organizeData(
         });
       }
     } else {
-      // No subcategories, check if category has direct certificates
+      // No subcategories - show certificates directly under category
+      // Only include certificates that don't have a subcategoryId (to avoid duplicates)
+      const categoryCertificates = certificates
+        .filter(cert => cert.categoryId === category.id && !cert.subcategoryId)
+        .map(cert => ({
+          ...cert,
+          translatedTitle: getTranslatedTitle(cert, language)
+        }));
+
       if (categoryCertificates.length > 0) {
         organizedCategories.push({
           id: category.id,
           title: getTranslatedTitle(category, language),
           description: getTranslatedDescription(category, language),
-          certificates: categoryCertificates.map(cert => ({
-            ...cert,
-            translatedTitle: getTranslatedTitle(cert, language)
-          })),
+          certificates: categoryCertificates,
         });
       }
     }
@@ -768,18 +772,45 @@ function CertificatesPage() {
     // Get the title to display - use translatedTitle if available, otherwise fall back to title
     const displayTitle = 'translatedTitle' in certificate ? certificate.translatedTitle : certificate.title;
     
+    // Check if this is a Certificate type with pdfUrl
+    const hasPdf = 'pdfUrl' in certificate && certificate.pdfUrl;
+    const hasImage = 'image' in certificate ? certificate.image : certificate.imageUrl;
+    
     return (
       <div
         className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100"
         data-testid={`certificate-${categoryId}-${index}`}
       >
         <div className="aspect-[3/4] bg-gray-100">
-          <img
-            src={('image' in certificate ? certificate.image : certificate.imageUrl) || '/placeholder-certificate.jpg'}
-            alt={displayTitle}
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
+          {hasImage ? (
+            // Show image if available
+            <img
+              src={hasImage || '/placeholder-certificate.jpg'}
+              alt={displayTitle}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : hasPdf ? (
+            // Show PDF preview if no image but PDF exists
+            <div className="w-full h-full flex items-center justify-center bg-red-50 border-2 border-red-200">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-red-100 border border-red-300 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <div className="text-red-600 font-bold text-lg">PDF</div>
+                </div>
+                <div className="text-red-600 text-sm font-medium">PDF Document</div>
+              </div>
+            </div>
+          ) : (
+            // No files - show placeholder
+            <div className="w-full h-full flex items-center justify-center bg-gray-200">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Shield className="w-8 h-8 text-gray-500" />
+                </div>
+                <div className="text-gray-500 text-sm">No Preview</div>
+              </div>
+            </div>
+          )}
         </div>
         <div className="p-4">
           <h3 className="text-sm font-semibold text-[#1c2d56] mb-3 line-clamp-2 min-h-[2.5rem]">
@@ -796,12 +827,23 @@ function CertificatesPage() {
               <Download className="w-3 h-3 mr-2" />
               {t("certificates.download")}
             </a>
+          ) : hasPdf ? (
+            // Show PDF download button if PDF exists
+            <a
+              href={hasPdf}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center w-full justify-center px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
+              data-testid={`pdf-download-${categoryId}-${index}`}
+            >
+              <Download className="w-3 h-3 mr-2" />
+              View PDF
+            </a>
           ) : (
             <button
               onClick={() => {
-                const imageUrl = 'image' in certificate ? certificate.image : certificate.imageUrl;
-                if (imageUrl) {
-                  window.open(imageUrl, '_blank', 'noopener,noreferrer');
+                if (hasImage) {
+                  window.open(hasImage, '_blank', 'noopener,noreferrer');
                 }
               }}
               className="inline-flex items-center w-full justify-center px-3 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm rounded-lg transition-colors"
