@@ -50,6 +50,11 @@ export function TranslatableFieldEditor({
         [fieldName]: value
       }
     };
+    
+    console.log(`Field change - Language: ${languageCode}, Field: ${fieldName}, Value: ${value}`);
+    console.log('Current translations:', currentTranslations);
+    console.log('Updated translations:', updatedTranslations);
+    
     onChange(updatedTranslations);
   };
 

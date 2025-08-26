@@ -923,20 +923,30 @@ export class DatabaseStorage implements IStorage {
 
   async createPosition(position: InsertPosition): Promise<Position> {
     if (!db) throw new Error('Database not available');
+    console.log('Storage: Creating new position');
+    console.log('Storage: Position data to create:', position);
+    
     const [newPosition] = await db
       .insert(positions)
-      .values({...position, translations: {}, defaultLanguage: 'en'})
+      .values({ ...position, createdAt: new Date(), updatedAt: new Date() })
       .returning();
+    
+    console.log('Storage: Created position result:', newPosition);
     return newPosition;
   }
 
   async updatePosition(id: number, position: Partial<InsertPosition>): Promise<Position> {
     if (!db) throw new Error('Database not available');
+    console.log('Storage: Updating position with ID:', id);
+    console.log('Storage: Position data to update:', position);
+    
     const [updated] = await db
       .update(positions)
-      .set(position)
+      .set({ ...position, updatedAt: new Date() })
       .where(eq(positions.id, id))
       .returning();
+    
+    console.log('Storage: Updated position result:', updated);
     return updated;
   }
 

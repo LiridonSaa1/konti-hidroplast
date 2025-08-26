@@ -1323,8 +1323,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/admin/positions", async (req, res) => {
     try {
+      console.log('POST /api/admin/positions - Request body:', req.body);
       const positionData = insertPositionSchema.parse(req.body);
+      console.log('Parsed position data:', positionData);
       const position = await storage.createPosition(positionData);
+      console.log('Created position result:', position);
       res.status(201).json(position);
     } catch (error) {
       console.error("Error creating position:", error);
@@ -1334,8 +1337,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.patch("/api/admin/positions/:id", async (req, res) => {
     try {
+      console.log('PATCH /api/admin/positions/:id - Request body:', req.body);
       const positionData = insertPositionSchema.partial().parse(req.body);
+      console.log('Parsed position data:', positionData);
       const position = await storage.updatePosition(parseInt(req.params.id), positionData);
+      console.log('Updated position result:', position);
       res.json(position);
     } catch (error) {
       console.error("Error updating position:", error);

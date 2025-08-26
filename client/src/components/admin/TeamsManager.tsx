@@ -272,18 +272,7 @@ export function TeamsManager() {
                   onChange={setTranslations}
                 />
                 
-                {/* Debug: Show current form values */}
-                <div className="text-xs text-gray-500 p-2 bg-gray-100 rounded">
-                  <div>Form name: {form.watch("name")}</div>
-                  <div>Form position: {form.watch("position")}</div>
-                  <div>Form email: {form.watch("email")}</div>
-                  <div>Form active: {form.watch("active")?.toString()}</div>
-                  <div>Translations en name: {translations.en?.name}</div>
-                  <div>Translations en position: {translations.en?.position}</div>
-                  <div>Form is valid: {form.formState.isValid?.toString()}</div>
-                  <div>Form is dirty: {form.formState.isDirty?.toString()}</div>
-                  <div>Form errors: {JSON.stringify(form.formState.errors)}</div>
-                </div>
+
 
                 {/* Position Field - Select from existing positions */}
                 <FormField

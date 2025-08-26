@@ -42,6 +42,8 @@ export function PositionsManager() {
       active: true,
       status: "active",
       sortOrder: 0,
+      translations: {},
+      defaultLanguage: "en",
     },
   });
 
@@ -66,6 +68,11 @@ export function PositionsManager() {
           de: { title: translations.de?.title || "" }
         }
       };
+      
+      console.log('Creating new position');
+      console.log('Form data:', positionData);
+      console.log('Current translations:', translations);
+      console.log('Data being sent to server:', dataToSend);
       
       return await apiRequest("/api/admin/positions", "POST", dataToSend);
     },
@@ -102,6 +109,11 @@ export function PositionsManager() {
           de: { title: translations.de?.title || "" }
         }
       };
+      
+      console.log('Updating position with ID:', id);
+      console.log('Form data:', positionData);
+      console.log('Current translations:', translations);
+      console.log('Data being sent to server:', dataToSend);
       
       return await apiRequest(`/api/admin/positions/${id}`, "PATCH", dataToSend);
     },
@@ -146,6 +158,10 @@ export function PositionsManager() {
   });
 
   const handleSubmit = (data: InsertPosition) => {
+    console.log('Form submitted with data:', data);
+    console.log('Current translations state:', translations);
+    console.log('Editing position:', editingPosition);
+    
     if (editingPosition) {
       updatePositionMutation.mutate({ id: editingPosition.id, positionData: data });
     } else {
@@ -164,6 +180,10 @@ export function PositionsManager() {
       de: { title: (position.translations as any)?.de?.title || "" }
     };
     
+    console.log('Position being edited:', position);
+    console.log('Position translations:', position.translations);
+    console.log('Setting translations to:', positionTranslations);
+    
     setTranslations(positionTranslations);
     
     form.reset({
@@ -171,6 +191,8 @@ export function PositionsManager() {
       active: position.active || true,
       status: derivedStatus,
       sortOrder: position.sortOrder || 0,
+      translations: position.translations || {},
+      defaultLanguage: position.defaultLanguage || "en",
     });
     setIsFormOpen(true);
   };
@@ -185,6 +207,8 @@ export function PositionsManager() {
       active: true,
       status: "active",
       sortOrder: 0,
+      translations: {},
+      defaultLanguage: "en",
     });
     setTranslations({});
     setEditingPosition(null);
@@ -237,7 +261,10 @@ export function PositionsManager() {
                   type="text"
                   currentTranslations={translations}
                   originalValue={translations.en?.title || ""}
-                  onChange={setTranslations}
+                  onChange={(newTranslations) => {
+                    console.log('Translations changed:', newTranslations);
+                    setTranslations(newTranslations);
+                  }}
                 />
 
                 <FormField
@@ -293,6 +320,14 @@ export function PositionsManager() {
                     </FormItem>
                   )}
                 />
+
+                {/* Debug: Show current translations state */}
+                <div className="text-xs text-gray-500 p-2 bg-gray-100 rounded">
+                  <div>Current translations:</div>
+                  <div>EN: {translations.en?.title || 'Not set'}</div>
+                  <div>MK: {translations.mk?.title || 'Not set'}</div>
+                  <div>DE: {translations.de?.title || 'Not set'}</div>
+                </div>
 
                 <div className="flex justify-end space-x-2 pt-4">
                   <Button type="button" variant="outline" onClick={resetForm} data-testid="button-cancel">
