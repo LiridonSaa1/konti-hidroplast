@@ -1049,19 +1049,96 @@ function CertificatesPage() {
                             {subsection.title}
                           </h3>
                         </div>
+                                                 {/* Subcategory description if available */}
+                         {'description' in subsection && subsection.description && (
+                           <div className="mt-2">
+                             <p className="text-sm text-gray-600">
+                               {subsection.description}
+                             </p>
+                           </div>
+                         )}
                       </div>
 
-                      {/* Certificates Grid */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-                        {subsection.certificates.map((certificate, index) => (
-                          <CertificateCard
-                            key={index}
-                            certificate={certificate}
-                            categoryId={`${category.id}-${subsectionIndex}`}
-                            index={index}
-                          />
-                        ))}
-                      </div>
+                                             {/* Group certificates by subcategory items */}
+                       {subcategoryItems.data && 'id' in subsection ? (
+                         // Get items for this subcategory
+                         (() => {
+                           const itemsInSubcategory = subcategoryItems.data.filter(
+                             item => item.subcategoryId === subsection.id
+                           );
+                           
+                           // If no items, show certificates directly
+                           if (itemsInSubcategory.length === 0) {
+                             return (
+                               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                                 {subsection.certificates.map((certificate, index) => (
+                                   <CertificateCard
+                                     key={index}
+                                     certificate={certificate}
+                                     categoryId={`${category.id}-${subsectionIndex}`}
+                                     index={index}
+                                   />
+                                 ))}
+                               </div>
+                             );
+                           }
+                           
+                           // Group certificates by subcategory items
+                           return (
+                             <div className="space-y-8">
+                               {itemsInSubcategory.map((item, itemIndex) => {
+                                 // Find certificates that belong to this specific item
+                                 const itemCertificates = subsection.certificates.filter(cert => 
+                                   'subcategoryItemId' in cert && cert.subcategoryItemId === item.id
+                                 );
+                                 
+                                 // If no specific item certificates, show all certificates for this subcategory
+                                 const certificatesToShow = itemCertificates.length > 0 ? itemCertificates : subsection.certificates;
+                                 
+                                 return (
+                                   <div key={itemIndex} className="space-y-4">
+                                     {/* Item Header */}
+                                     <div className="border-l-4 border-[#1c2d56] pl-4">
+                                       <h4 className="text-lg font-medium text-[#1c2d56]">
+                                         {item.title}
+                                       </h4>
+                                       {item.description && (
+                                         <p className="text-sm text-gray-600 mt-1">
+                                           {item.description}
+                                         </p>
+                                       )}
+                                     </div>
+                                     
+                                     {/* Certificates for this item */}
+                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                                       {certificatesToShow.map((certificate, index) => (
+                                         <CertificateCard
+                                           key={index}
+                                           certificate={certificate}
+                                           categoryId={`${category.id}-${subsectionIndex}-${itemIndex}`}
+                                           index={index}
+                                         />
+                                       ))}
+                                     </div>
+                                   </div>
+                                 );
+                               })}
+                             </div>
+                           );
+                         })()
+                       ) : (
+                         // Fallback: show certificates directly if no subcategory items data
+                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                           {subsection.certificates.map((certificate, index) => (
+                             <CertificateCard
+                               key={index}
+                               certificate={certificate}
+                               categoryId={`${category.id}-${subsectionIndex}`}
+                               index={index}
+                             />
+                           ))}
+                         </div>
+                       )}
                     </div>
                   ))}
                 </div>
