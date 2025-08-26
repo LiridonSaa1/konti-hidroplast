@@ -1062,6 +1062,63 @@ function CertificatesPage() {
                           </p>
                         )}
                       </div>
+
+                      {/* Subcategory Items Display */}
+                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                        <div className="text-center mb-4">
+                          <h4 className="text-lg font-medium text-blue-800 mb-2">
+                            Subcategory Items
+                          </h4>
+                          <p className="text-sm text-blue-600">
+                            This subcategory contains the following item types:
+                          </p>
+                        </div>
+                        
+                        {/* Extract unique item types from certificate titles */}
+                        <div className="flex flex-wrap justify-center gap-3">
+                          {Array.from(new Set(
+                            subsection.certificates.map(cert => {
+                              // Extract the main item type from certificate title
+                              const title = 'translatedTitle' in cert ? cert.translatedTitle : cert.title;
+                              // For example: "DV-8146" -> extract the type, or use a pattern
+                              // This is a simplified approach - you might want to customize this logic
+                              if (title.includes('PE100') || title.includes('PE 100')) {
+                                return 'PE100 DN/OD 20-800mm';
+                              } else if (title.includes('PE 100 RC')) {
+                                return 'PE 100 RC';
+                              } else if (title.includes('PE 100 RC TYPE 1')) {
+                                return 'PE 100 RC TYPE 1 DN/OD 20-800mm';
+                              } else if (title.includes('PE 100 RC TYPE 2')) {
+                                return 'PE 100 RC TYPE 2 DN/OD 20-800mm';
+                              } else if (title.includes('PE 100 RC type 3')) {
+                                return 'PE 100 RC type 3';
+                              } else if (title.includes('Hygiene')) {
+                                return 'Hygiene certificates';
+                              } else if (title.includes('HDPE') || title.includes('Konti Kan')) {
+                                return 'HDPE Konti Kan double wall corrugated sewage pipes DN/OD 110-1200mm';
+                              } else if (title.includes('Spiral')) {
+                                return 'Konti Kan Spiral - PE/PP Spiral sewage non pressure pipe DN/ID 1300-200mm';
+                              } else if (title.includes('Manholes')) {
+                                return 'PE/PP Manholes sewage system';
+                              } else if (title.includes('PPHM')) {
+                                return 'PPHM Konti Kan double wall corrugated sewage pipe DN/ID 100-1200mm';
+                              } else if (title.includes('Smooth Pipe')) {
+                                return 'PP HM Smooth Pipe (Solid PP sewage pipe) DN/OD 110-500mm';
+                              } else if (title.includes('Rubber Gasket')) {
+                                return 'Rubber Gasket';
+                              } else if (title.includes('Konti Kan Duct')) {
+                                return 'Konti Kan Duct (HDPE double wall corrugated pipe DN/OD 40-200mm)';
+                              } else {
+                                return title.split('-')[0] || title; // Fallback to first part of title
+                              }
+                            })
+                          )).map((itemType, index) => (
+                            <div key={index} className="bg-white px-4 py-2 rounded-lg border border-blue-300 shadow-sm">
+                              <span className="text-sm font-medium text-blue-900">{itemType}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                       
                       {/* Certificates Grid */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
