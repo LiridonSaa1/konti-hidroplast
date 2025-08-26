@@ -697,6 +697,24 @@ export default function AboutUs() {
     console.log("Leader position in current language:", getLocalizedLeadershipContent('leaderPosition'));
   }, [language, leadershipData, leadershipContent]);
 
+  // Debug gallery data changes
+  useEffect(() => {
+    console.log("=== Gallery Data Changed ===");
+    console.log("Current language:", language);
+    console.log("Gallery categories:", galleryCategories);
+    console.log("Gallery loading:", isGalleryLoading);
+    
+    if (galleryCategories.length > 0) {
+      galleryCategories.forEach((category, index) => {
+        console.log(`\n--- Gallery Category ${index + 1} ---`);
+        console.log('ID:', category.id);
+        console.log('Title (original):', category.title);
+        console.log('Translations object:', category.translations);
+        console.log('Localized title:', getLocalizedGalleryTitle(category));
+      });
+    }
+  }, [language, galleryCategories, isGalleryLoading]);
+
   // Function to get localized leadership content
   const getLocalizedLeadershipContent = (field: string) => {
     console.log(`=== getLocalizedLeadershipContent called ===`);
@@ -776,6 +794,34 @@ export default function AboutUs() {
       default:
         return '';
     }
+  };
+
+  // Helper function to get localized gallery title
+  const getLocalizedGalleryTitle = (category: GalleryCategory) => {
+    console.log(`=== getLocalizedGalleryTitle called ===`);
+    console.log(`Category:`, category);
+    console.log(`Current language: ${language}`);
+    console.log(`Category translations:`, category.translations);
+    
+    if (category.translations && typeof category.translations === 'object') {
+      const translations = category.translations as any;
+      console.log(`Parsed translations:`, translations);
+      
+      if (translations[language] && translations[language].title) {
+        console.log(`Found ${language} translation:`, translations[language].title);
+        return translations[language].title;
+      }
+      
+      // Fallback to English or original title
+      if (translations.en && translations.en.title) {
+        console.log(`Using English fallback:`, translations.en.title);
+        return translations.en.title;
+      }
+    }
+    
+    // Final fallback to original title
+    console.log(`Using original title:`, category.title);
+    return category.title;
   };
 
   return (
@@ -1596,7 +1642,7 @@ export default function AboutUs() {
                       {category.imageUrl ? (
                         <img
                           src={category.imageUrl}
-                          alt={category.title}
+                          alt={getLocalizedGalleryTitle(category)}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                       ) : (
@@ -1614,7 +1660,7 @@ export default function AboutUs() {
 
                       <div className="mt-4">
                         <h3 className="text-xl font-bold text-gray-900 mb-6 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
-                          {category.title}
+                          {getLocalizedGalleryTitle(category)}
                         </h3>
 
                         {/* View Gallery Button */}
