@@ -365,11 +365,6 @@ function useTeamData() {
     queryKey: ["/api/positions"], // Back to public endpoint
   });
 
-  console.log('=== useTeamData Debug ===');
-  console.log('Teams data:', teams);
-  console.log('Positions data:', positions);
-  console.log('Teams loading:', isTeamsLoading);
-  console.log('Positions loading:', isPositionsLoading);
 
   // Group team members by position
   const groupedByPosition = teams
@@ -637,6 +632,11 @@ export default function AboutUs() {
     leaderName?: string;
     leaderPosition?: string;
     leaderImage?: string;
+    translations?: {
+      en?: Record<string, string>;
+      mk?: Record<string, string>;
+      de?: Record<string, string>;
+    };
   } = {};
   
   try {
@@ -657,9 +657,126 @@ export default function AboutUs() {
       leaderName: "Boris Madjunkov",
       leaderPosition: "General Director",
       leaderImage: "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg",
+      translations: {
+        en: {
+          title: "Building the Future of Infrastructure",
+          description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
+          description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
+          leaderName: "Boris Madjunkov",
+          leaderPosition: "General Director"
+        },
+        mk: {
+          title: "Градење на иднината на инфраструктурата",
+          description1: "Во Конти Хидропласт, нашата мисија секогаш била јасна: да водиме со иновации, да доставуваме квалитет по европски стандарди и да останеме пред кривата во нашата индустрија. Посветени сме на создавање одржливи решенија, проширување на нови пазари и споделување знаење со сите кои сакаат да растат.",
+          description2: "Заедно, градиме не само за денес, туку за иднина на која нашите следни генерации ќе бидат горди.",
+          leaderName: "Борис Маџунков",
+          leaderPosition: "Генерален директор"
+        },
+        de: {
+          title: "Den Weg in die Zukunft der Infrastruktur ebnen",
+          description1: "Bei Konti Hidroplast war unsere Mission immer klar: mit Innovation zu führen, Qualität nach europäischen Standards zu liefern und der Kurve in unserer Branche voraus zu sein. Wir sind der Schaffung nachhaltiger Lösungen, der Erschließung neuer Märkte und dem Austausch von Wissen mit allen, die wachsen möchten, verpflichtet.",
+          description2: "Gemeinsam bauen wir nicht nur für heute, sondern für eine Zukunft, auf die unsere nächsten Generationen stolz sein werden.",
+          leaderName: "Boris Madjunkov",
+          leaderPosition: "Generaldirektor"
+        }
+      }
     };
     console.log("Using fallback leadership content:", leadershipContent);
   }
+
+  // Debug language and leadership content changes
+  useEffect(() => {
+    console.log("=== Language or Leadership Content Changed ===");
+    console.log("Current language:", language);
+    console.log("Leadership data:", leadershipData);
+    console.log("Parsed leadership content:", leadershipContent);
+    console.log("Title in current language:", getLocalizedLeadershipContent('title'));
+    console.log("Description1 in current language:", getLocalizedLeadershipContent('description1'));
+    console.log("Description2 in current language:", getLocalizedLeadershipContent('description2'));
+    console.log("Leader name in current language:", getLocalizedLeadershipContent('leaderName'));
+    console.log("Leader position in current language:", getLocalizedLeadershipContent('leaderPosition'));
+  }, [language, leadershipData, leadershipContent]);
+
+  // Function to get localized leadership content
+  const getLocalizedLeadershipContent = (field: string) => {
+    console.log(`=== getLocalizedLeadershipContent called ===`);
+    console.log(`Field: ${field}`);
+    console.log(`Current language: ${language}`);
+    console.log(`Leadership content:`, leadershipContent);
+    
+    if (!leadershipContent || !leadershipContent[field as keyof typeof leadershipContent]) {
+      console.log(`No content found for field: ${field}, using translation key`);
+      // Fallback to translation keys
+      switch (field) {
+        case 'title':
+          return t("aboutUs.leadershipTitle");
+        case 'description1':
+          return t("aboutUs.leadershipDescription1");
+        case 'description2':
+          return t("aboutUs.leadershipDescription2");
+        case 'leaderName':
+          return t("aboutUs.leaderName");
+        case 'leaderPosition':
+          return t("aboutUs.leaderPosition");
+        default:
+          return '';
+      }
+    }
+
+    // Check if the content has translations structure
+    if (leadershipContent.translations && typeof leadershipContent.translations === 'object') {
+      const translations = leadershipContent.translations as any;
+      console.log(`Found translations structure:`, translations);
+      
+      // Try to get the current language translation
+      if (translations[language] && translations[language][field]) {
+        console.log(`Found ${language} translation for ${field}:`, translations[language][field]);
+        return translations[language][field];
+      }
+      
+      // Fallback to English if current language not available
+      if (translations.en && translations.en[field]) {
+        console.log(`Using English fallback for ${field}:`, translations.en[field]);
+        return translations.en[field];
+      }
+      
+      // Fallback to Macedonian if English not available
+      if (translations.mk && translations.mk[field]) {
+        console.log(`Using Macedonian fallback for ${field}:`, translations.mk[field]);
+        return translations.mk[field];
+      }
+      
+      // Fallback to German if Macedonian not available
+      if (translations.de && translations.de[field]) {
+        console.log(`Using German fallback for ${field}:`, translations.de[field]);
+        return translations.de[field];
+      }
+    }
+
+    // If no translations structure, try to get the direct field value
+    const content = leadershipContent[field as keyof typeof leadershipContent];
+    if (typeof content === 'string' && content.trim() !== '') {
+      console.log(`Using direct field value for ${field}:`, content);
+      return content;
+    }
+
+    console.log(`No content found, using translation key for ${field}`);
+    // Final fallback to translation keys
+    switch (field) {
+      case 'title':
+        return t("aboutUs.leadershipTitle");
+      case 'description1':
+        return t("aboutUs.leadershipDescription1");
+      case 'description2':
+        return t("aboutUs.leadershipDescription2");
+      case 'leaderName':
+        return t("aboutUs.leaderName");
+      case 'leaderPosition':
+        return t("aboutUs.leaderPosition");
+      default:
+        return '';
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -956,32 +1073,36 @@ export default function AboutUs() {
                         {t("aboutUs.leadershipMessage")}
                       </span>
                     </div>
+                    
+                    {/* Language Indicator */}
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-white/60 uppercase tracking-wider">
+                        {language === 'en' ? 'English' : language === 'mk' ? 'Македонски' : 'Deutsch'}
+                      </span>
+                    </div>
 
                     <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
-                      {leadershipContent.title ||
-                        t("aboutUs.leadershipTitle")}
+                      {getLocalizedLeadershipContent('title')}
                     </h2>
                   </div>
 
                   <div className="space-y-6 text-lg leading-relaxed text-white/90">
                     <p>
-                      {leadershipContent.description1 ||
-                        t("aboutUs.leadershipDescription1")}
+                      {getLocalizedLeadershipContent('description1')}
                     </p>
 
                     <p>
-                      {leadershipContent.description2 ||
-                        t("aboutUs.leadershipDescription2")}
+                      {getLocalizedLeadershipContent('description2')}
                     </p>
                   </div>
 
                   <div className="pt-4">
                     <div className="space-y-2">
                       <h3 className="text-2xl font-bold text-white">
-                        {leadershipContent.leaderName || t("aboutUs.leaderName")}
+                        {getLocalizedLeadershipContent('leaderName')}
                       </h3>
                       <p className="text-blue-200 font-semibold text-lg">
-                        {leadershipContent.leaderPosition || t("aboutUs.leaderPosition")}
+                        {getLocalizedLeadershipContent('leaderPosition')}
                       </p>
                     </div>
 

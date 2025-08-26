@@ -48,8 +48,31 @@ export function LeadershipManager() {
         description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
         description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
         leaderName: "Boris Madjunkov",
-        leaderPosition: "",
-        leaderImage: ""
+        leaderPosition: "General Director",
+        leaderImage: "",
+        translations: {
+          en: {
+            title: "Building the Future of Infrastructure",
+            description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
+            description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
+            leaderName: "Boris Madjunkov",
+            leaderPosition: "General Director"
+          },
+          mk: {
+            title: "",
+            description1: "",
+            description2: "",
+            leaderName: "",
+            leaderPosition: ""
+          },
+          de: {
+            title: "",
+            description1: "",
+            description2: "",
+            leaderName: "",
+            leaderPosition: ""
+          }
+        }
       })
     },
   });
@@ -79,8 +102,31 @@ export function LeadershipManager() {
             description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
             description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
             leaderName: "Boris Madjunkov",
-            leaderPosition: "",
-            leaderImage: ""
+            leaderPosition: "General Director",
+            leaderImage: "",
+            translations: {
+              en: {
+                title: "Building the Future of Infrastructure",
+                description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
+                description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
+                leaderName: "Boris Madjunkov",
+                leaderPosition: "General Director"
+              },
+              mk: {
+                title: "",
+                description1: "",
+                description2: "",
+                leaderName: "",
+                leaderPosition: ""
+              },
+              de: {
+                title: "",
+                description1: "",
+                description2: "",
+                leaderName: "",
+                leaderPosition: ""
+              }
+            }
           }),
           updatedAt: new Date()
         };
@@ -212,9 +258,38 @@ export function LeadershipManager() {
         console.log("Using existing image:", imageUrl);
       }
 
-      // Parse the current data and update with new image
-      const leadershipContent = JSON.parse(data.value);
-      leadershipContent.leaderImage = imageUrl;
+      // Create the leadership content with translations structure
+      const leadershipContent = {
+        title: translations.en?.title || "",
+        description1: translations.en?.description1 || "",
+        description2: translations.en?.description2 || "",
+        leaderName: translations.en?.leaderName || "",
+        leaderPosition: translations.en?.leaderPosition || "",
+        leaderImage: imageUrl,
+        translations: {
+          en: {
+            title: translations.en?.title || "",
+            description1: translations.en?.description1 || "",
+            description2: translations.en?.description2 || "",
+            leaderName: translations.en?.leaderName || "",
+            leaderPosition: translations.en?.leaderPosition || ""
+          },
+          mk: {
+            title: translations.mk?.title || "",
+            description1: translations.mk?.description1 || "",
+            description2: translations.mk?.description2 || "",
+            leaderName: translations.mk?.leaderName || "",
+            leaderPosition: translations.mk?.leaderPosition || ""
+          },
+          de: {
+            title: translations.de?.title || "",
+            description1: translations.de?.description1 || "",
+            description2: translations.de?.description2 || "",
+            leaderName: translations.de?.leaderName || "",
+            leaderPosition: translations.de?.leaderPosition || ""
+          }
+        }
+      };
 
       const submitData = {
         key: "leadership_message",
@@ -222,7 +297,7 @@ export function LeadershipManager() {
         value: JSON.stringify(leadershipContent)
       };
       
-      console.log("Submitting leadership data:", submitData);
+      console.log("Submitting leadership data with translations:", submitData);
       
       // Validate the data before submission
       try {
@@ -265,19 +340,22 @@ export function LeadershipManager() {
           title: currentData.title || "",
           description1: currentData.description1 || "",
           description2: currentData.description2 || "",
-          leaderName: currentData.leaderName || ""
+          leaderName: currentData.leaderName || "",
+          leaderPosition: currentData.leaderPosition || ""
         },
         mk: { 
           title: currentData.translations?.mk?.title || "",
           description1: currentData.translations?.mk?.description1 || "",
           description2: currentData.translations?.mk?.description2 || "",
-          leaderName: currentData.translations?.mk?.leaderName || ""
+          leaderName: currentData.translations?.mk?.leaderName || "",
+          leaderPosition: currentData.translations?.mk?.leaderPosition || ""
         },
         de: { 
           title: currentData.translations?.de?.title || "",
           description1: currentData.translations?.de?.description1 || "",
           description2: currentData.translations?.de?.description2 || "",
-          leaderName: currentData.translations?.de?.leaderName || ""
+          leaderName: currentData.translations?.de?.leaderName || "",
+          leaderPosition: currentData.translations?.de?.leaderPosition || ""
         }
       };
       
@@ -333,8 +411,31 @@ export function LeadershipManager() {
           description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
           description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
           leaderName: "Boris Madjunkov",
-          leaderPosition: "",
-          leaderImage: ""
+          leaderPosition: "General Director",
+          leaderImage: "",
+          translations: {
+            en: {
+              title: "Building the Future of Infrastructure",
+              description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
+              description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
+              leaderName: "Boris Madjunkov",
+              leaderPosition: "General Director"
+            },
+            mk: {
+              title: "",
+              description1: "",
+              description2: "",
+              leaderName: "",
+              leaderPosition: ""
+            },
+            de: {
+              title: "",
+              description1: "",
+              description2: "",
+              leaderName: "",
+              leaderPosition: ""
+            }
+          }
         })
       };
       
