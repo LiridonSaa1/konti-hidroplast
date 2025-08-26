@@ -49,8 +49,8 @@ function ProductionGalleryPage() {
   };
 
   useEffect(() => {
-    document.title = "Production Gallery - Konti Hidroplast";
-  }, []);
+    document.title = `${t("gallery.production")} ${t("gallery.title")} - Konti Hidroplast`;
+  }, [t]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -73,39 +73,37 @@ function ProductionGalleryPage() {
                 className="inline-flex items-center text-white hover:text-[#1c2d56]"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to About Us
+                {t("gallery.backToAboutUs")}
               </Button>
             </div>
 
             <div className="mb-6 bg-[#ef4444] text-white px-4 py-2 rounded-full inline-block">
               <span className="text-sm font-medium">
-                MANUFACTURING EXCELLENCE
+                {t("gallery.manufacturingExcellence")}
               </span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-              <span className="text-red-500">PRODUCTION</span>
+              <span className="text-red-500">{t("gallery.production")}</span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                FACILITIES
+                {t("gallery.facilities")}
               </span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-              State-of-the-art manufacturing facilities equipped with advanced
-              technology for producing high-quality PE and PP pipes that meet
-              international standards.
+              {t("gallery.productionDescription")}
             </p>
             <div className="flex justify-center flex-wrap gap-4">
               <div className="flex items-center gap-2 text-blue-300">
-                <Check className="w-5 h-5" />
-                <span className="text-sm font-medium">ISO Certified</span>
+                <Check className="w-5 w-5" />
+                <span className="text-sm font-medium">{t("gallery.isoCertified")}</span>
               </div>
               <div className="flex items-center gap-2 text-green-300">
-                <Check className="w-5 h-5" />
-                <span className="text-sm font-medium">Advanced Technology</span>
+                <Check className="w-5 w-5" />
+                <span className="text-sm font-medium">{t("gallery.advancedTechnology")}</span>
               </div>
               <div className="flex items-center gap-2 text-yellow-300">
-                <Check className="w-5 h-5" />
-                <span className="text-sm font-medium">24/7 Operations</span>
+                <Check className="w-5 w-5" />
+                <span className="text-sm font-medium">{t("gallery.operations24_7")}</span>
               </div>
             </div>
           </div>
@@ -120,7 +118,7 @@ function ProductionGalleryPage() {
             <div className="flex items-center justify-center mb-4">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                PRODUCTION
+                {t("gallery.production")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -170,12 +168,12 @@ function ProductionGalleryPage() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <Image className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+              <Image className="h-16 h-16 mx-auto text-gray-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                No Images Found
+                {t("gallery.noImagesFound")}
               </h3>
               <p className="text-gray-500">
-                This gallery category doesn't have any images yet.
+                {t("gallery.noImagesDescription")}
               </p>
             </div>
           )}
@@ -191,10 +189,10 @@ function ProductionGalleryPage() {
                 {isLoadingMore ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Loading...
+                    {t("gallery.loading")}
                   </div>
                 ) : (
-                  "Load More Images"
+                  t("gallery.loadMoreImages")
                 )}
               </Button>
             </div>

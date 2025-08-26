@@ -49,8 +49,8 @@ function ProjectsGalleryPage() {
   };
 
   useEffect(() => {
-    document.title = "Projects Gallery - Konti Hidroplast";
-  }, []);
+    document.title = `${t("gallery.projects")} ${t("gallery.title")} - Konti Hidroplast`;
+  }, [t]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -73,39 +73,37 @@ function ProjectsGalleryPage() {
                 className="inline-flex items-center text-white hover:text-[#1c2d56]"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to About Us
+                {t("gallery.backToAboutUs")}
               </Button>
             </div>
 
             <div className="mb-6 bg-[#ef4444] text-white px-4 py-2 rounded-full inline-block">
               <span className="text-sm font-medium">
-                INFRASTRUCTURE EXCELLENCE
+                {t("gallery.infrastructureExcellence")}
               </span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-              <span className="text-red-500">PROJECTS</span>
+              <span className="text-red-500">{t("gallery.projects")}</span>
               <br />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                SHOWCASE
+                {t("gallery.projectsShowcase")}
               </span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto">
-              Major infrastructure projects demonstrating the reliability and
-              performance of our PE and PP pipe systems across diverse
-              applications and environments.
+              {t("gallery.projectsDescription")}
             </p>
             <div className="flex justify-center flex-wrap gap-4">
               <div className="flex items-center gap-2 text-blue-300">
-                <Check className="w-5 h-5" />
-                <span className="text-sm font-medium">Large Scale</span>
+                <Check className="w-5 w-5" />
+                <span className="text-sm font-medium">{t("gallery.largeScale")}</span>
               </div>
               <div className="flex items-center gap-2 text-green-300">
-                <Check className="w-5 h-5" />
-                <span className="text-sm font-medium">International</span>
+                <Check className="w-5 w-5" />
+                <span className="text-sm font-medium">{t("gallery.international")}</span>
               </div>
               <div className="flex items-center gap-2 text-yellow-300">
-                <Check className="w-5 h-5" />
-                <span className="text-sm font-medium">Multi-sector</span>
+                <Check className="w-5 w-5" />
+                <span className="text-sm font-medium">{t("gallery.multiSector")}</span>
               </div>
             </div>
           </div>
@@ -120,7 +118,7 @@ function ProjectsGalleryPage() {
             <div className="flex items-center justify-center mb-4">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                PROJECTS
+                {t("gallery.projects")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -170,12 +168,12 @@ function ProjectsGalleryPage() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <Image className="h-16 w-16 mx-auto text-gray-300 mb-4" />
+              <Image className="h-16 h-16 mx-auto text-gray-300 mb-4" />
               <h3 className="text-xl font-semibold text-gray-600 mb-2">
-                No Images Found
+                {t("gallery.noImagesFound")}
               </h3>
               <p className="text-gray-500">
-                This gallery category doesn't have any images yet.
+                {t("gallery.noImagesDescription")}
               </p>
             </div>
           )}
@@ -191,10 +189,10 @@ function ProjectsGalleryPage() {
                 {isLoadingMore ? (
                   <div className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Loading...
+                    {t("gallery.loading")}
                   </div>
                 ) : (
-                  "Load More Images"
+                  t("gallery.loadMoreImages")
                 )}
               </Button>
             </div>
