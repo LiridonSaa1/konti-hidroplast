@@ -4,7 +4,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development tsx server/index.ts",
+    "dev": "cross-env NODE_ENV=development PORT=3001 tsx server/index.ts",
     "build": "node build.js",
     "vite:build": "vite build",
     "esbuild:server": "esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",

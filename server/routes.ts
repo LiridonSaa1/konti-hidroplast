@@ -842,6 +842,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Public Subcategory Items endpoint (for certificates page)
+  app.get("/api/subcategory-items", async (req: Request, res: Response) => {
+    try {
+      const categoryId = req.query.categoryId as string;
+      const subcategoryId = req.query.subcategoryId as string;
+      
+      let items;
+      if (subcategoryId) {
+        items = await storage.getSubcategoryItemsBySubcategory(parseInt(subcategoryId));
+      } else if (categoryId) {
+        items = await storage.getSubcategoryItemsByCategory(parseInt(categoryId));
+      } else {
+        items = await storage.getAllSubcategoryItems();
+      }
+      
+      // Only return active items for public access
+      const activeItems = items.filter(item => item.active === true);
+      res.json(activeItems);
+    } catch (error) {
+      console.error("Error fetching public subcategory items:", error);
+      res.status(500).json({ error: "Failed to fetch subcategory items" });
+    }
+  });
+
   // Certificates routes
   app.get("/api/admin/certificates", async (req, res) => {
     try {

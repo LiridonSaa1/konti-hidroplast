@@ -14,7 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import type { CertificateCategory, CertificateSubcategory, Certificate } from "@shared/schema";
+import type { CertificateCategory, CertificateSubcategory, Certificate, SubcategoryItem } from "@shared/schema";
 import { PDFPreview } from "@/components/ui/pdf-preview";
 
 // Interface for organized certificate data
@@ -41,6 +41,10 @@ function useCertificateData() {
     queryKey: ['/api/certificate-subcategories'],
   });
 
+  const subcategoryItems = useQuery<SubcategoryItem[]>({
+    queryKey: ['/api/subcategory-items'],
+  });
+
   const certificates = useQuery<Certificate[]>({
     queryKey: ['/api/certificates'],
   });
@@ -48,9 +52,10 @@ function useCertificateData() {
   return {
     categories,
     subcategories,
+    subcategoryItems,
     certificates,
-    isLoading: categories.isLoading || subcategories.isLoading || certificates.isLoading,
-    error: categories.error || subcategories.error || certificates.error,
+    isLoading: categories.isLoading || subcategories.isLoading || subcategoryItems.isLoading || certificates.isLoading,
+    error: categories.error || subcategories.error || subcategoryItems.error || certificates.error,
   };
 }
 
@@ -725,7 +730,7 @@ function CertificatesPage() {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   
   // Fetch dynamic certificate data
-  const { categories, subcategories, certificates, isLoading, error } = useCertificateData();
+  const { categories, subcategories, subcategoryItems, certificates, isLoading, error } = useCertificateData();
   
   // Organize data for display
   const organizedData = categories.data && subcategories.data && certificates.data 
@@ -741,11 +746,12 @@ function CertificatesPage() {
       console.log('=== Certificate Data Debug ===');
       console.log('Categories:', categories.data);
       console.log('Subcategories:', subcategories.data);
+      console.log('Subcategory Items:', subcategoryItems.data);
       console.log('Certificates:', certificates.data);
       console.log('Organized Data:', organizedData);
       console.log('Display Data:', displayData);
     }
-  }, [categories.data, subcategories.data, certificates.data, organizedData, displayData]);
+  }, [categories.data, subcategories.data, subcategoryItems.data, certificates.data, organizedData, displayData]);
 
   // Reset active tab when language changes to avoid out-of-bounds errors
   useEffect(() => {
@@ -948,12 +954,8 @@ function CertificatesPage() {
             </div>
           )}
 
-          {/* Error state */}
-          {error && (
-            <div className="text-center py-12">
-              <p className="text-red-600 mb-4">{t("certificates.error")}</p>
-            </div>
-          )}
+         
+        
 
           {/* Tab Slider */}
           {!isLoading && displayData.length > 0 && (
@@ -1042,25 +1044,11 @@ function CertificatesPage() {
                     <div key={subsectionIndex} className="space-y-6">
                       {/* Subcategory Header with Item Count Indicator */}
                       <div className="text-center py-4">
-                        <div className="flex items-center justify-center gap-3 mb-2">
+                        <div className="flex items-center justify-left gap-3 mb-2">
                           <h3 className="text-xl font-semibold text-[#1c2d56]">
                             {subsection.title}
                           </h3>
-                          {/* Visual indicator showing subcategory has items */}
-                          {subsection.certificates.length > 0 && (
-                            <div className="flex items-center gap-2">
-                              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                              <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">
-                                {subsection.certificates.length} {subsection.certificates.length === 1 ? 'item' : 'items'}
-                              </span>
-                            </div>
-                          )}
                         </div>
-                        {'description' in subsection && subsection.description && (
-                          <p className="text-gray-600 mt-2 max-w-3xl mx-auto">
-                            {subsection.description}
-                          </p>
-                        )}
                       </div>
 
                       {/* Subcategory Items Display */}
@@ -1074,49 +1062,65 @@ function CertificatesPage() {
                           </p>
                         </div>
                         
-                        {/* Extract unique item types from certificate titles */}
+                        {/* Display actual subcategory items from database */}
                         <div className="flex flex-wrap justify-center gap-3">
-                          {Array.from(new Set(
-                            subsection.certificates.map(cert => {
-                              // Extract the main item type from certificate title
-                              const title = 'translatedTitle' in cert ? cert.translatedTitle : cert.title;
-                              // For example: "DV-8146" -> extract the type, or use a pattern
-                              // This is a simplified approach - you might want to customize this logic
-                              if (title.includes('PE100') || title.includes('PE 100')) {
-                                return 'PE100 DN/OD 20-800mm';
-                              } else if (title.includes('PE 100 RC')) {
-                                return 'PE 100 RC';
-                              } else if (title.includes('PE 100 RC TYPE 1')) {
-                                return 'PE 100 RC TYPE 1 DN/OD 20-800mm';
-                              } else if (title.includes('PE 100 RC TYPE 2')) {
-                                return 'PE 100 RC TYPE 2 DN/OD 20-800mm';
-                              } else if (title.includes('PE 100 RC type 3')) {
-                                return 'PE 100 RC type 3';
-                              } else if (title.includes('Hygiene')) {
-                                return 'Hygiene certificates';
-                              } else if (title.includes('HDPE') || title.includes('Konti Kan')) {
-                                return 'HDPE Konti Kan double wall corrugated sewage pipes DN/OD 110-1200mm';
-                              } else if (title.includes('Spiral')) {
-                                return 'Konti Kan Spiral - PE/PP Spiral sewage non pressure pipe DN/ID 1300-200mm';
-                              } else if (title.includes('Manholes')) {
-                                return 'PE/PP Manholes sewage system';
-                              } else if (title.includes('PPHM')) {
-                                return 'PPHM Konti Kan double wall corrugated sewage pipe DN/ID 100-1200mm';
-                              } else if (title.includes('Smooth Pipe')) {
-                                return 'PP HM Smooth Pipe (Solid PP sewage pipe) DN/OD 110-500mm';
-                              } else if (title.includes('Rubber Gasket')) {
-                                return 'Rubber Gasket';
-                              } else if (title.includes('Konti Kan Duct')) {
-                                return 'Konti Kan Duct (HDPE double wall corrugated pipe DN/OD 40-200mm)';
-                              } else {
-                                return title.split('-')[0] || title; // Fallback to first part of title
-                              }
-                            })
-                          )).map((itemType, index) => (
-                            <div key={index} className="bg-white px-4 py-2 rounded-lg border border-blue-300 shadow-sm">
-                              <span className="text-sm font-medium text-blue-900">{itemType}</span>
-                            </div>
-                          ))}
+                          {subcategoryItems.data && 'id' in subsection ? (
+                            // Use database subcategory items if available
+                            subcategoryItems.data
+                              .filter(item => 
+                                item.subcategoryId === subsection.id && 
+                                item.active === true
+                              )
+                              .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0))
+                              .map((item) => {
+                                const displayTitle = (item.translations as any)?.[language]?.title || item.title;
+                                return (
+                                  <div key={item.id} className="bg-white px-4 py-2 rounded-lg border border-blue-300 shadow-sm">
+                                    <span className="text-sm font-medium text-blue-900">{displayTitle}</span>
+                                  </div>
+                                );
+                              })
+                          ) : (
+                            // Fallback to legacy logic if no subcategory items found or using legacy data
+                            Array.from(new Set(
+                              subsection.certificates.map(cert => {
+                                const title = 'translatedTitle' in cert ? cert.translatedTitle : cert.title;
+                                if (title.includes('PE100') || title.includes('PE 100')) {
+                                  return 'PE100 DN/OD 20-800mm';
+                                } else if (title.includes('PE 100 RC')) {
+                                  return 'PE 100 RC';
+                                } else if (title.includes('PE 100 RC TYPE 1')) {
+                                  return 'PE 100 RC TYPE 1 DN/OD 20-800mm';
+                                } else if (title.includes('PE 100 RC TYPE 2')) {
+                                  return 'PE 100 RC TYPE 2 DN/OD 20-800mm';
+                                } else if (title.includes('PE 100 RC type 3')) {
+                                  return 'PE 100 RC type 3';
+                                } else if (title.includes('Hygiene')) {
+                                  return 'Hygiene certificates';
+                                } else if (title.includes('HDPE') || title.includes('Konti Kan')) {
+                                  return 'HDPE Konti Kan double wall corrugated sewage pipes DN/OD 110-1200mm';
+                                } else if (title.includes('Spiral')) {
+                                  return 'Konti Kan Spiral - PE/PP Spiral sewage non pressure pipe DN/ID 1300-200mm';
+                                } else if (title.includes('Manholes')) {
+                                  return 'PE/PP Manholes sewage system';
+                                } else if (title.includes('PPHM')) {
+                                  return 'PPHM Konti Kan double wall corrugated sewage pipe DN/ID 100-1200mm';
+                                } else if (title.includes('Smooth Pipe')) {
+                                  return 'PP HM Smooth Pipe (Solid PP sewage pipe) DN/OD 110-500mm';
+                                } else if (title.includes('Rubber Gasket')) {
+                                  return 'Rubber Gasket';
+                                } else if (title.includes('Konti Kan Duct')) {
+                                  return 'Konti Kan Duct (HDPE double wall corrugated pipe DN/OD 40-200mm)';
+                                } else {
+                                  return title.split('-')[0] || title;
+                                }
+                              })
+                            )).map((itemType, index) => (
+                              <div key={index} className="bg-white px-4 py-2 rounded-lg border border-blue-300 shadow-sm">
+                                <span className="text-sm font-medium text-blue-900">{itemType}</span>
+                              </div>
+                            ))
+                          )}
                         </div>
                       </div>
                       
