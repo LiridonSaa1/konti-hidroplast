@@ -1300,6 +1300,13 @@ const translations = {
     "admin.certificates.subcategories": "Subcategories",
     "admin.certificates.addCertificate": "Add Certificate",
     "admin.certificates.uploadPdf": "Upload PDF",
+    "admin.certificates.pdfUrlsByLanguage": "PDF URLs by Language",
+    "admin.certificates.englishPdfUrl": "English PDF URL",
+    "admin.certificates.macedonianPdfUrl": "Macedonian PDF URL",
+    "admin.certificates.germanPdfUrl": "German PDF URL",
+    "admin.certificates.enterPdfUrlEnglish": "Enter PDF URL in English",
+    "admin.certificates.enterPdfUrlMacedonian": "Enter PDF URL in Macedonian",
+    "admin.certificates.enterPdfUrlGerman": "Enter PDF URL in German",
 
     // Team Management
     "admin.teams.title": "Team Management",
@@ -2704,6 +2711,13 @@ const translations = {
     "admin.certificates.subcategories": "Поткатегории",
     "admin.certificates.addCertificate": "Додај сертификат",
     "admin.certificates.uploadPdf": "Прикачи PDF",
+    "admin.certificates.pdfUrlsByLanguage": "PDF URL адреси по јазик",
+    "admin.certificates.englishPdfUrl": "Англиска PDF URL адреса",
+    "admin.certificates.macedonianPdfUrl": "Македонска PDF URL адреса",
+    "admin.certificates.germanPdfUrl": "Германска PDF URL адреса",
+    "admin.certificates.enterPdfUrlEnglish": "Внесете PDF URL адреса на англиски",
+    "admin.certificates.enterPdfUrlMacedonian": "Внесете PDF URL адреса на македонски",
+    "admin.certificates.enterPdfUrlGerman": "Внесете PDF URL адреса на германски",
 
     // Team Management
     "admin.teams.title": "Управување со тим",
@@ -4105,6 +4119,13 @@ const translations = {
     "admin.certificates.subcategories": "Unterkategorien",
     "admin.certificates.addCertificate": "Zertifikat hinzufügen",
     "admin.certificates.uploadPdf": "PDF hochladen",
+    "admin.certificates.pdfUrlsByLanguage": "PDF-URLs nach Sprache",
+    "admin.certificates.englishPdfUrl": "Englische PDF-URL",
+    "admin.certificates.macedonianPdfUrl": "Mazedonische PDF-URL",
+    "admin.certificates.germanPdfUrl": "Deutsche PDF-URL",
+    "admin.certificates.enterPdfUrlEnglish": "PDF-URL auf Englisch eingeben",
+    "admin.certificates.enterPdfUrlMacedonian": "PDF-URL auf Mazedonisch eingeben",
+    "admin.certificates.enterPdfUrlGerman": "PDF-URL auf Deutsch eingeben",
 
     // Team Management
     "admin.teams.title": "Team-Verwaltung",

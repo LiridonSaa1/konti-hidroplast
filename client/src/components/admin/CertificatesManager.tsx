@@ -1,52 +1,22 @@
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Plus, Edit, Trash2, Search, ArrowUpDown, Image as ImageIcon } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { FileUpload } from "@/components/ui/file-upload";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Plus, Edit, Trash2, ArrowUpDown, ImageIcon, Search } from "lucide-react";
 
 
 type CertificateCategory = {
@@ -72,7 +42,11 @@ type Certificate = {
   pdfUrl: string; // Added pdfUrl to the type
   sortOrder: number;
   status: string;
-  translations?: any;
+  translations?: {
+    en?: { title?: string; pdfUrl?: string };
+    mk?: { title?: string; pdfUrl?: string };
+    de?: { title?: string; pdfUrl?: string };
+  };
   defaultLanguage?: string;
 };
 
@@ -85,7 +59,11 @@ type SubcategoryItem = {
   subcategoryId: number;
   sortOrder: number;
   active: boolean;
-  translations?: any;
+  translations?: {
+    en?: { title?: string };
+    mk?: { title?: string };
+    de?: { title?: string };
+  };
   defaultLanguage?: string;
   createdAt: string;
   updatedAt: string;
@@ -104,12 +82,15 @@ const certificateFormSchema = z.object({
   translations: z.object({
     en: z.object({
       title: z.string().optional(),
+      pdfUrl: z.string().optional(),
     }).optional(),
     mk: z.object({
       title: z.string().optional(),
+      pdfUrl: z.string().optional(),
     }).optional(),
     de: z.object({
       title: z.string().optional(),
+      pdfUrl: z.string().optional(),
     }).optional(),
   }).optional(),
   defaultLanguage: z.string().default("en"),
@@ -127,6 +108,7 @@ export function CertificatesManager() {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { t } = useLanguage();
 
   const form = useForm<CertificateForm>({
     resolver: zodResolver(certificateFormSchema),
@@ -140,9 +122,9 @@ export function CertificatesManager() {
       sortOrder: 0,
       status: "active",
       translations: {
-        en: { title: "" },
-        mk: { title: "" },
-        de: { title: "" },
+        en: { title: "", pdfUrl: "" },
+        mk: { title: "", pdfUrl: "" },
+        de: { title: "", pdfUrl: "" },
       },
       defaultLanguage: "en",
     },
@@ -274,6 +256,9 @@ export function CertificatesManager() {
       let aValue = a[sortField];
       let bValue = b[sortField];
 
+      if (aValue == null) aValue = "";
+      if (bValue == null) bValue = "";
+
       if (typeof aValue === "string") aValue = aValue.toLowerCase();
       if (typeof bValue === "string") bValue = bValue.toLowerCase();
 
@@ -306,9 +291,18 @@ export function CertificatesManager() {
       sortOrder: certificate.sortOrder,
       status: certificate.status as "active" | "inactive",
       translations: {
-        en: { title: existingTranslations.en?.title || certificate.title || "" },
-        mk: { title: existingTranslations.mk?.title || "" },
-        de: { title: existingTranslations.de?.title || "" },
+        en: { 
+          title: existingTranslations.en?.title || certificate.title || "",
+          pdfUrl: existingTranslations.en?.pdfUrl || certificate.pdfUrl || "",
+        },
+        mk: { 
+          title: existingTranslations.mk?.title || "",
+          pdfUrl: existingTranslations.mk?.pdfUrl || "",
+        },
+        de: { 
+          title: existingTranslations.de?.title || "",
+          pdfUrl: existingTranslations.de?.pdfUrl || "",
+        },
       },
       defaultLanguage: certificate.defaultLanguage || "en",
     });
@@ -363,9 +357,9 @@ export function CertificatesManager() {
         sortOrder: 0,
         status: "active",
         translations: {
-          en: { title: "" },
-          mk: { title: "" },
-          de: { title: "" },
+          en: { title: "", pdfUrl: "" },
+          mk: { title: "", pdfUrl: "" },
+          de: { title: "", pdfUrl: "" },
         },
         defaultLanguage: "en",
       });
@@ -617,6 +611,77 @@ export function CertificatesManager() {
                       </FormControl>
                       <FormMessage />
                     </FormItem>
+                  </div>
+
+                  {/* Multi-language PDF URLs */}
+                  <div className="space-y-3">
+                    <FormLabel className="text-base font-medium">{t('admin.certificates.pdfUrlsByLanguage')}</FormLabel>
+                    <Tabs defaultValue="en" className="w-full">
+                      <TabsList className="grid w-full grid-cols-3">
+                        <TabsTrigger value="en" className="text-xs">🇺🇸 EN</TabsTrigger>
+                        <TabsTrigger value="mk" className="text-xs">🇲🇰 MK</TabsTrigger>
+                        <TabsTrigger value="de" className="text-xs">🇩🇪 DE</TabsTrigger>
+                      </TabsList>
+                      
+                      <TabsContent value="en" className="mt-3">
+                        <FormField
+                          control={form.control}
+                          name="pdfUrl"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>{t('admin.certificates.englishPdfUrl')}</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder={t('admin.certificates.enterPdfUrlEnglish')} 
+                                  {...field} 
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </TabsContent>
+                      
+                      <TabsContent value="mk" className="mt-3">
+                        <FormField
+                          control={form.control}
+                          name="translations.mk.pdfUrl"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>{t('admin.certificates.macedonianPdfUrl')}</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder={t('admin.certificates.enterPdfUrlMacedonian')} 
+                                  {...field}
+                                  value={field.value || ""}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </TabsContent>
+                      
+                      <TabsContent value="de" className="mt-3">
+                        <FormField
+                          control={form.control}
+                          name="translations.de.pdfUrl"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>{t('admin.certificates.germanPdfUrl')}</FormLabel>
+                              <FormControl>
+                                <Input 
+                                  placeholder={t('admin.certificates.enterPdfUrlGerman')} 
+                                  {...field}
+                                  value={field.value || ""}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </TabsContent>
+                    </Tabs>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
