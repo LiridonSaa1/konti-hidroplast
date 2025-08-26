@@ -787,7 +787,7 @@ function CertificatesPage() {
             <img
               src={hasImage || '/placeholder-certificate.jpg'}
               alt={displayTitle}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-fill"
               loading="lazy"
             />
           ) : hasPdf ? (
