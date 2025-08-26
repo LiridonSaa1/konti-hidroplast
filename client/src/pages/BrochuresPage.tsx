@@ -270,7 +270,7 @@ function BrochuresPage() {
 
                                                                                                                        {/* Brochures Grid - Two Column Layout */}
                  {groupedBrochures[activeTabIndex] && (
-                   <div className="grid grid-cols-1 md:grid-cols-3 gap-3 max-w-3xl ">
+                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
                      {groupedBrochures[activeTabIndex].brochures.map((brochure) => (
                                                                 <div
                          key={`${brochure.id}-${language}`}
@@ -282,7 +282,7 @@ function BrochuresPage() {
                           <img
                             src={brochure.imageUrl}
                             alt={getTranslatedText(brochure, 'name', brochure.title || brochure.name)}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-fit"
                             loading="lazy"
                           />
                         ) : (

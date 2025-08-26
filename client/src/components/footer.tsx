@@ -3,20 +3,48 @@ import { MapPin, Phone } from "lucide-react";
 import logoWhite from "@assets/urban-rohr-logo-white.svg";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCompanyInfo } from "@/hooks/use-company-info";
+import { useLocation } from "wouter";
+
+interface QuickLink {
+  labelKey: string;
+  path: string;
+  isContact?: boolean;
+}
 
 export function Footer() {
   const { t } = useLanguage();
   const { data: companyInfo } = useCompanyInfo();
-  const quickLinks = [
-    { labelKey: "footer.aboutUs", href: "https://konti-hidroplast.com.mk/about-us/" },
-    { labelKey: "footer.products", href: "https://konti-hidroplast.com.mk/products/" },
-    { labelKey: "footer.news", href: "https://konti-hidroplast.com.mk/news/" },
-    { labelKey: "footer.contact", href: "https://konti-hidroplast.com.mk/contacts/" },
-    {
-      labelKey: "footer.privacyPolicy",
-      href: "https://konti-hidroplast.com.mk/privacy-policy/",
-    },
+  const [, setLocation] = useLocation();
+  
+  const quickLinks: QuickLink[] = [
+    { labelKey: "footer.aboutUs", path: "/about-us" },
+    { labelKey: "footer.products", path: "/products" },
+    { labelKey: "footer.news", path: "/news" },
+    { labelKey: "footer.contact", path: "/", isContact: true },
+    { labelKey: "footer.privacyPolicy", path: "/privacy-policy" },
   ];
+
+  const handleNavigation = (path: string, isContact: boolean = false) => {
+    console.log('Footer navigation clicked:', { path, isContact });
+    if (isContact) {
+      // Set the flag to scroll to contact section on home page
+      console.log('Setting scrollToContact flag in sessionStorage');
+      sessionStorage.setItem('scrollToContact', 'true');
+      
+      // If we're already on the home page, trigger the scroll immediately
+      if (window.location.pathname === '/') {
+        console.log('Already on home page, triggering scroll immediately');
+        // Use a small delay to ensure the flag is set
+        setTimeout(() => {
+          const event = new CustomEvent('scrollToContact');
+          window.dispatchEvent(event);
+        }, 100);
+        return;
+      }
+    }
+    console.log('Navigating to:', path);
+    setLocation(path);
+  };
 
   return (
     <footer
@@ -89,9 +117,11 @@ export function Footer() {
               {quickLinks.map((link, index) => (
                 <li key={index}>
                   <a
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={link.path}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavigation(link.path, link.isContact);
+                    }}
                     className="text-gray-300 hover:text-white transition-colors"
                     data-testid={`footer-link-${index}`}
                   >
@@ -100,6 +130,17 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+            {/* Debug button */}
+            {/* <button
+              onClick={() => {
+                console.log('Debug button clicked');
+                sessionStorage.setItem('scrollToContact', 'true');
+                console.log('sessionStorage scrollToContact set to:', sessionStorage.getItem('scrollToContact'));
+              }}
+              className="mt-4 px-4 py-2 bg-red-500 text-white rounded text-sm"
+            >
+              Debug: Set Scroll Flag
+            </button> */}
           </div>
 
           {/* Contact Info */}

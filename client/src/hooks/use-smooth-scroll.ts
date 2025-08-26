@@ -45,6 +45,7 @@ export const useAnimatedScroll = () => {
   }, []);
 
   const scrollToContact = useCallback((options?: ScrollOptions) => {
+    console.log('scrollToContact called with options:', options);
     scrollToElement('contact', { offset: 80, ...options });
   }, [scrollToElement]);
 

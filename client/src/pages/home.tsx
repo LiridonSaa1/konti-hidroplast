@@ -19,16 +19,38 @@ export default function Home() {
   useEffect(() => {
     // Check if we need to scroll to contact section
     const shouldScrollToContact = sessionStorage.getItem('scrollToContact');
+    console.log('Home page useEffect - shouldScrollToContact:', shouldScrollToContact);
     if (shouldScrollToContact) {
       // Clear the flag
       sessionStorage.removeItem('scrollToContact');
+      console.log('Cleared scrollToContact flag, setting timer to scroll');
       // Wait for the page to fully render and then use animated scroll
       const timer = setTimeout(() => {
+        console.log('Executing scrollToContact');
         scrollToContact({ duration: 1200, offset: 80 });
       }, 500);
       
       return () => clearTimeout(timer);
     }
+  }, [scrollToContact]);
+
+  // Listen for custom scrollToContact event (when already on home page)
+  useEffect(() => {
+    const handleScrollToContact = () => {
+      console.log('Custom scrollToContact event received');
+      const timer = setTimeout(() => {
+        console.log('Executing scrollToContact from custom event');
+        scrollToContact({ duration: 1200, offset: 80 });
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    };
+
+    window.addEventListener('scrollToContact', handleScrollToContact);
+    
+    return () => {
+      window.removeEventListener('scrollToContact', handleScrollToContact);
+    };
   }, [scrollToContact]);
   return (
     <div className="min-h-screen bg-white scroll-smooth" data-testid="home-page">

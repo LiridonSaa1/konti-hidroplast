@@ -27,6 +27,7 @@ import PPHMPipesAndFittingsPage from "@/pages/pp-hm-pipes-and-fittings";
 import PPHMSmoothODPage from "@/pages/pp-hm-smooth-od";
 import AdminPanel from "@/pages/AdminPanel";
 import Apply from "@/pages/Apply";
+import PrivacyPolicyPage from "@/pages/privacy-policy";
 import GalleryPage from "@/pages/gallery/GalleryPage";
 import ProductionGalleryPage from "@/pages/gallery/ProductionGalleryPage";
 import QualityControlGalleryPage from "@/pages/gallery/QualityControlGalleryPage";
@@ -59,6 +60,7 @@ function Router() {
       <Route path="/pp-hm-pipes-and-fittings" component={PPHMPipesAndFittingsPage} />
       <Route path="/pp-hm-smooth-od" component={PPHMSmoothODPage} />
       <Route path="/apply" component={Apply} />
+      <Route path="/privacy-policy" component={PrivacyPolicyPage} />
       <Route path="/admin-panel" component={AdminPanel} />
       <Route path="/admin-translations-demo" component={NewsTranslationExample} />
       <Route path="/gallery/production" component={ProductionGalleryPage} />
