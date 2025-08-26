@@ -335,7 +335,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // File upload endpoint
-  app.post("/api/upload", upload.single('file'), handleMulterError, async (req, res) => {
+  app.post("/api/upload", upload.single('file'), handleMulterError, async (req: Request, res: Response) => {
     try {
       console.log('=== File Upload Request ===');
       console.log('Headers:', req.headers);
@@ -373,25 +373,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Rename file to include extension in root uploads
       await fs.rename(oldPath, rootUploadPath);
+      console.log('✅ File saved to root uploads directory:', rootUploadPath);
       
-      // Copy to dist/public/uploads for production
+      // Copy to dist/public/uploads for production (only if dist folder exists)
       try {
-        // Ensure dist/public/uploads directory exists
-        const distUploadsDir = path.dirname(distUploadPath);
-        if (!fsSync.existsSync(distUploadsDir)) {
-          await fs.mkdir(distUploadsDir, { recursive: true });
-          console.log('✅ Created dist/public/uploads directory:', distUploadsDir);
-        }
-        
-        // Copy file to production directory
-        await fs.copyFile(rootUploadPath, distUploadPath);
-        console.log('✅ File copied to production directory:', distUploadPath);
-        
-        // Verify the file was copied successfully
-        if (fsSync.existsSync(distUploadPath)) {
-          console.log('✅ File verification successful in production directory');
+        const distDir = path.join(currentDir, '..', 'dist');
+        if (fsSync.existsSync(distDir)) {
+          // Ensure dist/public/uploads directory exists
+          const distUploadsDir = path.dirname(distUploadPath);
+          if (!fsSync.existsSync(distUploadsDir)) {
+            await fs.mkdir(distUploadsDir, { recursive: true });
+            console.log('✅ Created dist/public/uploads directory:', distUploadsDir);
+          }
+          
+          // Copy file to production directory
+          await fs.copyFile(rootUploadPath, distUploadPath);
+          console.log('✅ File copied to production directory:', distUploadPath);
+          
+          // Verify the file was copied successfully
+          if (fsSync.existsSync(distUploadPath)) {
+            console.log('✅ File verification successful in production directory');
+          } else {
+            console.log('❌ File verification failed in production directory');
+          }
         } else {
-          console.log('❌ File verification failed in production directory');
+          console.log('ℹ️ Dist directory not found, skipping production copy (normal during development)');
         }
       } catch (copyError) {
         console.log('⚠️ Warning: Could not copy to production directory:', (copyError as Error).message);

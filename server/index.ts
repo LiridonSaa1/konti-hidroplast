@@ -17,6 +17,9 @@ app.use(express.urlencoded({ extended: false, limit: '100mb' }));
 // Serve attached assets statically
 app.use("/attached_assets", express.static(path.resolve(__dirname, "..", "attached_assets")));
 
+// Serve uploads directory statically (for both development and production)
+app.use("/uploads", express.static(path.resolve(__dirname, "..", "uploads")));
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
