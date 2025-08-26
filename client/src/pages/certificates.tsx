@@ -15,6 +15,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import type { CertificateCategory, CertificateSubcategory, Certificate } from "@shared/schema";
+import { PDFPreview } from "@/components/ui/pdf-preview";
 
 // Interface for organized certificate data
 interface OrganizedCategory {
@@ -807,14 +808,11 @@ function CertificatesPage() {
             />
           ) : hasPdf ? (
             // Show PDF preview if no image but PDF exists
-            <div className="w-full h-full flex items-center justify-center bg-red-50 border-2 border-red-200">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-red-100 border border-red-300 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <div className="text-red-600 font-bold text-lg">PDF</div>
-                </div>
-                <div className="text-red-600 text-sm font-medium">PDF Document</div>
-              </div>
-            </div>
+            <PDFPreview
+              url={hasPdf}
+              className="w-full h-full object-fill"
+              data-testid={`pdf-preview-${categoryId}-${index}`}
+            />
           ) : (
             // No files - show placeholder
             <div className="w-full h-full flex items-center justify-center bg-gray-200">
@@ -1034,7 +1032,7 @@ function CertificatesPage() {
                   {category.subsections.map((subsection, subsectionIndex) => (
                     <div key={subsectionIndex} className="space-y-6">
                       {/* Subcategory Header with Blue Line */}
-                      <div className="border-l-4 border-blue-600 pl-6 bg-blue-50 py-4 rounded-r-lg">
+                      <div className="pl-6 py-4 rounded-r-lg">
                         <h3 className="text-xl font-semibold text-[#1c2d56]">
                           {subsection.title}
                         </h3>
