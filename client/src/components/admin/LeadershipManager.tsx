@@ -14,6 +14,7 @@ import { insertCompanyInfoSchema, type CompanyInfo, type InsertCompanyInfo, type
 import { apiRequest } from "@/lib/queryClient";
 import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
 import { useAuth } from "@/contexts/AuthContext";
+import React from "react";
 
 export function LeadershipManager() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -62,7 +63,8 @@ export function LeadershipManager() {
       console.log("Token for leadership fetch:", token);
       
       try {
-        const result = await apiRequest("/api/admin/company-info/leadership_message", "GET");
+        const response = await apiRequest("/api/admin/company-info/leadership_message", "GET");
+        const result = await response.json();
         console.log("Fetched leadership data:", result);
         return result;
       } catch (error) {
@@ -103,37 +105,65 @@ export function LeadershipManager() {
       console.log("User authenticated:", isAuthenticated);
       console.log("User:", user);
       
-      const result = await apiRequest("/api/admin/company-info", "POST", data);
-      console.log("API response:", result);
-      return result;
+      try {
+        const response = await apiRequest("/api/admin/company-info", "POST", data);
+        console.log("API response received:", response);
+        
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+        
+        const result = await response.json();
+        console.log("API response parsed:", result);
+        return result;
+      } catch (error) {
+        console.error("API request failed:", error);
+        throw error;
+      }
     },
     onSuccess: async (result) => {
       console.log("=== updateLeadershipMutation.onSuccess called ===");
       console.log("Leadership message save successful:", result);
       
-      // Clear all related cache first
-      await queryClient.removeQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
-      
-      // Force a fresh fetch with no cache
-      await refetch();
-      
-      // Update UI states
-      setIsFormOpen(false);
-      setSelectedImage(null);
-      setImagePreview(null);
-      setTranslations({});
-      
-      toast({
-        title: "Success",
-        description: "Leadership message updated successfully",
-      });
+      try {
+        // Clear all related cache first
+        await queryClient.removeQueries({ queryKey: ["/api/admin/company-info", "leadership_message"] });
+        
+        // Force a fresh fetch with no cache
+        await refetch();
+        
+        // Update UI states
+        setIsFormOpen(false);
+        setSelectedImage(null);
+        setImagePreview(null);
+        setTranslations({});
+        
+        toast({
+          title: "Success",
+          description: "Leadership message updated successfully",
+        });
+      } catch (error) {
+        console.error("Error in onSuccess:", error);
+        toast({
+          title: "Warning",
+          description: "Data saved but there was an issue refreshing the display",
+          variant: "destructive",
+        });
+      }
     },
     onError: (error) => {
       console.error("=== updateLeadershipMutation.onError called ===");
       console.error("Leadership message save failed:", error);
+      
+      let errorMessage = "Failed to update leadership message";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      
       toast({
         title: "Error",
-        description: "Failed to update leadership message",
+        description: errorMessage,
         variant: "destructive",
       });
     },
@@ -175,9 +205,11 @@ export function LeadershipManager() {
       if (selectedImage) {
         console.log("Uploading new image...");
         imageUrl = await handleImageUpload(selectedImage);
+        console.log("Image uploaded successfully:", imageUrl);
       } else if (leadershipData && typeof leadershipData === 'object' && 'value' in leadershipData) {
         const currentData = JSON.parse(leadershipData.value);
         imageUrl = currentData.leaderImage || "";
+        console.log("Using existing image:", imageUrl);
       }
 
       // Parse the current data and update with new image
@@ -191,7 +223,20 @@ export function LeadershipManager() {
       };
       
       console.log("Submitting leadership data:", submitData);
-      updateLeadershipMutation.mutate(submitData);
+      
+      // Validate the data before submission
+      try {
+        const validatedData = insertCompanyInfoSchema.parse(submitData);
+        console.log("Data validation successful:", validatedData);
+        updateLeadershipMutation.mutate(validatedData);
+      } catch (validationError) {
+        console.error("Data validation failed:", validationError);
+        toast({
+          title: "Validation Error",
+          description: "Please check your input data",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
       console.error("Error in handleSubmit:", error);
       toast({
@@ -203,6 +248,8 @@ export function LeadershipManager() {
   };
 
   const handleEdit = () => {
+    console.log("=== handleEdit called ===");
+    
     // Clear states first
     setSelectedImage(null);
     setImagePreview(null);
@@ -237,18 +284,65 @@ export function LeadershipManager() {
       console.log("handleEdit - initialized translations:", leadershipTranslations);
       setTranslations(leadershipTranslations);
       
-      form.reset({
+      // Reset form with current data
+      const formData = {
         key: "leadership_message",
         category: "branding",
         value: JSON.stringify(currentData)
-      });
+      };
+      
+      console.log("handleEdit - resetting form with data:", formData);
+      form.reset(formData);
       
       // Set image preview to current saved image if it exists
       if (currentData.leaderImage) {
         setImagePreview(currentData.leaderImage);
+        console.log("handleEdit - set image preview:", currentData.leaderImage);
       }
+    } else {
+      console.log("handleEdit - no leadership data found, using defaults");
+      // Initialize with default translations if no data exists
+      const defaultTranslations = {
+        en: { 
+          title: "Building the Future of Infrastructure",
+          description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
+          description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
+          leaderName: "Boris Madjunkov"
+        },
+        mk: { 
+          title: "",
+          description1: "",
+          description2: "",
+          leaderName: ""
+        },
+        de: { 
+          title: "",
+          description1: "",
+          description2: "",
+          leaderName: ""
+        }
+      };
+      
+      setTranslations(defaultTranslations);
+      
+      const defaultFormData = {
+        key: "leadership_message",
+        category: "branding",
+        value: JSON.stringify({
+          title: "Building the Future of Infrastructure",
+          description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
+          description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
+          leaderName: "Boris Madjunkov",
+          leaderPosition: "",
+          leaderImage: ""
+        })
+      };
+      
+      form.reset(defaultFormData);
     }
+    
     setIsFormOpen(true);
+    console.log("=== handleEdit completed ===");
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -266,10 +360,15 @@ export function LeadershipManager() {
   // Update image preview when leadership data changes
   useEffect(() => {
     if (leadershipData && typeof leadershipData === 'object' && 'value' in leadershipData && !isFormOpen) {
-      const currentData = JSON.parse(leadershipData.value);
-      if (currentData.leaderImage && !imagePreview) {
-        // Only set preview if there's no current preview (to not override user selection)
-        setImagePreview(currentData.leaderImage);
+      try {
+        const currentData = JSON.parse(leadershipData.value);
+        if (currentData.leaderImage && !imagePreview) {
+          // Only set preview if there's no current preview (to not override user selection)
+          console.log("Setting image preview from leadership data:", currentData.leaderImage);
+          setImagePreview(currentData.leaderImage);
+        }
+      } catch (error) {
+        console.error("Error parsing leadership data for image preview:", error);
       }
     }
   }, [leadershipData, isFormOpen, imagePreview]);
@@ -292,9 +391,9 @@ export function LeadershipManager() {
   // Sync form data with translations changes
   useEffect(() => {
     if (Object.keys(translations).length > 0 && isFormOpen) {
-      const currentFormValue = form.getValues("value");
-      if (currentFormValue) {
-        try {
+      try {
+        const currentFormValue = form.getValues("value");
+        if (currentFormValue) {
           const currentContent = JSON.parse(currentFormValue);
           const updatedContent = {
             ...currentContent,
@@ -306,8 +405,23 @@ export function LeadershipManager() {
           
           console.log("Syncing form data with translations:", updatedContent);
           form.setValue("value", JSON.stringify(updatedContent));
-        } catch (error) {
-          console.error("Error syncing form data with translations:", error);
+        }
+      } catch (error) {
+        console.error("Error syncing form data with translations:", error);
+        // If there's an error, try to reset the form with current translations
+        try {
+          const defaultContent = {
+            title: translations.en?.title || "",
+            description1: translations.en?.description1 || "",
+            description2: translations.en?.description2 || "",
+            leaderName: translations.en?.leaderName || "",
+            leaderPosition: "",
+            leaderImage: ""
+          };
+          
+          form.setValue("value", JSON.stringify(defaultContent));
+        } catch (resetError) {
+          console.error("Error resetting form after sync failure:", resetError);
         }
       }
     }
@@ -316,36 +430,126 @@ export function LeadershipManager() {
   // Initialize translations when component first loads
   useEffect(() => {
     if (leadershipData && typeof leadershipData === 'object' && 'value' in leadershipData && !isFormOpen) {
-      const currentData = JSON.parse(leadershipData.value);
-      
-      // Only initialize if translations are empty
-      if (Object.keys(translations).length === 0) {
-        const initialTranslations = {
+      try {
+        const currentData = JSON.parse(leadershipData.value);
+        
+        // Only initialize if translations are empty
+        if (Object.keys(translations).length === 0) {
+          const initialTranslations = {
+            en: { 
+              title: currentData.title || "",
+              description1: currentData.description1 || "",
+              description2: currentData.description2 || "",
+              leaderName: currentData.leaderName || ""
+            },
+            mk: { 
+              title: currentData.translations?.mk?.title || "",
+              description1: currentData.translations?.mk?.description1 || "",
+              description2: currentData.translations?.mk?.description2 || "",
+              leaderName: currentData.translations?.mk?.leaderName || ""
+            },
+            de: { 
+              title: currentData.translations?.de?.title || "",
+              description1: currentData.translations?.de?.description1 || "",
+              description2: currentData.translations?.de?.description2 || "",
+              leaderName: currentData.translations?.de?.leaderName || ""
+            }
+          };
+          
+          console.log("Initializing translations on component load:", initialTranslations);
+          setTranslations(initialTranslations);
+        }
+      } catch (error) {
+        console.error("Error parsing leadership data for translations:", error);
+        // Set default translations if parsing fails
+        const defaultTranslations = {
           en: { 
-            title: currentData.title || "",
-            description1: currentData.description1 || "",
-            description2: currentData.description2 || "",
-            leaderName: currentData.leaderName || ""
+            title: "Building the Future of Infrastructure",
+            description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
+            description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
+            leaderName: "Boris Madjunkov"
           },
           mk: { 
-            title: currentData.translations?.mk?.title || "",
-            description1: currentData.translations?.mk?.description1 || "",
-            description2: currentData.translations?.mk?.description2 || "",
-            leaderName: currentData.translations?.mk?.leaderName || ""
+            title: "",
+            description1: "",
+            description2: "",
+            leaderName: ""
           },
           de: { 
-            title: currentData.translations?.de?.title || "",
-            description1: currentData.translations?.de?.description1 || "",
-            description2: currentData.translations?.de?.description2 || "",
-            leaderName: currentData.translations?.de?.leaderName || ""
+            title: "",
+            description1: "",
+            description2: "",
+            leaderName: ""
           }
         };
-        
-        console.log("Initializing translations on component load:", initialTranslations);
-        setTranslations(initialTranslations);
+        setTranslations(defaultTranslations);
       }
     }
   }, [leadershipData, isFormOpen, translations]);
+
+  // Watch form changes to update translations
+  useEffect(() => {
+    const subscription = form.watch((value, { name, type }) => {
+      if (name === 'value' && type === 'change') {
+        try {
+          const content = JSON.parse(value.value || '{}');
+          console.log("Form value changed:", content);
+          
+          // Update translations if they don't match
+          const currentTranslations = { ...translations };
+          let hasChanges = false;
+          
+          if (content.title !== translations.en?.title) {
+            currentTranslations.en = { ...currentTranslations.en, title: content.title || "" };
+            hasChanges = true;
+          }
+          
+          if (content.description1 !== translations.en?.description1) {
+            currentTranslations.en = { ...currentTranslations.en, description1: content.description1 || "" };
+            hasChanges = true;
+          }
+          
+          if (content.description2 !== translations.en?.description2) {
+            currentTranslations.en = { ...currentTranslations.en, description2: content.description2 || "" };
+            hasChanges = true;
+          }
+          
+          if (content.leaderName !== translations.en?.leaderName) {
+            currentTranslations.en = { ...currentTranslations.en, leaderName: content.leaderName || "" };
+            hasChanges = true;
+          }
+          
+          if (hasChanges) {
+            console.log("Updating translations from form changes:", currentTranslations);
+            setTranslations(currentTranslations);
+          }
+        } catch (error) {
+          console.error("Error parsing form value in watch:", error);
+        }
+      }
+    });
+    
+    return () => subscription.unsubscribe();
+  }, [form, translations]);
+
+  // Check if form is valid
+  const isFormValid = React.useMemo(() => {
+    const hasRequiredFields = 
+      translations.en?.title?.trim() && 
+      translations.en?.description1?.trim() && 
+      translations.en?.description2?.trim() && 
+      translations.en?.leaderName?.trim();
+    
+    console.log("Form validation check:", {
+      title: translations.en?.title?.trim(),
+      description1: translations.en?.description1?.trim(),
+      description2: translations.en?.description2?.trim(),
+      leaderName: translations.en?.leaderName?.trim(),
+      isValid: !!hasRequiredFields
+    });
+    
+    return !!hasRequiredFields;
+  }, [translations]);
 
   if (isLoading) {
     return (
@@ -530,8 +734,30 @@ export function LeadershipManager() {
                   return;
                 }
                 
+                // Check if form has errors
+                if (!isFormValid) {
+                  console.error("Form validation failed - missing required fields");
+                  toast({
+                    title: "Validation Error",
+                    description: "Please fill in all required fields (Title, Description 1, Description 2, Leader Name)",
+                    variant: "destructive",
+                  });
+                  return;
+                }
+                
                 // Get the current form data for position and image
-                const currentContent = JSON.parse(data.value);
+                let currentContent: any = {};
+                try {
+                  currentContent = JSON.parse(data.value);
+                } catch (error) {
+                  console.error("Error parsing form value:", error);
+                  toast({
+                    title: "Form Error",
+                    description: "Invalid form data format",
+                    variant: "destructive",
+                  });
+                  return;
+                }
                 
                 console.log("Form submission - translations state:", translations);
                 console.log("Form submission - current content:", currentContent);
@@ -545,7 +771,7 @@ export function LeadershipManager() {
                 console.log("Final values to save:", { title, description1, description2, leaderName });
                 
                 // Use the translations state directly instead of parsing data.value
-                handleSubmit({
+                const submitData = {
                   key: "leadership_message",
                   category: "branding",
                   value: JSON.stringify({
@@ -557,66 +783,105 @@ export function LeadershipManager() {
                     leaderImage: currentContent.leaderImage || "",
                     translations: translations
                   })
-                });
+                };
+                
+                console.log("Submitting data:", submitData);
+                handleSubmit(submitData);
               })} className="space-y-4">
                 <FormField
                   control={form.control}
                   name="value"
                   render={({ field }) => {
-                    const content = JSON.parse(field.value);
+                    let content: any = {};
+                    try {
+                      content = JSON.parse(field.value);
+                    } catch (error) {
+                      console.error("Error parsing field value:", error);
+                      content = {};
+                    }
+                    
+                    console.log("FormField render - content:", content);
+                    console.log("FormField render - translations:", translations);
+                    
                     return (
                       <div className="space-y-4">
                         {/* Multi-language Title Field */}
-                        <TranslatableFieldEditor
-                          label="Title"
-                          fieldName="title"
-                          type="text"
-                          currentTranslations={translations}
-                          originalValue={translations.en?.title || ""}
-                          defaultLanguage="en"
-                          onChange={setTranslations}
-                        />
+                        <FormItem>
+                          <FormLabel className="text-base font-medium">Title *</FormLabel>
+                          <TranslatableFieldEditor
+                            label=""
+                            fieldName="title"
+                            type="text"
+                            currentTranslations={translations}
+                            originalValue={translations.en?.title || content.title || ""}
+                            defaultLanguage="en"
+                            onChange={setTranslations}
+                          />
+                          {!translations.en?.title?.trim() && (
+                            <p className="text-sm text-red-600">Title is required</p>
+                          )}
+                        </FormItem>
 
                         {/* Multi-language Description 1 Field */}
-                        <TranslatableFieldEditor
-                          label="Description 1"
-                          fieldName="description1"
-                          type="textarea"
-                          currentTranslations={translations}
-                          originalValue={translations.en?.description1 || ""}
-                          defaultLanguage="en"
-                          onChange={setTranslations}
-                        />
+                        <FormItem>
+                          <FormLabel className="text-base font-medium">Description 1 *</FormLabel>
+                          <TranslatableFieldEditor
+                            label=""
+                            fieldName="description1"
+                            type="textarea"
+                            currentTranslations={translations}
+                            originalValue={translations.en?.description1 || content.description1 || ""}
+                            defaultLanguage="en"
+                            onChange={setTranslations}
+                          />
+                          {!translations.en?.description1?.trim() && (
+                            <p className="text-sm text-red-600">Description 1 is required</p>
+                          )}
+                        </FormItem>
 
                         {/* Multi-language Description 2 Field */}
-                        <TranslatableFieldEditor
-                          label="Description 2"
-                          fieldName="description2"
-                          type="textarea"
-                          currentTranslations={translations}
-                          originalValue={translations.en?.description2 || ""}
-                          defaultLanguage="en"
-                          onChange={setTranslations}
-                        />
+                        <FormItem>
+                          <FormLabel className="text-base font-medium">Description 2 *</FormLabel>
+                          <TranslatableFieldEditor
+                            label=""
+                            fieldName="description2"
+                            type="textarea"
+                            currentTranslations={translations}
+                            originalValue={translations.en?.description2 || content.description2 || ""}
+                            defaultLanguage="en"
+                            onChange={setTranslations}
+                          />
+                          {!translations.en?.description2?.trim() && (
+                            <p className="text-sm text-red-600">Description 2 is required</p>
+                          )}
+                        </FormItem>
 
                         {/* Multi-language Leader Name Field */}
-                        <TranslatableFieldEditor
-                          label="Leader Name"
-                          fieldName="leaderName"
-                          type="text"
-                          currentTranslations={translations}
-                          originalValue={translations.en?.leaderName || ""}
-                          defaultLanguage="en"
-                          onChange={setTranslations}
-                        />
+                        <FormItem>
+                          <FormLabel className="text-base font-medium">Leader Name *</FormLabel>
+                          <TranslatableFieldEditor
+                            label=""
+                            fieldName="leaderName"
+                            type="text"
+                            currentTranslations={translations}
+                            originalValue={translations.en?.leaderName || content.leaderName || ""}
+                            defaultLanguage="en"
+                            onChange={setTranslations}
+                          />
+                          {!translations.en?.leaderName?.trim() && (
+                            <p className="text-sm text-red-600">Leader Name is required</p>
+                          )}
+                        </FormItem>
 
                         <FormItem>
                           <FormLabel>Leader Position</FormLabel>
                           <Select
-                            value={content.leaderPosition}
+                            value={content.leaderPosition || ""}
                             onValueChange={(value) => {
                               const updatedContent = { ...content, leaderPosition: value };
-                              field.onChange(JSON.stringify(updatedContent));
+                              const newValue = JSON.stringify(updatedContent);
+                              console.log("Position changed - new value:", newValue);
+                              field.onChange(newValue);
                             }}
                           >
                             <FormControl>
@@ -678,8 +943,12 @@ export function LeadershipManager() {
                   <Button type="button" variant="outline" onClick={() => setIsFormOpen(false)} data-testid="button-cancel">
                     Cancel
                   </Button>
-                  <Button type="submit" data-testid="button-submit">
-                    Update Leadership Message
+                  <Button 
+                    type="submit" 
+                    data-testid="button-submit"
+                    disabled={updateLeadershipMutation.isPending || !isFormValid}
+                  >
+                    {updateLeadershipMutation.isPending ? "Updating..." : "Update Leadership Message"}
                   </Button>
                 </div>
               </form>

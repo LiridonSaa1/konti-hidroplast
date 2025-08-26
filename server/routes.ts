@@ -548,6 +548,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Public Company Info routes (no authentication required)
+  app.get("/api/company-info/:key", async (req, res) => {
+    try {
+      const info = await storage.getCompanyInfoByKey(req.params.key);
+      if (!info) {
+        return res.status(404).json({ error: "Company info not found" });
+      }
+      res.json(info);
+    } catch (error) {
+      console.error("Error fetching public company info:", error);
+      res.status(500).json({ error: "Failed to fetch company info" });
+    }
+  });
+
   // Public News routes (no authentication required)
   app.get("/api/news", async (req, res) => {
     try {

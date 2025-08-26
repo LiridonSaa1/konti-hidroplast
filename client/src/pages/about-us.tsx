@@ -538,18 +538,28 @@ export default function AboutUs() {
     });
 
   // Fetch leadership data
-  const { data: leadershipData } = useQuery({
-    queryKey: ["/api/admin/company-info", "leadership_message"],
+  const { data: leadershipData, isLoading: isLeadershipLoading, error: leadershipError } = useQuery({
+    queryKey: ["/api/company-info", "leadership_message"],
     queryFn: async () => {
       try {
+        console.log("Fetching leadership data from public endpoint...");
         const response = await fetch(
-          "/api/admin/company-info/leadership_message",
+          "/api/company-info/leadership_message",
         );
-        if (!response.ok) throw new Error("Not found");
-        return await response.json();
+        console.log("Leadership API response status:", response.status);
+        
+        if (!response.ok) {
+          console.error("Leadership API error:", response.status, response.statusText);
+          throw new Error("Not found");
+        }
+        
+        const data = await response.json();
+        console.log("Leadership data fetched successfully:", data);
+        return data;
       } catch (error) {
+        console.error("Error fetching leadership data:", error);
         // Return default data if not found
-        return {
+        const defaultData = {
           value: JSON.stringify({
             title: "Building the Future of Infrastructure",
             description1:
@@ -562,6 +572,8 @@ export default function AboutUs() {
               "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg",
           }),
         };
+        console.log("Using default leadership data:", defaultData);
+        return defaultData;
       }
     },
   });
@@ -618,9 +630,36 @@ export default function AboutUs() {
   }, []);
 
   // Parse leadership content
-  const leadershipContent = leadershipData
-    ? JSON.parse(leadershipData.value)
-    : {};
+  let leadershipContent: {
+    title?: string;
+    description1?: string;
+    description2?: string;
+    leaderName?: string;
+    leaderPosition?: string;
+    leaderImage?: string;
+  } = {};
+  
+  try {
+    if (leadershipData && leadershipData.value) {
+      console.log("Parsing leadership data:", leadershipData);
+      leadershipContent = JSON.parse(leadershipData.value);
+      console.log("Parsed leadership content:", leadershipContent);
+    } else {
+      console.log("No leadership data available, using empty object");
+    }
+  } catch (error) {
+    console.error("Error parsing leadership data:", error);
+    // Use default content if parsing fails
+    leadershipContent = {
+      title: "Building the Future of Infrastructure",
+      description1: "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
+      description2: "Together, we build not just for today, but for a future our next generations will be proud of.",
+      leaderName: "Boris Madjunkov",
+      leaderPosition: "General Director",
+      leaderImage: "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg",
+    };
+    console.log("Using fallback leadership content:", leadershipContent);
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -780,13 +819,6 @@ export default function AboutUs() {
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
                 {t("aboutUs.timelineTitle")}
               </h2>
-              {/* Language Indicator */}
-              <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
-                <Globe className="h-4 w-4" />
-                <span>
-                  {t("aboutUs.displayingIn")} {language === 'en' ? t("aboutUs.englishLang") : language === 'mk' ? t("aboutUs.macedonianLang") : t("aboutUs.germanLang")}
-                </span>
-              </div>
             </div>
             
             {/* Timeline Slider */}
@@ -885,80 +917,88 @@ export default function AboutUs() {
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Photo Section */}
-            <div className="flex justify-center lg:justify-start">
-              <div className="relative">
-                {/* Main photo container */}
-                <div className="w-80 h-80 bg-white rounded-2xl p-4 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                  <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
-                    <img
-                      src={
-                        leadershipContent.leaderImage ||
-                        "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg"
-                      }
-                      alt={`${leadershipContent.leaderName || "Boris Madjunkov"} - ${leadershipContent.leaderPosition || "General Director"}`}
-                      className="w-full h-full object-cover rounded-xl"
-                    />
+          {isLeadershipLoading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                {/* Photo Section */}
+                <div className="flex justify-center lg:justify-start">
+                  <div className="relative">
+                    {/* Main photo container */}
+                    <div className="w-80 h-80 bg-white rounded-2xl p-4 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                      <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
+                        <img
+                          src={
+                            leadershipContent.leaderImage ||
+                            "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg"
+                          }
+                          alt={`${leadershipContent.leaderName || "Boris Madjunkov"} - ${leadershipContent.leaderPosition || "General Director"}`}
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Decorative elements */}
+                    <div className="absolute -top-4 -right-4 w-8 h-8 bg-white/20 rounded-full"></div>
+                    <div className="absolute -bottom-6 -left-6 w-12 h-12 bg-white/10 rounded-full"></div>
+                    <div className="absolute top-1/2 -right-8 w-4 h-4 bg-white/30 rounded-full"></div>
                   </div>
                 </div>
 
-                {/* Decorative elements */}
-                <div className="absolute -top-4 -right-4 w-8 h-8 bg-white/20 rounded-full"></div>
-                <div className="absolute -bottom-6 -left-6 w-12 h-12 bg-white/10 rounded-full"></div>
-                <div className="absolute top-1/2 -right-8 w-4 h-4 bg-white/30 rounded-full"></div>
-              </div>
-            </div>
+                {/* Content Section */}
+                <div className="text-white space-y-6">
+                  <div className="space-y-4">
+                    <div className="inline-block px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
+                      <span className="text-sm font-medium text-white/90">
+                        {t("aboutUs.leadershipMessage")}
+                      </span>
+                    </div>
 
-            {/* Content Section */}
-            <div className="text-white space-y-6">
-              <div className="space-y-4">
-                <div className="inline-block px-4 py-2 bg-white/10 rounded-full backdrop-blur-sm">
-                  <span className="text-sm font-medium text-white/90">
-                    {t("aboutUs.leadershipMessage")}
-                  </span>
-                </div>
+                    <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
+                      {leadershipContent.title ||
+                        t("aboutUs.leadershipTitle")}
+                    </h2>
+                  </div>
 
-                <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
-                  {leadershipContent.title ||
-                    t("aboutUs.leadershipTitle")}
-                </h2>
-              </div>
+                  <div className="space-y-6 text-lg leading-relaxed text-white/90">
+                    <p>
+                      {leadershipContent.description1 ||
+                        t("aboutUs.leadershipDescription1")}
+                    </p>
 
-              <div className="space-y-6 text-lg leading-relaxed text-white/90">
-                <p>
-                  {leadershipContent.description1 ||
-                    t("aboutUs.leadershipDescription1")}
-                </p>
+                    <p>
+                      {leadershipContent.description2 ||
+                        t("aboutUs.leadershipDescription2")}
+                    </p>
+                  </div>
 
-                <p>
-                  {leadershipContent.description2 ||
-                    t("aboutUs.leadershipDescription2")}
-                </p>
-              </div>
+                  <div className="pt-4">
+                    <div className="space-y-2">
+                      <h3 className="text-2xl font-bold text-white">
+                        {leadershipContent.leaderName || t("aboutUs.leaderName")}
+                      </h3>
+                      <p className="text-blue-200 font-semibold text-lg">
+                        {leadershipContent.leaderPosition || t("aboutUs.leaderPosition")}
+                      </p>
+                    </div>
 
-              <div className="pt-4">
-                <div className="space-y-2">
-                  <h3 className="text-2xl font-bold text-white">
-                    {leadershipContent.leaderName || t("aboutUs.leaderName")}
-                  </h3>
-                  <p className="text-blue-200 font-semibold text-lg">
-                    {leadershipContent.leaderPosition || t("aboutUs.leaderPosition")}
-                  </p>
-                </div>
-
-                {/* Signature line */}
-                <div className="mt-6 pt-4 border-t border-white/20">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-0.5 bg-blue-200"></div>
-                    <span className="text-sm text-white/70 font-medium tracking-wider">
-                      KONTI HIDROPLAST
-                    </span>
+                    {/* Signature line */}
+                    <div className="mt-6 pt-4 border-t border-white/20">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-0.5 bg-blue-200"></div>
+                        <span className="text-sm text-white/70 font-medium tracking-wider">
+                          KONTI HIDROPLAST
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </>
+          )}
         </div>
       </section>
       {/* Team Section */}
@@ -1108,13 +1148,6 @@ export default function AboutUs() {
                 {t("aboutUs.projectsTitle") || t("aboutUs.productsTitle")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
-            </div>
-            {/* Language Indicator */}
-            <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
-              <Globe className="h-4 w-4" />
-              <span>
-                {t("aboutUs.displayingIn")} {language === 'en' ? t("aboutUs.englishLang") : language === 'mk' ? t("aboutUs.macedonianLang") : t("aboutUs.germanLang")}
-              </span>
             </div>
           </div>
 

@@ -35,6 +35,19 @@ export function TranslatableFieldEditor({
 }: TranslatableFieldEditorProps) {
   const [activeTab, setActiveTab] = React.useState(defaultLanguage || 'en');
 
+  // Debug props
+  React.useEffect(() => {
+    console.log(`TranslatableFieldEditor ${fieldName}:`, {
+      label,
+      fieldName,
+      type,
+      currentTranslations,
+      originalValue,
+      defaultLanguage,
+      activeTab
+    });
+  }, [label, fieldName, type, currentTranslations, originalValue, defaultLanguage, activeTab]);
+
   // Update active tab when defaultLanguage changes
   React.useEffect(() => {
     if (defaultLanguage && defaultLanguage !== activeTab) {
@@ -43,6 +56,10 @@ export function TranslatableFieldEditor({
   }, [defaultLanguage]);
 
   const handleFieldChange = (languageCode: string, value: string) => {
+    console.log(`=== TranslatableFieldEditor.handleFieldChange ===`);
+    console.log(`Language: ${languageCode}, Field: ${fieldName}, Value: ${value}`);
+    console.log('Current translations before update:', currentTranslations);
+    
     const updatedTranslations = {
       ...currentTranslations,
       [languageCode]: {
@@ -51,11 +68,13 @@ export function TranslatableFieldEditor({
       }
     };
     
-    console.log(`Field change - Language: ${languageCode}, Field: ${fieldName}, Value: ${value}`);
-    console.log('Current translations:', currentTranslations);
     console.log('Updated translations:', updatedTranslations);
+    console.log('Calling onChange with updated translations');
     
+    // Call onChange with the updated translations
     onChange(updatedTranslations);
+    
+    console.log('onChange called successfully');
   };
 
   const languages = [
@@ -82,7 +101,10 @@ export function TranslatableFieldEditor({
               <Textarea
                 id={`${lang.code}-${fieldName}`}
                 value={currentTranslations[lang.code as keyof typeof currentTranslations]?.[fieldName] || ''}
-                onChange={(e) => handleFieldChange(lang.code, e.target.value)}
+                onChange={(e) => {
+                  console.log(`Textarea change - ${lang.code}.${fieldName}:`, e.target.value);
+                  handleFieldChange(lang.code, e.target.value);
+                }}
                 placeholder={lang.code === 'en' 
                   ? `Enter ${label.toLowerCase()} in English`
                   : `Translate ${label.toLowerCase()} to ${lang.name}`
@@ -95,7 +117,10 @@ export function TranslatableFieldEditor({
                 id={`${lang.code}-${fieldName}`}
                 type="text"
                 value={currentTranslations[lang.code as keyof typeof currentTranslations]?.[fieldName] || ''}
-                onChange={(e) => handleFieldChange(lang.code, e.target.value)}
+                onChange={(e) => {
+                  console.log(`Input change - ${lang.code}.${fieldName}:`, e.target.value);
+                  handleFieldChange(lang.code, e.target.value);
+                }}
                 placeholder={lang.code === 'en' 
                   ? `Enter ${label.toLowerCase()} in English`
                   : `Translate ${label.toLowerCase()} to ${lang.name}`
