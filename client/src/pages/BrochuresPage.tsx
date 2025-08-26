@@ -173,20 +173,6 @@ function BrochuresPage() {
                 language === 'de' ? 'Laden Sie umfassende Produktdokumentation, technische Spezifikationen und Kataloge für alle unsere Rohr- und Fitting-Lösungen herunter.' : 
                 'Download comprehensive product documentation, technical specifications, and catalogs for all our pipe and fitting solutions.'}
              </p>
-             
-             {/* Language indicator */}
-             <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full">
-               <span className="text-sm">
-                 {language === 'en' ? 'Current Language:' : 
-                  language === 'mk' ? 'Тековен јазик:' : 
-                  language === 'de' ? 'Aktuelle Sprache:' : 'Current Language:'}
-               </span>
-               <span className="font-medium">
-                 {language === 'en' ? '🇺🇸 English' : 
-                  language === 'mk' ? '🇲🇰 Macedonian' : 
-                  language === 'de' ? '🇩🇪 German' : language}
-               </span>
-             </div>
           </div>
         </div>
       </section>
