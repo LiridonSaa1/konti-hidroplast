@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import * as pdfjsLib from 'pdfjs-dist';
 
-// Set the worker source for PDF.js
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+// Dynamic import for pdfjs-dist to avoid build issues
+let pdfjsLib: any = null;
 
 interface PDFPreviewProps {
   url: string;
@@ -22,6 +21,20 @@ export function PDFPreview({ url, className = "", alt = "PDF Preview" }: PDFPrev
       try {
         setIsLoading(true);
         setError(null);
+
+        // Dynamically import pdfjs-dist if not already loaded
+        if (!pdfjsLib) {
+          try {
+            pdfjsLib = await import('pdfjs-dist');
+            // Set the worker source for PDF.js
+            pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+          } catch (importError) {
+            console.error('Failed to import pdfjs-dist:', importError);
+            setError('PDF library failed to load');
+            setIsLoading(false);
+            return;
+          }
+        }
 
         // Load the PDF document
         const loadingTask = pdfjsLib.getDocument(url);
@@ -53,7 +66,6 @@ export function PDFPreview({ url, className = "", alt = "PDF Preview" }: PDFPrev
         const renderContext = {
           canvasContext: context,
           viewport: scaledViewport,
-          canvas: canvas,
         };
 
         await page.render(renderContext).promise;

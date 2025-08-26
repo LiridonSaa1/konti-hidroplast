@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import type { CertificateCategory, CertificateSubcategory, Certificate } from "@shared/schema";
 import { PDFPreview } from "@/components/ui/pdf-preview";
-import "pdfjs-dist";
 
 // Interface for organized certificate data
 interface OrganizedCategory {
@@ -1009,11 +1008,11 @@ function CertificatesPage() {
               {/* Simple certificate grid for categories without subsections */}
               {category.certificates && (
                 <div className="space-y-8">
-                  <div className="text-center mb-8">
+                  {/* <div className="text-center mb-8">
                     <h3 className="text-2xl font-semibold text-[#1c2d56]">
                       Direct Certificates
                     </h3>
-                  </div>
+                  </div> */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
                     {category.certificates.map((certificate, index) => (
                       <CertificateCard
