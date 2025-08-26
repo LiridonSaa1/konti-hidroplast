@@ -852,18 +852,27 @@ function CertificatesPage() {
               <Download className="w-3 h-3 mr-2" />
               View PDF
             </a>
-          ) : (
+          ) : hasImage ? (
+            // Show image view button if only image exists
             <button
               onClick={() => {
-                if (hasImage) {
-                  window.open(hasImage, '_blank', 'noopener,noreferrer');
-                }
+                window.open(hasImage, '_blank', 'noopener,noreferrer');
               }}
               className="inline-flex items-center w-full justify-center px-3 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white text-sm rounded-lg transition-colors"
-              data-testid={`certificate-${categoryId}-${index}`}
+              data-testid={`image-view-${categoryId}-${index}`}
             >
               <Shield className="w-3 h-3 mr-2" />
-              {t("productPages.certificateOnly")}
+              View Image
+            </button>
+          ) : (
+            // No files - show placeholder button
+            <button
+              className="inline-flex items-center w-full justify-center px-3 py-2 bg-gray-400 cursor-not-allowed text-white text-sm rounded-lg"
+              disabled
+              data-testid={`no-file-${categoryId}-${index}`}
+            >
+              <Shield className="w-3 h-3 mr-2" />
+              No Preview
             </button>
           )}
         </div>
