@@ -850,7 +850,7 @@ function CertificatesPage() {
               data-testid={`pdf-download-${categoryId}-${index}`}
             >
               <Download className="w-3 h-3 mr-2" />
-              View PDF
+              {t("certificates.viewPdf")}
             </a>
           ) : hasImage ? (
             // Show image view button if only image exists
@@ -862,7 +862,7 @@ function CertificatesPage() {
               data-testid={`image-view-${categoryId}-${index}`}
             >
               <Shield className="w-3 h-3 mr-2" />
-              View Image
+              {t("certificates.viewImage")}
             </button>
           ) : (
             // No files - show placeholder button
@@ -1040,13 +1040,26 @@ function CertificatesPage() {
                 <div className="space-y-12">
                   {category.subsections.map((subsection, subsectionIndex) => (
                     <div key={subsectionIndex} className="space-y-6">
-                      {/* Subcategory Header */}
-                      <div className="pl-6 py-4">
-                        <h3 className="text-xl font-semibold text-[#1c2d56]">
-                          {subsection.title}
-                        </h3>
+                      {/* Subcategory Header with Item Count Indicator */}
+                      <div className="text-center py-4">
+                        <div className="flex items-center justify-center gap-3 mb-2">
+                          <h3 className="text-xl font-semibold text-[#1c2d56]">
+                            {subsection.title}
+                          </h3>
+                          {/* Visual indicator showing subcategory has items */}
+                          {subsection.certificates.length > 0 && (
+                            <div className="flex items-center gap-2">
+                              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                              <span className="bg-green-100 text-green-800 text-xs font-medium px-2 py-1 rounded-full">
+                                {subsection.certificates.length} {subsection.certificates.length === 1 ? 'item' : 'items'}
+                              </span>
+                            </div>
+                          )}
+                        </div>
                         {'description' in subsection && subsection.description && (
-                          <p className="text-gray-600 mt-2">{subsection.description}</p>
+                          <p className="text-gray-600 mt-2 max-w-3xl mx-auto">
+                            {subsection.description}
+                          </p>
                         )}
                       </div>
                       
