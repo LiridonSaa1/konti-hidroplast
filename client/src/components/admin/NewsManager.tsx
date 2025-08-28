@@ -310,17 +310,41 @@ export function NewsManager() {
       return;
     }
 
+    // Ensure translations have the correct structure
+    const structuredTranslations = {
+      en: {
+        title: formData.translations?.en?.title || formData.title || "",
+        description: formData.translations?.en?.description || formData.description || ""
+      },
+      mk: {
+        title: formData.translations?.mk?.title || "",
+        description: formData.translations?.mk?.description || ""
+      },
+      de: {
+        title: formData.translations?.de?.title || "",
+        description: formData.translations?.de?.description || ""
+      }
+    };
+
     // Prepare sections with proper multi-language support
     const sections = formData.sections.map(section => ({
       id: section.id,
       type: section.type,
-      title: section.title.en, // Default title for backward compatibility
-      content: section.content.en, // Default content for backward compatibility
+      title: section.title.en || "", // Default title for backward compatibility
+      content: section.content.en || "", // Default content for backward compatibility
       imageUrl: section.imageUrl,
       imagePosition: section.imagePosition,
-      // Include multi-language content in the section data
-      titleTranslations: section.title,
-      contentTranslations: section.content
+      // Store multi-language content in a nested structure for proper retrieval
+      titleTranslations: {
+        en: section.title.en || "",
+        mk: section.title.mk || "",
+        de: section.title.de || ""
+      },
+      contentTranslations: {
+        en: section.content.en || "",
+        mk: section.content.mk || "",
+        de: section.content.de || ""
+      }
     }));
 
     const articleData: InsertNewsArticle = {
@@ -332,18 +356,50 @@ export function NewsManager() {
       published: formData.published,
       sortOrder: formData.sortOrder,
       sections: sections,
-      translations: formData.translations,
+      translations: structuredTranslations,
       defaultLanguage: 'en'
     };
 
     console.log('=== Submitting Article Data ===');
     console.log('Form Data:', formData);
     console.log('Article Data:', articleData);
-    console.log('Translations:', formData.translations);
-    console.log('Macedonian title:', formData.translations.mk?.title);
-    console.log('German title:', formData.translations.de?.title);
-    console.log('Macedonian description:', formData.translations.mk?.description);
-    console.log('German description:', formData.translations.de?.description);
+    console.log('Original translations:', formData.translations);
+    console.log('Structured translations:', structuredTranslations);
+    console.log('Macedonian title:', structuredTranslations.mk?.title);
+    console.log('German title:', structuredTranslations.de?.title);
+    console.log('Macedonian description:', structuredTranslations.mk?.description);
+    console.log('German description:', structuredTranslations.de?.description);
+    console.log('Sections:', formData.sections);
+    console.log('Processed sections:', sections);
+    
+    // Debug section translations
+    formData.sections.forEach((section: MultiLanguageSection, index: number) => {
+      console.log(`Section ${index + 1} translations:`, {
+        title: {
+          en: section.title.en,
+          mk: section.title.mk,
+          de: section.title.de
+        },
+        content: {
+          en: section.content.en,
+          mk: section.content.mk,
+          de: section.content.de
+        }
+      });
+    });
+    
+    // Debug processed sections structure
+    console.log('=== Processed Sections Structure ===');
+    sections.forEach((section: any, index: number) => {
+      console.log(`Processed Section ${index + 1}:`, {
+        id: section.id,
+        type: section.type,
+        title: section.title,
+        content: section.content,
+        titleTranslations: section.titleTranslations,
+        contentTranslations: section.contentTranslations
+      });
+    });
 
     if (selectedArticle) {
       updateMutation.mutate({ id: selectedArticle.id, article: articleData });
@@ -385,26 +441,53 @@ export function NewsManager() {
       imageUrl: article.imageUrl || "",
       published: article.published || false,
       sortOrder: article.sortOrder || 0,
-      sections: (article.sections as any)?.map((section: any) => ({
-        id: section.id || crypto.randomUUID(),
-        type: section.type || 'text',
-        title: {
-          en: section.title?.en || section.title || "",
-          mk: section.title?.mk || "",
-          de: section.title?.de || ""
-        },
-        content: {
-          en: section.content?.en || section.content || "",
-          mk: section.content?.mk || "",
-          de: section.content?.de || ""
-        },
-        imageUrl: section.imageUrl || "",
-        imagePosition: section.imagePosition || 'right'
-      })) || [],
+             sections: (article.sections as any)?.map((section: any) => ({
+         id: section.id || crypto.randomUUID(),
+         type: section.type || 'text',
+         title: {
+           en: section.titleTranslations?.en || section.title || "",
+           mk: section.titleTranslations?.mk || "",
+           de: section.titleTranslations?.de || ""
+         },
+         content: {
+           en: section.contentTranslations?.en || section.content || "",
+           mk: section.contentTranslations?.mk || "",
+           de: section.contentTranslations?.de || ""
+         },
+         imageUrl: section.imageUrl || "",
+         imagePosition: section.imagePosition || 'right'
+       })) || [],
       translations: structuredTranslations
     };
     
     console.log('New form data:', newFormData);
+    
+    // Debug sections data
+    if (newFormData.sections.length > 0) {
+      console.log('=== Sections Data Debug ===');
+      newFormData.sections.forEach((section: any, index: number) => {
+        console.log(`Section ${index + 1}:`, {
+          title: section.title,
+          content: section.content,
+          type: section.type
+        });
+      });
+    }
+    
+    // Debug original article sections
+    if (article.sections && Array.isArray(article.sections)) {
+      console.log('=== Original Article Sections ===');
+      article.sections.forEach((section: any, index: number) => {
+        console.log(`Original Section ${index + 1}:`, {
+          id: section.id,
+          type: section.type,
+          title: section.title,
+          content: section.content,
+          titleTranslations: section.titleTranslations,
+          contentTranslations: section.contentTranslations
+        });
+      });
+    }
     
     // Set the form data and open the dialog
     setFormData(newFormData);
@@ -736,12 +819,14 @@ export function NewsManager() {
                 currentTranslations={formData.translations}
                 originalValue={formData.translations.en?.title || ""}
                 onChange={(translations) => {
+                  console.log('Title translations changed:', translations);
                   setFormData(prev => {
                     const newData = {
                       ...prev,
                       title: translations.en?.title || "",
                       translations
                     };
+                    console.log('Updated form data after title change:', newData);
                     return newData;
                   });
                 }}
@@ -755,12 +840,14 @@ export function NewsManager() {
                 currentTranslations={formData.translations}
                 originalValue={formData.translations.en?.description || ""}
                 onChange={(translations) => {
+                  console.log('Description translations changed:', translations);
                   setFormData(prev => {
                     const newData = {
                       ...prev,
                       description: translations.en?.description || "",
                       translations
                     };
+                    console.log('Updated form data after description change:', newData);
                     return newData;
                   });
                 }}
