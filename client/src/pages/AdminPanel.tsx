@@ -509,7 +509,7 @@ export default function AdminPanel() {
                   className="w-full justify-start"
                   data-testid="nav-gallery"
                 >
-                  <Image className="h-4 w-4 mr-2" />
+                  <FolderOpen className="h-4 w-4 mr-2" />
                   Gallery
                   {isGalleryDropdownOpen ? (
                     <ChevronDown className="h-4 w-4 ml-auto" />
@@ -541,7 +541,7 @@ export default function AdminPanel() {
                   }}
                   data-testid="nav-gallery-items"
                 >
-                  <Image className={`h-3 w-3 mr-2 ${activeTab === "gallery-items" ? "text-blue-600" : ""}`} />
+                  <FolderOpen className={`h-3 w-3 mr-2 ${activeTab === "gallery-items" ? "text-blue-600" : ""}`} />
                   Gallery Items
                 </Button>
               </CollapsibleContent>
@@ -834,7 +834,7 @@ export default function AdminPanel() {
                 <Card data-testid="card-gallery-items-count" className="hover:shadow-md transition-shadow">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Gallery Items</CardTitle>
-                    <Image className="h-4 w-4 text-rose-600" />
+                    <FolderOpen className="h-4 w-4 text-rose-600" />
                   </CardHeader>
                   <CardContent>
                     <div className="text-2xl font-bold" data-testid="gallery-items-count">{galleryItemsCount}</div>
@@ -972,30 +972,6 @@ export default function AdminPanel() {
                     <CardContent className="space-y-2">
                       <Button 
                         className="w-full justify-start text-sm sm:text-base" 
-                        onClick={() => {
-                          setActiveTab("products");
-                          setIsMobileMenuOpen(false);
-                        }} 
-                        data-testid="button-add-product"
-                      >
-                        <Package className="h-4 w-4 mr-2" />
-                        Add New Product
-                      </Button>
-                      <Button 
-                        className="w-full justify-start text-sm sm:text-base" 
-                        variant="outline" 
-                        onClick={() => {
-                          setActiveTab("media");
-                          setIsMobileMenuOpen(false);
-                        }} 
-                        data-testid="button-upload-media"
-                      >
-                        <Image className="h-4 w-4 mr-2" />
-                        Upload Media
-                      </Button>
-                      <Button 
-                        className="w-full justify-start text-sm sm:text-base" 
-                        variant="outline" 
                         onClick={() => {
                           setActiveTab("news");
                           setIsMobileMenuOpen(false);

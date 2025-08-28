@@ -383,20 +383,20 @@ function CareerPage() {
 
             <div className="mt-12 pt-8 border-t border-gray-200">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                Contact Information
+                {t("careerPage.contactInformation")}
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm text-gray-600">
                 <div className="flex items-center">
                   <MapPin className="w-4 h-4 mr-2 text-[#1c2d56]" />
-                  Industriska 5, 1480 Gevgelija, North Macedonia
+                  {companyInfo.address || "Industriska 5, 1480 Gevgelija, North Macedonia"}
                 </div>
                 <div className="flex items-center">
                   <Phone className="w-4 h-4 mr-2 text-[#1c2d56]" />
-                  +389 34 215 225
+                  {companyInfo.phones && companyInfo.phones.length > 0 ? companyInfo.phones[0] : "+389 34 215 225"}
                 </div>
                 <div className="flex items-center">
                   <Mail className="w-4 h-4 mr-2 text-[#1c2d56]" />
-                  hr@konti-hidroplast.com.mk
+                  {companyInfo.email || "hr@konti-hidroplast.com.mk"}
                 </div>
               </div>
             </div>

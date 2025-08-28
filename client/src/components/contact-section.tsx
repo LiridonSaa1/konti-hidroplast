@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { useState } from "react";
 import { MapPin, Phone, Share2, ExternalLink } from "lucide-react";
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
@@ -22,6 +23,7 @@ export function ContactSection() {
   const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.1 });
   const { toast } = useToast();
   const { t } = useLanguage();
+  const { data: companyInfo } = useCompanyInfo();
   const [formData, setFormData] = useState<ContactFormData>({
     fullName: "",
     email: "",
@@ -31,13 +33,15 @@ export function ContactSection() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const phoneNumbers = [
-    "+389 34 215 225",
-    "+389 34 212 064",
-    "+389 34 212 226",
-    "+389 34 211 964",
-    "+389 34 211 757",
-  ];
+  const phoneNumbers = companyInfo.phones && companyInfo.phones.length > 0 
+    ? companyInfo.phones 
+    : [
+        "+389 34 215 225",
+        "+389 34 212 064",
+        "+389 34 212 226",
+        "+389 34 211 964",
+        "+389 34 211 757",
+      ];
 
   const handleInputChange = (
     field: keyof ContactFormData,
@@ -87,10 +91,21 @@ export function ContactSection() {
         throw new Error('Failed to send message');
       }
       
-      toast({
-        title: t('contact.success.title'),
-        description: t('contact.success.message'),
-      });
+      const result = await response.json();
+      
+      // Show success message with email status
+      if (result.emailsSent) {
+        toast({
+          title: t('contact.success.title'),
+          description: `${t('contact.success.message')} Emails sent successfully.`,
+        });
+      } else {
+        toast({
+          title: t('contact.success.title'),
+          description: `${t('contact.success.message')} Note: Email notifications are currently disabled.`,
+          variant: "default",
+        });
+      }
       
       // Reset form
       setFormData({
@@ -101,6 +116,7 @@ export function ContactSection() {
         message: "",
       });
     } catch (error) {
+      console.error('Contact form submission error:', error);
       toast({
         title: t('contact.error.title'),
         description: t('contact.error.message'),

@@ -234,7 +234,7 @@ function ProductsPage() {
         </div>
       </section>
       {/* Products Section */}
-      <section className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8">
+      <section className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl pt-8 pb-8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">

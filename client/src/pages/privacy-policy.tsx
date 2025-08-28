@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowLeft, Shield, Eye, Lock, Users, FileText, Mail, MapPin, Phone } from "lucide-react";
@@ -8,7 +10,13 @@ import { useLocation } from "wouter";
 
 export default function PrivacyPolicyPage() {
   const { t } = useLanguage();
+  const { data: companyInfo } = useCompanyInfo();
   const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    // Set page title
+    document.title = `Privacy Policy - ${companyInfo.companyName || "Konti Hidroplast"}`;
+  }, [companyInfo.companyName]);
 
   const handleBackToHome = () => {
     setLocation("/");
@@ -108,9 +116,8 @@ export default function PrivacyPolicyPage() {
                 <div className="bg-gray-50 rounded-lg p-4">
                   <p className="text-gray-700">
                     <strong>{t('privacyPage.ourPostalAddress')}</strong><br />
-                    Konti Hidroplast Dooel Gevgelija<br />
-                    Industrial Street No. 5<br />
-                    1480 Gevgelija
+                    {companyInfo.companyName || "Konti Hidroplast Dooel Gevgelija"}<br />
+                    {companyInfo.address || "Industrial Street No. 5, 1480 Gevgelija"}
                   </p>
                 </div>
               </CardContent>
@@ -284,26 +291,38 @@ export default function PrivacyPolicyPage() {
                     <MapPin className="text-[#1c2d56] mr-3 mt-1 flex-shrink-0" />
                     <div>
                       <strong>{t('privacyPage.address')}</strong><br />
-                      Industriska 5, 1480 Gevgelija,<br />
-                      North Macedonia
+                      {companyInfo.address || "Industriska 5, 1480 Gevgelija, North Macedonia"}
                     </div>
                   </div>
                   <div className="flex items-start">
                     <Phone className="text-[#1c2d56] mr-3 mt-1 flex-shrink-0" />
                     <div>
                       <strong>{t('privacyPage.phoneNumbers')}</strong><br />
-                      +389 34 215 225<br />
-                      +389 34 212 064<br />
-                      +389 34 212 226<br />
-                      +389 34 211 964<br />
-                      +389 34 211 757
+                      {companyInfo.phones && companyInfo.phones.length > 0 ? (
+                        companyInfo.phones.map((phone, index) => (
+                          <span key={index}>
+                            {phone}
+                            {index < companyInfo.phones.length - 1 && <br />}
+                          </span>
+                        ))
+                      ) : (
+                        <>
+                          +389 34 215 225<br />
+                          +389 34 212 064<br />
+                          +389 34 212 226<br />
+                          +389 34 211 964<br />
+                          +389 34 211 757
+                        </>
+                      )}
                     </div>
                   </div>
                   <div className="flex items-start">
                     <Mail className="text-[#1c2d56] mr-3 mt-1 flex-shrink-0" />
                     <div>
                       <strong>{t('privacyPage.email')}</strong><br />
-                      <a href="mailto:zorical@konti-hidroplast.com.mk" className="text-blue-600 hover:underline">zorical@konti-hidroplast.com.mk</a>
+                      <a href={`mailto:${companyInfo.email || 'zorical@konti-hidroplast.com.mk'}`} className="text-blue-600 hover:underline">
+                        {companyInfo.email || 'zorical@konti-hidroplast.com.mk'}
+                      </a>
                     </div>
                   </div>
                 </div>

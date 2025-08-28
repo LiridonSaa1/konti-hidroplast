@@ -229,7 +229,7 @@ export const jobApplications = pgTable("job_applications", {
 // Brevo configuration table
 export const brevoConfig = pgTable("brevo_config", {
   id: serial("id").primaryKey(),
-  apiKey: text("api_key").notNull(), // SMTP key for email sending
+  apiKey: text("api_key"), // SMTP key for email sending (optional)
   brevoApiKey: text("brevo_api_key"), // Brevo API key for API operations (optional)
   senderEmail: text("sender_email").notNull(), // SMTP login email for authentication
   validatedSenderEmail: text("validated_sender_email"), // Validated email for "from" field

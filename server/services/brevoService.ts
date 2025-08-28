@@ -1,31 +1,56 @@
-import nodemailer from 'nodemailer';
-import { storage } from '../storage';
-import type { InsertContactMessage, InsertJobApplication } from '@shared/schema';
+import * as nodemailer from 'nodemailer';
+import { storage } from '../storage.js';
 
-class BrevoService {
+export class BrevoService {
   private transporter: nodemailer.Transporter | null = null;
-  
-  private async getConfig() {
+
+  async getConfig() {
     return await storage.getBrevoConfig();
   }
-  
+
+  async isBrevoConfigured(): Promise<boolean> {
+    try {
+      const config = await this.getConfig();
+      return !!(config && config.isActive && (config.apiKey || config.brevoApiKey) && config.senderEmail);
+    } catch (error) {
+      console.error('Error checking Brevo configuration:', error);
+      return false;
+    }
+  }
+
   private async createTransporter() {
     const config = await this.getConfig();
     
-    if (!config || !config.isActive || !config.apiKey) {
+    if (!config || !config.isActive || (!config.apiKey && !config.brevoApiKey)) {
       console.log('Brevo not configured or inactive');
       return null;
     }
     
     try {
+      // Use apiKey (SMTP key) if available, otherwise use brevoApiKey
+      const smtpKey = config.apiKey || config.brevoApiKey;
+      
+      console.log('Creating Brevo transporter with config:', {
+        host: 'smtp-relay.brevo.com',
+        port: 587,
+        secure: false,
+        auth: {
+          user: config.senderEmail,
+          pass: smtpKey
+        }
+      });
+
       const transporter = nodemailer.createTransport({
         host: 'smtp-relay.brevo.com',
         port: 587,
         secure: false,
         auth: {
           user: config.senderEmail, // This should be your SMTP login email from Brevo SMTP tab
-          pass: config.apiKey // This should be your SMTP key (not API key)
+          pass: smtpKey // This should be your SMTP key (not API key)
         },
+        connectionTimeout: 10000, // 10 seconds
+        greetingTimeout: 10000,   // 10 seconds
+        socketTimeout: 10000      // 10 seconds
       });
       
       this.transporter = transporter;
@@ -35,477 +60,344 @@ class BrevoService {
       return null;
     }
   }
-  
-  async testConnection(): Promise<boolean> {
+
+  async testConnection(): Promise<{ success: boolean; message: string }> {
     try {
-      const transporter = await this.createTransporter();
-      if (!transporter) return false;
+      console.log('=== Testing Brevo Connection ===');
       
+      // Check if configuration exists
+      const config = await this.getConfig();
+      if (!config) {
+        console.log('No Brevo configuration found');
+        return { success: false, message: 'No Brevo configuration found' };
+      }
+      
+      if (!config.isActive) {
+        console.log('Brevo configuration is inactive');
+        return { success: false, message: 'Brevo configuration is inactive' };
+      }
+      
+      if (!config.apiKey && !config.brevoApiKey) {
+        console.log('No API key configured');
+        return { success: false, message: 'No API key configured' };
+      }
+      
+      if (!config.senderEmail) {
+        console.log('No sender email configured');
+        return { success: false, message: 'No sender email configured' };
+      }
+      
+      console.log('Configuration check passed, creating transporter...');
+      
+      // Create transporter
+      const transporter = await this.createTransporter();
+      if (!transporter) {
+        console.log('Failed to create transporter');
+        return { success: false, message: 'Failed to create email transporter' };
+      }
+      
+      console.log('Transporter created, testing connection...');
+      
+      // Test connection
       await transporter.verify();
-      return true;
-    } catch (error) {
-      console.error('Brevo connection test failed:', error);
-      return false;
+      console.log('Connection verified successfully');
+      
+      return { success: true, message: 'Connection successful' };
+    } catch (error: any) {
+      console.error('Connection test failed:', error);
+      
+      let message = 'Connection failed';
+      if (error.code === 'EAUTH') {
+        message = 'Invalid SMTP credentials - check your SMTP login email and key';
+      } else if (error.code === 'ECONNECTION') {
+        message = 'Connection refused - check your network and SMTP settings';
+      } else if (error.code === 'ETIMEDOUT') {
+        message = 'Connection timeout - check your network connection';
+      } else if (error.message) {
+        message = `Connection failed: ${error.message}`;
+      }
+      
+      return { success: false, message };
     }
   }
-  
-  async sendContactNotification(contactData: InsertContactMessage): Promise<boolean> {
+
+  async testEmailSending(): Promise<{ success: boolean; message: string }> {
     try {
+      console.log('=== Testing Brevo Email Sending ===');
+      
       const config = await this.getConfig();
-      if (!config || !config.isActive) return false;
+      if (!config || !config.isActive || (!config.apiKey && !config.brevoApiKey) || !config.senderEmail) {
+        return { success: false, message: 'Brevo not properly configured' };
+      }
       
       const transporter = await this.createTransporter();
-      if (!transporter) return false;
+      if (!transporter) {
+        return { success: false, message: 'Failed to create email transporter' };
+      }
       
-      const fromEmail = config.validatedSenderEmail || config.senderEmail;
-      const toEmail = config.recipientEmail || fromEmail;
+      console.log('Sending test email...');
       
-      const mailOptions = {
-        from: `"${config.senderName}" <${fromEmail}>`,
-        to: toEmail,
-        subject: `New Contact Form Submission - ${contactData.fullName}`,
-        html: this.generateNotificationEmailHTML(contactData),
-        text: this.generateNotificationEmailText(contactData)
+      const testEmail = {
+        from: `"${config.senderName || 'Test'}" <${config.senderEmail}>`,
+        to: config.senderEmail, // Send to self for testing
+        subject: 'Brevo Connection Test',
+        text: 'This is a test email to verify Brevo SMTP configuration is working correctly.',
+        html: '<p>This is a test email to verify Brevo SMTP configuration is working correctly.</p>'
       };
       
-      const result = await transporter.sendMail(mailOptions);
-      console.log('Contact notification email sent successfully');
-      console.log('Email sent to:', toEmail);
-      console.log('Email details:', {
-        from: mailOptions.from,
-        to: mailOptions.to,
-        subject: mailOptions.subject,
-        messageId: result.messageId
+      const result = await transporter.sendMail(testEmail);
+      console.log('Test email sent successfully:', result.messageId);
+      
+      return { success: true, message: 'Test email sent successfully' };
+    } catch (error: any) {
+      console.error('Test email failed:', error);
+      
+      let message = 'Test email failed';
+      if (error.code === 'EAUTH') {
+        message = 'Authentication failed - check SMTP credentials';
+      } else if (error.code === 'ECONNECTION') {
+        message = 'Connection failed - check network and SMTP settings';
+      } else if (error.message) {
+        message = `Test email failed: ${error.message}`;
+      }
+      
+      return { success: false, message };
+    }
+  }
+
+  async sendContactNotification(contactData: any): Promise<boolean> {
+    try {
+      console.log('=== Sending Contact Notification Email ===');
+      
+      const config = await this.getConfig();
+      if (!config || !config.isActive || (!config.apiKey && !config.brevoApiKey) || !config.senderEmail) {
+        console.log('Brevo not configured - skipping contact notification');
+        return false;
+      }
+      
+      console.log('Brevo config found:', {
+        isActive: config.isActive,
+        hasApiKey: !!config.apiKey,
+        hasBrevoApiKey: !!config.brevoApiKey,
+        senderEmail: config.senderEmail,
+        senderName: config.senderName
       });
+      
+      const transporter = await this.createTransporter();
+      if (!transporter) {
+        console.log('Failed to create transporter for contact notification');
+        return false;
+      }
+      
+      console.log('Transporter created, sending contact notification...');
+      
+      const emailContent = {
+        from: `"${config.senderName || 'Website Contact'}" <${config.senderEmail}>`,
+        to: config.senderEmail,
+        subject: 'New Contact Form Submission',
+        text: `
+          New contact form submission:
+          
+          Name: ${contactData.fullName}
+          Email: ${contactData.email}
+          Phone: ${contactData.phone || 'Not provided'}
+          Company: ${contactData.company || 'Not provided'}
+          
+          Message:
+          ${contactData.message}
+        `,
+        html: `
+          <h2>New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${contactData.fullName}</p>
+          <p><strong>Email:</strong> ${contactData.email}</p>
+          <p><strong>Phone:</strong> ${contactData.phone || 'Not provided'}</p>
+          <p><strong>Company:</strong> ${contactData.company || 'Not provided'}</p>
+          <p><strong>Message:</strong></p>
+          <p>${contactData.message.replace(/\n/g, '<br>')}</p>
+        `
+      };
+      
+      const result = await transporter.sendMail(emailContent);
+      console.log('Contact notification email sent successfully:', result.messageId);
       return true;
     } catch (error) {
-      console.error('Failed to send contact notification:', error);
+      console.error('Failed to send contact notification email:', error);
       return false;
     }
   }
-  
-  async sendAutoReply(contactData: InsertContactMessage): Promise<boolean> {
+
+  async sendAutoReply(contactData: any): Promise<boolean> {
     try {
+      console.log('=== Sending Auto-Reply Email ===');
+      
       const config = await this.getConfig();
-      if (!config || !config.isActive) return false;
+      if (!config || !config.isActive || (!config.apiKey && !config.brevoApiKey) || !config.senderEmail) {
+        console.log('Brevo not configured - skipping auto-reply');
+        return false;
+      }
+      
+      console.log('Brevo config found for auto-reply:', {
+        isActive: config.isActive,
+        hasApiKey: !!config.apiKey,
+        hasBrevoApiKey: !!config.brevoApiKey,
+        senderEmail: config.senderEmail,
+        senderName: config.senderName
+      });
       
       const transporter = await this.createTransporter();
-      if (!transporter) return false;
+      if (!transporter) {
+        console.log('Failed to create transporter for auto-reply');
+        return false;
+      }
       
-      const fromEmail = config.validatedSenderEmail || config.senderEmail;
+      console.log('Transporter created, sending auto-reply...');
       
-      const mailOptions = {
-        from: `"${config.senderName}" <${fromEmail}>`,
+      const emailContent = {
+        from: `"${config.senderName || 'Konti Hidroplast'}" <${config.senderEmail}>`,
         to: contactData.email,
-        subject: 'Thank you for contacting Konti Hidroplast',
-        html: this.generateAutoReplyEmailHTML(contactData),
-        text: this.generateAutoReplyEmailText(contactData)
+        subject: 'Thank you for your message',
+        text: `
+          Dear ${contactData.fullName},
+          
+          Thank you for contacting us. We have received your message and will get back to you as soon as possible.
+          
+          Best regards,
+          The Konti Hidroplast Team
+        `,
+        html: `
+          <h2>Thank you for your message</h2>
+          <p>Dear ${contactData.fullName},</p>
+          <p>Thank you for contacting us. We have received your message and will get back to you as soon as possible.</p>
+          <p>Best regards,<br>The Konti Hidroplast Team</p>
+        `
       };
       
-      const result = await transporter.sendMail(mailOptions);
-      console.log('Auto-reply email sent successfully');
-      console.log('Auto-reply sent to:', contactData.email);
-      console.log('Auto-reply details:', {
-        from: mailOptions.from,
-        to: mailOptions.to,
-        subject: mailOptions.subject,
-        messageId: result.messageId
-      });
+      const result = await transporter.sendMail(emailContent);
+      console.log('Auto-reply email sent successfully:', result.messageId);
       return true;
     } catch (error) {
       console.error('Failed to send auto-reply email:', error);
       return false;
     }
   }
-  
-  async sendJobApplicationNotification(applicationData: InsertJobApplication): Promise<boolean> {
+
+  async sendJobApplicationNotification(jobData: any): Promise<boolean> {
     try {
+      console.log('=== Sending Job Application Notification Email ===');
+      
       const config = await this.getConfig();
-      if (!config || !config.isActive) return false;
+      if (!config || !config.isActive || (!config.apiKey && !config.brevoApiKey) || !config.senderEmail) {
+        console.log('Brevo not configured - skipping job application notification');
+        return false;
+      }
+      
+      console.log('Brevo config found for job notification:', {
+        isActive: config.isActive,
+        hasApiKey: !!config.apiKey,
+        hasBrevoApiKey: !!config.brevoApiKey,
+        senderEmail: config.senderEmail,
+        senderName: config.senderName
+      });
       
       const transporter = await this.createTransporter();
-      if (!transporter) return false;
+      if (!transporter) {
+        console.log('Failed to create transporter for job application notification');
+        return false;
+      }
       
-      const fromEmail = config.validatedSenderEmail || config.senderEmail;
-      const toEmail = config.recipientEmail || fromEmail;
+      console.log('Transporter created, sending job application notification...');
       
-      const mailOptions = {
-        from: `"${config.senderName}" <${fromEmail}>`,
-        to: toEmail,
-        subject: `New Job Application - ${applicationData.fullName}`,
-        html: this.generateJobApplicationNotificationHTML(applicationData),
-        text: this.generateJobApplicationNotificationText(applicationData)
-      };
-      
-      const result = await transporter.sendMail(mailOptions);
-      console.log('Job application notification email sent successfully');
-      console.log('Email sent to:', toEmail);
-      console.log('Email details:', {
-        from: mailOptions.from,
-        to: mailOptions.to,
-        subject: mailOptions.subject,
-        messageId: result.messageId
-      });
-      return true;
-    } catch (error) {
-      console.error('Failed to send job application notification:', error);
-      return false;
-    }
-  }
-  
-  async sendJobApplicationAutoReply(applicationData: InsertJobApplication): Promise<boolean> {
-    try {
-      const config = await this.getConfig();
-      if (!config || !config.isActive) return false;
-      
-      const transporter = await this.createTransporter();
-      if (!transporter) return false;
-      
-      const fromEmail = config.validatedSenderEmail || config.senderEmail;
-      
-      const mailOptions = {
-        from: `"${config.senderName}" <${fromEmail}>`,
-        to: applicationData.email,
-        subject: 'Thank you for your job application - Konti Hidroplast',
-        html: this.generateJobApplicationAutoReplyHTML(applicationData),
-        text: this.generateJobApplicationAutoReplyText(applicationData)
-      };
-      
-      const result = await transporter.sendMail(mailOptions);
-      console.log('Job application auto-reply email sent successfully');
-      console.log('Auto-reply sent to:', applicationData.email);
-      console.log('Auto-reply details:', {
-        from: mailOptions.from,
-        to: mailOptions.to,
-        subject: mailOptions.subject,
-        messageId: result.messageId
-      });
-      return true;
-    } catch (error) {
-      console.error('Failed to send job application auto-reply:', error);
-      return false;
-    }
-  }
-  
-  private generateJobApplicationNotificationHTML(applicationData: InsertJobApplication): string {
-    return `
-    <html>
-    <head>
-      <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background-color: #1c2d56; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-        .content { background-color: #f9f9f9; padding: 20px; border: 1px solid #ddd; }
-        .field { margin-bottom: 15px; }
-        .label { font-weight: bold; color: #1c2d56; }
-        .value { background-color: white; padding: 8px; border-radius: 4px; border: 1px solid #e1e5e9; }
-        .message-box { background-color: white; padding: 15px; border-radius: 4px; border: 1px solid #e1e5e9; white-space: pre-wrap; }
-        .footer { background-color: #1c2d56; color: white; padding: 15px; text-align: center; border-radius: 0 0 8px 8px; font-size: 12px; }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="header">
+      const emailContent = {
+        from: `"${config.senderName || 'Website Contact'}" <${config.senderEmail}>`,
+        to: config.senderEmail,
+        subject: 'New Job Application',
+        text: `
+          New job application received:
+          
+          Name: ${jobData.fullName}
+          Email: ${jobData.email}
+          Phone: ${jobData.phone || 'Not provided'}
+          Position: ${jobData.position}
+          
+          Message:
+          ${jobData.message}
+        `,
+        html: `
           <h2>New Job Application</h2>
-          <p>Konti Hidroplast Career Portal</p>
-        </div>
-        <div class="content">
-          <div class="field">
-            <div class="label">Full Name:</div>
-            <div class="value">${applicationData.fullName}</div>
-          </div>
-          <div class="field">
-            <div class="label">Email Address:</div>
-            <div class="value">${applicationData.email}</div>
-          </div>
-          ${applicationData.phoneNumber ? `
-          <div class="field">
-            <div class="label">Phone Number:</div>
-            <div class="value">${applicationData.phoneNumber}</div>
-          </div>
-          ` : ''}
-          <div class="field">
-            <div class="label">Position Applied For:</div>
-            <div class="value">${applicationData.position}</div>
-          </div>
-          ${applicationData.experience ? `
-          <div class="field">
-            <div class="label">Experience:</div>
-            <div class="value">${applicationData.experience}</div>
-          </div>
-          ` : ''}
-          ${applicationData.resumeUrl ? `
-          <div class="field">
-            <div class="label">Resume:</div>
-            <div class="value">${applicationData.resumeUrl}</div>
-          </div>
-          ` : ''}
-          ${applicationData.coverLetter ? `
-          <div class="field">
-            <div class="label">Cover Letter:</div>
-            <div class="message-box">${applicationData.coverLetter}</div>
-          </div>
-          ` : ''}
-        </div>
-        <div class="footer">
-          This application was submitted through the Konti Hidroplast career page.<br>
-          Please review the candidate's qualifications and respond promptly.
-        </div>
-      </div>
-    </body>
-    </html>
-    `;
+          <p><strong>Name:</strong> ${jobData.fullName}</p>
+          <p><strong>Email:</strong> ${jobData.email}</p>
+          <p><strong>Phone:</strong> ${jobData.phone || 'Not provided'}</p>
+          <p><strong>Position:</strong> ${jobData.position}</p>
+          <p><strong>Message:</strong></p>
+          <p>${jobData.message.replace(/\n/g, '<br>')}</p>
+        `
+      };
+      
+      const result = await transporter.sendMail(emailContent);
+      console.log('Job application notification email sent successfully:', result.messageId);
+      return true;
+    } catch (error) {
+      console.error('Failed to send job application notification email:', error);
+      return false;
+    }
   }
-  
-  private generateJobApplicationNotificationText(applicationData: InsertJobApplication): string {
-    return `
-    NEW JOB APPLICATION - Konti Hidroplast
-    
-    Full Name: ${applicationData.fullName}
-    Email: ${applicationData.email}
-    ${applicationData.phoneNumber ? `Phone: ${applicationData.phoneNumber}` : ''}
-    Position: ${applicationData.position}
-    ${applicationData.experience ? `Experience: ${applicationData.experience}` : ''}
-    ${applicationData.resumeUrl ? `Resume: ${applicationData.resumeUrl}` : ''}
-    
-    ${applicationData.coverLetter ? `Cover Letter:\n${applicationData.coverLetter}` : ''}
-    
-    ---
-    This application was submitted through the Konti Hidroplast career page.
-    Please review the candidate's qualifications and respond promptly.
-    `;
-  }
-  
-  private generateJobApplicationAutoReplyHTML(applicationData: InsertJobApplication): string {
-    return `
-    <html>
-    <head>
-      <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background-color: #1c2d56; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-        .content { background-color: #f9f9f9; padding: 25px; border: 1px solid #ddd; }
-        .greeting { font-size: 18px; font-weight: bold; color: #1c2d56; margin-bottom: 15px; }
-        .message { margin-bottom: 20px; }
-        .contact-info { background-color: white; padding: 20px; border-radius: 4px; border: 1px solid #e1e5e9; margin-top: 20px; }
-        .footer { background-color: #1c2d56; color: white; padding: 15px; text-align: center; border-radius: 0 0 8px 8px; font-size: 12px; }
-        .logo { font-size: 24px; font-weight: bold; }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="header">
-          <div class="logo">KONTI HIDROPLAST</div>
-          <p>Thank you for your application!</p>
-        </div>
-        <div class="content">
-          <div class="greeting">Dear ${applicationData.fullName},</div>
+
+  async sendJobApplicationAutoReply(jobData: any): Promise<boolean> {
+    try {
+      console.log('=== Sending Job Application Auto-Reply Email ===');
+      
+      const config = await this.getConfig();
+      if (!config || !config.isActive || (!config.apiKey && !config.brevoApiKey) || !config.senderEmail) {
+        console.log('Brevo not configured - skipping job application auto-reply');
+        return false;
+      }
+      
+      console.log('Brevo config found for job auto-reply:', {
+        isActive: config.isActive,
+        hasApiKey: !!config.apiKey,
+        hasBrevoApiKey: !!config.brevoApiKey,
+        senderEmail: config.senderEmail,
+        senderName: config.senderName
+      });
+      
+      const transporter = await this.createTransporter();
+      if (!transporter) {
+        console.log('Failed to create transporter for job application auto-reply');
+        return false;
+      }
+      
+      console.log('Transporter created, sending job application auto-reply...');
+      
+      const emailContent = {
+        from: `"${config.senderName || 'Konti Hidroplast'}" <${config.senderEmail}>`,
+        to: jobData.email,
+        subject: 'Thank you for your job application',
+        text: `
+          Dear ${jobData.fullName},
           
-          <div class="message">
-            Thank you for your interest in joining Konti Hidroplast. We have received your application for the ${applicationData.position} position and our HR team will review it carefully.
-          </div>
+          Thank you for your interest in the ${jobData.position} position. We have received your application and will review it carefully.
           
-          <div class="message">
-            We strive to review all applications within 5-7 business days. If your qualifications match our current needs, we will contact you to discuss next steps in the hiring process.
-          </div>
+          We will contact you if your qualifications match our requirements.
           
-          <div class="contact-info">
-            <h3 style="color: #1c2d56; margin-top: 0;">Our HR Contact Information</h3>
-            <p><strong>Phone:</strong> +389 34 215 225</p>
-            <p><strong>Email:</strong> hr@konti-hidroplast.com.mk</p>
-            <p><strong>Address:</strong> Industriska 5, 1480 Gevgelija, North Macedonia</p>
-            <p><strong>Business Hours:</strong> Monday - Friday, 8:00 AM - 4:00 PM</p>
-          </div>
-          
-          <div class="message">
-            We appreciate your interest in building your career with our team and look forward to potentially working together.
-          </div>
-        </div>
-        <div class="footer">
-          Best regards,<br>
-          The Konti Hidroplast HR Team<br>
-          Leading manufacturer of PE and PP pipes in Macedonia
-        </div>
-      </div>
-    </body>
-    </html>
-    `;
-  }
-  
-  private generateJobApplicationAutoReplyText(applicationData: InsertJobApplication): string {
-    return `
-    Dear ${applicationData.fullName},
-    
-    Thank you for your interest in joining Konti Hidroplast. We have received your application for the ${applicationData.position} position and our HR team will review it carefully.
-    
-    We strive to review all applications within 5-7 business days. If your qualifications match our current needs, we will contact you to discuss next steps in the hiring process.
-    
-    OUR HR CONTACT INFORMATION
-    Phone: +389 34 215 225
-    Email: hr@konti-hidroplast.com.mk
-    Address: Industriska 5, 1480 Gevgelija, North Macedonia
-    Business Hours: Monday - Friday, 8:00 AM - 4:00 PM
-    
-    We appreciate your interest in building your career with our team and look forward to potentially working together.
-    
-    Best regards,
-    The Konti Hidroplast HR Team
-    Leading manufacturer of PE and PP pipes in Macedonia
-    `;
-  }
-  
-  private generateNotificationEmailHTML(contactData: InsertContactMessage): string {
-    return `
-    <html>
-    <head>
-      <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background-color: #1c2d56; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-        .content { background-color: #f9f9f9; padding: 20px; border: 1px solid #ddd; }
-        .field { margin-bottom: 15px; }
-        .label { font-weight: bold; color: #1c2d56; }
-        .value { background-color: white; padding: 8px; border-radius: 4px; border: 1px solid #e1e5e9; }
-        .message-box { background-color: white; padding: 15px; border-radius: 4px; border: 1px solid #e1e5e9; white-space: pre-wrap; }
-        .footer { background-color: #1c2d56; color: white; padding: 15px; text-align: center; border-radius: 0 0 8px 8px; font-size: 12px; }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="header">
-          <h2>New Contact Form Submission</h2>
-          <p>Konti Hidroplast Website</p>
-        </div>
-        <div class="content">
-          <div class="field">
-            <div class="label">Full Name:</div>
-            <div class="value">${contactData.fullName}</div>
-          </div>
-          <div class="field">
-            <div class="label">Email Address:</div>
-            <div class="value">${contactData.email}</div>
-          </div>
-          ${contactData.phone ? `
-          <div class="field">
-            <div class="label">Phone Number:</div>
-            <div class="value">${contactData.phone}</div>
-          </div>
-          ` : ''}
-          ${contactData.company ? `
-          <div class="field">
-            <div class="label">Company:</div>
-            <div class="value">${contactData.company}</div>
-          </div>
-          ` : ''}
-          <div class="field">
-            <div class="label">Message:</div>
-            <div class="message-box">${contactData.message}</div>
-          </div>
-        </div>
-        <div class="footer">
-          This message was submitted through the Konti Hidroplast contact form.<br>
-          Please respond promptly to maintain excellent customer service.
-        </div>
-      </div>
-    </body>
-    </html>
-    `;
-  }
-  
-  private generateNotificationEmailText(contactData: InsertContactMessage): string {
-    return `
-    NEW CONTACT FORM SUBMISSION - Konti Hidroplast
-    
-    Full Name: ${contactData.fullName}
-    Email: ${contactData.email}
-    ${contactData.phone ? `Phone: ${contactData.phone}` : ''}
-    ${contactData.company ? `Company: ${contactData.company}` : ''}
-    
-    Message:
-    ${contactData.message}
-    
-    ---
-    This message was submitted through the Konti Hidroplast contact form.
-    Please respond promptly to maintain excellent customer service.
-    `;
-  }
-  
-  private generateAutoReplyEmailHTML(contactData: InsertContactMessage): string {
-    return `
-    <html>
-    <head>
-      <style>
-        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background-color: #1c2d56; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-        .content { background-color: #f9f9f9; padding: 25px; border: 1px solid #ddd; }
-        .greeting { font-size: 18px; font-weight: bold; color: #1c2d56; margin-bottom: 15px; }
-        .message { margin-bottom: 20px; }
-        .contact-info { background-color: white; padding: 20px; border-radius: 4px; border: 1px solid #e1e5e9; margin-top: 20px; }
-        .footer { background-color: #1c2d56; color: white; padding: 15px; text-align: center; border-radius: 0 0 8px 8px; font-size: 12px; }
-        .logo { font-size: 24px; font-weight: bold; }
-      </style>
-    </head>
-    <body>
-      <div class="container">
-        <div class="header">
-          <div class="logo">KONTI HIDROPLAST</div>
-          <p>Thank you for contacting us!</p>
-        </div>
-        <div class="content">
-          <div class="greeting">Dear ${contactData.fullName},</div>
-          
-          <div class="message">
-            Thank you for reaching out to Konti Hidroplast. We have received your message and our team will review it carefully.
-          </div>
-          
-          <div class="message">
-            We strive to respond to all inquiries within 24 hours during business days. If your matter is urgent, please don't hesitate to call us directly.
-          </div>
-          
-          <div class="contact-info">
-            <h3 style="color: #1c2d56; margin-top: 0;">Our Contact Information</h3>
-            <p><strong>Phone:</strong> +389 34 215 225</p>
-            <p><strong>Email:</strong> info@kontihidroplast.com</p>
-            <p><strong>Address:</strong> Macedonia</p>
-            <p><strong>Business Hours:</strong> Monday - Friday, 8:00 AM - 4:00 PM</p>
-          </div>
-          
-          <div class="message">
-            We appreciate your interest in our pipeline solutions and look forward to the opportunity to serve you.
-          </div>
-        </div>
-        <div class="footer">
-          Best regards,<br>
-          The Konti Hidroplast Team<br>
-          Leading manufacturer of PE and PP pipes in Macedonia
-        </div>
-      </div>
-    </body>
-    </html>
-    `;
-  }
-  
-  private generateAutoReplyEmailText(contactData: InsertContactMessage): string {
-    return `
-    Dear ${contactData.fullName},
-    
-    Thank you for reaching out to Konti Hidroplast. We have received your message and our team will review it carefully.
-    
-    We strive to respond to all inquiries within 24 hours during business days. If your matter is urgent, please don't hesitate to call us directly.
-    
-    OUR CONTACT INFORMATION
-    Phone: +389 34 215 225
-    Email: info@kontihidroplast.com
-    Address: Macedonia
-    Business Hours: Monday - Friday, 8:00 AM - 4:00 PM
-    
-    We appreciate your interest in our pipeline solutions and look forward to the opportunity to serve you.
-    
-    Best regards,
-    The Konti Hidroplast Team
-    Leading manufacturer of PE and PP pipes in Macedonia
-    `;
+          Best regards,
+          The Konti Hidroplast Team
+        `,
+        html: `
+          <h2>Thank you for your job application</h2>
+          <p>Dear ${jobData.fullName},</p>
+          <p>Thank you for your interest in the <strong>${jobData.position}</strong> position. We have received your application and will review it carefully.</p>
+          <p>We will contact you if your qualifications match our requirements.</p>
+          <p>Best regards,<br>The Konti Hidroplast Team</p>
+        `
+      };
+      
+      const result = await transporter.sendMail(emailContent);
+      console.log('Job application auto-reply email sent successfully:', result.messageId);
+      return true;
+    } catch (error) {
+      console.error('Failed to send job application auto-reply email:', error);
+      return false;
+    }
   }
 }
 

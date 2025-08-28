@@ -1568,25 +1568,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Contact message routes
   app.post('/api/contact', async (req, res) => {
     try {
+      console.log('=== Processing Contact Form Submission ===');
+      
       const validatedData = insertContactMessageSchema.parse(req.body);
+      console.log('Contact form data validated:', {
+        fullName: validatedData.fullName,
+        email: validatedData.email,
+        hasPhone: !!validatedData.phone,
+        hasCompany: !!validatedData.company,
+        messageLength: validatedData.message.length
+      });
       
       // Save contact message to database
       const contactMessage = await storage.createContactMessage(validatedData);
+      console.log('Contact message saved to database with ID:', contactMessage.id);
+      
+      // Check if Brevo is configured before attempting to send emails
+      const isBrevoConfigured = await brevoService.isBrevoConfigured();
+      if (!isBrevoConfigured) {
+        console.log('Brevo not configured - skipping email sending');
+        return res.status(201).json({ 
+          message: 'Contact message sent successfully (emails disabled)',
+          id: contactMessage.id,
+          emailsSent: false
+        });
+      }
       
       // Send email notifications via Brevo
+      let notificationSent = false;
+      let autoReplySent = false;
+      
       try {
-        await Promise.all([
-          brevoService.sendContactNotification(validatedData),
-          brevoService.sendAutoReply(validatedData)
-        ]);
+        console.log('Attempting to send contact notification email...');
+        notificationSent = await brevoService.sendContactNotification(validatedData);
+        console.log('Contact notification email result:', notificationSent);
       } catch (emailError) {
-        console.error('Email sending failed:', emailError);
-        // Still return success since the message was saved
+        console.error('Contact notification email failed:', emailError);
       }
+      
+      try {
+        console.log('Attempting to send auto-reply email...');
+        autoReplySent = await brevoService.sendAutoReply(validatedData);
+        console.log('Auto-reply email result:', autoReplySent);
+      } catch (emailError) {
+        console.error('Auto-reply email failed:', emailError);
+      }
+      
+      const emailsSent = notificationSent || autoReplySent;
+      console.log('Email sending summary:', { notificationSent, autoReplySent, emailsSent });
       
       res.status(201).json({ 
         message: 'Contact message sent successfully',
-        id: contactMessage.id 
+        id: contactMessage.id,
+        emailsSent,
+        notificationSent,
+        autoReplySent
       });
     } catch (error: any) {
       console.error('Error processing contact message:', error);
@@ -1702,7 +1738,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Test the connection if config is active
       let connectionTest = false;
       if (config.isActive) {
-        connectionTest = await brevoService.testConnection();
+        const testResult = await brevoService.testConnection();
+        connectionTest = testResult.success;
       }
       
       const { apiKey, brevoApiKey, ...safeConfig } = config;
@@ -1726,17 +1763,70 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post('/api/admin/brevo-config/test', requireAuth, async (req, res) => {
     try {
-      const isWorking = await brevoService.testConnection();
-      res.json({ success: isWorking });
+      console.log('=== Testing Brevo Connection ===');
+      
+      // Check if configuration exists first
+      const config = await storage.getBrevoConfig();
+      if (!config) {
+        console.error('No Brevo configuration found');
+        return res.status(400).json({ 
+          success: false, 
+          message: 'No Brevo configuration found. Please save your configuration first.' 
+        });
+      }
+      
+      if (!config.isActive) {
+        console.error('Brevo configuration is not active');
+        return res.status(400).json({ 
+          success: false, 
+          message: 'Brevo configuration is not active. Please enable it first.' 
+        });
+      }
+      
+      if (!config.apiKey && !config.brevoApiKey) {
+        console.error('No API key configured');
+        return res.status(400).json({ 
+          success: false, 
+          message: 'No API key configured. Please enter either your Brevo SMTP key or Brevo API key.' 
+        });
+      }
+      
+      if (!config.senderEmail) {
+        console.error('No sender email configured');
+        return res.status(400).json({ 
+          success: false, 
+          message: 'No sender email configured. Please enter your sender email.' 
+        });
+      }
+      
+      const testResult = await brevoService.testConnection();
+      
+      if (testResult.success) {
+        res.json({ 
+          success: true, 
+          message: 'Connection successful! Your Brevo configuration is working correctly.' 
+        });
+      } else {
+        res.json({ 
+          success: false, 
+          message: `Connection failed: ${testResult.message}. Check server logs for detailed error information.` 
+        });
+      }
     } catch (error) {
       console.error('Error testing Brevo connection:', error);
-      res.status(500).json({ error: 'Failed to test Brevo connection' });
+      res.status(500).json({ 
+        success: false,
+        message: 'Server error while testing connection. Check server logs for details.',
+        error: error instanceof Error ? error.message : 'Unknown error'
+      });
     }
   });
 
   // Test email sending endpoint
   app.post('/api/admin/brevo-config/test-email', requireAuth, async (req, res) => {
     try {
+      console.log('=== Testing Email Sending via API ===');
+      
       const config = await storage.getBrevoConfig();
       if (!config) {
         return res.status(404).json({ error: 'Brevo config not found' });
@@ -1749,28 +1839,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
         isActive: config.isActive
       });
 
-      // Send a test contact notification
-      const testContactData = {
-        fullName: "Email Test User",
-        email: "test@example.com",
-        phoneNumber: "123-456-7890",
-        subject: "Brevo Configuration Test",
-        message: "This is a test email to verify your recipient email configuration is working correctly.",
-        createdAt: new Date()
-      };
-
-      const success = await brevoService.sendContactNotification(testContactData);
+      // Use the new test method
+      const testResult = await brevoService.testEmailSending();
       
-      res.json({ 
-        success,
-        recipientEmail: config.recipientEmail,
-        senderEmail: config.senderEmail,
-        senderName: config.senderName,
-        message: success ? 'Test email sent successfully! Check your recipient email inbox (including spam folder).' : 'Failed to send test email.'
-      });
+      if (testResult.success) {
+        res.json({ 
+          success: true,
+          recipientEmail: config.recipientEmail,
+          senderEmail: config.senderEmail,
+          senderName: config.senderName,
+          message: 'Test email sent successfully! Check your recipient email inbox (including spam folder).'
+        });
+      } else {
+        res.json({ 
+          success: false,
+          recipientEmail: config.recipientEmail,
+          senderEmail: config.senderEmail,
+          senderName: config.senderName,
+          message: `Failed to send test email: ${testResult.message}`
+        });
+      }
     } catch (error: any) {
-      console.error('Test email error:', error);
-      res.status(500).json({ error: 'Test email failed', details: error?.message || 'Unknown error' });
+      console.error('Test email API error:', error);
+      res.status(500).json({ 
+        success: false,
+        error: 'Test email failed', 
+        details: error?.message || 'Unknown error' 
+      });
     }
   });
 

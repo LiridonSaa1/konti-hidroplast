@@ -16,7 +16,7 @@ import { apiRequest } from "@/lib/queryClient";
 import type { BrevoConfig } from "@shared/schema";
 
 const brevoConfigSchema = z.object({
-  apiKey: z.string().min(1, "SMTP key is required"),
+  apiKey: z.string().optional(),
   brevoApiKey: z.string().optional(),
   senderEmail: z.string().email("Invalid email address"),
   validatedSenderEmail: z.string().email("Invalid validated sender email address").optional(),
@@ -24,6 +24,15 @@ const brevoConfigSchema = z.object({
   recipientEmail: z.string().email("Invalid recipient email address"),
   templateId: z.number().optional(),
   isActive: z.boolean(),
+}).refine((data) => {
+  // Either apiKey (SMTP key) or brevoApiKey must be provided
+  if (!data.apiKey && !data.brevoApiKey) {
+    return false;
+  }
+  return true;
+}, {
+  message: "Either SMTP key or Brevo API key must be provided",
+  path: ["apiKey"]
 });
 
 type BrevoConfigForm = z.infer<typeof brevoConfigSchema>;
@@ -81,6 +90,24 @@ export function BrevoConfigManager() {
       setConnectionStatus(config.connectionTest ?? null);
     }
   }, [config, form]);
+
+  // Watch for changes in brevoApiKey to update the apiKey field
+  useEffect(() => {
+    if (form.watch("brevoApiKey")) {
+      form.setValue("apiKey", "");
+    }
+  }, [form.watch("brevoApiKey")]);
+
+  // Watch for changes in brevoApiKey to update validation
+  useEffect(() => {
+    const subscription = form.watch((value, { name }) => {
+      if (name === 'brevoApiKey') {
+        // Trigger validation when brevoApiKey changes
+        form.trigger('apiKey');
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   const createConfigMutation = useMutation({
     mutationFn: async (data: BrevoConfigForm): Promise<BrevoConfigWithStatus> => {
@@ -179,10 +206,17 @@ export function BrevoConfigManager() {
   });
 
   const onSubmit = (data: BrevoConfigForm) => {
+    // Filter out empty apiKey when updating existing config
+    const submitData = { ...data };
+    if (config && !submitData.apiKey && !submitData.brevoApiKey) {
+      // Keep existing apiKey if no new keys provided
+      delete submitData.apiKey;
+    }
+    
     if (config) {
-      updateConfigMutation.mutate(data);
+      updateConfigMutation.mutate(submitData);
     } else {
-      createConfigMutation.mutate(data);
+      createConfigMutation.mutate(submitData);
     }
   };
 
@@ -273,9 +307,10 @@ export function BrevoConfigManager() {
               <div>
                 <h4 className="font-medium text-blue-900 mb-2">Setup Instructions</h4>
                 <ul className="text-sm text-blue-800 space-y-1">
-                  <li>• Go to Brevo dashboard → <strong>SMTP & API</strong> → <strong>SMTP tab</strong> (not API Keys tab)</li>
+                  <li>• You can configure either <strong>SMTP Key</strong> OR <strong>Brevo API Key</strong> (or both)</li>
+                  <li>• For SMTP: Go to Brevo dashboard → <strong>SMTP & API</strong> → <strong>SMTP tab</strong></li>
+                  <li>• For API: Go to Brevo dashboard → <strong>SMTP & API</strong> → <strong>API Keys tab</strong></li>
                   <li>• Copy your <strong>SMTP Login</strong> email and put it in "SMTP Login Email" field below</li>
-                  <li>• Copy your <strong>SMTP Key</strong> and put it in "SMTP Key" field below</li>
                   <li>• <strong>Important:</strong> Add a verified sender email from your Brevo Senders list in the "Validated Sender Email" field</li>
                   <li>• The SMTP login is for authentication, the validated sender email is what recipients will see as the sender</li>
                   <li>• Test the connection and email sending after saving your configuration</li>
@@ -289,12 +324,12 @@ export function BrevoConfigManager() {
           {/* API Key */}
           <div className="space-y-2">
             <Label htmlFor="apiKey" className="text-sm font-semibold text-gray-700">
-              Brevo SMTP Key *
+              Brevo SMTP Key (Optional)
             </Label>
             <Input
               id="apiKey"
               type="password"
-              placeholder={config?.hasApiKey ? "••••••••••••••••" : "Enter your Brevo SMTP key (not API key)"}
+              placeholder="Enter your Brevo SMTP key (optional)"
               {...form.register("apiKey")}
               className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
               data-testid="input-api-key"
@@ -308,7 +343,7 @@ export function BrevoConfigManager() {
               </p>
             )}
             <p className="text-sm text-blue-600">
-              Important: Use SMTP Key from SMTP tab, not API Key from API Keys tab
+              Optional: Use SMTP Key from SMTP tab, not API Key from API Keys tab. Leave empty if using Brevo API key instead.
             </p>
           </div>
 
@@ -522,7 +557,7 @@ export function BrevoConfigManager() {
                 <div>
                   <h4 className="font-medium text-red-900">Connection Failed</h4>
                   <p className="text-sm text-red-800 mt-1">
-                    Please check your API key and sender email configuration. Make sure the sender email is verified in your Brevo account.
+                    Please check your API key configuration (either Brevo SMTP Key or Brevo API Key) and sender email. Make sure the sender email is verified in your Brevo account.
                   </p>
                 </div>
               </div>
