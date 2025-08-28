@@ -135,7 +135,10 @@ export const certificates = pgTable("certificates", {
   subcategoryItemId: integer("subcategory_item_id").references(() => subcategoryItems.id),
   title: text("title").notNull(),
   imageUrl: text("image_url"), // Made optional since we now have both image and PDF
-  pdfUrl: text("pdf_url"), // Added PDF URL field
+  pdfUrl: text("pdf_url"), // Legacy PDF URL field - DEPRECATED, use pdfUrlEn instead
+  pdfUrlEn: text("pdf_url_en"), // PDF URL for English language (replaces legacy pdfUrl)
+  pdfUrlMk: text("pdf_url_mk"), // PDF URL for Macedonian language
+  pdfUrlDe: text("pdf_url_de"), // PDF URL for German language
   downloadUrl: text("download_url"),
   sortOrder: integer("sort_order").default(0),
   status: text("status").notNull().default("active"), // active, inactive

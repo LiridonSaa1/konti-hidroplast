@@ -39,7 +39,10 @@ type Certificate = {
   subcategoryId?: number;
   subcategoryItemId?: number;
   imageUrl: string;
-  pdfUrl: string; // Added pdfUrl to the type
+  pdfUrl?: string; // Legacy PDF URL field - deprecated, use pdfUrlEn instead
+  pdfUrlEn?: string; // PDF URL for English language
+  pdfUrlMk?: string; // PDF URL for Macedonian language
+  pdfUrlDe?: string; // PDF URL for German language
   sortOrder: number;
   status: string;
   translations?: {
@@ -69,14 +72,16 @@ type SubcategoryItem = {
   updatedAt: string;
 };
 
-// Local form schema
+// Local form schema for certificates with multi-language PDF support
 const certificateFormSchema = z.object({
   title: z.string().min(1, "Title is required"),
   categoryId: z.number().min(1, "Category is required"),
   subcategoryId: z.number().optional(),
   subcategoryItemId: z.number().optional(),
   imageUrl: z.string().optional(), // Made optional since we now have both image and PDF
-  pdfUrl: z.string().optional(), // Added PDF URL field
+  pdfUrlEn: z.string().optional(), // PDF URL for English language version
+  pdfUrlMk: z.string().optional(), // PDF URL for Macedonian language version
+  pdfUrlDe: z.string().optional(), // PDF URL for German language version
   sortOrder: z.number().int().min(0).default(0),
   status: z.enum(["active", "inactive"]).default("active"),
   translations: z.object({
@@ -109,22 +114,24 @@ export function CertificatesManager() {
 
   const form = useForm<CertificateForm>({
     resolver: zodResolver(certificateFormSchema),
-    defaultValues: {
-      title: "",
-      categoryId: 0,
-      subcategoryId: undefined,
-      subcategoryItemId: undefined,
-      imageUrl: "",
-      pdfUrl: "", // Initialize pdfUrl
-      sortOrder: 0,
-      status: "active",
-      translations: {
-        en: { title: "" },
-        mk: { title: "" },
-        de: { title: "" },
+          defaultValues: {
+        title: "",
+        categoryId: 0,
+        subcategoryId: undefined,
+        subcategoryItemId: undefined,
+        imageUrl: "",
+        pdfUrlEn: "", // PDF URL for English language
+        pdfUrlMk: "", // PDF URL for Macedonian language
+        pdfUrlDe: "", // PDF URL for German language
+        sortOrder: 0,
+        status: "active",
+        translations: {
+          en: { title: "" },
+          mk: { title: "" },
+          de: { title: "" },
+        },
+        defaultLanguage: "en",
       },
-      defaultLanguage: "en",
-    },
   });
 
   const selectedCategoryId = form.watch("categoryId");
@@ -284,7 +291,9 @@ export function CertificatesManager() {
       subcategoryId: certificate.subcategoryId || undefined,
       subcategoryItemId: certificate.subcategoryItemId || undefined,
       imageUrl: certificate.imageUrl,
-      pdfUrl: certificate.pdfUrl, // Set pdfUrl for editing
+      pdfUrlEn: certificate.pdfUrlEn || certificate.pdfUrl || "", // English PDF (migrate from legacy if needed)
+      pdfUrlMk: certificate.pdfUrlMk || "", // PDF URL for Macedonian language
+      pdfUrlDe: certificate.pdfUrlDe || "", // PDF URL for German language
       sortOrder: certificate.sortOrder,
       status: certificate.status as "active" | "inactive",
       translations: {
@@ -314,15 +323,22 @@ export function CertificatesManager() {
     console.log('=== Form Submission Data ===');
     console.log('Raw form data:', data);
     console.log('Image URL:', data.imageUrl);
-    console.log('PDF URL:', data.pdfUrl);
+    console.log('PDF URLs:', {
+      en: data.pdfUrlEn,
+      mk: data.pdfUrlMk,
+      de: data.pdfUrlDe
+    });
     console.log('Translations:', data.translations);
     console.log('Default language:', data.defaultLanguage);
     
-    // Ensure at least one file is provided
-    if (!data.imageUrl && !data.pdfUrl) {
+    // Ensure at least one file is provided (image or at least one PDF in any language)
+    const hasImage = !!data.imageUrl;
+    const hasPdf = !!(data.pdfUrlEn || data.pdfUrlMk || data.pdfUrlDe);
+    
+    if (!hasImage && !hasPdf) {
       toast({ 
         title: "File Required", 
-        description: "Please upload either an image or PDF file",
+        description: "Please upload either an image or at least one PDF file in any language",
         variant: "destructive"
       });
       return;
@@ -347,7 +363,9 @@ export function CertificatesManager() {
         subcategoryId: undefined,
         subcategoryItemId: undefined,
         imageUrl: "",
-        pdfUrl: "", // Reset pdfUrl
+        pdfUrlEn: "", // PDF URL for English language
+        pdfUrlMk: "", // PDF URL for Macedonian language
+        pdfUrlDe: "", // PDF URL for German language
         sortOrder: 0,
         status: "active",
         translations: {
@@ -569,12 +587,12 @@ export function CertificatesManager() {
                     />
                   )}
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4">
                     <FormItem>
                       <FormLabel>Image (Optional)</FormLabel>
                       <FormControl>
                         <FileUpload
-                          label="Image"
+                          label=""
                           value={form.watch("imageUrl") || ""}
                           onChange={(url) => {
                             console.log('Image upload onChange called with URL:', url);
@@ -587,24 +605,72 @@ export function CertificatesManager() {
                       </FormControl>
                       <FormMessage />
                     </FormItem>
+                  </div>
 
-                    <FormItem>
-                      <FormLabel>PDF (Optional)</FormLabel>
-                      <FormControl>
-                        <FileUpload
-                          label="PDF"
-                          value={form.watch("pdfUrl") || ""}
-                          onChange={(url) => {
-                            console.log('PDF upload onChange called with URL:', url);
-                            form.setValue("pdfUrl", url);
-                          }}
-                          accept=".pdf"
-                          placeholder="Upload PDF or enter URL"
-                          data-testid="file-upload-pdf"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  {/* Multi-language PDF Uploads */}
+                  <div className="space-y-4">
+                    <FormLabel className="text-base font-medium">PDF Files by Language</FormLabel>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <FormItem>
+                        <FormLabel className="flex items-center gap-2">
+                          🇺🇸 English PDF
+                        </FormLabel>
+                        <FormControl>
+                          <FileUpload
+                            label=""
+                            value={form.watch("pdfUrlEn") || ""}
+                            onChange={(url) => {
+                              console.log('English PDF upload onChange called with URL:', url);
+                              form.setValue("pdfUrlEn", url);
+                            }}
+                            accept=".pdf"
+                            placeholder="Upload English PDF or enter URL"
+                            data-testid="file-upload-pdf-en"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+
+                      <FormItem>
+                        <FormLabel className="flex items-center gap-2">
+                          🇲🇰 Macedonian PDF
+                        </FormLabel>
+                        <FormControl>
+                          <FileUpload
+                            label=""
+                            value={form.watch("pdfUrlMk") || ""}
+                            onChange={(url) => {
+                              console.log('Macedonian PDF upload onChange called with URL:', url);
+                              form.setValue("pdfUrlMk", url);
+                            }}
+                            accept=".pdf"
+                            placeholder="Upload Macedonian PDF or enter URL"
+                            data-testid="file-upload-pdf-mk"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+
+                      <FormItem>
+                        <FormLabel className="flex items-center gap-2">
+                          🇩🇪 German PDF
+                        </FormLabel>
+                        <FormControl>
+                          <FileUpload
+                            label=""
+                            value={form.watch("pdfUrlDe") || ""}
+                            onChange={(url) => {
+                              console.log('German PDF upload onChange called with URL:', url);
+                              form.setValue("pdfUrlDe", url);
+                            }}
+                            accept=".pdf"
+                            placeholder="Upload German PDF or enter URL"
+                            data-testid="file-upload-pdf-de"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    </div>
                   </div>
 
 
@@ -756,6 +822,7 @@ export function CertificatesManager() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Files</TableHead>
+                  <TableHead>PDF Languages</TableHead>
                   <TableHead>Category</TableHead>
                   <TableHead>Subcategory</TableHead>
                   <TableHead
@@ -796,14 +863,14 @@ export function CertificatesManager() {
                             className="w-12 h-12 object-cover rounded"
                           />
                           <div className="text-xs text-gray-500 mt-1">Image</div>
-                          {/* Show PDF indicator if both exist */}
-                          {certificate.pdfUrl && (
+                          {/* Show PDF indicators if any exist */}
+                          {(certificate.pdfUrlEn || certificate.pdfUrlMk || certificate.pdfUrlDe) && (
                             <div className="absolute -top-1 -right-1 bg-blue-100 border border-blue-300 rounded-full w-5 h-5 flex items-center justify-center">
                               <div className="text-blue-600 text-xs font-bold">P</div>
                             </div>
                           )}
                         </div>
-                      ) : certificate.pdfUrl ? (
+                      ) : (certificate.pdfUrlEn || certificate.pdfUrlMk || certificate.pdfUrlDe) ? (
                         // Show PDF if no image but PDF exists
                         <div className="relative">
                           <div className="w-12 h-12 bg-red-100 border border-red-300 rounded flex items-center justify-center">
@@ -819,6 +886,35 @@ export function CertificatesManager() {
                       )}
                     </div>
                   </TableCell>
+                  
+                  <TableCell data-testid={`pdf-languages-${certificate.id}`}>
+                    <div className="flex flex-col gap-1">
+                      {/* Language-specific PDF indicators */}
+                      {certificate.pdfUrlEn && (
+                        <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
+                          🇺🇸 English
+                        </span>
+                      )}
+                      {certificate.pdfUrlMk && (
+                        <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                          🇲🇰 Macedonian
+                        </span>
+                      )}
+                      {certificate.pdfUrlDe && (
+                        <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+                          🇩🇪 German
+                        </span>
+                      )}
+                      
+                      {/* No PDFs indicator */}
+                      {!certificate.pdfUrlEn && !certificate.pdfUrlMk && !certificate.pdfUrlDe && (
+                        <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-400">
+                          No PDFs
+                        </span>
+                      )}
+                    </div>
+                  </TableCell>
+                  
                   <TableCell data-testid={`text-category-${certificate.id}`}>
                     {getCategoryName(certificate.categoryId)}
                   </TableCell>
