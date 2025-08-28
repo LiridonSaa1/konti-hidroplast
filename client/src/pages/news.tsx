@@ -177,7 +177,7 @@ function NewsPage() {
           
           {/* Section 2: Description */}
           <p className="text-gray-600 mb-6 leading-relaxed">
-            {translatedDescription ? truncateText(translatedDescription, 120) : t("newsPage.noDescription")}
+            {translatedDescription ? truncateText(translatedDescription, 81) : t("newsPage.noDescription")}
           </p>
 
           {/* Date and Read More */}

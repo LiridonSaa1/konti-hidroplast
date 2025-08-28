@@ -6,8 +6,6 @@ import { UserDropdown } from "@/components/auth/UserDropdown";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { 
   Settings, 
-  Package, 
-  Image, 
   FileText, 
   Award, 
   BookOpen, 
@@ -28,8 +26,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ProductsManager } from "@/components/admin/ProductsManager";
-import { MediaManager } from "@/components/admin/MediaManager";
 import { CompanyInfoManager } from "@/components/admin/CompanyInfoManager";
 import { NewsManager } from "@/components/admin/NewsManager";
 import { CertificatesManager } from "@/components/admin/CertificatesManager";
@@ -62,18 +58,6 @@ export default function AdminPanel() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Always declare hooks at the top level, before any conditional returns
-  const { data: productsCount = 0 } = useQuery({
-    queryKey: ["/api/admin/products"],
-    select: (data: any) => data?.length || 0,
-    enabled: isAuthenticated,
-  });
-
-  const { data: mediaCount = 0 } = useQuery({
-    queryKey: ["/api/admin/media"],
-    select: (data: any) => data?.length || 0,
-    enabled: isAuthenticated,
-  });
-
   const { data: newsCount = 0 } = useQuery({
     queryKey: ["/api/admin/news"],
     select: (data: any) => data?.length || 0,
@@ -190,11 +174,11 @@ export default function AdminPanel() {
   };
 
   // Calculate percentages and trends
-  const totalContent = productsCount + mediaCount + newsCount + certificatesCount + brochuresCount + projectsCount;
+  const totalContent = newsCount + certificatesCount + brochuresCount + projectsCount;
   const contentPercentage = totalContent > 0 ? Math.round((totalContent / 1000) * 100) : 0; // Assuming 1000 is max
   const systemHealth = 95; // Mock system health score
   const activeUsers = 1; // Current authenticated user
-  const storageUsed = Math.round((mediaCount * 2.5) + (productsCount * 0.5) + (newsCount * 0.3)); // Mock storage calculation in MB
+  const storageUsed = Math.round((newsCount * 0.3) + (certificatesCount * 0.5) + (brochuresCount * 0.5)); // Mock storage calculation in MB
 
   // Show loading spinner while checking auth
   if (isLoading) {
@@ -384,7 +368,7 @@ export default function AdminPanel() {
                   }}
                   data-testid="nav-subcategory-items"
                 >
-                  <Package className={`h-3 w-3 mr-2 ${activeTab === "subcategory-items" ? "text-blue-600" : ""}`} />
+                  <FolderOpen className={`h-3 w-3 mr-2 ${activeTab === "subcategory-items" ? "text-blue-600" : ""}`} />
                   Subcategory Items
                 </Button>
                 
@@ -677,7 +661,7 @@ export default function AdminPanel() {
                 <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm font-medium text-blue-900 flex items-center gap-2">
-                      <Package className="h-4 w-4" />
+                      <FolderOpen className="h-4 w-4" />
                       Total Content
                     </CardTitle>
                   </CardHeader>
@@ -722,7 +706,7 @@ export default function AdminPanel() {
                 <Card className="bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200">
                   <CardHeader className="pb-3">
                     <CardTitle className="text-sm font-medium text-purple-900 flex items-center gap-2">
-                      <Image className="h-4 w-4" />
+                      <FolderOpen className="h-4 w-4" />
                       Storage Used
                     </CardTitle>
                   </CardHeader>
@@ -766,29 +750,7 @@ export default function AdminPanel() {
               </div>
 
               {/* Detailed Statistics Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-                <Card data-testid="card-products-count" className="hover:shadow-md transition-shadow">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Products</CardTitle>
-                    <Package className="h-4 w-4 text-blue-600" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold" data-testid="products-count">{productsCount}</div>
-                    <p className="text-xs text-slate-600">Total products in catalog</p>
-                  </CardContent>
-                </Card>
-                
-                <Card data-testid="card-media-count" className="hover:shadow-md transition-shadow">
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Media Files</CardTitle>
-                    <Image className="h-4 w-4 text-green-600" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold" data-testid="media-count">{mediaCount}</div>
-                    <p className="text-xs text-slate-600">Photos and images</p>
-                  </CardContent>
-                </Card>
-                
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 <Card data-testid="card-news-count" className="hover:shadow-md transition-shadow">
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">News Articles</CardTitle>
@@ -1075,14 +1037,6 @@ export default function AdminPanel() {
                     <div>
                       <h4 className="text-sm font-medium text-slate-700 mb-3">Content Distribution</h4>
                       <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-slate-600">Products</span>
-                          <span className="text-xs font-medium">{productsCount}</span>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs text-slate-600">Media</span>
-                          <span className="text-xs font-medium">{mediaCount}</span>
-                        </div>
                         <div className="flex items-center justify-between">
                           <span className="text-xs text-slate-600">News</span>
                           <span className="text-xs font-medium">{newsCount}</span>
