@@ -18,9 +18,9 @@ function BrochuresPage() {
   const [isDownloadPopupOpen, setIsDownloadPopupOpen] = useState(false);
   const [selectedBrochure, setSelectedBrochure] = useState<Brochure | null>(null);
   const [downloadFormData, setDownloadFormData] = useState({
-    companyName: '',
+    fullName: '',
     email: '',
-    phone: '',
+    companyName: '',
     description: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -137,7 +137,7 @@ function BrochuresPage() {
 
   const handleDownloadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedBrochure || !downloadFormData.companyName || !downloadFormData.email) {
+    if (!selectedBrochure || !downloadFormData.fullName || !downloadFormData.companyName || !downloadFormData.email) {
       return;
     }
 
@@ -153,25 +153,27 @@ function BrochuresPage() {
           brochureId: selectedBrochure.id,
           brochureName: selectedBrochure.name || selectedBrochure.title,
           brochureCategory: selectedBrochure.category,
+          fullName: downloadFormData.fullName,
           companyName: downloadFormData.companyName,
           email: downloadFormData.email,
-          phone: downloadFormData.phone,
           description: downloadFormData.description,
           downloadDate: new Date().toISOString()
         }),
       });
 
       if (response.ok) {
-        // Open PDF in new tab
-        window.open(selectedBrochure.pdfUrl, '_blank');
+        // Show success message and close popup
+        alert(language === 'en' ? 'Check your email for the download link!' : 
+              language === 'mk' ? 'Проверете ја вашата е-пошта за линкот за преземање!' : 
+              language === 'de' ? 'Überprüfen Sie Ihre E-Mail für den Download-Link!' : 'Check your email for the download link!');
         
         // Close popup and reset form
         setIsDownloadPopupOpen(false);
         setSelectedBrochure(null);
         setDownloadFormData({
+          fullName: '',
           companyName: '',
           email: '',
-          phone: '',
           description: ''
         });
       }
@@ -186,9 +188,9 @@ function BrochuresPage() {
     setIsDownloadPopupOpen(false);
     setSelectedBrochure(null);
     setDownloadFormData({
+      fullName: '',
       companyName: '',
       email: '',
-      phone: '',
       description: ''
     });
   };
@@ -468,19 +470,19 @@ function BrochuresPage() {
              <form onSubmit={handleDownloadSubmit} className="p-6 space-y-4">
                <div>
                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                   {language === 'en' ? 'Company Name *' : 
-                    language === 'mk' ? 'Име на компанија *' : 
-                    language === 'de' ? 'Firmenname *' : 'Company Name *'}
+                   {language === 'en' ? 'Full Name *' : 
+                    language === 'mk' ? 'Цело име *' : 
+                    language === 'de' ? 'Vollständiger Name *' : 'Full Name *'}
                  </label>
                  <input
                    type="text"
                    required
-                   value={downloadFormData.companyName}
-                   onChange={(e) => setDownloadFormData(prev => ({ ...prev, companyName: e.target.value }))}
+                   value={downloadFormData.fullName}
+                   onChange={(e) => setDownloadFormData(prev => ({ ...prev, fullName: e.target.value }))}
                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56]"
-                   placeholder={language === 'en' ? 'Enter company name' : 
-                              language === 'mk' ? 'Внесете име на компанија' : 
-                              language === 'de' ? 'Firmenname eingeben' : 'Enter company name'}
+                   placeholder={language === 'en' ? 'Enter your full name' : 
+                              language === 'mk' ? 'Внесете го вашето цело име' : 
+                              language === 'de' ? 'Geben Sie Ihren vollständigen Namen ein' : 'Enter your full name'}
                  />
                </div>
                
@@ -504,18 +506,19 @@ function BrochuresPage() {
                
                <div>
                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                   {language === 'en' ? 'Phone (Optional)' : 
-                    language === 'mk' ? 'Телефон (Опционално)' : 
-                    language === 'de' ? 'Telefon (Optional)' : 'Phone (Optional)'}
+                   {language === 'en' ? 'Company Name *' : 
+                    language === 'mk' ? 'Име на компанија *' : 
+                    language === 'de' ? 'Firmenname *' : 'Company Name *'}
                  </label>
                  <input
-                   type="tel"
-                   value={downloadFormData.phone}
-                   onChange={(e) => setDownloadFormData(prev => ({ ...prev, phone: e.target.value }))}
+                   type="text"
+                   required
+                   value={downloadFormData.companyName}
+                   onChange={(e) => setDownloadFormData(prev => ({ ...prev, companyName: e.target.value }))}
                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56]"
-                   placeholder={language === 'en' ? 'Enter phone number' : 
-                              language === 'mk' ? 'Внесете телефонски број' : 
-                              language === 'de' ? 'Telefonnummer eingeben' : 'Enter phone number'}
+                   placeholder={language === 'en' ? 'Enter company name' : 
+                              language === 'mk' ? 'Внесете име на компанија' : 
+                              language === 'de' ? 'Firmenname eingeben' : 'Enter company name'}
                  />
                </div>
                

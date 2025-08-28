@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Download, Search, Trash2, Eye, Calendar, Building, Mail, Phone, FileText } from "lucide-react";
+import { Download, Search, Trash2, Eye, Calendar, Building, Mail, Users, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -16,9 +16,9 @@ interface BrochureDownload {
   brochureId: number;
   brochureName: string;
   brochureCategory: string;
+  fullName: string;
   companyName: string;
   email: string;
-  phone: string | null;
   description: string | null;
   downloadDate: string;
   createdAt: string;
@@ -64,9 +64,9 @@ export function BrochureDownloadsManager() {
   const filteredDownloads = downloads.filter(download => {
     const matchesSearch = 
       download.companyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      download.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       download.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       download.brochureName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (download.phone && download.phone.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (download.description && download.description.toLowerCase().includes(searchTerm.toLowerCase()));
     
     const matchesCategory = selectedCategory === "all" || download.brochureCategory === selectedCategory;
@@ -282,16 +282,14 @@ export function BrochureDownloadsManager() {
                     </TableCell>
                     <TableCell data-testid={`download-contact-${download.id}`}>
                       <div className="space-y-1">
+                        <div className="flex items-center gap-1 text-sm font-medium">
+                          <Users className="h-3 w-3 text-blue-500" />
+                          {download.fullName}
+                        </div>
                         <div className="flex items-center gap-1 text-sm">
                           <Mail className="h-3 w-3 text-gray-500" />
                           {download.email}
                         </div>
-                        {download.phone && (
-                          <div className="flex items-center gap-1 text-sm text-gray-600">
-                            <Phone className="h-3 w-3 text-gray-500" />
-                            {download.phone}
-                          </div>
-                        )}
                       </div>
                     </TableCell>
                     <TableCell data-testid={`download-brochure-${download.id}`}>

@@ -2116,8 +2116,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/brochure-downloads", async (req, res) => {
     try {
       const downloadData = req.body;
+      
+      // Create download record
       const download = await storage.createBrochureDownload(downloadData);
-      res.json(download);
+      
+      // Send email with download link
+      const { EmailService } = await import('./services/emailService.js');
+      const emailService = new EmailService();
+      
+      const emailSent = await emailService.sendBrochureDownloadEmail(
+        downloadData.fullName,
+        downloadData.email,
+        downloadData.companyName,
+        downloadData.brochureName,
+        downloadData.brochureCategory,
+        downloadData.pdfUrl || ""
+      );
+      
+      if (emailSent) {
+        res.json({ ...download, emailSent: true });
+      } else {
+        res.json({ ...download, emailSent: false, warning: "Download recorded but email failed to send" });
+      }
     } catch (error) {
       console.error("Error creating brochure download record:", error);
       res.status(500).json({ error: "Failed to create download record" });
@@ -2141,6 +2161,96 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error deleting brochure download record:", error);
       res.status(500).json({ error: "Failed to delete download record" });
+    }
+  });
+
+  // Validate download link hash
+  app.post("/api/validate-download-link", async (req, res) => {
+    try {
+      const { hash, email, brochure, timestamp } = req.body;
+      
+      // Basic validation
+      if (!hash || !email || !brochure || !timestamp) {
+        return res.status(400).json({ error: "Missing required parameters" });
+      }
+
+      // Check if link is expired (24 hours)
+      const linkTimestamp = parseInt(timestamp);
+      const now = Date.now();
+      const linkAge = now - linkTimestamp;
+      const maxAge = 24 * 60 * 60 * 1000; // 24 hours
+
+      if (linkAge > maxAge) {
+        return res.status(400).json({ error: "Download link has expired" });
+      }
+
+      // Generate expected hash
+      const crypto = await import('crypto');
+      const expectedHash = crypto.createHash('sha256').update(`${brochure}-${email}-${timestamp}`).digest('hex');
+      
+      if (hash !== expectedHash) {
+        return res.status(400).json({ error: "Invalid download link" });
+      }
+
+      res.json({ valid: true });
+    } catch (error) {
+      console.error("Error validating download link:", error);
+      res.status(500).json({ error: "Failed to validate link" });
+    }
+  });
+
+  // Get brochure URL for download
+  app.post("/api/get-brochure-url", async (req, res) => {
+    try {
+      const { brochureName, email } = req.body;
+      
+      // Find the brochure URL based on name
+      // This would typically query your brochures table
+      // For now, we'll use a mapping based on the static data
+      const brochureUrls: { [key: string]: string } = {
+        "PE 80/100": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf",
+        "PE 100 RC": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-PE100-RC_EN_2021_compressed.pdf",
+        "PE FITTINGS FOR BUTT WELDING": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf",
+        "ELECTROFUSION FITTINGS": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf",
+        "KONTI KAN": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-cevki-en.pdf",
+        "KONTI KAN SPIRAL": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral-cevki-en.pdf",
+        "KONTI KAN FITTINGS": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf",
+        "KONTI KAN PPHM FITTINGS": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-fitinzi.pdf",
+        "KCH": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-pp-hm-2023-en.pdf",
+        "PPHM HIGH PERFORMANCE": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-visoki-performansi-en.pdf",
+        "DRAINAGE PIPES": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-drenaza-en.pdf",
+        "POLYPROPYLENE MANHOLES": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/polipropilenski-sahti-en.pdf",
+        "GAS PIPES": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/priroden-gas-en.pdf",
+        "PETROL GAS": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/petrol-gas-en.pdf",
+        "KONTI KAN DUCT": "https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/konti-kan-dakt-en.pdf"
+      };
+
+      const pdfUrl = brochureUrls[brochureName];
+      
+      if (!pdfUrl) {
+        return res.status(404).json({ error: "Brochure not found" });
+      }
+
+      res.json({ pdfUrl });
+    } catch (error) {
+      console.error("Error getting brochure URL:", error);
+      res.status(500).json({ error: "Failed to get brochure URL" });
+    }
+  });
+
+  // Track actual download
+  app.post("/api/track-actual-download", async (req, res) => {
+    try {
+      const { brochureName, email, downloadDate } = req.body;
+      
+      // This could be used to track when users actually download the PDF
+      // For now, we'll just log it
+      console.log(`Actual download tracked: ${brochureName} by ${email} at ${downloadDate}`);
+      
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error tracking actual download:", error);
+      res.status(500).json({ error: "Failed to track download" });
     }
   });
 

@@ -15,6 +15,7 @@ import WaterSupplySystemsPage from "@/pages/water-supply-systems";
 import GasPipelineSystemsPage from "@/pages/gas-pipeline-systems";
 import CableProtectionPage from "@/pages/cable-protection";
 import BrochuresPage from "@/pages/BrochuresPage";
+import DownloadBrochurePage from "@/pages/download-brochure";
 import CertificatesPage from "@/pages/certificates";
 import NewsPage from "@/pages/news";
 import NewsArticlePage from "@/pages/NewsArticlePage";
@@ -49,6 +50,7 @@ function Router() {
       <Route path="/products/gas-pipeline-systems" component={GasPipelineSystemsPage} />
       <Route path="/products/cable-protection" component={CableProtectionPage} />
       <Route path="/brochures" component={BrochuresPage} />
+      <Route path="/download-brochure" component={DownloadBrochurePage} />
       <Route path="/certificates" component={CertificatesPage} />
       <Route path="/news" component={NewsPage} />
       <Route path="/news/:slug" component={NewsArticlePage} />

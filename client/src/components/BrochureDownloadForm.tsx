@@ -19,17 +19,17 @@ interface BrochureDownloadFormProps {
 }
 
 interface DownloadFormData {
-  companyName: string;
+  fullName: string;
   email: string;
-  phone: string;
+  companyName: string;
   description: string;
 }
 
 export function BrochureDownloadForm({ isOpen, onClose, brochure }: BrochureDownloadFormProps) {
   const [formData, setFormData] = useState<DownloadFormData>({
-    companyName: "",
+    fullName: "",
     email: "",
-    phone: "",
+    companyName: "",
     description: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +38,7 @@ export function BrochureDownloadForm({ isOpen, onClose, brochure }: BrochureDown
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.companyName.trim() || !formData.email.trim()) {
+    if (!formData.fullName.trim() || !formData.email.trim() || !formData.companyName.trim()) {
       toast({
         title: "Error",
         description: "Please fill in all required fields",
@@ -55,9 +55,9 @@ export function BrochureDownloadForm({ isOpen, onClose, brochure }: BrochureDown
         brochureId: 0, // Using 0 since we don't have numeric IDs in the static data
         brochureName: `${brochure.name} (${brochure.id})`, // Include the unique identifier
         brochureCategory: brochure.category,
+        fullName: formData.fullName.trim(),
         companyName: formData.companyName.trim(),
         email: formData.email.trim(),
-        phone: formData.phone.trim() || null,
         description: formData.description.trim() || null,
         downloadDate: new Date().toISOString(),
       };
@@ -77,20 +77,17 @@ export function BrochureDownloadForm({ isOpen, onClose, brochure }: BrochureDown
       // Show success message
       toast({
         title: "Success",
-        description: "Download information saved successfully",
+        description: "Check your email for the download link!",
       });
 
       // Close the form
       onClose();
 
-      // Open the PDF in a new tab
-      window.open(brochure.pdfUrl, "_blank");
-
       // Reset form
       setFormData({
-        companyName: "",
+        fullName: "",
         email: "",
-        phone: "",
+        companyName: "",
         description: "",
       });
     } catch (error) {
@@ -126,14 +123,14 @@ export function BrochureDownloadForm({ isOpen, onClose, brochure }: BrochureDown
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="companyName">
-              Company Name <span className="text-red-500">*</span>
+            <Label htmlFor="fullName">
+              Full Name <span className="text-red-500">*</span>
             </Label>
             <Input
-              id="companyName"
-              value={formData.companyName}
-              onChange={(e) => handleInputChange("companyName", e.target.value)}
-              placeholder="Enter your company name"
+              id="fullName"
+              value={formData.fullName}
+              onChange={(e) => handleInputChange("fullName", e.target.value)}
+              placeholder="Enter your full name"
               required
             />
           </div>
@@ -153,13 +150,15 @@ export function BrochureDownloadForm({ isOpen, onClose, brochure }: BrochureDown
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="phone">Phone (Optional)</Label>
+            <Label htmlFor="companyName">
+              Company Name <span className="text-red-500">*</span>
+            </Label>
             <Input
-              id="phone"
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => handleInputChange("phone", e.target.value)}
-              placeholder="Enter your phone number"
+              id="companyName"
+              value={formData.companyName}
+              onChange={(e) => handleInputChange("companyName", e.target.value)}
+              placeholder="Enter your company name"
+              required
             />
           </div>
 
