@@ -110,7 +110,7 @@ export function CertificatesManager() {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { t } = useLanguage();
+  const { t, language, setLanguage } = useLanguage();
 
   const form = useForm<CertificateForm>({
     resolver: zodResolver(certificateFormSchema),
@@ -610,66 +610,118 @@ export function CertificatesManager() {
                   {/* Multi-language PDF Uploads */}
                   <div className="space-y-4">
                     <FormLabel className="text-base font-medium">PDF Files by Language</FormLabel>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <FormItem>
-                        <FormLabel className="flex items-center gap-2">
-                          🇺🇸 English PDF
-                        </FormLabel>
-                        <FormControl>
-                          <FileUpload
-                            label=""
-                            value={form.watch("pdfUrlEn") || ""}
-                            onChange={(url) => {
-                              console.log('English PDF upload onChange called with URL:', url);
-                              form.setValue("pdfUrlEn", url);
-                            }}
-                            accept=".pdf"
-                            placeholder="Upload English PDF or enter URL"
-                            data-testid="file-upload-pdf-en"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-
-                      <FormItem>
-                        <FormLabel className="flex items-center gap-2">
-                          🇲🇰 Macedonian PDF
-                        </FormLabel>
-                        <FormControl>
-                          <FileUpload
-                            label=""
-                            value={form.watch("pdfUrlMk") || ""}
-                            onChange={(url) => {
-                              console.log('Macedonian PDF upload onChange called with URL:', url);
-                              form.setValue("pdfUrlMk", url);
-                            }}
-                            accept=".pdf"
-                            placeholder="Upload Macedonian PDF or enter URL"
-                            data-testid="file-upload-pdf-mk"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-
-                      <FormItem>
-                        <FormLabel className="flex items-center gap-2">
-                          🇩🇪 German PDF
-                        </FormLabel>
-                        <FormControl>
-                          <FileUpload
-                            label=""
-                            value={form.watch("pdfUrlDe") || ""}
-                            onChange={(url) => {
-                              console.log('German PDF upload onChange called with URL:', url);
-                              form.setValue("pdfUrlDe", url);
-                            }}
-                            accept=".pdf"
-                            placeholder="Upload German PDF or enter URL"
-                            data-testid="file-upload-pdf-de"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                    
+                    {/* Language selector for PDF uploads */}
+                    <div className="flex items-center gap-2 mb-4 p-3 bg-gray-50 rounded-lg border">
+                      <FormLabel className="text-sm font-medium text-gray-700">Switch PDF Language:</FormLabel>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant={language === "en" ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setLanguage("en")}
+                          className="text-xs"
+                        >
+                          🇺🇸 English
+                        </Button>
+                        <Button
+                          type="button"
+                          variant={language === "mk" ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setLanguage("mk")}
+                          className="text-xs"
+                        >
+                          🇲🇰 Macedonian
+                        </Button>
+                        <Button
+                          type="button"
+                          variant={language === "de" ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setLanguage("de")}
+                          className="text-xs"
+                        >
+                          🇩🇪 German
+                        </Button>
+                      </div>
+                      <div className="ml-auto text-xs text-gray-500">
+                        Current: {language === "en" ? "🇺🇸 English" : language === "mk" ? "🇲🇰 Macedonian" : "🇩🇪 German"}
+                      </div>
+                    </div>
+                    
+                    {/* Dynamic PDF field based on current language */}
+                    <div className="space-y-4">
+                      {/* Active language indicator */}
+                      <div className="text-center p-2 bg-blue-50 border border-blue-200 rounded-lg">
+                        <span className="text-sm font-medium text-blue-700">
+                          📄 Currently editing: {language === "en" ? "🇺🇸 English" : language === "mk" ? "🇲🇰 Macedonian" : "🇩🇪 German"} PDF
+                        </span>
+                      </div>
+                      
+                      {language === "en" && (
+                        <FormItem>
+                          <FormLabel className="flex items-center gap-2">
+                            🇺🇸 English PDF
+                          </FormLabel>
+                          <FormControl>
+                            <FileUpload
+                              label=""
+                              value={form.watch("pdfUrlEn") || ""}
+                              onChange={(url) => {
+                                console.log('English PDF upload onChange called with URL:', url);
+                                form.setValue("pdfUrlEn", url);
+                              }}
+                              accept=".pdf"
+                              placeholder="Upload English PDF or enter URL"
+                              data-testid="file-upload-pdf-en"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                      
+                      {language === "mk" && (
+                        <FormItem>
+                          <FormLabel className="flex items-center gap-2">
+                            🇲🇰 Macedonian PDF
+                          </FormLabel>
+                          <FormControl>
+                            <FileUpload
+                              label=""
+                              value={form.watch("pdfUrlMk") || ""}
+                              onChange={(url) => {
+                                console.log('Macedonian PDF upload onChange called with URL:', url);
+                                form.setValue("pdfUrlMk", url);
+                              }}
+                              accept=".pdf"
+                              placeholder="Upload Macedonian PDF or enter URL"
+                              data-testid="file-upload-pdf-mk"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                      
+                      {language === "de" && (
+                        <FormItem>
+                          <FormLabel className="flex items-center gap-2">
+                            🇩🇪 German PDF
+                          </FormLabel>
+                          <FormControl>
+                            <FileUpload
+                              label=""
+                              value={form.watch("pdfUrlDe") || ""}
+                              onChange={(url) => {
+                                console.log('German PDF upload onChange called with URL:', url);
+                                form.setValue("pdfUrlDe", url);
+                              }}
+                              accept=".pdf"
+                              placeholder="Upload German PDF or enter URL"
+                              data-testid="file-upload-pdf-de"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     </div>
                   </div>
 

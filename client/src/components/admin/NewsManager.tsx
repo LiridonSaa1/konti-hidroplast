@@ -66,18 +66,23 @@ export function NewsManager() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
-  const [formData, setFormData] = useState<NewsFormData>({
-    title: "",
-    description: "",
-    imageUrl: "",
-    published: false,
-    sortOrder: 0,
-    sections: [],
-    translations: {
-      en: { title: "", description: "" },
-      mk: { title: "", description: "" },
-      de: { title: "", description: "" }
-    }
+  const [formData, setFormData] = useState<NewsFormData>(() => {
+    const initialData = {
+      title: "",
+      description: "",
+      imageUrl: "",
+      published: false,
+      sortOrder: 0,
+      sections: [],
+      translations: {
+        en: { title: "", description: "" },
+        mk: { title: "", description: "" },
+        de: { title: "", description: "" }
+      }
+    };
+    
+    console.log('Initializing form data:', initialData);
+    return initialData;
   });
 
   const { toast } = useToast();
@@ -85,7 +90,8 @@ export function NewsManager() {
 
   // Debug effect to track form data changes
   useEffect(() => {
-    // Form data tracking removed for cleaner console
+    console.log('Form data changed:', formData);
+    console.log('Translations state:', formData.translations);
   }, [formData, selectedArticle]);
 
   // Effect to ensure form data is synchronized when editing
@@ -216,7 +222,7 @@ export function NewsManager() {
     });
 
   const resetForm = () => {
-    setFormData({
+    const initialFormData = {
       title: "",
       description: "",
       imageUrl: "",
@@ -228,9 +234,11 @@ export function NewsManager() {
         mk: { title: "", description: "" },
         de: { title: "", description: "" }
       }
-    });
+    };
+    
+    console.log('Resetting form with initial data:', initialFormData);
+    setFormData(initialFormData);
     setSelectedArticle(null);
-    // setEditKey(0); // This line is removed
   };
 
   const addSection = (type: ArticleSection['type']) => {
@@ -302,6 +310,19 @@ export function NewsManager() {
       return;
     }
 
+    // Prepare sections with proper multi-language support
+    const sections = formData.sections.map(section => ({
+      id: section.id,
+      type: section.type,
+      title: section.title.en, // Default title for backward compatibility
+      content: section.content.en, // Default content for backward compatibility
+      imageUrl: section.imageUrl,
+      imagePosition: section.imagePosition,
+      // Include multi-language content in the section data
+      titleTranslations: section.title,
+      contentTranslations: section.content
+    }));
+
     const articleData: InsertNewsArticle = {
       title: formData.title,
       subtitle: null,
@@ -310,17 +331,19 @@ export function NewsManager() {
       author: null,
       published: formData.published,
       sortOrder: formData.sortOrder,
-      sections: formData.sections.map(section => ({
-        id: section.id,
-        type: section.type,
-        title: section.title.en,
-        content: section.content.en,
-        imageUrl: section.imageUrl,
-        imagePosition: section.imagePosition
-      })),
+      sections: sections,
       translations: formData.translations,
       defaultLanguage: 'en'
     };
+
+    console.log('=== Submitting Article Data ===');
+    console.log('Form Data:', formData);
+    console.log('Article Data:', articleData);
+    console.log('Translations:', formData.translations);
+    console.log('Macedonian title:', formData.translations.mk?.title);
+    console.log('German title:', formData.translations.de?.title);
+    console.log('Macedonian description:', formData.translations.mk?.description);
+    console.log('German description:', formData.translations.de?.description);
 
     if (selectedArticle) {
       updateMutation.mutate({ id: selectedArticle.id, article: articleData });
@@ -330,8 +353,12 @@ export function NewsManager() {
   };
 
   const handleEdit = (article: NewsArticle) => {
+    console.log('=== Editing Article ===');
+    console.log('Original article:', article);
+    
     // Extract translations from the article, with proper fallbacks
     const translations = (article.translations as any) || {};
+    console.log('Extracted translations:', translations);
     
     // Ensure we have the correct structure for each language
     const structuredTranslations = {
@@ -348,6 +375,8 @@ export function NewsManager() {
         description: translations.de?.description || ""
       }
     };
+    
+    console.log('Structured translations:', structuredTranslations);
     
     // Prepare the form data with proper translations structure
     const newFormData = {
@@ -374,6 +403,8 @@ export function NewsManager() {
       })) || [],
       translations: structuredTranslations
     };
+    
+    console.log('New form data:', newFormData);
     
     // Set the form data and open the dialog
     setFormData(newFormData);
@@ -1006,12 +1037,20 @@ export function NewsManager() {
                 currentTranslations={formData.translations}
                 originalValue={formData.translations.en?.title || ""}
                 onChange={(translations) => {
+                  console.log('Title translations changed:', translations);
                   setFormData(prev => {
+                    const newTranslations = {
+                      ...prev.translations,
+                      ...translations
+                    };
+                    console.log('Merged translations:', newTranslations);
+                    
                     const newData = {
                       ...prev,
                       title: translations.en?.title || "",
-                      translations
+                      translations: newTranslations
                     };
+                    console.log('Updated form data:', newData);
                     return newData;
                   });
                 }}
@@ -1025,12 +1064,20 @@ export function NewsManager() {
                 currentTranslations={formData.translations}
                 originalValue={formData.translations.en?.description || ""}
                 onChange={(translations) => {
+                  console.log('Description translations changed:', translations);
                   setFormData(prev => {
+                    const newTranslations = {
+                      ...prev.translations,
+                      ...translations
+                    };
+                    console.log('Merged translations:', newTranslations);
+                    
                     const newData = {
                       ...prev,
                       description: translations.en?.description || "",
-                      translations
+                      translations: newTranslations
                     };
+                    console.log('Updated form data:', newData);
                     return newData;
                   });
                 }}

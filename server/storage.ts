@@ -389,20 +389,43 @@ export class DatabaseStorage implements IStorage {
 
   async createNews(news: InsertNewsArticle): Promise<NewsArticle> {
     if (!db) throw new Error('Database not available');
+    
+    // Preserve the translations from the input data
+    const newsData = {
+      ...news,
+      translations: news.translations || {},
+      defaultLanguage: news.defaultLanguage || 'en'
+    };
+    
+    console.log('Creating news article with data:', JSON.stringify(newsData, null, 2));
+    
     const [newNews] = await db
       .insert(newsArticles)
-      .values({...news, translations: {}, defaultLanguage: 'en'})
+      .values(newsData)
       .returning();
+      
+    console.log('Created news article:', JSON.stringify(newNews, null, 2));
     return newNews;
   }
 
   async updateNews(id: string, news: Partial<InsertNewsArticle>): Promise<NewsArticle> {
     if (!db) throw new Error('Database not available');
+    
+    // Preserve existing translations if not provided in update
+    const updateData = {
+      ...news,
+      updatedAt: new Date()
+    };
+    
+    console.log('Updating news article with data:', JSON.stringify(updateData, null, 2));
+    
     const [updated] = await db
       .update(newsArticles)
-      .set({ ...news, updatedAt: new Date() })
+      .set(updateData)
       .where(eq(newsArticles.id, id))
       .returning();
+      
+    console.log('Updated news article:', JSON.stringify(updated, null, 2));
     return updated;
   }
 
