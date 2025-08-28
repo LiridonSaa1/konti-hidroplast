@@ -19,7 +19,8 @@ import {
   ChevronDown,
   ChevronRight,
   Menu,
-  X
+  X,
+  Download
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -45,6 +46,7 @@ import { ContactMessagesManager } from "@/components/admin/ContactMessagesManage
 import { JobApplicationsManager } from "@/components/admin/JobApplicationsManager";
 import { BrevoConfigManager } from "@/components/admin/BrevoConfigManager";
 import { SubcategoryItemsManager } from "@/components/admin/SubcategoryItemsManager";
+import { BrochureDownloadsManager } from "@/components/admin/BrochureDownloadsManager";
 
 export default function AdminPanel() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -204,7 +206,7 @@ export default function AdminPanel() {
   }
   
   // Auto-open brochures dropdown when brochures or brochure-categories tab is active
-  const brochureTabsActive = activeTab === "brochures" || activeTab === "enhanced-brochures" || activeTab === "brochure-categories";
+  const brochureTabsActive = activeTab === "brochures" || activeTab === "enhanced-brochures" || activeTab === "brochure-categories" || activeTab === "brochure-downloads";
   if (brochureTabsActive && !isBrochuresDropdownOpen) {
     setIsBrochuresDropdownOpen(true);
   }
@@ -432,6 +434,19 @@ export default function AdminPanel() {
                 >
                   <FolderOpen className={`h-3 w-3 mr-2 ${activeTab === "brochure-categories" ? "text-blue-600" : ""}`} />
                   Categories
+                </Button>
+                
+                <Button
+                  variant="ghost"
+                  className={`w-full justify-start text-sm ${activeTab === "brochure-downloads" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
+                  onClick={() => {
+                    setActiveTab("brochure-downloads");
+                    setIsMobileMenuOpen(false);
+                  }}
+                  data-testid="nav-brochure-downloads"
+                >
+                  <Download className={`h-3 w-3 mr-2 ${activeTab === "brochure-downloads" ? "text-blue-600" : ""}`} />
+                  Downloads
                 </Button>
               </CollapsibleContent>
             </Collapsible>
@@ -1130,6 +1145,12 @@ export default function AdminPanel() {
           {activeTab === "brochure-categories" && (
             <div data-testid="brochure-categories-manager">
               <BrochureCategoriesManager />
+            </div>
+          )}
+
+          {activeTab === "brochure-downloads" && (
+            <div data-testid="brochure-downloads-manager">
+              <BrochureDownloadsManager />
             </div>
           )}
 

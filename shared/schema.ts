@@ -226,6 +226,21 @@ export const jobApplications = pgTable("job_applications", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
+// Brochure downloads table
+export const brochureDownloads = pgTable("brochure_downloads", {
+  id: serial("id").primaryKey(),
+  brochureId: integer("brochure_id").notNull(),
+  brochureName: text("brochure_name").notNull(),
+  brochureCategory: text("brochure_category").notNull(),
+  companyName: text("company_name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  description: text("description"),
+  downloadDate: timestamp("download_date").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 // Brevo configuration table
 export const brevoConfig = pgTable("brevo_config", {
   id: serial("id").primaryKey(),
@@ -265,8 +280,17 @@ export const insertJobApplicationSchema = createInsertSchema(jobApplications).om
   updatedAt: true,
 });
 
+export const insertBrochureDownloadSchema = createInsertSchema(brochureDownloads).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export type JobApplication = typeof jobApplications.$inferSelect;
 export type InsertJobApplication = z.infer<typeof insertJobApplicationSchema>;
+
+export type BrochureDownload = typeof brochureDownloads.$inferSelect;
+export type InsertBrochureDownload = z.infer<typeof insertBrochureDownloadSchema>;
 
 export const insertBrevoConfigSchema = createInsertSchema(brevoConfig).omit({
   id: true,

@@ -2112,6 +2112,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Brochure downloads tracking
+  app.post("/api/brochure-downloads", async (req, res) => {
+    try {
+      const downloadData = req.body;
+      const download = await storage.createBrochureDownload(downloadData);
+      res.json(download);
+    } catch (error) {
+      console.error("Error creating brochure download record:", error);
+      res.status(500).json({ error: "Failed to create download record" });
+    }
+  });
+
+  app.get("/api/admin/brochure-downloads", requireAuth, async (req, res) => {
+    try {
+      const downloads = await storage.getAllBrochureDownloads();
+      res.json(downloads);
+    } catch (error) {
+      console.error("Error fetching brochure downloads:", error);
+      res.status(500).json({ error: "Failed to fetch downloads" });
+    }
+  });
+
+  app.delete("/api/admin/brochure-downloads/:id", requireAuth, async (req, res) => {
+    try {
+      await storage.deleteBrochureDownload(parseInt(req.params.id));
+      res.json({ message: "Download record deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting brochure download record:", error);
+      res.status(500).json({ error: "Failed to delete download record" });
+    }
+  });
+
   // Download PDF for a specific brochure
   app.get("/api/brochures/:id/download", async (req, res) => {
     try {

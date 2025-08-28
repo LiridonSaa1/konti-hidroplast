@@ -218,6 +218,12 @@ export interface IStorage {
   updateJobApplication(id: number, application: Partial<JobApplication>): Promise<JobApplication>;
   deleteJobApplication(id: number): Promise<void>;
   
+  // Brochure download methods
+  createBrochureDownload(download: InsertBrochureDownload): Promise<BrochureDownload>;
+  getAllBrochureDownloads(): Promise<BrochureDownload[]>;
+  getBrochureDownload(id: number): Promise<BrochureDownload | undefined>;
+  deleteBrochureDownload(id: number): Promise<void>;
+  
   // Brevo configuration methods
   getBrevoConfig(): Promise<BrevoConfig | undefined>;
   createBrevoConfig(config: InsertBrevoConfig): Promise<BrevoConfig>;
@@ -1150,6 +1156,37 @@ export class DatabaseStorage implements IStorage {
     const index = this.jobApplicationsData.findIndex(a => a.id === id);
     if (index !== -1) {
       this.jobApplicationsData.splice(index, 1);
+    }
+  }
+
+  // Brochure download methods - in-memory storage for development
+  private brochureDownloadsData: BrochureDownload[] = [];
+
+  async createBrochureDownload(download: InsertBrochureDownload): Promise<BrochureDownload> {
+    const newDownload: BrochureDownload = {
+      ...download,
+      id: Date.now(),
+      phone: download.phone ?? null,
+      description: download.description ?? null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.brochureDownloadsData.push(newDownload);
+    return newDownload;
+  }
+
+  async getAllBrochureDownloads(): Promise<BrochureDownload[]> {
+    return this.brochureDownloadsData.sort((a, b) => new Date(b.downloadDate).getTime() - new Date(a.downloadDate).getTime());
+  }
+
+  async getBrochureDownload(id: number): Promise<BrochureDownload | undefined> {
+    return this.brochureDownloadsData.find(d => d.id === id);
+  }
+
+  async deleteBrochureDownload(id: number): Promise<void> {
+    const index = this.brochureDownloadsData.findIndex(d => d.id === id);
+    if (index !== -1) {
+      this.brochureDownloadsData.splice(index, 1);
     }
   }
 

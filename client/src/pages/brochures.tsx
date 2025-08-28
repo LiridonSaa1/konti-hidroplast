@@ -6,6 +6,7 @@ import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { Download, ChevronLeft, ChevronRight } from "lucide-react";
+import { BrochureDownloadForm } from "@/components/BrochureDownloadForm";
 
 // Brochures data organized by category
 const brochureCategories = [
@@ -146,6 +147,13 @@ function BrochuresPage() {
   const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("water-supply");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
+  const [selectedBrochure, setSelectedBrochure] = useState<{
+    id: string;
+    name: string;
+    category: string;
+    pdfUrl: string;
+  } | null>(null);
+  const [isDownloadFormOpen, setIsDownloadFormOpen] = useState(false);
 
   const nextTab = () => {
     const nextIndex =
@@ -159,6 +167,19 @@ function BrochuresPage() {
       activeTabIndex === 0 ? brochureCategories.length - 1 : activeTabIndex - 1;
     setActiveTabIndex(prevIndex);
     setActiveTab(brochureCategories[prevIndex].id);
+  };
+
+  const handleDownloadClick = (brochure: any, categoryTitle: string) => {
+    // Generate a unique ID based on category and title for tracking
+    const uniqueId = `${categoryTitle.toLowerCase().replace(/\s+/g, '-')}-${brochure.title.toLowerCase().replace(/\s+/g, '-')}`;
+    
+    setSelectedBrochure({
+      id: uniqueId,
+      name: brochure.title,
+      category: categoryTitle,
+      pdfUrl: brochure.downloadUrl,
+    });
+    setIsDownloadFormOpen(true);
   };
 
   useEffect(() => {
@@ -264,38 +285,65 @@ function BrochuresPage() {
               key={category.id}
               className={`${activeTab === category.id ? "block" : "hidden"} transition-all duration-500`}
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {category.brochures.map((brochure, index) => (
-                  <div
-                    key={index}
-                    className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100"
-                    data-testid={`brochure-${category.id}-${index}`}
-                  >
+              {category.brochures.length === 1 ? (
+                // Single brochure - show larger and centered
+                <div className="flex justify-center">
+                  <div className="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100">
                     <div className="aspect-[1/4] bg-gray-100">
                       <img
-                        src={brochure.image}
-                        alt={brochure.title}
+                        src={category.brochures[0].image}
+                        alt={category.brochures[0].title}
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <div className="p-6">
-                      <h3 className="font-semibold text-[#1c2d56] mb-4 line-clamp-2 text-[15px]">
-                        {brochure.title}
+                    <div className="p-8 text-center">
+                      <h3 className="font-semibold text-[#1c2d56] mb-6 text-lg">
+                        {category.brochures[0].title}
                       </h3>
-                      <a
-                        href={brochure.downloadUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center w-full justify-center px-4 py-2 bg-[#1c2d56] text-white rounded-lg hover:bg-[#1c2d56]/90 transition-colors"
-                        data-testid={`download-${category.id}-${index}`}
+                      <button
+                        onClick={() => handleDownloadClick(category.brochures[0], category.title)}
+                        className="inline-flex items-center justify-center px-6 py-3 bg-[#1c2d56] text-white rounded-lg hover:bg-[#1c2d56]/90 transition-colors text-base font-medium"
+                        data-testid={`download-${category.id}-0`}
                       >
-                        <Download className="w-4 h-4 mr-2" />
+                        <Download className="w-5 h-5 mr-2" />
                         {t("productPages.downloadPdf")}
-                      </a>
+                      </button>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ) : (
+                // Multiple brochures - show in grid
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {category.brochures.map((brochure, index) => (
+                    <div
+                      key={index}
+                      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100"
+                      data-testid={`brochure-${category.id}-${index}`}
+                    >
+                      <div className="aspect-[1/4] bg-gray-100">
+                        <img
+                          src={brochure.image}
+                          alt={brochure.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="p-6">
+                        <h3 className="font-semibold text-[#1c2d56] mb-4 line-clamp-2 text-[15px]">
+                          {brochure.title}
+                        </h3>
+                        <button
+                          onClick={() => handleDownloadClick(brochure, category.title)}
+                          className="inline-flex items-center w-full justify-center px-4 py-2 bg-[#1c2d56] text-white rounded-lg hover:bg-[#1c2d56]/90 transition-colors"
+                          data-testid={`download-${category.id}-${index}`}
+                        >
+                          <Download className="w-4 h-4 mr-2" />
+                          {t("productPages.downloadPdf")}
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
@@ -329,6 +377,19 @@ function BrochuresPage() {
           </div>
         </div>
       </section>
+
+      {/* Download Form */}
+      {selectedBrochure && (
+        <BrochureDownloadForm
+          isOpen={isDownloadFormOpen}
+          onClose={() => {
+            setIsDownloadFormOpen(false);
+            setSelectedBrochure(null);
+          }}
+          brochure={selectedBrochure}
+        />
+      )}
+
       <Footer />
     </div>
   );
