@@ -11,20 +11,38 @@ import type { NewsArticle } from "@shared/schema";
 
 // Utility function to get translated content from news article
 const getTranslatedContent = (article: NewsArticle, language: string, field: 'title' | 'description') => {
-  if (!article.translations) return null;
+  console.log(`=== getTranslatedContent Debug ===`);
+  console.log(`Article ID: ${article.id}`);
+  console.log(`Language: ${language}`);
+  console.log(`Field: ${field}`);
+  console.log(`Article translations:`, article.translations);
+  console.log(`Article title:`, article.title);
+  console.log(`Article description:`, article.description);
+  
+  if (!article.translations) {
+    console.log('No translations object found, using fallback');
+    return field === 'title' ? article.title : article.description;
+  }
   
   const translations = article.translations as any;
+  console.log(`Translations object:`, translations);
+  console.log(`Language ${language} translations:`, translations[language]);
+  
   if (translations[language] && translations[language][field]) {
+    console.log(`Found ${language} translation for ${field}:`, translations[language][field]);
     return translations[language][field];
   }
   
   // Fallback to English if translation not available
   if (translations.en && translations.en[field]) {
+    console.log(`Using English fallback for ${field}:`, translations.en[field]);
     return translations.en[field];
   }
   
   // Final fallback to the main field
-  return field === 'title' ? article.title : article.description;
+  const fallbackValue = field === 'title' ? article.title : article.description;
+  console.log(`Using final fallback for ${field}:`, fallbackValue);
+  return fallbackValue;
 };
 
 // Utility function to truncate text
@@ -51,10 +69,37 @@ function NewsPage() {
   const [visibleArticles, setVisibleArticles] = useState(6);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Debug: Log language changes
+  useEffect(() => {
+    console.log('=== LANGUAGE CHANGE DEBUG ===');
+    console.log('Current language:', language);
+    console.log('Language context translations available:', t);
+  }, [language, t]);
+
   // Fetch published news articles from API
   const { data: newsArticles = [], isLoading: isLoadingNews } = useQuery<NewsArticle[]>({
     queryKey: ["/api/news"]
   });
+
+  // Debug: Log news articles data to see what we're getting
+  useEffect(() => {
+    if (newsArticles.length > 0) {
+      console.log('=== NEWS ARTICLES DEBUG ===');
+      console.log('Total articles:', newsArticles.length);
+      newsArticles.forEach((article, index) => {
+        console.log(`Article ${index + 1}:`, {
+          id: article.id,
+          title: article.title,
+          description: article.description,
+          translations: article.translations,
+          published: article.published,
+          createdAt: article.createdAt
+        });
+      });
+    } else if (!isLoadingNews) {
+      console.log('No news articles found or still loading');
+    }
+  }, [newsArticles, isLoadingNews]);
 
   useEffect(() => {
     // Set page title
@@ -84,6 +129,13 @@ function NewsPage() {
     // Get translated content for the current language
     const translatedTitle = getTranslatedContent(article, language, 'title');
     const translatedDescription = getTranslatedContent(article, language, 'description');
+    
+    console.log(`=== NewsCard Debug for Article ${article.id} ===`);
+    console.log(`Current language: ${language}`);
+    console.log(`Translated title:`, translatedTitle);
+    console.log(`Translated description:`, translatedDescription);
+    console.log(`Original title:`, article.title);
+    console.log(`Original description:`, article.description);
     
     return (
       <article
@@ -185,20 +237,7 @@ function NewsPage() {
       <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Language Indicator */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white rounded-full shadow-md border border-gray-200">
-              <span className="text-sm font-medium text-gray-600">Viewing in:</span>
-              <span className="text-sm font-semibold text-[#1c2d56]">
-                {language === 'en' ? '🇺🇸 English' : language === 'mk' ? '🇲🇰 Macedonian' : '🇩🇪 German'}
-              </span>
-            </div>
-            <p className="text-sm text-gray-500 mt-2">
-              {language === 'en' 
-                ? 'Original content in English' 
-                : 'Translated content - some articles may show English if translation is not available'
-              }
-            </p>
-          </div>
+          
           
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">

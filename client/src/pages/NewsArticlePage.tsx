@@ -13,48 +13,115 @@ import type { NewsArticle } from "@shared/schema";
 interface ArticleSection {
   id: string;
   type: "text" | "image" | "text-with-image";
-  title: string;
-  content: string;
+  title: {
+    en: string;
+    mk: string;
+    de: string;
+  };
+  content: {
+    en: string;
+    mk: string;
+    de: string;
+  };
   imageUrl?: string;
   imagePosition?: "left" | "right";
 }
 
 // Utility function to get translated content from news article
 const getTranslatedContent = (article: NewsArticle, language: string, field: 'title' | 'description') => {
-  if (!article.translations) return null;
+  console.log(`=== getTranslatedContent Debug ===`);
+  console.log(`Article ID: ${article.id}`);
+  console.log(`Language: ${language}`);
+  console.log(`Field: ${field}`);
+  console.log(`Article translations:`, article.translations);
+  console.log(`Article title:`, article.title);
+  console.log(`Article description:`, article.description);
+  
+  if (!article.translations) {
+    console.log('No translations object found, using fallback');
+    return field === 'title' ? article.title : article.description;
+  }
   
   const translations = article.translations as any;
+  console.log(`Translations object:`, translations);
+  console.log(`Language ${language} translations:`, translations[language]);
+  
   if (translations[language] && translations[language][field]) {
+    console.log(`Found ${language} translation for ${field}:`, translations[language][field]);
     return translations[language][field];
   }
   
   // Fallback to English if translation not available
   if (translations.en && translations.en[field]) {
+    console.log(`Using English fallback for ${field}:`, translations.en[field]);
     return translations.en[field];
   }
   
   // Final fallback to the main field
-  return field === 'title' ? article.title : article.description;
+  const fallbackValue = field === 'title' ? article.title : article.description;
+  console.log(`Using final fallback for ${field}:`, fallbackValue);
+  return fallbackValue;
 };
 
 // Utility function to get translated section content
 const getTranslatedSectionContent = (section: any, language: string, field: 'title' | 'content') => {
-  if (!section) return '';
+  console.log(`=== getTranslatedSectionContent Debug ===`);
+  console.log(`Section:`, section);
+  console.log(`Language: ${language}`);
+  console.log(`Field: ${field}`);
   
-  // Check if section has multi-language structure
-  if (section[field] && typeof section[field] === 'object') {
+  if (!section) {
+    console.log('No section provided');
+    return '';
+  }
+  
+  // Check if section has the new multi-language structure (title/content with en/mk/de)
+  if (section[field] && typeof section[field] === 'object' && section[field][language]) {
     const multiLangContent = section[field] as any;
-    if (multiLangContent[language]) {
+    console.log(`Found new structure for ${field}:`, multiLangContent);
+    
+    if (multiLangContent[language] && typeof multiLangContent[language] === 'string') {
+      console.log(`Found ${language} translation for ${field}:`, multiLangContent[language]);
       return multiLangContent[language];
-    }
-    // Fallback to English
-    if (multiLangContent.en) {
-      return multiLangContent.en;
     }
   }
   
-  // Fallback to the main field
-  return section[field] || '';
+  // Check if section has the old structure (titleTranslations/contentTranslations)
+  const oldFieldName = field === 'title' ? 'titleTranslations' : 'contentTranslations';
+  if (section[oldFieldName] && typeof section[oldFieldName] === 'object') {
+    const oldTranslations = section[oldFieldName] as any;
+    console.log(`Found old structure for ${field}:`, oldTranslations);
+    
+    if (oldTranslations[language] && typeof oldTranslations[language] === 'string') {
+      console.log(`Found ${language} translation for ${field} using old structure:`, oldTranslations[language]);
+      return oldTranslations[language];
+    }
+  }
+  
+  // Fallback to English if translation not available (try both structures)
+  if (section[field] && typeof section[field] === 'object' && section[field].en) {
+    const fallbackContent = section[field].en;
+    console.log(`Using English fallback for ${field} (new structure):`, fallbackContent);
+    return fallbackContent;
+  }
+  
+  if (section[oldFieldName] && typeof section[oldFieldName] === 'object' && section[oldFieldName].en) {
+    const fallbackContent = section[oldFieldName].en;
+    console.log(`Using English fallback for ${field} (old structure):`, fallbackContent);
+    return fallbackContent;
+  }
+  
+  // Fallback to the main field if it's a string
+  if (typeof section[field] === 'string') {
+    const fallbackValue = section[field];
+    console.log(`Using string fallback for ${field}:`, fallbackValue);
+    return fallbackValue;
+  }
+  
+  // Final fallback
+  const fallbackValue = '';
+  console.log(`No translation found for ${field}, using empty string`);
+  return fallbackValue;
 };
 
 // Format date helper
@@ -73,6 +140,13 @@ function NewsArticlePage() {
   const { data: companyInfo } = useCompanyInfo();
   const { slug } = useParams(); // This will be the article ID
 
+  // Debug: Log language changes
+  useEffect(() => {
+    console.log('=== LANGUAGE CHANGE DEBUG ===');
+    console.log('Current language:', language);
+    console.log('Language context translations available:', t);
+  }, [language, t]);
+
   // Fetch the specific article
   const {
     data: article,
@@ -82,6 +156,22 @@ function NewsArticlePage() {
     queryKey: ["/api/news", slug],
     enabled: !!slug,
   });
+
+  // Debug: Log article data changes
+  useEffect(() => {
+    if (article) {
+      console.log('=== ARTICLE DATA DEBUG ===');
+      console.log('Article loaded:', {
+        id: article.id,
+        title: article.title,
+        description: article.description,
+        translations: article.translations,
+        sections: article.sections,
+        published: article.published,
+        createdAt: article.createdAt
+      });
+    }
+  }, [article]);
 
   useEffect(() => {
     if (article) {
@@ -166,10 +256,24 @@ function NewsArticlePage() {
           </div>
 
           <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-            {getTranslatedContent(article, language, 'title') || article.title}
+            {(() => {
+              const translatedTitle = getTranslatedContent(article, language, 'title');
+              console.log(`=== HERO TITLE DEBUG ===`);
+              console.log(`Current language: ${language}`);
+              console.log(`Translated title:`, translatedTitle);
+              console.log(`Original title:`, article.title);
+              return translatedTitle || article.title;
+            })()}
           </h1>
 
-          {getTranslatedContent(article, language, 'description') && (
+          {(() => {
+            const translatedDescription = getTranslatedContent(article, language, 'description');
+            console.log(`=== HERO DESCRIPTION DEBUG ===`);
+            console.log(`Current language: ${language}`);
+            console.log(`Translated description:`, translatedDescription);
+            console.log(`Original description:`, article.description);
+            return translatedDescription;
+          })() && (
             <p className="text-xl text-gray-300 mb-8 leading-relaxed">
               {getTranslatedContent(article, language, 'description')}
             </p>
@@ -180,160 +284,138 @@ function NewsArticlePage() {
               <Calendar className="w-5 h-5" />
               <span>{formatDate(article.createdAt)}</span>
             </div>
-            <div className="flex items-center gap-2">
+            {/* <div className="flex items-center gap-2">
               <User className="w-5 h-5" />
               <span>Konti Hidroplast Team</span>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
 
-      {/* Article Content */}
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Language Indicator */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-full shadow-sm border border-gray-200">
-              <span className="text-sm font-medium text-gray-600">Viewing in:</span>
-              <span className="text-sm font-semibold text-[#1c2d56]">
-                {language === 'en' ? '🇺🇸 English' : language === 'mk' ? '🇲🇰 Macedonian' : '🇩🇪 German'}
-              </span>
-            </div>
-            <p className="text-sm text-gray-500 mt-2">
-              {language === 'en' 
-                ? 'Original content in English' 
-                : 'Translated content - some sections may show English if translation is not available'
-              }
-            </p>
-          </div>
-          
-          {/* Article Header */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
-              {getTranslatedContent(article, language, 'title') || article.title}
-            </h1>
-
-            {getTranslatedContent(article, language, 'description') && (
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                {getTranslatedContent(article, language, 'description')}
-              </p>
-            )}
-
-            <div className="flex items-center justify-center gap-6 text-gray-500">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-5 h-5" />
-                <span>{formatDate(article.createdAt)}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <User className="w-5 h-5" />
-                <span>Konti Hidroplast Team</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Article Content */}
       <section className="py-20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Article Content Based on Structured Sections */}
-          <div className="space-y-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+           <div className="space-y-8">
             {article.sections &&
             Array.isArray(article.sections) &&
             article.sections.length > 0 ? (
-              article.sections.map((section: ArticleSection, index: number) => (
-                <div key={section.id || index} className="mb-8">
-                  {/* Section Title - positioned above content area */}
+              article.sections.map((section: ArticleSection, index: number) => {
+                console.log(`=== RENDERING SECTION ${index + 1} ===`);
+                console.log(`Section data:`, section);
+                console.log(`Current language: ${language}`);
+                
+                // Debug the translation retrieval for this section
+                const translatedTitle = getTranslatedSectionContent(section, language, 'title');
+                const translatedContent = getTranslatedSectionContent(section, language, 'content');
+                
+                console.log(`Section ${index + 1} translations:`, {
+                  title: {
+                    requested: language,
+                    found: translatedTitle,
+                    available: section.title
+                  },
+                  content: {
+                    requested: language,
+                    found: translatedContent,
+                    available: section.content
+                  }
+                });
+                
+                return (
+                  <div key={section.id || index} className="mb-8">
+                    {/* Section Title - positioned above content area */}
 
-                  <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-                    {/* Text Only Section */}
-                    {section.type === "text" && (
-                      <div className="px-8 py-8">
-                        <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
-                          {getTranslatedSectionContent(section, language, 'title')}
-                        </h2>
-                        <div
-                          className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
-                          dangerouslySetInnerHTML={{
-                            __html: getTranslatedSectionContent(section, language, 'content').replace(/\n/g, "<br>"),
-                          }}
-                        />
-                      </div>
-                    )}
-
-                    {/* Image Only Section */}
-                    {section.type === "image" && section.imageUrl && (
-                      <div className="px-8 py-8">
-                        <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
-                          {getTranslatedSectionContent(section, language, 'title')}
-                        </h2>
-                        <img
-                          src={section.imageUrl}
-                          alt={getTranslatedSectionContent(section, language, 'title') || `Section ${index + 1}`}
-                          className="w-full h-[28rem] object-cover rounded-lg shadow-md"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = "none";
-                          }}
-                        />
-                      </div>
-                    )}
-
-                    {/* Text with Image Section */}
-                    {section.type === "text-with-image" && (
-                      <div className="px-8 py-8">
-                        <div
-                          className={`grid gap-8 items-start ${
-                            section.imagePosition === "left"
-                              ? "md:grid-cols-2"
-                              : "md:grid-cols-2"
-                          }`}
-                        >
-                          {/* Text Content */}
+                    <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+                      {/* Text Only Section */}
+                      {section.type === "text" && (
+                        <div className="px-8 py-8">
+                          <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
+                            {getTranslatedSectionContent(section, language, 'title')}
+                          </h2>
                           <div
-                            className={`${
+                            className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                            dangerouslySetInnerHTML={{
+                              __html: getTranslatedSectionContent(section, language, 'content').replace(/\n/g, "<br>"),
+                            }}
+                          />
+                        </div>
+                      )}
+
+                      {/* Image Only Section */}
+                      {section.type === "image" && section.imageUrl && (
+                        <div className="px-8 py-8">
+                          <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
+                            {getTranslatedSectionContent(section, language, 'title')}
+                          </h2>
+                          <img
+                            src={section.imageUrl}
+                            alt={getTranslatedSectionContent(section, language, 'title') || `Section ${index + 1}`}
+                            className="w-full h-[28rem] object-cover rounded-lg shadow-md"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = "none";
+                            }}
+                          />
+                        </div>
+                      )}
+
+                      {/* Text with Image Section */}
+                      {section.type === "text-with-image" && (
+                        <div className="px-8 py-8">
+                          <div
+                            className={`grid gap-8 items-start ${
                               section.imagePosition === "left"
-                                ? "md:order-2"
-                                : "md:order-1"
+                                ? "md:grid-cols-2"
+                                : "md:grid-cols-2"
                             }`}
                           >
-                            <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
-                              {getTranslatedSectionContent(section, language, 'title')}
-                            </h2>
-                            <div
-                              className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
-                              dangerouslySetInnerHTML={{
-                                __html: getTranslatedSectionContent(section, language, 'content').replace(/\n/g, "<br>"),
-                              }}
-                            />
-                          </div>
-
-                          {/* Image */}
-                          {section.imageUrl && (
+                            {/* Text Content */}
                             <div
                               className={`${
                                 section.imagePosition === "left"
-                                  ? "md:order-1"
-                                  : "md:order-2"
+                                  ? "md:order-2"
+                                  : "md:order-1"
                               }`}
                             >
-                              <img
-                                src={section.imageUrl}
-                                alt={getTranslatedSectionContent(section, language, 'title') || `Section ${index + 1}`}
-                                className="w-full h-[28rem] object-cover rounded-lg shadow-md"
-                                onError={(e) => {
-                                  const target = e.target as HTMLImageElement;
-                                  target.style.display = "none";
+                              <h2 className="text-2xl font-bold text-[#1c2d56] leading-tight mb-6">
+                                {getTranslatedSectionContent(section, language, 'title')}
+                              </h2>
+                              <div
+                                className="prose prose-lg max-w-none text-gray-700 leading-relaxed"
+                                dangerouslySetInnerHTML={{
+                                  __html: getTranslatedSectionContent(section, language, 'content').replace(/\n/g, "<br>"),
                                 }}
                               />
                             </div>
-                          )}
+
+                            {/* Image */}
+                            {section.imageUrl && (
+                              <div
+                                className={`${
+                                  section.imagePosition === "left"
+                                    ? "md:order-1"
+                                    : "md:order-2"
+                                }`}
+                              >
+                                <img
+                                  src={section.imageUrl}
+                                  alt={getTranslatedSectionContent(section, language, 'title') || `Section ${index + 1}`}
+                                  className="w-full h-[28rem] object-cover rounded-lg shadow-md"
+                                  onError={(e) => {
+                                    const target = e.target as HTMLImageElement;
+                                    target.style.display = "none";
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             ) : (
               <div className="bg-white rounded-lg shadow-sm p-8">
                 <div className="text-center text-gray-600">
