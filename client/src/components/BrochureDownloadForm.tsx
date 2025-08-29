@@ -60,6 +60,7 @@ export function BrochureDownloadForm({ isOpen, onClose, brochure }: BrochureDown
         email: formData.email.trim(),
         description: formData.description.trim() || null,
         downloadDate: new Date().toISOString(),
+        pdfUrl: brochure.pdfUrl, // Include the PDF URL for email sending
       };
 
       const response = await fetch("/api/brochure-downloads", {

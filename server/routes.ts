@@ -1869,6 +1869,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Test brochure download email endpoint
+  app.post('/api/admin/brevo-config/test-brochure-download', requireAuth, async (req, res) => {
+    try {
+      console.log('=== Testing Brochure Download Email ===');
+      
+      const config = await storage.getBrevoConfig();
+      if (!config) {
+        return res.status(404).json({ error: 'Brevo config not found' });
+      }
+
+      const testData = {
+        fullName: 'Test User',
+        email: config.recipientEmail || config.senderEmail, // Send to admin email for testing
+        companyName: 'Test Company',
+        brochureName: 'Test Brochure',
+        brochureCategory: 'Test Category',
+        description: 'Test description for brochure download',
+        downloadDate: new Date().toISOString(),
+        pdfUrl: 'https://example.com/test.pdf'
+      };
+      
+      // Test user email
+      const { EmailService } = await import('./services/emailService.js');
+      const emailService = new EmailService();
+      
+      const userEmailResult = await emailService.sendBrochureDownloadEmail(
+        testData.fullName,
+        testData.email,
+        testData.companyName,
+        testData.brochureName,
+        testData.brochureCategory,
+        testData.pdfUrl
+      );
+      
+      // Test admin notification
+      const adminEmailResult = await brevoService.sendBrochureDownloadNotification(testData);
+      
+      if (userEmailResult && adminEmailResult) {
+        res.json({ 
+          success: true,
+          message: 'Both user and admin emails sent successfully! Check your email inbox.',
+          userEmail: userEmailResult,
+          adminEmail: adminEmailResult
+        });
+      } else {
+        res.json({ 
+          success: false,
+          message: `Test failed: User email: ${userEmailResult}, Admin email: ${adminEmailResult}`,
+          userEmail: userEmailResult,
+          adminEmail: adminEmailResult
+        });
+      }
+    } catch (error) {
+      console.error('Error testing brochure download email:', error);
+      res.status(500).json({ error: 'Failed to test brochure download email' });
+    }
+  });
+
   // Job application routes
   app.get('/api/admin/job-applications', requireAuth, async (req, res) => {
     try {
@@ -2120,29 +2178,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Create download record
       const download = await storage.createBrochureDownload(downloadData);
       
-      // Send email with download link
-      const { EmailService } = await import('./services/emailService.js');
-      const emailService = new EmailService();
+      // Send email notifications using Brevo service
+      let userEmailSent = false;
+      let adminEmailSent = false;
       
-      // For now, we'll skip email sending if there's no PDF URL
-      // In a real implementation, you'd want to store the PDF URL with the brochure
-      let emailSent = false;
-      if (downloadData.pdfUrl) {
-        emailSent = await emailService.sendBrochureDownloadEmail(
-          downloadData.fullName,
-          downloadData.email,
-          downloadData.companyName,
-          downloadData.brochureName,
-          downloadData.brochureCategory,
-          downloadData.pdfUrl
-        );
+      try {
+        // Send email to user with download link
+        const { EmailService } = await import('./services/emailService.js');
+        const emailService = new EmailService();
+        
+        if (downloadData.pdfUrl) {
+          userEmailSent = await emailService.sendBrochureDownloadEmail(
+            downloadData.fullName,
+            downloadData.email,
+            downloadData.companyName,
+            downloadData.brochureName,
+            downloadData.brochureCategory,
+            downloadData.pdfUrl
+          );
+        }
+        
+        // Send notification to admin
+        const { brevoService } = await import('./services/brevoService.js');
+        adminEmailSent = await brevoService.sendBrochureDownloadNotification(downloadData);
+        
+      } catch (emailError) {
+        console.error('Error sending email notifications:', emailError);
       }
       
-      if (emailSent) {
-        res.json({ ...download, emailSent: true });
-      } else {
-        res.json({ ...download, emailSent: false, warning: "Download recorded but email failed to send" });
-      }
+      res.json({ 
+        ...download, 
+        userEmailSent, 
+        adminEmailSent,
+        message: userEmailSent ? "Download recorded and email sent successfully" : "Download recorded but email failed to send"
+      });
     } catch (error) {
       console.error("Error creating brochure download record:", error);
       res.status(500).json({ error: "Failed to create download record" });

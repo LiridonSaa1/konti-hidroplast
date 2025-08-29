@@ -399,6 +399,118 @@ export class BrevoService {
       return false;
     }
   }
+
+  // Generic email sending method
+  async sendEmail(emailData: {
+    to: string;
+    subject: string;
+    htmlContent?: string;
+    textContent?: string;
+  }): Promise<boolean> {
+    try {
+      console.log('=== Sending Generic Email ===');
+      
+      const config = await this.getConfig();
+      if (!config || !config.isActive || (!config.apiKey && !config.brevoApiKey) || !config.senderEmail) {
+        console.log('Brevo not configured - skipping email sending');
+        return false;
+      }
+      
+      console.log('Brevo config found for generic email:', {
+        isActive: config.isActive,
+        hasApiKey: !!config.apiKey,
+        hasBrevoApiKey: !!config.brevoApiKey,
+        senderEmail: config.senderEmail,
+        senderName: config.senderName
+      });
+      
+      const transporter = await this.createTransporter();
+      if (!transporter) {
+        console.log('Failed to create transporter for generic email');
+        return false;
+      }
+      
+      console.log('Transporter created, sending generic email...');
+      
+      const emailContent = {
+        from: `"${config.senderName || 'Konti Hidroplast'}" <${config.senderEmail}>`,
+        to: emailData.to,
+        subject: emailData.subject,
+        text: emailData.textContent || '',
+        html: emailData.htmlContent || ''
+      };
+      
+      const result = await transporter.sendMail(emailContent);
+      console.log('Generic email sent successfully:', result.messageId);
+      return true;
+    } catch (error) {
+      console.error('Failed to send generic email:', error);
+      return false;
+    }
+  }
+
+  // Send brochure download notification to admin
+  async sendBrochureDownloadNotification(downloadData: any): Promise<boolean> {
+    try {
+      console.log('=== Sending Brochure Download Notification Email ===');
+      
+      const config = await this.getConfig();
+      if (!config || !config.isActive || (!config.apiKey && !config.brevoApiKey) || !config.senderEmail) {
+        console.log('Brevo not configured - skipping brochure download notification');
+        return false;
+      }
+      
+      console.log('Brevo config found for brochure download notification:', {
+        isActive: config.isActive,
+        hasApiKey: !!config.apiKey,
+        hasBrevoApiKey: !!config.brevoApiKey,
+        senderEmail: config.senderEmail,
+        senderName: config.senderName
+      });
+      
+      const transporter = await this.createTransporter();
+      if (!transporter) {
+        console.log('Failed to create transporter for brochure download notification');
+        return false;
+      }
+      
+      console.log('Transporter created, sending brochure download notification...');
+      
+      const emailContent = {
+        from: `"${config.senderName || 'Website Contact'}" <${config.senderEmail}>`,
+        to: config.recipientEmail || config.senderEmail,
+        subject: 'New Brochure Download Request',
+        text: `
+          New brochure download request:
+          
+          Name: ${downloadData.fullName}
+          Email: ${downloadData.email}
+          Company: ${downloadData.companyName}
+          Brochure: ${downloadData.brochureName}
+          Category: ${downloadData.brochureCategory}
+          Description: ${downloadData.description || 'Not provided'}
+          Download Date: ${downloadData.downloadDate}
+        `,
+        html: `
+          <h2>New Brochure Download Request</h2>
+          <p><strong>Name:</strong> ${downloadData.fullName}</p>
+          <p><strong>Email:</strong> ${downloadData.email}</p>
+          <p><strong>Company:</strong> ${downloadData.companyName}</p>
+          <p><strong>Brochure:</strong> ${downloadData.brochureName}</p>
+          <p><strong>Category:</strong> ${downloadData.brochureCategory}</p>
+          <p><strong>Description:</strong> ${downloadData.description || 'Not provided'}</p>
+          <p><strong>Download Date:</strong> ${downloadData.downloadDate}</p>
+        `
+      };
+      
+      const result = await transporter.sendMail(emailContent);
+      console.log('Brochure download notification email sent successfully:', result.messageId);
+      return true;
+    } catch (error) {
+      console.error('Failed to send brochure download notification email:', error);
+      return false;
+    }
+  }
 }
 
 export const brevoService = new BrevoService();

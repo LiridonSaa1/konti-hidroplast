@@ -11,7 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, Settings, CheckCircle, XCircle, AlertCircle, TestTube, Save } from "lucide-react";
+import { Mail, Settings, CheckCircle, XCircle, AlertCircle, TestTube, Save, Download } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import type { BrevoConfig } from "@shared/schema";
 
@@ -48,6 +48,8 @@ export function BrevoConfigManager() {
   const [connectionStatus, setConnectionStatus] = useState<boolean | null>(null);
   const [isTestingEmail, setIsTestingEmail] = useState(false);
   const [emailTestResult, setEmailTestResult] = useState<string | null>(null);
+  const [isTestingBrochureDownload, setIsTestingBrochureDownload] = useState(false);
+  const [brochureDownloadTestResult, setBrochureDownloadTestResult] = useState<string | null>(null);
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -235,6 +237,36 @@ export function BrevoConfigManager() {
       await testEmailMutation.mutateAsync();
     } finally {
       setIsTestingEmail(false);
+    }
+  };
+
+  const testBrochureDownloadEmail = async () => {
+    setIsTestingBrochureDownload(true);
+    try {
+      const response = await apiRequest("/api/admin/brevo-config/test-brochure-download", "POST");
+      const result = await response.json();
+      
+      if (result.success) {
+        toast({
+          title: "Brochure Download Test Successful",
+          description: result.message || "Brochure download emails sent successfully!",
+        });
+      } else {
+        toast({
+          title: "Brochure Download Test Failed",
+          description: result.message || "Failed to send brochure download emails",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      console.error("Error testing brochure download email:", error);
+      toast({
+        title: "Brochure Download Test Failed",
+        description: "Failed to test brochure download email functionality",
+        variant: "destructive",
+      });
+    } finally {
+      setIsTestingBrochureDownload(false);
     }
   };
 
@@ -542,6 +574,18 @@ export function BrevoConfigManager() {
                 >
                   <Mail className="h-4 w-4 mr-2" />
                   {isTestingEmail || testEmailMutation.isPending ? "Sending..." : "Test Email"}
+                </Button>
+                
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={testBrochureDownloadEmail}
+                  disabled={isTestingBrochureDownload}
+                  className="border-purple-300 text-purple-700 hover:bg-purple-50"
+                  data-testid="button-test-brochure-download"
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  {isTestingBrochureDownload ? "Testing..." : "Test Brochure Download"}
                 </Button>
               </>
             )}
