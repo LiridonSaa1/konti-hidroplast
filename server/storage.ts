@@ -25,6 +25,8 @@ import {
   type InsertBrochure,
   type BrochureCategory,
   type InsertBrochureCategory,
+  type BrochureDownload,
+  type InsertBrochureDownload,
   type Project,
   type InsertProject,
   type Team,
@@ -229,6 +231,971 @@ export interface IStorage {
   createBrevoConfig(config: InsertBrevoConfig): Promise<BrevoConfig>;
   updateBrevoConfig(id: number, config: Partial<InsertBrevoConfig>): Promise<BrevoConfig>;
   deleteBrevoConfig(id: number): Promise<void>;
+}
+
+// In-memory storage implementation for development
+export class MemStorage implements IStorage {
+  // In-memory data storage
+  private usersData: User[] = [
+    {
+      id: "admin-1",
+      username: "admin",
+      password: "admin123", // In production, this should be hashed
+      email: "admin@konti-hidroplast.com.mk",
+      role: "admin",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+  ];
+
+  private companyInfoData: CompanyInfo[] = [
+    {
+      id: "company-name-1",
+      key: "companyName",
+      value: "Konti Hidroplast",
+      category: "general",
+      updatedAt: new Date()
+    },
+    {
+      id: "company-description-1",
+      key: "description",
+      value: "Konti Hidroplast is a leading manufacturer of high-quality HDPE pipes and fittings, serving the infrastructure and construction industries across Europe. We specialize in innovative solutions for gas pipelines, drainage systems, and industrial applications. With over 25 years of experience, we have established ourselves as a trusted partner for major infrastructure projects throughout the continent.",
+      category: "general",
+      updatedAt: new Date()
+    },
+    {
+      id: "company-email-1",
+      key: "email",
+      value: "info@konti-hidroplast.com.mk",
+      category: "contact",
+      updatedAt: new Date()
+    },
+    {
+      id: "company-phone-1",
+      key: "phone",
+      value: "+389 34 215 225",
+      category: "contact",
+      updatedAt: new Date()
+    },
+    {
+      id: "company-phone-2",
+      key: "phone2",
+      value: "+389 34 215 226",
+      category: "contact",
+      updatedAt: new Date()
+    },
+    {
+      id: "company-address-1",
+      key: "address",
+      value: "Industriska 5, 1480 Gevgelija, North Macedonia",
+      category: "contact",
+      updatedAt: new Date()
+    },
+    {
+      id: "company-linkedin-1",
+      key: "socialLinkedIn",
+      value: "https://linkedin.com/company/konti-hidroplast",
+      category: "social",
+      updatedAt: new Date()
+    },
+    {
+      id: "company-facebook-1",
+      key: "socialFacebook",
+      value: "https://facebook.com/kontihidroplast",
+      category: "social",
+      updatedAt: new Date()
+    },
+    {
+      id: "company-instagram-1",
+      key: "socialInstagram",
+      value: "https://instagram.com/kontihidroplast",
+      category: "social",
+      updatedAt: new Date()
+    }
+  ];
+
+  private productsData: Product[] = [];
+  private mediaData: Media[] = [];
+  private newsArticlesData: NewsArticle[] = [];
+  private certificatesData: Certificate[] = [];
+  private certificateCategoriesData: CertificateCategory[] = [];
+  private certificateSubcategoriesData: CertificateSubcategory[] = [];
+  private subcategoryItemsData: SubcategoryItem[] = [];
+  private productCategoriesData: ProductCategory[] = [];
+  private productSubcategoriesData: ProductSubcategory[] = [];
+  private brochuresData: Brochure[] = [];
+  private brochureCategoriesData: BrochureCategory[] = [];
+  private projectsData: Project[] = [];
+  private teamsData: Team[] = [];
+  private positionsData: Position[] = [];
+  private galleryCategoriesData: GalleryCategory[] = [];
+  private galleryItemsData: GalleryItem[] = [];
+  private contactMessagesData: ContactMessage[] = [];
+  private jobApplicationsData: JobApplication[] = [];
+  private brevoConfigData: BrevoConfig | null = null;
+  private brochureDownloadsData: BrochureDownload[] = [];
+
+  // User methods
+  async getUser(id: string): Promise<User | undefined> {
+    return this.usersData.find(user => user.id === id);
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    return this.usersData.find(user => user.username === username);
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return [...this.usersData];
+  }
+
+  async getAdminUser(): Promise<User | undefined> {
+    return this.usersData.find(user => user.role === "admin");
+  }
+
+  async createUser(user: InsertUser): Promise<User> {
+    const newUser: User = {
+      ...user,
+      id: user.id || `user-${Date.now()}`,
+      role: user.role || "admin",
+      email: user.email || null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.usersData.push(newUser);
+    return newUser;
+  }
+
+  async updateUser(id: string, user: Partial<InsertUser>): Promise<User> {
+    const index = this.usersData.findIndex(u => u.id === id);
+    if (index === -1) throw new Error('User not found');
+    
+    this.usersData[index] = {
+      ...this.usersData[index],
+      ...user,
+      updatedAt: new Date()
+    };
+    return this.usersData[index];
+  }
+
+  async deleteUser(id: string): Promise<void> {
+    const index = this.usersData.findIndex(u => u.id === id);
+    if (index !== -1) {
+      this.usersData.splice(index, 1);
+    }
+  }
+
+  // Company info methods
+  async getAllCompanyInfo(): Promise<CompanyInfo[]> {
+    return [...this.companyInfoData];
+  }
+
+  async getCompanyInfoByKey(key: string): Promise<CompanyInfo | undefined> {
+    return this.companyInfoData.find(info => info.key === key);
+  }
+
+  async upsertCompanyInfo(info: InsertCompanyInfo): Promise<CompanyInfo> {
+    const existingIndex = this.companyInfoData.findIndex(item => item.key === info.key);
+    
+    if (existingIndex !== -1) {
+      // Update existing
+      this.companyInfoData[existingIndex] = {
+        ...this.companyInfoData[existingIndex],
+        ...info,
+        updatedAt: new Date()
+      };
+      return this.companyInfoData[existingIndex];
+    } else {
+      // Create new
+      const newInfo: CompanyInfo = {
+        ...info,
+        id: info.id || `company-info-${Date.now()}`,
+        updatedAt: new Date()
+      };
+      this.companyInfoData.push(newInfo);
+      return newInfo;
+    }
+  }
+
+  // Product methods
+  async getAllProducts(): Promise<Product[]> {
+    return [...this.productsData];
+  }
+
+  async getProduct(id: string): Promise<Product | undefined> {
+    return this.productsData.find(product => product.id === id);
+  }
+
+  async createProduct(product: InsertProduct): Promise<Product> {
+    const newProduct: Product = {
+      ...product,
+      id: product.id || `product-${Date.now()}`,
+      description: product.description || null,
+      subcategory: product.subcategory || null,
+      specifications: product.specifications || null,
+      images: product.images || null,
+      brochureUrl: product.brochureUrl || null,
+      featured: product.featured || false,
+      active: product.active || true,
+      sortOrder: product.sortOrder || 0,
+      translations: product.translations || {},
+      defaultLanguage: product.defaultLanguage || 'en',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.productsData.push(newProduct);
+    return newProduct;
+  }
+
+  async updateProduct(id: string, product: Partial<InsertProduct>): Promise<Product> {
+    const index = this.productsData.findIndex(p => p.id === id);
+    if (index === -1) throw new Error('Product not found');
+    
+    this.productsData[index] = {
+      ...this.productsData[index],
+      ...product,
+      updatedAt: new Date()
+    };
+    return this.productsData[index];
+  }
+
+  async deleteProduct(id: string): Promise<void> {
+    const index = this.productsData.findIndex(p => p.id === id);
+    if (index !== -1) {
+      this.productsData.splice(index, 1);
+    }
+  }
+
+  // Media methods
+  async getAllMedia(): Promise<Media[]> {
+    return [...this.mediaData];
+  }
+
+  async getMediaByCategory(category: string): Promise<Media[]> {
+    return this.mediaData.filter(media => media.category === category);
+  }
+
+  async createMedia(media: InsertMedia): Promise<Media> {
+    const newMedia: Media = {
+      ...media,
+      id: media.id || `media-${Date.now()}`,
+      altText: media.altText || null,
+      fileSize: media.fileSize || null,
+      mimeType: media.mimeType || null,
+      createdAt: new Date()
+    };
+    this.mediaData.push(newMedia);
+    return newMedia;
+  }
+
+  async deleteMedia(id: string): Promise<void> {
+    const index = this.mediaData.findIndex(m => m.id === id);
+    if (index !== -1) {
+      this.mediaData.splice(index, 1);
+    }
+  }
+
+  // News methods
+  async getAllNews(): Promise<NewsArticle[]> {
+    return [...this.newsArticlesData].sort((a, b) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA;
+    });
+  }
+
+  async getNews(id: string): Promise<NewsArticle | undefined> {
+    return this.newsArticlesData.find(article => article.id === id);
+  }
+
+  async createNews(news: InsertNewsArticle): Promise<NewsArticle> {
+    const newNews: NewsArticle = {
+      ...news,
+      id: news.id || `news-${Date.now()}`,
+      description: news.description || null,
+      imageUrl: news.imageUrl || null,
+      author: news.author || null,
+      published: news.published || false,
+      publishedAt: news.publishedAt || null,
+      sortOrder: news.sortOrder || 0,
+      sections: news.sections || [],
+      translations: news.translations || {},
+      defaultLanguage: news.defaultLanguage || 'en',
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.newsArticlesData.push(newNews);
+    return newNews;
+  }
+
+  async updateNews(id: string, news: Partial<InsertNewsArticle>): Promise<NewsArticle> {
+    const index = this.newsArticlesData.findIndex(n => n.id === id);
+    if (index === -1) throw new Error('News article not found');
+    
+    this.newsArticlesData[index] = {
+      ...this.newsArticlesData[index],
+      ...news,
+      updatedAt: new Date()
+    };
+    return this.newsArticlesData[index];
+  }
+
+  async deleteNews(id: string): Promise<void> {
+    const index = this.newsArticlesData.findIndex(n => n.id === id);
+    if (index !== -1) {
+      this.newsArticlesData.splice(index, 1);
+    }
+  }
+
+  // Certificate methods
+  async getAllCertificates(): Promise<Certificate[]> {
+    return [...this.certificatesData];
+  }
+
+  async getCertificate(id: string): Promise<Certificate | undefined> {
+    return this.certificatesData.find(cert => cert.id === id);
+  }
+
+  async createCertificate(certificate: InsertCertificate): Promise<Certificate> {
+    const newCertificate: Certificate = {
+      ...certificate,
+      id: certificate.id || `certificate-${Date.now()}`,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.certificatesData.push(newCertificate);
+    return newCertificate;
+  }
+
+  async updateCertificate(id: string, certificate: Partial<InsertCertificate>): Promise<Certificate> {
+    const index = this.certificatesData.findIndex(c => c.id === id);
+    if (index === -1) throw new Error('Certificate not found');
+    
+    this.certificatesData[index] = {
+      ...this.certificatesData[index],
+      ...certificate,
+      updatedAt: new Date()
+    };
+    return this.certificatesData[index];
+  }
+
+  async deleteCertificate(id: string): Promise<void> {
+    const index = this.certificatesData.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.certificatesData.splice(index, 1);
+    }
+  }
+
+  // Certificate Category methods
+  async getAllCertificateCategories(): Promise<CertificateCategory[]> {
+    return [...this.certificateCategoriesData].sort((a, b) => a.sortOrder - b.sortOrder);
+  }
+
+  async getCertificateCategory(id: number): Promise<CertificateCategory | undefined> {
+    return this.certificateCategoriesData.find(cat => cat.id === id);
+  }
+
+  async createCertificateCategory(category: InsertCertificateCategory): Promise<CertificateCategory> {
+    const newCategory: CertificateCategory = {
+      ...category,
+      id: category.id || Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.certificateCategoriesData.push(newCategory);
+    return newCategory;
+  }
+
+  async updateCertificateCategory(id: number, category: Partial<InsertCertificateCategory>): Promise<CertificateCategory> {
+    const index = this.certificateCategoriesData.findIndex(c => c.id === id);
+    if (index === -1) throw new Error('Certificate category not found');
+    
+    this.certificateCategoriesData[index] = {
+      ...this.certificateCategoriesData[index],
+      ...category,
+      updatedAt: new Date()
+    };
+    return this.certificateCategoriesData[index];
+  }
+
+  async deleteCertificateCategory(id: number): Promise<void> {
+    const index = this.certificateCategoriesData.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.certificateCategoriesData.splice(index, 1);
+    }
+  }
+
+  // Certificate Subcategory methods
+  async getAllCertificateSubcategories(): Promise<CertificateSubcategory[]> {
+    return [...this.certificateSubcategoriesData].sort((a, b) => a.sortOrder - b.sortOrder);
+  }
+
+  async getCertificateSubcategory(id: number): Promise<CertificateSubcategory | undefined> {
+    return this.certificateSubcategoriesData.find(sub => sub.id === id);
+  }
+
+  async createCertificateSubcategory(subcategory: InsertCertificateSubcategory): Promise<CertificateSubcategory> {
+    const newSubcategory: CertificateSubcategory = {
+      ...subcategory,
+      id: subcategory.id || Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.certificateSubcategoriesData.push(newSubcategory);
+    return newSubcategory;
+  }
+
+  async updateCertificateSubcategory(id: number, subcategory: Partial<InsertCertificateSubcategory>): Promise<CertificateSubcategory> {
+    const index = this.certificateSubcategoriesData.findIndex(s => s.id === id);
+    if (index === -1) throw new Error('Certificate subcategory not found');
+    
+    this.certificateSubcategoriesData[index] = {
+      ...this.certificateSubcategoriesData[index],
+      ...subcategory,
+      updatedAt: new Date()
+    };
+    return this.certificateSubcategoriesData[index];
+  }
+
+  async deleteCertificateSubcategory(id: number): Promise<void> {
+    const index = this.certificateSubcategoriesData.findIndex(s => s.id === id);
+    if (index !== -1) {
+      this.certificateSubcategoriesData.splice(index, 1);
+    }
+  }
+
+  // Subcategory Item methods
+  async getAllSubcategoryItems(): Promise<SubcategoryItem[]> {
+    return [...this.subcategoryItemsData];
+  }
+
+  async getSubcategoryItem(id: number): Promise<SubcategoryItem | undefined> {
+    return this.subcategoryItemsData.find(item => item.id === id);
+  }
+
+  async createSubcategoryItem(item: InsertSubcategoryItem): Promise<SubcategoryItem> {
+    const newItem: SubcategoryItem = {
+      ...item,
+      id: item.id || Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.subcategoryItemsData.push(newItem);
+    return newItem;
+  }
+
+  async updateSubcategoryItem(id: number, item: Partial<InsertSubcategoryItem>): Promise<SubcategoryItem> {
+    const index = this.subcategoryItemsData.findIndex(i => i.id === id);
+    if (index === -1) throw new Error('Subcategory item not found');
+    
+    this.subcategoryItemsData[index] = {
+      ...this.subcategoryItemsData[index],
+      ...item,
+      updatedAt: new Date()
+    };
+    return this.subcategoryItemsData[index];
+  }
+
+  async deleteSubcategoryItem(id: number): Promise<void> {
+    const index = this.subcategoryItemsData.findIndex(i => i.id === id);
+    if (index !== -1) {
+      this.subcategoryItemsData.splice(index, 1);
+    }
+  }
+
+  // Product Category methods
+  async getAllProductCategories(): Promise<ProductCategory[]> {
+    return [...this.productCategoriesData].sort((a, b) => a.sortOrder - b.sortOrder);
+  }
+
+  async getProductCategory(id: number): Promise<ProductCategory | undefined> {
+    return this.productCategoriesData.find(cat => cat.id === id);
+  }
+
+  async createProductCategory(category: InsertProductCategory): Promise<ProductCategory> {
+    const newCategory: ProductCategory = {
+      ...category,
+      id: category.id || Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.productCategoriesData.push(newCategory);
+    return newCategory;
+  }
+
+  async updateProductCategory(id: number, category: Partial<InsertProductCategory>): Promise<ProductCategory> {
+    const index = this.productCategoriesData.findIndex(c => c.id === id);
+    if (index === -1) throw new Error('Product category not found');
+    
+    this.productCategoriesData[index] = {
+      ...this.productCategoriesData[index],
+      ...category,
+      updatedAt: new Date()
+    };
+    return this.productCategoriesData[index];
+  }
+
+  async deleteProductCategory(id: number): Promise<void> {
+    const index = this.productCategoriesData.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.productCategoriesData.splice(index, 1);
+    }
+  }
+
+  // Product Subcategory methods
+  async getAllProductSubcategories(): Promise<ProductSubcategory[]> {
+    return [...this.productSubcategoriesData].sort((a, b) => a.sortOrder - b.sortOrder);
+  }
+
+  async getProductSubcategory(id: number): Promise<ProductSubcategory | undefined> {
+    return this.productSubcategoriesData.find(sub => sub.id === id);
+  }
+
+  async createProductSubcategory(subcategory: InsertProductSubcategory): Promise<ProductSubcategory> {
+    const newSubcategory: ProductSubcategory = {
+      ...subcategory,
+      id: subcategory.id || Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.productSubcategoriesData.push(newSubcategory);
+    return newSubcategory;
+  }
+
+  async updateProductSubcategory(id: number, subcategory: Partial<InsertProductSubcategory>): Promise<ProductSubcategory> {
+    const index = this.productSubcategoriesData.findIndex(s => s.id === id);
+    if (index === -1) throw new Error('Product subcategory not found');
+    
+    this.productSubcategoriesData[index] = {
+      ...this.productSubcategoriesData[index],
+      ...subcategory,
+      updatedAt: new Date()
+    };
+    return this.productSubcategoriesData[index];
+  }
+
+  async deleteProductSubcategory(id: number): Promise<void> {
+    const index = this.productSubcategoriesData.findIndex(s => s.id === id);
+    if (index !== -1) {
+      this.productSubcategoriesData.splice(index, 1);
+    }
+  }
+
+  // Brochure methods
+  async getAllBrochures(): Promise<Brochure[]> {
+    return [...this.brochuresData];
+  }
+
+  async getBrochure(id: string): Promise<Brochure | undefined> {
+    return this.brochuresData.find(brochure => brochure.id === id);
+  }
+
+  async createBrochure(brochure: InsertBrochure): Promise<Brochure> {
+    const newBrochure: Brochure = {
+      ...brochure,
+      id: brochure.id || `brochure-${Date.now()}`,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.brochuresData.push(newBrochure);
+    return newBrochure;
+  }
+
+  async updateBrochure(id: string, brochure: Partial<InsertBrochure>): Promise<Brochure> {
+    const index = this.brochuresData.findIndex(b => b.id === id);
+    if (index === -1) throw new Error('Brochure not found');
+    
+    this.brochuresData[index] = {
+      ...this.brochuresData[index],
+      ...brochure,
+      updatedAt: new Date()
+    };
+    return this.brochuresData[index];
+  }
+
+  async deleteBrochure(id: string): Promise<void> {
+    const index = this.brochuresData.findIndex(b => b.id === id);
+    if (index !== -1) {
+      this.brochuresData.splice(index, 1);
+    }
+  }
+
+  // Brochure Category methods
+  async getAllBrochureCategories(): Promise<BrochureCategory[]> {
+    return [...this.brochureCategoriesData].sort((a, b) => a.sortOrder - b.sortOrder);
+  }
+
+  async getBrochureCategory(id: number): Promise<BrochureCategory | undefined> {
+    return this.brochureCategoriesData.find(cat => cat.id === id);
+  }
+
+  async createBrochureCategory(category: InsertBrochureCategory): Promise<BrochureCategory> {
+    const newCategory: BrochureCategory = {
+      ...category,
+      id: category.id || Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.brochureCategoriesData.push(newCategory);
+    return newCategory;
+  }
+
+  async updateBrochureCategory(id: number, category: Partial<InsertBrochureCategory>): Promise<BrochureCategory> {
+    const index = this.brochureCategoriesData.findIndex(c => c.id === id);
+    if (index === -1) throw new Error('Brochure category not found');
+    
+    this.brochureCategoriesData[index] = {
+      ...this.brochureCategoriesData[index],
+      ...category,
+      updatedAt: new Date()
+    };
+    return this.brochureCategoriesData[index];
+  }
+
+  async deleteBrochureCategory(id: number): Promise<void> {
+    const index = this.brochureCategoriesData.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.brochureCategoriesData.splice(index, 1);
+    }
+  }
+
+  // Project methods
+  async getAllProjects(): Promise<Project[]> {
+    return [...this.projectsData].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  async getProject(id: number): Promise<Project | undefined> {
+    return this.projectsData.find(project => project.id === id);
+  }
+
+  async createProject(project: InsertProject): Promise<Project> {
+    const newProject: Project = {
+      ...project,
+      id: project.id || Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.projectsData.push(newProject);
+    return newProject;
+  }
+
+  async updateProject(id: number, project: Partial<InsertProject>): Promise<Project> {
+    const index = this.projectsData.findIndex(p => p.id === id);
+    if (index === -1) throw new Error('Project not found');
+    
+    this.projectsData[index] = {
+      ...this.projectsData[index],
+      ...project,
+      updatedAt: new Date()
+    };
+    return this.projectsData[index];
+  }
+
+  async deleteProject(id: number): Promise<void> {
+    const index = this.projectsData.findIndex(p => p.id === id);
+    if (index !== -1) {
+      this.projectsData.splice(index, 1);
+    }
+  }
+
+  // Team methods
+  async getAllTeams(): Promise<Team[]> {
+    return [...this.teamsData];
+  }
+
+  async getTeam(id: number): Promise<Team | undefined> {
+    return this.teamsData.find(team => team.id === id);
+  }
+
+  async createTeam(team: InsertTeam): Promise<Team> {
+    const newTeam: Team = {
+      ...team,
+      id: team.id || Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.teamsData.push(newTeam);
+    return newTeam;
+  }
+
+  async updateTeam(id: number, team: Partial<InsertTeam>): Promise<Team> {
+    const index = this.teamsData.findIndex(t => t.id === id);
+    if (index === -1) throw new Error('Team not found');
+    
+    this.teamsData[index] = {
+      ...this.teamsData[index],
+      ...team,
+      updatedAt: new Date()
+    };
+    return this.teamsData[index];
+  }
+
+  async deleteTeam(id: number): Promise<void> {
+    const index = this.teamsData.findIndex(t => t.id === id);
+    if (index !== -1) {
+      this.teamsData.splice(index, 1);
+    }
+  }
+
+  // Position methods
+  async getAllPositions(): Promise<Position[]> {
+    return [...this.positionsData];
+  }
+
+  async getPosition(id: number): Promise<Position | undefined> {
+    return this.positionsData.find(position => position.id === id);
+  }
+
+  async createPosition(position: InsertPosition): Promise<Position> {
+    const newPosition: Position = {
+      ...position,
+      id: position.id || Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.positionsData.push(newPosition);
+    return newPosition;
+  }
+
+  async updatePosition(id: number, position: Partial<InsertPosition>): Promise<Position> {
+    const index = this.positionsData.findIndex(p => p.id === id);
+    if (index === -1) throw new Error('Position not found');
+    
+    this.positionsData[index] = {
+      ...this.positionsData[index],
+      ...position,
+      updatedAt: new Date()
+    };
+    return this.positionsData[index];
+  }
+
+  async deletePosition(id: number): Promise<void> {
+    const index = this.positionsData.findIndex(p => p.id === id);
+    if (index !== -1) {
+      this.positionsData.splice(index, 1);
+    }
+  }
+
+  // Gallery Category methods
+  async getAllGalleryCategories(): Promise<GalleryCategory[]> {
+    return [...this.galleryCategoriesData].sort((a, b) => a.sortOrder - b.sortOrder);
+  }
+
+  async getGalleryCategory(id: number): Promise<GalleryCategory | undefined> {
+    return this.galleryCategoriesData.find(cat => cat.id === id);
+  }
+
+  async createGalleryCategory(category: InsertGalleryCategory): Promise<GalleryCategory> {
+    const newCategory: GalleryCategory = {
+      ...category,
+      id: category.id || Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.galleryCategoriesData.push(newCategory);
+    return newCategory;
+  }
+
+  async updateGalleryCategory(id: number, category: Partial<InsertGalleryCategory>): Promise<GalleryCategory> {
+    const index = this.galleryCategoriesData.findIndex(c => c.id === id);
+    if (index === -1) throw new Error('Gallery category not found');
+    
+    this.galleryCategoriesData[index] = {
+      ...this.galleryCategoriesData[index],
+      ...category,
+      updatedAt: new Date()
+    };
+    return this.galleryCategoriesData[index];
+  }
+
+  async deleteGalleryCategory(id: number): Promise<void> {
+    const index = this.galleryCategoriesData.findIndex(c => c.id === id);
+    if (index !== -1) {
+      this.galleryCategoriesData.splice(index, 1);
+    }
+  }
+
+  // Gallery Item methods
+  async getAllGalleryItems(): Promise<GalleryItem[]> {
+    return [...this.galleryItemsData];
+  }
+
+  async getGalleryItem(id: number): Promise<GalleryItem | undefined> {
+    return this.galleryItemsData.find(item => item.id === id);
+  }
+
+  async createGalleryItem(item: InsertGalleryItem): Promise<GalleryItem> {
+    const newItem: GalleryItem = {
+      ...item,
+      id: item.id || Date.now(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.galleryItemsData.push(newItem);
+    return newItem;
+  }
+
+  async updateGalleryItem(id: number, item: Partial<InsertGalleryItem>): Promise<GalleryItem> {
+    const index = this.galleryItemsData.findIndex(i => i.id === id);
+    if (index === -1) throw new Error('Gallery item not found');
+    
+    this.galleryItemsData[index] = {
+      ...this.galleryItemsData[index],
+      ...item,
+      updatedAt: new Date()
+    };
+    return this.galleryItemsData[index];
+  }
+
+  async deleteGalleryItem(id: number): Promise<void> {
+    const index = this.galleryItemsData.findIndex(i => i.id === id);
+    if (index !== -1) {
+      this.galleryItemsData.splice(index, 1);
+    }
+  }
+
+  // Contact message methods
+  async getAllContactMessages(): Promise<ContactMessage[]> {
+    return [...this.contactMessagesData].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  async getContactMessage(id: number): Promise<ContactMessage | undefined> {
+    return this.contactMessagesData.find(message => message.id === id);
+  }
+
+  async createContactMessage(message: InsertContactMessage): Promise<ContactMessage> {
+    const newMessage: ContactMessage = {
+      ...message,
+      id: Date.now(),
+      phone: message.phone ?? null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.contactMessagesData.push(newMessage);
+    return newMessage;
+  }
+
+  async updateContactMessage(id: number, message: Partial<InsertContactMessage>): Promise<ContactMessage> {
+    const index = this.contactMessagesData.findIndex(m => m.id === id);
+    if (index === -1) throw new Error('Contact message not found');
+    
+    this.contactMessagesData[index] = {
+      ...this.contactMessagesData[index],
+      ...message,
+      updatedAt: new Date()
+    };
+    return this.contactMessagesData[index];
+  }
+
+  async deleteContactMessage(id: number): Promise<void> {
+    const index = this.contactMessagesData.findIndex(m => m.id === id);
+    if (index !== -1) {
+      this.contactMessagesData.splice(index, 1);
+    }
+  }
+
+  // Job application methods
+  async getAllJobApplications(): Promise<JobApplication[]> {
+    return [...this.jobApplicationsData].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  async getJobApplication(id: number): Promise<JobApplication | undefined> {
+    return this.jobApplicationsData.find(application => application.id === id);
+  }
+
+  async createJobApplication(application: InsertJobApplication): Promise<JobApplication> {
+    const newApplication: JobApplication = {
+      ...application,
+      id: Date.now(),
+      phoneNumber: application.phoneNumber ?? null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.jobApplicationsData.push(newApplication);
+    return newApplication;
+  }
+
+  async updateJobApplication(id: number, application: Partial<InsertJobApplication>): Promise<JobApplication> {
+    const index = this.jobApplicationsData.findIndex(a => a.id === id);
+    if (index === -1) throw new Error('Job application not found');
+    
+    this.jobApplicationsData[index] = {
+      ...this.jobApplicationsData[index],
+      ...application,
+      updatedAt: new Date()
+    };
+    return this.jobApplicationsData[index];
+  }
+
+  async deleteJobApplication(id: number): Promise<void> {
+    const index = this.jobApplicationsData.findIndex(a => a.id === id);
+    if (index !== -1) {
+      this.jobApplicationsData.splice(index, 1);
+    }
+  }
+
+  // Brochure download methods
+  async createBrochureDownload(download: InsertBrochureDownload): Promise<BrochureDownload> {
+    const newDownload: BrochureDownload = {
+      ...download,
+      id: Date.now(),
+      description: download.description ?? null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.brochureDownloadsData.push(newDownload);
+    return newDownload;
+  }
+
+  async getAllBrochureDownloads(): Promise<BrochureDownload[]> {
+    return this.brochureDownloadsData.sort((a, b) => new Date(b.downloadDate).getTime() - new Date(a.downloadDate).getTime());
+  }
+
+  async getBrochureDownload(id: number): Promise<BrochureDownload | undefined> {
+    return this.brochureDownloadsData.find(d => d.id === id);
+  }
+
+  async deleteBrochureDownload(id: number): Promise<void> {
+    const index = this.brochureDownloadsData.findIndex(d => d.id === id);
+    if (index !== -1) {
+      this.brochureDownloadsData.splice(index, 1);
+    }
+  }
+
+  // Brevo configuration methods
+  async getBrevoConfig(): Promise<BrevoConfig | undefined> {
+    return this.brevoConfigData || undefined;
+  }
+
+  async createBrevoConfig(config: InsertBrevoConfig): Promise<BrevoConfig> {
+    const newConfig: BrevoConfig = {
+      ...config,
+      id: 1,
+      brevoApiKey: config.brevoApiKey ?? null,
+      validatedSenderEmail: config.validatedSenderEmail ?? null,
+      templateId: config.templateId ?? null,
+      isActive: config.isActive ?? null,
+      recipientEmail: config.recipientEmail || "admin@kontihidroplast.com",
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    this.brevoConfigData = newConfig;
+    return newConfig;
+  }
+
+  async updateBrevoConfig(id: number, config: Partial<InsertBrevoConfig>): Promise<BrevoConfig> {
+    if (!this.brevoConfigData) throw new Error('Brevo configuration not found');
+    
+    this.brevoConfigData = {
+      ...this.brevoConfigData,
+      ...config,
+      updatedAt: new Date()
+    };
+    return this.brevoConfigData;
+  }
+
+  async deleteBrevoConfig(id: number): Promise<void> {
+    this.brevoConfigData = null;
+  }
 }
 
 export class DatabaseStorage implements IStorage {
@@ -519,6 +1486,56 @@ export class DatabaseStorage implements IStorage {
     await db.delete(certificateSubcategories).where(eq(certificateSubcategories.id, id));
   }
 
+  // Subcategory Items methods
+  async getAllSubcategoryItems(): Promise<SubcategoryItem[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(subcategoryItems).orderBy(subcategoryItems.sortOrder);
+  }
+
+  async getSubcategoryItemsByCategory(categoryId: number): Promise<SubcategoryItem[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(subcategoryItems)
+      .where(eq(subcategoryItems.categoryId, categoryId))
+      .orderBy(subcategoryItems.sortOrder);
+  }
+
+  async getSubcategoryItemsBySubcategory(subcategoryId: number): Promise<SubcategoryItem[]> {
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(subcategoryItems)
+      .where(eq(subcategoryItems.subcategoryId, subcategoryId))
+      .orderBy(subcategoryItems.sortOrder);
+  }
+
+  async getSubcategoryItem(id: number): Promise<SubcategoryItem | undefined> {
+    if (!db) throw new Error('Database not available');
+    const result = await db.select().from(subcategoryItems).where(eq(subcategoryItems.id, id));
+    return result[0];
+  }
+
+  async createSubcategoryItem(item: InsertSubcategoryItem): Promise<SubcategoryItem> {
+    if (!db) throw new Error('Database not available');
+    const [newItem] = await db
+      .insert(subcategoryItems)
+      .values(item)
+      .returning();
+    return newItem;
+  }
+
+  async updateSubcategoryItem(id: number, item: Partial<InsertSubcategoryItem>): Promise<SubcategoryItem> {
+    if (!db) throw new Error('Database not available');
+    const [updated] = await db
+      .update(subcategoryItems)
+      .set(item)
+      .where(eq(subcategoryItems.id, id))
+      .returning();
+    return updated;
+  }
+
+  async deleteSubcategoryItem(id: number): Promise<void> {
+    if (!db) throw new Error('Database not available');
+    await db.delete(subcategoryItems).where(eq(subcategoryItems.id, id));
+  }
+
   // Product Category methods
   async getAllProductCategories(): Promise<ProductCategory[]> {
     if (!db) throw new Error('Database not available');
@@ -596,56 +1613,6 @@ export class DatabaseStorage implements IStorage {
   async deleteProductSubcategory(id: number): Promise<void> {
     if (!db) throw new Error('Database not available');
     await db.delete(productSubcategories).where(eq(productSubcategories.id, id));
-  }
-
-  // Subcategory Items methods
-  async getAllSubcategoryItems(): Promise<SubcategoryItem[]> {
-    if (!db) throw new Error('Database not available');
-    return await db.select().from(subcategoryItems).orderBy(subcategoryItems.sortOrder);
-  }
-
-  async getSubcategoryItemsByCategory(categoryId: number): Promise<SubcategoryItem[]> {
-    if (!db) throw new Error('Database not available');
-    return await db.select().from(subcategoryItems)
-      .where(eq(subcategoryItems.categoryId, categoryId))
-      .orderBy(subcategoryItems.sortOrder);
-  }
-
-  async getSubcategoryItemsBySubcategory(subcategoryId: number): Promise<SubcategoryItem[]> {
-    if (!db) throw new Error('Database not available');
-    return await db.select().from(subcategoryItems)
-      .where(eq(subcategoryItems.subcategoryId, subcategoryId))
-      .orderBy(subcategoryItems.sortOrder);
-  }
-
-  async getSubcategoryItem(id: number): Promise<SubcategoryItem | undefined> {
-    if (!db) throw new Error('Database not available');
-    const result = await db.select().from(subcategoryItems).where(eq(subcategoryItems.id, id));
-    return result[0];
-  }
-
-  async createSubcategoryItem(item: InsertSubcategoryItem): Promise<SubcategoryItem> {
-    if (!db) throw new Error('Database not available');
-    const [newItem] = await db
-      .insert(subcategoryItems)
-      .values(item)
-      .returning();
-    return newItem;
-  }
-
-  async updateSubcategoryItem(id: number, item: Partial<InsertSubcategoryItem>): Promise<SubcategoryItem> {
-    if (!db) throw new Error('Database not available');
-    const [updated] = await db
-      .update(subcategoryItems)
-      .set(item)
-      .where(eq(subcategoryItems.id, id))
-      .returning();
-    return updated;
-  }
-
-  async deleteSubcategoryItem(id: number): Promise<void> {
-    if (!db) throw new Error('Database not available');
-    await db.delete(subcategoryItems).where(eq(subcategoryItems.id, id));
   }
 
   // Certificate methods
