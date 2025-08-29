@@ -1024,7 +1024,7 @@ function CertificatesPage() {
                       Direct Certificates
                     </h3>
                   </div> */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                  <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {category.certificates.map((certificate, index) => (
                       <CertificateCard
                         key={index}
@@ -1070,7 +1070,7 @@ function CertificatesPage() {
                            // If no items, show certificates directly
                            if (itemsInSubcategory.length === 0) {
                              return (
-                               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                               <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                                  {subsection.certificates.map((certificate, index) => (
                                    <CertificateCard
                                      key={index}
@@ -1110,7 +1110,7 @@ function CertificatesPage() {
                                      </div>
                                      
                                      {/* Certificates for this item */}
-                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                                     <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                                        {certificatesToShow.map((certificate, index) => (
                                          <CertificateCard
                                            key={index}
@@ -1128,7 +1128,7 @@ function CertificatesPage() {
                          })()
                        ) : (
                          // Fallback: show certificates directly if no subcategory items data
-                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+                         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                            {subsection.certificates.map((certificate, index) => (
                              <CertificateCard
                                key={index}
