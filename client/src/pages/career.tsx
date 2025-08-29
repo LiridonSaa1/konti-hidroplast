@@ -191,7 +191,7 @@ function CareerPage() {
               <br />
               <span className="text-white">{t("careerPage.topTalent")}</span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            <p className="text-xl text-white-600 max-w-3xl mx-auto mb-8">
               {t("careerPage.heroDescription")}
             </p>
             <div className="flex justify-center space-x-8 text-sm">
