@@ -2124,14 +2124,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { EmailService } = await import('./services/emailService.js');
       const emailService = new EmailService();
       
-      const emailSent = await emailService.sendBrochureDownloadEmail(
-        downloadData.fullName,
-        downloadData.email,
-        downloadData.companyName,
-        downloadData.brochureName,
-        downloadData.brochureCategory,
-        downloadData.pdfUrl || ""
-      );
+      // For now, we'll skip email sending if there's no PDF URL
+      // In a real implementation, you'd want to store the PDF URL with the brochure
+      let emailSent = false;
+      if (downloadData.pdfUrl) {
+        emailSent = await emailService.sendBrochureDownloadEmail(
+          downloadData.fullName,
+          downloadData.email,
+          downloadData.companyName,
+          downloadData.brochureName,
+          downloadData.brochureCategory,
+          downloadData.pdfUrl
+        );
+      }
       
       if (emailSent) {
         res.json({ ...download, emailSent: true });

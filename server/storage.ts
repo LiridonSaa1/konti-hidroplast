@@ -1166,7 +1166,6 @@ export class DatabaseStorage implements IStorage {
     const newDownload: BrochureDownload = {
       ...download,
       id: Date.now(),
-      phone: download.phone ?? null,
       description: download.description ?? null,
       createdAt: new Date(),
       updatedAt: new Date()

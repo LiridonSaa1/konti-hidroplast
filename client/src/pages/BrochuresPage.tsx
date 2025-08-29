@@ -138,30 +138,42 @@ function BrochuresPage() {
   const handleDownloadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedBrochure || !downloadFormData.fullName || !downloadFormData.companyName || !downloadFormData.email) {
+      alert(language === 'en' ? 'Please fill in all required fields' : 
+            language === 'mk' ? 'Ве молиме пополнете ги сите задолжителни полиња' : 
+            language === 'de' ? 'Bitte füllen Sie alle erforderlichen Felder aus' : 'Please fill in all required fields');
       return;
     }
 
     setIsSubmitting(true);
     try {
+      // Prepare the data to send
+      const downloadData = {
+        brochureId: selectedBrochure.id || 0,
+        brochureName: selectedBrochure.name || selectedBrochure.title || 'Unknown Brochure',
+        brochureCategory: selectedBrochure.category || 'General',
+        fullName: downloadFormData.fullName.trim(),
+        companyName: downloadFormData.companyName.trim(),
+        email: downloadFormData.email.trim(),
+        description: downloadFormData.description.trim() || null,
+        pdfUrl: selectedBrochure.pdfUrl || '',
+        downloadDate: new Date().toISOString()
+      };
+
+      console.log('Sending download data:', downloadData);
+
       // Save download data to admin panel
       const response = await fetch('/api/brochure-downloads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          brochureId: selectedBrochure.id,
-          brochureName: selectedBrochure.name || selectedBrochure.title,
-          brochureCategory: selectedBrochure.category,
-          fullName: downloadFormData.fullName,
-          companyName: downloadFormData.companyName,
-          email: downloadFormData.email,
-          description: downloadFormData.description,
-          downloadDate: new Date().toISOString()
-        }),
+        body: JSON.stringify(downloadData),
       });
 
       if (response.ok) {
+        const result = await response.json();
+        console.log('Download saved successfully:', result);
+        
         // Show success message and close popup
         alert(language === 'en' ? 'Check your email for the download link!' : 
               language === 'mk' ? 'Проверете ја вашата е-пошта за линкот за преземање!' : 
@@ -176,9 +188,20 @@ function BrochuresPage() {
           email: '',
           description: ''
         });
+      } else {
+        // Handle error response
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Failed to save download:', errorData);
+        
+        alert(language === 'en' ? `Failed to save download: ${response.statusText}` : 
+              language === 'mk' ? `Неуспешно зачувување на преземањето: ${response.statusText}` : 
+              language === 'de' ? `Download konnte nicht gespeichert werden: ${response.statusText}` : `Failed to save download: ${response.statusText}`);
       }
     } catch (error) {
       console.error('Error saving download data:', error);
+      alert(language === 'en' ? 'An error occurred while saving the download. Please try again.' : 
+            language === 'mk' ? 'Се појави грешка при зачувување на преземањето. Обидете се повторно.' : 
+            language === 'de' ? 'Beim Speichern des Downloads ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.' : 'An error occurred while saving the download. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
