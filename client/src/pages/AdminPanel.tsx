@@ -44,7 +44,6 @@ import { CertificateCategoriesManager } from "@/components/admin/CertificateCate
 import { CertificateSubcategoriesManager } from "@/components/admin/CertificateSubcategoriesManager";
 import { ContactMessagesManager } from "@/components/admin/ContactMessagesManager";
 import { JobApplicationsManager } from "@/components/admin/JobApplicationsManager";
-import { BrevoConfigManager } from "@/components/admin/BrevoConfigManager";
 import { SubcategoryItemsManager } from "@/components/admin/SubcategoryItemsManager";
 import { BrochureDownloadsManager } from "@/components/admin/BrochureDownloadsManager";
 
@@ -570,7 +569,7 @@ export default function AdminPanel() {
                 <Button
                   variant="ghost"
                   className={`w-full justify-start ${
-                    activeTab === "contact-messages" || activeTab === "job-applications" || activeTab === "brevo-config"
+                    activeTab === "contact-messages" || activeTab === "job-applications"
                       ? "text-blue-600" 
                       : "text-slate-700 hover:text-slate-900"
                   }`}
@@ -578,7 +577,7 @@ export default function AdminPanel() {
                   data-testid="nav-contact"
                 >
                   <Mail className={`h-4 w-4 mr-2 ${
-                    activeTab === "contact-messages" || activeTab === "job-applications" || activeTab === "brevo-config" 
+                    activeTab === "contact-messages" || activeTab === "job-applications" 
                       ? "text-blue-600" 
                       : ""
                   }`} />
@@ -615,19 +614,6 @@ export default function AdminPanel() {
                 >
                   <Briefcase className={`h-3 w-3 mr-2 ${activeTab === "job-applications" ? "text-blue-600" : ""}`} />
                   Applications
-                </Button>
-                
-                <Button
-                  variant="ghost"
-                  className={`w-full justify-start text-sm ${activeTab === "brevo-config" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
-                  onClick={() => {
-                    setActiveTab("brevo-config");
-                    setIsMobileMenuOpen(false);
-                  }}
-                  data-testid="nav-brevo-config"
-                >
-                  <Settings className={`h-3 w-3 mr-2 ${activeTab === "brevo-config" ? "text-blue-600" : ""}`} />
-                  Email Settings
                 </Button>
               </CollapsibleContent>
             </Collapsible>
@@ -1199,12 +1185,6 @@ export default function AdminPanel() {
           {activeTab === "job-applications" && (
             <div data-testid="job-applications-manager">
               <JobApplicationsManager />
-            </div>
-          )}
-          
-          {activeTab === "brevo-config" && (
-            <div data-testid="brevo-config-manager">
-              <BrevoConfigManager />
             </div>
           )}
         </div>

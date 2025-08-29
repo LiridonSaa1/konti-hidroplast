@@ -1,11 +1,158 @@
 import * as nodemailer from 'nodemailer';
-import { storage } from '../storage.js';
 
 export class BrevoService {
   private transporter: nodemailer.Transporter | null = null;
 
-  async getConfig() {
-    return await storage.getBrevoConfig();
+  private async getConfig() {
+    // Only use environment variables for Brevo configuration
+    const envApiKey = process.env.BREVO_API_KEY;
+    const envSenderEmail = process.env.BREVO_SENDER_EMAIL;
+    
+    if (envApiKey && envSenderEmail) {
+      console.log('Using Brevo configuration from environment variables');
+      return {
+        id: 0,
+        apiKey: envApiKey,
+        brevoApiKey: null,
+        senderEmail: envSenderEmail,
+        validatedSenderEmail: null,
+        senderName: 'Konti Hidroplast',
+        recipientEmail: envSenderEmail, // Use sender email as default recipient
+        templateId: null,
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+    }
+    
+    console.log('Brevo configuration not found in environment variables');
+    return null;
+  }
+
+  // Enhanced email template with company logo and professional styling
+  private createEmailTemplate(options: {
+    title: string;
+    content: string;
+    footerText?: string;
+    includeLogo?: boolean;
+  }) {
+    const logoBase64 = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMjAwIDUwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjMWMyZDU2Ii8+Cjx0ZXh0IHg9IjEwMCIgeT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPktvbnRpIEhpZHJvcGxhc3Q8L3RleHQ+Cjwvc3ZnPgo=';
+    
+    return `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${options.title}</title>
+        <style>
+          body { 
+            font-family: Arial, sans-serif; 
+            line-height: 1.6; 
+            color: #333; 
+            margin: 0; 
+            padding: 0; 
+            background-color: #f4f4f4; 
+          }
+          .email-container { 
+            max-width: 600px; 
+            margin: 0 auto; 
+            background-color: #ffffff; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+          }
+          .header { 
+            background: linear-gradient(135deg, #1c2d56 0%, #2d4a8a 100%); 
+            padding: 30px 20px; 
+            text-align: center; 
+          }
+          .logo { 
+            max-width: 200px; 
+            height: auto; 
+            margin-bottom: 15px; 
+          }
+          .header h1 { 
+            color: #ffffff; 
+            margin: 0; 
+            font-size: 24px; 
+            font-weight: 600; 
+          }
+          .content { 
+            padding: 40px 30px; 
+            background-color: #ffffff; 
+          }
+          .content h2 { 
+            color: #1c2d56; 
+            margin-top: 0; 
+            margin-bottom: 20px; 
+            font-size: 20px; 
+          }
+          .content p { 
+            margin-bottom: 15px; 
+            color: #555; 
+          }
+          .footer { 
+            background-color: #f8f9fa; 
+            padding: 20px 30px; 
+            text-align: center; 
+            border-top: 1px solid #e9ecef; 
+          }
+          .footer p { 
+            margin: 0; 
+            color: #6c757d; 
+            font-size: 14px; 
+          }
+          .highlight { 
+            background-color: #e3f2fd; 
+            padding: 15px; 
+            border-left: 4px solid #2196f3; 
+            margin: 20px 0; 
+          }
+          .button { 
+            display: inline-block; 
+            padding: 12px 24px; 
+            background-color: #1c2d56; 
+            color: #ffffff; 
+            text-decoration: none; 
+            border-radius: 6px; 
+            margin: 20px 0; 
+            font-weight: 600; 
+          }
+          .button:hover { 
+            background-color: #2d4a8a; 
+          }
+          @media only screen and (max-width: 600px) {
+            .email-container { 
+              margin: 10px; 
+              border-radius: 4px; 
+            }
+            .content { 
+              padding: 20px 15px; 
+            }
+            .header { 
+              padding: 20px 15px; 
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="email-container">
+          <div class="header">
+            ${options.includeLogo ? `<img src="${logoBase64}" alt="Konti Hidroplast Logo" class="logo">` : ''}
+            <h1>${options.title}</h1>
+          </div>
+          <div class="content">
+            ${options.content}
+          </div>
+          <div class="footer">
+            <p>${options.footerText || '© 2024 Konti Hidroplast. All rights reserved.'}</p>
+            <p>This email was sent from our secure system. Please do not reply directly to this email.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
   }
 
   async isBrevoConfigured(): Promise<boolean> {
@@ -51,7 +198,7 @@ export class BrevoService {
         connectionTimeout: 10000, // 10 seconds
         greetingTimeout: 10000,   // 10 seconds
         socketTimeout: 10000      // 10 seconds
-      });
+      } as any);
       
       this.transporter = transporter;
       return transporter;
@@ -206,15 +353,21 @@ export class BrevoService {
           Message:
           ${contactData.message}
         `,
-        html: `
-          <h2>New Contact Form Submission</h2>
-          <p><strong>Name:</strong> ${contactData.fullName}</p>
-          <p><strong>Email:</strong> ${contactData.email}</p>
-          <p><strong>Phone:</strong> ${contactData.phone || 'Not provided'}</p>
-          <p><strong>Company:</strong> ${contactData.company || 'Not provided'}</p>
-          <p><strong>Message:</strong></p>
-          <p>${contactData.message.replace(/\n/g, '<br>')}</p>
-        `
+        html: this.createEmailTemplate({
+          title: 'New Contact Form Submission',
+          content: `
+            <h2>New Contact Form Submission</h2>
+            <div class="highlight">
+              <p><strong>Name:</strong> ${contactData.fullName}</p>
+              <p><strong>Email:</strong> ${contactData.email}</p>
+              <p><strong>Phone:</strong> ${contactData.phone || 'Not provided'}</p>
+              <p><strong>Company:</strong> ${contactData.company || 'Not provided'}</p>
+            </div>
+            <p><strong>Message:</strong></p>
+            <p>${contactData.message.replace(/\n/g, '<br>')}</p>
+          `,
+          includeLogo: true
+        })
       };
       
       const result = await transporter.sendMail(emailContent);
@@ -264,12 +417,19 @@ export class BrevoService {
           Best regards,
           The Konti Hidroplast Team
         `,
-        html: `
-          <h2>Thank you for your message</h2>
-          <p>Dear ${contactData.fullName},</p>
-          <p>Thank you for contacting us. We have received your message and will get back to you as soon as possible.</p>
-          <p>Best regards,<br>The Konti Hidroplast Team</p>
-        `
+        html: this.createEmailTemplate({
+          title: 'Thank you for your message',
+          content: `
+            <h2>Thank you for your message</h2>
+            <p>Dear <strong>${contactData.fullName}</strong>,</p>
+            <div class="highlight">
+              <p>Thank you for contacting us. We have received your message and will get back to you as soon as possible.</p>
+            </div>
+            <p>Best regards,<br><strong>The Konti Hidroplast Team</strong></p>
+          `,
+          includeLogo: true,
+          footerText: 'We appreciate your interest in our products and services.'
+        })
       };
       
       const result = await transporter.sendMail(emailContent);
@@ -322,15 +482,21 @@ export class BrevoService {
           Message:
           ${jobData.message}
         `,
-        html: `
-          <h2>New Job Application</h2>
-          <p><strong>Name:</strong> ${jobData.fullName}</p>
-          <p><strong>Email:</strong> ${jobData.email}</p>
-          <p><strong>Phone:</strong> ${jobData.phone || 'Not provided'}</p>
-          <p><strong>Position:</strong> ${jobData.position}</p>
-          <p><strong>Message:</strong></p>
-          <p>${jobData.message.replace(/\n/g, '<br>')}</p>
-        `
+        html: this.createEmailTemplate({
+          title: 'New Job Application',
+          content: `
+            <h2>New Job Application</h2>
+            <div class="highlight">
+              <p><strong>Name:</strong> ${jobData.fullName}</p>
+              <p><strong>Email:</strong> ${jobData.email}</p>
+              <p><strong>Phone:</strong> ${jobData.phone || 'Not provided'}</p>
+              <p><strong>Position:</strong> ${jobData.position}</p>
+            </div>
+            <p><strong>Message:</strong></p>
+            <p>${jobData.message.replace(/\n/g, '<br>')}</p>
+          `,
+          includeLogo: true
+        })
       };
       
       const result = await transporter.sendMail(emailContent);
@@ -382,13 +548,20 @@ export class BrevoService {
           Best regards,
           The Konti Hidroplast Team
         `,
-        html: `
-          <h2>Thank you for your job application</h2>
-          <p>Dear ${jobData.fullName},</p>
-          <p>Thank you for your interest in the <strong>${jobData.position}</strong> position. We have received your application and will review it carefully.</p>
-          <p>We will contact you if your qualifications match our requirements.</p>
-          <p>Best regards,<br>The Konti Hidroplast Team</p>
-        `
+        html: this.createEmailTemplate({
+          title: 'Thank you for your job application',
+          content: `
+            <h2>Thank you for your job application</h2>
+            <p>Dear <strong>${jobData.fullName}</strong>,</p>
+            <div class="highlight">
+              <p>Thank you for your interest in the <strong>${jobData.position}</strong> position. We have received your application and will review it carefully.</p>
+              <p>We will contact you if your qualifications match our requirements.</p>
+            </div>
+            <p>Best regards,<br><strong>The Konti Hidroplast Team</strong></p>
+          `,
+          includeLogo: true,
+          footerText: 'We appreciate your interest in joining our team.'
+        })
       };
       
       const result = await transporter.sendMail(emailContent);
@@ -491,16 +664,22 @@ export class BrevoService {
           Description: ${downloadData.description || 'Not provided'}
           Download Date: ${downloadData.downloadDate}
         `,
-        html: `
-          <h2>New Brochure Download Request</h2>
-          <p><strong>Name:</strong> ${downloadData.fullName}</p>
-          <p><strong>Email:</strong> ${downloadData.email}</p>
-          <p><strong>Company:</strong> ${downloadData.companyName}</p>
-          <p><strong>Brochure:</strong> ${downloadData.brochureName}</p>
-          <p><strong>Category:</strong> ${downloadData.brochureCategory}</p>
-          <p><strong>Description:</strong> ${downloadData.description || 'Not provided'}</p>
-          <p><strong>Download Date:</strong> ${downloadData.downloadDate}</p>
-        `
+        html: this.createEmailTemplate({
+          title: 'New Brochure Download Request',
+          content: `
+            <h2>New Brochure Download Request</h2>
+            <div class="highlight">
+              <p><strong>Name:</strong> ${downloadData.fullName}</p>
+              <p><strong>Email:</strong> ${downloadData.email}</p>
+              <p><strong>Company:</strong> ${downloadData.companyName}</p>
+              <p><strong>Brochure:</strong> ${downloadData.brochureName}</p>
+              <p><strong>Category:</strong> ${downloadData.brochureCategory}</p>
+              <p><strong>Description:</strong> ${downloadData.description || 'Not provided'}</p>
+              <p><strong>Download Date:</strong> ${downloadData.downloadDate}</p>
+            </div>
+          `,
+          includeLogo: true
+        })
       };
       
       const result = await transporter.sendMail(emailContent);

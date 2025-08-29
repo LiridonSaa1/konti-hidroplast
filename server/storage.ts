@@ -41,8 +41,7 @@ import {
   type InsertContactMessage,
   type JobApplication,
   type InsertJobApplication,
-  type BrevoConfig,
-  type InsertBrevoConfig,
+
   users,
   products,
   media,
@@ -63,7 +62,7 @@ import {
   galleryItems,
   contactMessages,
   jobApplications,
-  brevoConfig,
+
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, asc, and } from "drizzle-orm";
@@ -226,11 +225,7 @@ export interface IStorage {
   getBrochureDownload(id: number): Promise<BrochureDownload | undefined>;
   deleteBrochureDownload(id: number): Promise<void>;
   
-  // Brevo configuration methods
-  getBrevoConfig(): Promise<BrevoConfig | undefined>;
-  createBrevoConfig(config: InsertBrevoConfig): Promise<BrevoConfig>;
-  updateBrevoConfig(id: number, config: Partial<InsertBrevoConfig>): Promise<BrevoConfig>;
-  deleteBrevoConfig(id: number): Promise<void>;
+
 }
 
 // In-memory storage implementation for development
@@ -332,7 +327,7 @@ export class MemStorage implements IStorage {
   private galleryItemsData: GalleryItem[] = [];
   private contactMessagesData: ContactMessage[] = [];
   private jobApplicationsData: JobApplication[] = [];
-  private brevoConfigData: BrevoConfig | null = null;
+
   private brochureDownloadsData: BrochureDownload[] = [];
 
   // User methods
@@ -1161,41 +1156,11 @@ export class MemStorage implements IStorage {
     }
   }
 
-  // Brevo configuration methods
-  async getBrevoConfig(): Promise<BrevoConfig | undefined> {
-    return this.brevoConfigData || undefined;
-  }
 
-  async createBrevoConfig(config: InsertBrevoConfig): Promise<BrevoConfig> {
-    const newConfig: BrevoConfig = {
-      ...config,
-      id: 1,
-      brevoApiKey: config.brevoApiKey ?? null,
-      validatedSenderEmail: config.validatedSenderEmail ?? null,
-      templateId: config.templateId ?? null,
-      isActive: config.isActive ?? null,
-      recipientEmail: config.recipientEmail || "admin@kontihidroplast.com",
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.brevoConfigData = newConfig;
-    return newConfig;
-  }
 
-  async updateBrevoConfig(id: number, config: Partial<InsertBrevoConfig>): Promise<BrevoConfig> {
-    if (!this.brevoConfigData) throw new Error('Brevo configuration not found');
-    
-    this.brevoConfigData = {
-      ...this.brevoConfigData,
-      ...config,
-      updatedAt: new Date()
-    };
-    return this.brevoConfigData;
-  }
 
-  async deleteBrevoConfig(id: number): Promise<void> {
-    this.brevoConfigData = null;
-  }
+
+
 }
 
 export class DatabaseStorage implements IStorage {
@@ -2033,11 +1998,8 @@ export class DatabaseStorage implements IStorage {
   // Contact message methods - in-memory storage for development
   
   async getAllContactMessages(): Promise<ContactMessage[]> {
-    return this.contactMessagesData.sort((a, b) => {
-      const aTime = a.createdAt?.getTime() || 0;
-      const bTime = b.createdAt?.getTime() || 0;
-      return bTime - aTime;
-    });
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(contactMessages).orderBy(desc(contactMessages.createdAt));
   }
 
   async getContactMessage(id: number): Promise<ContactMessage | undefined> {
@@ -2045,16 +2007,11 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createContactMessage(message: InsertContactMessage): Promise<ContactMessage> {
-    const newMessage: ContactMessage = {
-      ...message,
-      id: Date.now(),
-      phone: message.phone ?? null,
-      company: message.company ?? null,
-      status: "unread",
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.contactMessagesData.push(newMessage);
+    if (!db) throw new Error('Database not available');
+    const [newMessage] = await db
+      .insert(contactMessages)
+      .values(message)
+      .returning();
     return newMessage;
   }
 
@@ -2091,19 +2048,11 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createJobApplication(application: InsertJobApplication): Promise<JobApplication> {
-    const newApplication: JobApplication = {
-      ...application,
-      id: Date.now(),
-      phoneNumber: application.phoneNumber ?? null,
-      experience: application.experience ?? null,
-      coverLetter: application.coverLetter ?? null,
-      resumeUrl: application.resumeUrl ?? null,
-      status: "pending",
-      notes: null,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.jobApplicationsData.push(newApplication);
+    if (!db) throw new Error('Database not available');
+    const [newApplication] = await db
+      .insert(jobApplications)
+      .values(application)
+      .returning();
     return newApplication;
   }
 
@@ -2156,43 +2105,11 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  // Brevo configuration methods - in-memory storage for development
-  private brevoConfigData: BrevoConfig | null = null;
-  
-  async getBrevoConfig(): Promise<BrevoConfig | undefined> {
-    return this.brevoConfigData || undefined;
-  }
 
-  async createBrevoConfig(config: InsertBrevoConfig): Promise<BrevoConfig> {
-    const newConfig: BrevoConfig = {
-      ...config,
-      id: 1,
-      brevoApiKey: config.brevoApiKey ?? null,
-      validatedSenderEmail: config.validatedSenderEmail ?? null,
-      templateId: config.templateId ?? null,
-      isActive: config.isActive ?? null,
-      recipientEmail: config.recipientEmail || "admin@kontihidroplast.com",
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-    this.brevoConfigData = newConfig;
-    return newConfig;
-  }
 
-  async updateBrevoConfig(id: number, config: Partial<InsertBrevoConfig>): Promise<BrevoConfig> {
-    if (!this.brevoConfigData) throw new Error('Brevo configuration not found');
-    
-    this.brevoConfigData = {
-      ...this.brevoConfigData,
-      ...config,
-      updatedAt: new Date()
-    };
-    return this.brevoConfigData;
-  }
 
-  async deleteBrevoConfig(id: number): Promise<void> {
-    this.brevoConfigData = null;
-  }
+
+
 }
 
 // Create storage instance lazily to ensure environment variables are loaded

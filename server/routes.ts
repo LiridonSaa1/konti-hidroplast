@@ -9,7 +9,7 @@ import bcrypt from "bcryptjs";
 import { storage } from "./storage";
 import { translationService } from "./services/translationService";
 import translationRoutes from "./routes/translation";
-import { brevoService } from "./services/brevoService";
+// import { brevoService } from "./services/brevoService";
 import {
   insertProductSchema,
   insertMediaSchema,
@@ -30,7 +30,7 @@ import {
   insertGalleryItemSchema,
   insertContactMessageSchema,
   insertJobApplicationSchema,
-  insertBrevoConfigSchema,
+
   loginSchema,
   updateUserSchema,
   insertUserSchema,
@@ -1584,38 +1584,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
       console.log('Contact message saved to database with ID:', contactMessage.id);
       
       // Check if Brevo is configured before attempting to send emails
-      const isBrevoConfigured = await brevoService.isBrevoConfigured();
-      if (!isBrevoConfigured) {
-        console.log('Brevo not configured - skipping email sending');
-        return res.status(201).json({ 
-          message: 'Contact message sent successfully (emails disabled)',
-          id: contactMessage.id,
-          emailsSent: false
-        });
-      }
-      
-      // Send email notifications via Brevo
+      let emailsSent = false;
       let notificationSent = false;
       let autoReplySent = false;
       
       try {
-        console.log('Attempting to send contact notification email...');
-        notificationSent = await brevoService.sendContactNotification(validatedData);
-        console.log('Contact notification email result:', notificationSent);
-      } catch (emailError) {
-        console.error('Contact notification email failed:', emailError);
+        const { brevoService } = await import('./services/brevoService.js');
+        const isBrevoConfigured = await brevoService.isBrevoConfigured();
+        if (!isBrevoConfigured) {
+          console.log('Brevo not configured - skipping email sending');
+        } else {
+          // Send email notifications via Brevo
+          try {
+            console.log('Attempting to send contact notification email...');
+            notificationSent = await brevoService.sendContactNotification(validatedData);
+            console.log('Contact notification email result:', notificationSent);
+          } catch (emailError) {
+            console.error('Contact notification email failed:', emailError);
+          }
+          
+          try {
+            console.log('Attempting to send auto-reply email...');
+            autoReplySent = await brevoService.sendAutoReply(validatedData);
+            console.log('Auto-reply email result:', autoReplySent);
+          } catch (emailError) {
+            console.error('Auto-reply email failed:', emailError);
+          }
+          
+          emailsSent = notificationSent || autoReplySent;
+          console.log('Email sending summary:', { notificationSent, autoReplySent, emailsSent });
+        }
+      } catch (brevoError) {
+        console.error('Brevo service import or initialization failed:', brevoError);
+        console.log('Continuing without email functionality');
       }
-      
-      try {
-        console.log('Attempting to send auto-reply email...');
-        autoReplySent = await brevoService.sendAutoReply(validatedData);
-        console.log('Auto-reply email result:', autoReplySent);
-      } catch (emailError) {
-        console.error('Auto-reply email failed:', emailError);
-      }
-      
-      const emailsSent = notificationSent || autoReplySent;
-      console.log('Email sending summary:', { notificationSent, autoReplySent, emailsSent });
       
       res.status(201).json({ 
         message: 'Contact message sent successfully',
@@ -1684,248 +1686,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Brevo configuration routes
-  app.get('/api/admin/brevo-config', requireAuth, async (req, res) => {
-    try {
-      const config = await storage.getBrevoConfig();
-      if (!config) {
-        return res.json(null);
-      }
-      
-      // Don't expose the API keys in responses
-      const { apiKey, brevoApiKey, ...safeConfig } = config;
-      res.json({ 
-        ...safeConfig, 
-        hasApiKey: !!apiKey,
-        hasBrevoApiKey: !!brevoApiKey 
-      });
-    } catch (error) {
-      console.error('Error fetching Brevo config:', error);
-      res.status(500).json({ error: 'Failed to fetch Brevo configuration' });
-    }
-  });
 
-  app.post('/api/admin/brevo-config', requireAuth, async (req, res) => {
-    try {
-      const validatedData = insertBrevoConfigSchema.parse(req.body);
-      const config = await storage.createBrevoConfig(validatedData);
-      
-      // Test the connection
-      const isWorking = await brevoService.testConnection();
-      
-      const { apiKey, brevoApiKey, ...safeConfig } = config;
-      res.status(201).json({ 
-        ...safeConfig, 
-        hasApiKey: !!apiKey,
-        hasBrevoApiKey: !!brevoApiKey,
-        connectionTest: isWorking 
-      });
-    } catch (error: any) {
-      console.error('Error creating Brevo config:', error);
-      if (error.name === 'ZodError') {
-        return res.status(400).json({ error: 'Invalid data', details: error.errors });
-      }
-      res.status(500).json({ error: 'Failed to create Brevo configuration' });
-    }
-  });
 
-  app.patch('/api/admin/brevo-config/:id', requireAuth, async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const validatedData = insertBrevoConfigSchema.partial().parse(req.body);
-      const config = await storage.updateBrevoConfig(id, validatedData);
-      
-      // Test the connection if config is active
-      let connectionTest = false;
-      if (config.isActive) {
-        const testResult = await brevoService.testConnection();
-        connectionTest = testResult.success;
-      }
-      
-      const { apiKey, brevoApiKey, ...safeConfig } = config;
-      res.json({ 
-        ...safeConfig, 
-        hasApiKey: !!apiKey,
-        hasBrevoApiKey: !!brevoApiKey,
-        connectionTest 
-      });
-    } catch (error: any) {
-      console.error('Error updating Brevo config:', error);
-      if (error.name === 'ZodError') {
-        return res.status(400).json({ error: 'Invalid data', details: error.errors });
-      }
-      if (error.message.includes('not found')) {
-        return res.status(404).json({ error: 'Brevo configuration not found' });
-      }
-      res.status(500).json({ error: 'Failed to update Brevo configuration' });
-    }
-  });
 
-  app.post('/api/admin/brevo-config/test', requireAuth, async (req, res) => {
-    try {
-      console.log('=== Testing Brevo Connection ===');
-      
-      // Check if configuration exists first
-      const config = await storage.getBrevoConfig();
-      if (!config) {
-        console.error('No Brevo configuration found');
-        return res.status(400).json({ 
-          success: false, 
-          message: 'No Brevo configuration found. Please save your configuration first.' 
-        });
-      }
-      
-      if (!config.isActive) {
-        console.error('Brevo configuration is not active');
-        return res.status(400).json({ 
-          success: false, 
-          message: 'Brevo configuration is not active. Please enable it first.' 
-        });
-      }
-      
-      if (!config.apiKey && !config.brevoApiKey) {
-        console.error('No API key configured');
-        return res.status(400).json({ 
-          success: false, 
-          message: 'No API key configured. Please enter either your Brevo SMTP key or Brevo API key.' 
-        });
-      }
-      
-      if (!config.senderEmail) {
-        console.error('No sender email configured');
-        return res.status(400).json({ 
-          success: false, 
-          message: 'No sender email configured. Please enter your sender email.' 
-        });
-      }
-      
-      const testResult = await brevoService.testConnection();
-      
-      if (testResult.success) {
-        res.json({ 
-          success: true, 
-          message: 'Connection successful! Your Brevo configuration is working correctly.' 
-        });
-      } else {
-        res.json({ 
-          success: false, 
-          message: `Connection failed: ${testResult.message}. Check server logs for detailed error information.` 
-        });
-      }
-    } catch (error) {
-      console.error('Error testing Brevo connection:', error);
-      res.status(500).json({ 
-        success: false,
-        message: 'Server error while testing connection. Check server logs for details.',
-        error: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  });
 
-  // Test email sending endpoint
-  app.post('/api/admin/brevo-config/test-email', requireAuth, async (req, res) => {
-    try {
-      console.log('=== Testing Email Sending via API ===');
-      
-      const config = await storage.getBrevoConfig();
-      if (!config) {
-        return res.status(404).json({ error: 'Brevo config not found' });
-      }
 
-      console.log('Testing email with config:', {
-        senderEmail: config.senderEmail,
-        senderName: config.senderName,
-        recipientEmail: config.recipientEmail,
-        isActive: config.isActive
-      });
 
-      // Use the new test method
-      const testResult = await brevoService.testEmailSending();
-      
-      if (testResult.success) {
-        res.json({ 
-          success: true,
-          recipientEmail: config.recipientEmail,
-          senderEmail: config.senderEmail,
-          senderName: config.senderName,
-          message: 'Test email sent successfully! Check your recipient email inbox (including spam folder).'
-        });
-      } else {
-        res.json({ 
-          success: false,
-          recipientEmail: config.recipientEmail,
-          senderEmail: config.senderEmail,
-          senderName: config.senderName,
-          message: `Failed to send test email: ${testResult.message}`
-        });
-      }
-    } catch (error: any) {
-      console.error('Test email API error:', error);
-      res.status(500).json({ 
-        success: false,
-        error: 'Test email failed', 
-        details: error?.message || 'Unknown error' 
-      });
-    }
-  });
 
-  // Test brochure download email endpoint
-  app.post('/api/admin/brevo-config/test-brochure-download', requireAuth, async (req, res) => {
-    try {
-      console.log('=== Testing Brochure Download Email ===');
-      
-      const config = await storage.getBrevoConfig();
-      if (!config) {
-        return res.status(404).json({ error: 'Brevo config not found' });
-      }
 
-      const testData = {
-        fullName: 'Test User',
-        email: config.recipientEmail || config.senderEmail, // Send to admin email for testing
-        companyName: 'Test Company',
-        brochureName: 'Test Brochure',
-        brochureCategory: 'Test Category',
-        description: 'Test description for brochure download',
-        downloadDate: new Date().toISOString(),
-        pdfUrl: 'https://example.com/test.pdf'
-      };
-      
-      // Test user email
-      const { EmailService } = await import('./services/emailService.js');
-      const emailService = new EmailService();
-      
-      const userEmailResult = await emailService.sendBrochureDownloadEmail(
-        testData.fullName,
-        testData.email,
-        testData.companyName,
-        testData.brochureName,
-        testData.brochureCategory,
-        testData.pdfUrl
-      );
-      
-      // Test admin notification
-      const adminEmailResult = await brevoService.sendBrochureDownloadNotification(testData);
-      
-      if (userEmailResult && adminEmailResult) {
-        res.json({ 
-          success: true,
-          message: 'Both user and admin emails sent successfully! Check your email inbox.',
-          userEmail: userEmailResult,
-          adminEmail: adminEmailResult
-        });
-      } else {
-        res.json({ 
-          success: false,
-          message: `Test failed: User email: ${userEmailResult}, Admin email: ${adminEmailResult}`,
-          userEmail: userEmailResult,
-          adminEmail: adminEmailResult
-        });
-      }
-    } catch (error) {
-      console.error('Error testing brochure download email:', error);
-      res.status(500).json({ error: 'Failed to test brochure download email' });
-    }
-  });
+
+
+
 
   // Job application routes
   app.get('/api/admin/job-applications', requireAuth, async (req, res) => {
@@ -1959,8 +1730,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Save job application to database
       const application = await storage.createJobApplication(validatedData);
       
-      // Send email notifications via Brevo
+      // Send email notifications via Brevo (with error handling)
       try {
+        const { brevoService } = await import('./services/brevoService.js');
         await Promise.all([
           brevoService.sendJobApplicationNotification(validatedData),
           brevoService.sendJobApplicationAutoReply(validatedData)
