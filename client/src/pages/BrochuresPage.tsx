@@ -385,7 +385,7 @@ function BrochuresPage() {
                               <img
                                 src={brochure.imageUrl}
                                 alt={getTranslatedText(brochure, 'name', brochure.title || brochure.name)}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-fill"
                                 loading="lazy"
                               />
                             ) : (
