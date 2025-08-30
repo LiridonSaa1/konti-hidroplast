@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
@@ -5,17 +6,21 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Link } from "wouter";
 
 export function AboutSection() {
-  const { ref, hasIntersected } = useIntersectionObserver({ threshold: 0.2 });
   const { t } = useLanguage();
+  const [showVideo, setShowVideo] = useState(false);
+  const { ref: sectionRef, hasIntersected } = useIntersectionObserver({
+    threshold: 0.1,
+    rootMargin: "0px 0px -100px 0px"
+  });
 
-  const openVideo = () => {
-    window.open("https://www.youtube.com/watch?v=R7b9-m_EM2s", "_blank");
+  const handlePlayVideo = () => {
+    setShowVideo(true);
   };
 
   return (
     <section
       id="about"
-      ref={ref}
+      ref={sectionRef}
       className="min-h-screen bg-konti-gray-light flex items-center relative overflow-hidden"
       data-testid="about-section"
     >
@@ -106,14 +111,35 @@ export function AboutSection() {
                 
                 {/* Video container */}
                 <div className="relative m-6 aspect-video rounded-xl overflow-hidden shadow-2xl">
-                  <iframe
-                    src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=0"
-                    title="Konti Hidroplast Corporate Video"
-                    className="w-full h-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                    data-testid="about-video"
-                  />
+                  {!showVideo ? (
+                    // Video Thumbnail with Play Button
+                    <div className="relative w-full h-full bg-black">
+                      <img
+                        src="https://img.youtube.com/vi/R7b9-m_EM2s/maxresdefault.jpg"
+                        alt="Konti Hidroplast Corporate Video Thumbnail"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                        <button
+                          onClick={handlePlayVideo}
+                          className="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 transition-all duration-300 transform hover:scale-110 shadow-2xl"
+                          aria-label="Play Konti Hidroplast Corporate Video"
+                        >
+                          <Play className="w-8 h-8 ml-1" />
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    // YouTube iframe (only loads when user clicks play)
+                    <iframe
+                      src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=0&controls=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
+                      title="Konti Hidroplast Corporate Video"
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      data-testid="about-video"
+                    />
+                  )}
                 </div>
               </div>
             </div>

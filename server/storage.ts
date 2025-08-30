@@ -66,6 +66,7 @@ import {
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, asc, and } from "drizzle-orm";
+import { v4 as uuidv4 } from 'uuid';
 
 export interface IStorage {
   // User methods
@@ -350,7 +351,7 @@ export class MemStorage implements IStorage {
   async createUser(user: InsertUser): Promise<User> {
     const newUser: User = {
       ...user,
-      id: user.id || `user-${Date.now()}`,
+      id: `user-${Date.now()}`,
       role: user.role || "admin",
       email: user.email || null,
       createdAt: new Date(),
@@ -403,7 +404,7 @@ export class MemStorage implements IStorage {
       // Create new
       const newInfo: CompanyInfo = {
         ...info,
-        id: info.id || `company-info-${Date.now()}`,
+        id: `company-info-${Date.now()}`,
         updatedAt: new Date()
       };
       this.companyInfoData.push(newInfo);
@@ -423,7 +424,7 @@ export class MemStorage implements IStorage {
   async createProduct(product: InsertProduct): Promise<Product> {
     const newProduct: Product = {
       ...product,
-      id: product.id || `product-${Date.now()}`,
+      id: `product-${Date.now()}`,
       description: product.description || null,
       subcategory: product.subcategory || null,
       specifications: product.specifications || null,

@@ -1,59 +1,55 @@
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+// Load environment variables from .env file
+require('dotenv').config();
 
-async function checkBrevoConfig() {
+async function checkConfig() {
+  console.log('🔍 Checking Brevo Configuration Status...\n');
+  
   try {
-    console.log('=== Checking Brevo Configuration Status ===');
+    // Check environment variables directly
+    const envSmtpLogin = process.env.BREVO_SMTP_LOGIN;
+    const envSmtpKey = process.env.BREVO_SMTP_KEY;
+         const envSenderEmail = process.env.BREVO_SENDER_EMAIL;
     
-    // Test contact form to see current email status
-    console.log('\n1. Testing contact form to check email status...');
-    try {
-      const response = await fetch('http://localhost:3001/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fullName: 'Config Check User',
-          email: 'check@example.com',
-          phone: '123456789',
-          company: 'Test Company',
-          message: 'Checking Brevo configuration status'
-        })
-      });
-      
-      const result = await response.json();
-      console.log('Response status:', response.status);
-      console.log('Response body:', result);
-      
-      console.log('\n📧 Email Status:');
-      console.log(`- Emails Sent: ${result.emailsSent ? '✅ Yes' : '❌ No'}`);
-      console.log(`- Notification Sent: ${result.notificationSent ? '✅ Yes' : '❌ No'}`);
-      console.log(`- Auto-reply Sent: ${result.autoReplySent ? '✅ Yes' : '❌ No'}`);
-      
-    } catch (error) {
-      console.log('❌ Error testing contact form:', error.message);
+    console.log('📊 Configuration Status:');
+    
+    if (!envSmtpLogin) {
+      console.log('❌ BREVO_SMTP_LOGIN not set');
+    } else {
+      console.log(`✅ BREVO_SMTP_LOGIN: ${envSmtpLogin}`);
+    }
+
+    if (!envSmtpKey) {
+      console.log('❌ BREVO_SMTP_KEY not set');
+    } else {
+      console.log(`✅ BREVO_SMTP_KEY: ${envSmtpKey.substring(0, 10)}...`);
+    }
+
+    if (!envSenderEmail) {
+      console.log('❌ BREVO_SENDER_EMAIL not set');
+    } else {
+      console.log(`✅ BREVO_SENDER_EMAIL: ${envSenderEmail}`);
     }
     
-    console.log('\n=== Configuration Instructions ===');
-    console.log('\nTo fix email issues:');
-    console.log('1. Go to your admin panel (login with admin/admin123)');
-    console.log('2. Navigate to "Email Settings" or "Brevo Configuration"');
-    console.log('3. Configure the following:');
-    console.log('   - Brevo API Key (from https://app.brevo.com/ SMTP tab)');
-    console.log('   - Notification Recipient Email (where you want notifications)');
-    console.log('   - Sender Email (your verified Brevo sender)');
-    console.log('   - Enable the configuration');
-    console.log('4. Use "Test Connection" button to verify settings');
-    console.log('5. Submit a contact form to test email sending');
+    const configured = !!(envSmtpLogin && envSmtpKey && envSenderEmail);
     
-    console.log('\n=== Current Status ===');
-    console.log('✅ Form submissions working');
-    console.log('✅ Data being saved to database');
-    console.log('❌ Emails not being sent (needs admin panel configuration)');
+    if (configured) {
+      console.log('\n✅ Brevo is properly configured!');
+      console.log('📧 Email functionality should work correctly.');
+    } else {
+      console.log('\n❌ Brevo is not properly configured.');
+      console.log('📧 Email functionality will be disabled until configured.');
+      console.log('');
+      console.log('📧 To fix this, create a .env file in your project root with:');
+      console.log('   BREVO_SMTP_LOGIN=your_email@gmail.com');
+      console.log('   BREVO_SMTP_KEY=your_smtp_key_here');
+      console.log('   BREVO_SENDER_EMAIL=your_email@gmail.com');
+      console.log('🔑 Get your SMTP key from: https://app.brevo.com/settings/keys/smtp');
+      console.log('📖 See BREVO_CONFIGURATION_GUIDE.md for detailed setup instructions');
+    }
     
   } catch (error) {
-    console.error('Error in check:', error.message);
+    console.error('❌ Error checking configuration:', error.message);
   }
 }
 
-checkBrevoConfig();
+checkConfig();

@@ -1,129 +1,88 @@
-# Brevo Email Configuration Guide
+# 🔧 Brevo SMTP Configuration Guide
 
-This guide explains how to configure Brevo (formerly SendinBlue) for sending emails when brochures are downloaded and other contact form submissions.
+## ❌ **Current Issue:**
+Your contact form and job application form are **working** (data is being saved to the database), but **emails are not being sent** because of incorrect SMTP credentials.
 
-## Overview
+## 🔑 **What You Need:**
 
-The system now supports email notifications for:
-- Contact form submissions (to admin + auto-reply to user)
-- Job applications (to admin + auto-reply to applicant)
-- Brochure downloads (to user with download link + notification to admin)
+### **Current Configuration (Wrong):**
+```env
+BREVO_API_KEY=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
+BREVO_SENDER_EMAIL=liridon.salihi123@gmail.com
+```
 
-## Setup Instructions
+### **What You Need (Correct):**
+```env
+# Brevo SMTP Configuration
+BREVO_SMTP_LOGIN=liridon.salihi123@gmail.com
+BREVO_SMTP_KEY=your_smtp_key_here
+BREVO_SENDER_EMAIL=liridon.salihi123@gmail.com
+```
 
-### 1. Brevo Account Setup
+## 📋 **Step-by-Step Setup:**
 
-1. Go to [Brevo Dashboard](https://app.brevo.com/)
-2. Navigate to **SMTP & API** section
-3. You have two options for authentication:
+### 1. **Go to Brevo Dashboard**
+- Login to [Brevo](https://app.brevo.com/)
+- Navigate to **Senders & IP** → **SMTP & API**
 
-#### Option A: SMTP Key (Recommended for basic email sending)
-- Go to **SMTP tab**
-- Copy your **SMTP Login** email and **SMTP Key**
-- Add a verified sender email to your **Senders** list
+### 2. **Get SMTP Credentials**
+- Click on **SMTP** tab
+- Note down:
+  - **SMTP Server**: `smtp-relay.brevo.com`
+  - **SMTP Port**: `587`
+  - **SMTP Login**: Your verified email (e.g., `liridon.salihi123@gmail.com`)
+  - **SMTP Key**: Generate a new SMTP key
 
-#### Option B: Brevo API Key (For advanced features)
-- Go to **API Keys tab**
-- Create or copy an **API Key**
+### 3. **Generate SMTP Key**
+- In the SMTP tab, click **Generate new key**
+- Copy the generated key (it looks like: `xsmtpsib-...`)
 
-### 2. Admin Panel Configuration
+### 4. **Update Your .env File**
+Replace your current `.env` file with:
+```env
+# Brevo SMTP Configuration
+BREVO_SMTP_LOGIN=liridon.salihi123@gmail.com
+BREVO_SMTP_KEY=xsmtpsib-your-actual-smtp-key-here
+BREVO_SENDER_EMAIL=liridon.salihi123@gmail.com
+```
 
-1. Log into the admin panel
-2. Navigate to **Brevo Configuration** section
-3. Fill in the configuration:
+## 🔍 **Test the Configuration:**
 
-**Required Fields:**
-- **SMTP Login Email**: Your Brevo SMTP login email
-- **Validated Sender Email**: A verified sender email from your Brevo Senders list
-- **Sender Name**: The name that will appear as the sender (e.g., "Konti Hidroplast")
-- **Recipient Email**: Admin email to receive notifications
+After updating the `.env` file, run:
+```bash
+npx tsx test-brevo-email.cjs
+```
 
-**Optional Fields:**
-- **Brevo SMTP Key**: Your SMTP key (if using SMTP authentication)
-- **Brevo API Key**: Your API key (if using API authentication)
+You should see:
+- ✅ Brevo configuration loaded successfully
+- ✅ Connection successful
+- ✅ Test email sent successfully
+- ✅ Contact form emails working
+- ✅ Job application emails working
 
-### 3. Testing Configuration
+## 📧 **What Will Work After Fix:**
 
-After saving your configuration, test the setup using the three test buttons:
+1. **Contact Form**: 
+   - ✅ Saves message to database
+   - ✅ Sends notification email to admin
+   - ✅ Sends auto-reply to user
 
-1. **Test Connection**: Verifies your credentials and connection to Brevo
-2. **Test Email**: Sends a simple test email to verify email sending works
-3. **Test Brochure Download**: Tests the complete brochure download email flow
+2. **Job Application Form**:
+   - ✅ Saves application to database
+   - ✅ Sends notification email to admin
+   - ✅ Sends auto-reply to applicant
 
-## Email Functionality
+## 🚨 **Important Notes:**
 
-### Brochure Download Emails
+- **API Key ≠ SMTP Key**: These are different credentials
+- **SMTP Login**: Usually your verified sender email
+- **SMTP Key**: Generated specifically for SMTP access
+- **Port 587**: Standard SMTP port (not 465)
 
-When a user downloads a brochure:
+## 🆘 **Need Help?**
 
-1. **User Email**: Sends a professional email with:
-   - Download link (secure, time-limited)
-   - Brochure details
-   - Contact information
-   - Professional branding
-
-2. **Admin Notification**: Sends notification to admin with:
-   - User details (name, email, company)
-   - Brochure information
-   - Download timestamp
-   - Project description (if provided)
-
-### Contact Form Emails
-
-When someone submits a contact form:
-
-1. **Admin Notification**: Detailed notification with all form data
-2. **Auto-reply**: Professional thank you message to the user
-
-### Job Application Emails
-
-When someone applies for a job:
-
-1. **Admin Notification**: Complete application details
-2. **Auto-reply**: Confirmation message to the applicant
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Connection Failed**
-   - Check your SMTP key or API key
-   - Verify sender email is validated in Brevo
-   - Ensure configuration is active
-
-2. **Email Not Sending**
-   - Check your sender email is verified
-   - Verify SMTP login email matches your Brevo account
-   - Check spam folder for test emails
-
-3. **Authentication Errors**
-   - Use SMTP key from SMTP tab, not API key
-   - Ensure sender email is in your verified senders list
-   - Check API key permissions if using API authentication
-
-### Testing Checklist
-
-- [ ] Brevo account is active
-- [ ] Sender email is verified
-- [ ] Configuration is saved and active
-- [ ] Connection test passes
-- [ ] Email test sends successfully
-- [ ] Brochure download test works
-- [ ] Check email inbox (including spam folder)
-
-## Security Notes
-
-- API keys are never exposed in responses
-- Download links are time-limited and secure
-- All email content is sanitized
-- Sender verification prevents spoofing
-
-## Support
-
-If you encounter issues:
-1. Check the server logs for detailed error messages
-2. Verify your Brevo account settings
-3. Test with the provided test buttons
-4. Ensure all required fields are filled
-
-The system will continue to function even if email sending fails, ensuring brochure downloads and form submissions are always recorded in the admin panel.
+If you still have issues after following this guide:
+1. Check Brevo SMTP logs
+2. Verify email is verified in Brevo
+3. Ensure SMTP key is correct
+4. Check firewall/network settings

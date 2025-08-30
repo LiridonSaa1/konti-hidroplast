@@ -5,18 +5,19 @@ export class BrevoService {
 
   private async getConfig() {
     // Only use environment variables for Brevo configuration
-    const envApiKey = process.env.BREVO_API_KEY;
+    const envSmtpLogin = process.env.BREVO_SMTP_LOGIN;
+    const envSmtpKey = process.env.BREVO_SMTP_KEY;
     const envSenderEmail = process.env.BREVO_SENDER_EMAIL;
     
-    if (envApiKey && envSenderEmail) {
-      console.log('Using Brevo configuration from environment variables');
+    if (envSmtpLogin && envSmtpKey && envSenderEmail) {
+      console.log('Using Brevo SMTP configuration from environment variables');
       return {
         id: 0,
-        apiKey: envApiKey,
+        apiKey: envSmtpKey, // Use SMTP key for SMTP authentication
         brevoApiKey: null,
         senderEmail: envSenderEmail,
         validatedSenderEmail: null,
-        senderName: 'Konti Hidroplast',
+                 senderName: 'URBAN ROHR',
         recipientEmail: envSenderEmail, // Use sender email as default recipient
         templateId: null,
         isActive: true,
@@ -25,18 +26,25 @@ export class BrevoService {
       };
     }
     
-    console.log('Brevo configuration not found in environment variables');
+    console.log('❌ Brevo SMTP configuration not found in environment variables');
+    console.log('📧 To fix this, create a .env file in your project root with:');
+    console.log('   BREVO_SMTP_LOGIN=your_email@gmail.com');
+    console.log('   BREVO_SMTP_KEY=your_smtp_key_here');
+    console.log('   BREVO_SENDER_EMAIL=your_email@gmail.com');
+    console.log('🔑 Get your SMTP key from: https://app.brevo.com/settings/keys/smtp');
+    console.log('📖 See BREVO_CONFIGURATION_GUIDE.md for detailed setup instructions');
     return null;
   }
 
-  // Enhanced email template with company logo and professional styling
+  // Enhanced email template with URBAN ROHR logo and professional styling
   private createEmailTemplate(options: {
     title: string;
     content: string;
     footerText?: string;
     includeLogo?: boolean;
   }) {
-    const logoBase64 = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMjAwIDUwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjMWMyZDU2Ii8+Cjx0ZXh0IHg9IjEwMCIgeT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPktvbnRpIEhpZHJvcGxhc3Q8L3RleHQ+Cjwvc3ZnPgo=';
+    // URBAN ROHR Logo SVG - Dark purple with architectural volute design
+    const logoBase64 = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMjAwIDUwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBmaWxsPSIjMzQyMDU3Ij4KICA8dGV4dCB4PSIxMCIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9IjgwMCI+VVJCQU48L3RleHQ+CjwvZz4KPHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMjAwIDUwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8ZyBmaWxsPSIjMzQyMDU3Ij4KICA8dGV4dCB4PSIxMCIgeT0iMzUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9IjQwMCI+Uk9IUjwvdGV4dD4KICA8cGF0aCBkPSJNMTgwLDEwIEwxODAsMTUgTDE3MCwxNSBMMTcwLDIwIEwxNjAsMjAgTDE2MCwyNSBMMTUwLDI1IEwxNTAsMzAgTDE0MCwzMCBMMTQwLDM1IEwxMzAsMzUgTDEzMCw0MCBMMTIwLDQwIEwxMjAsNDUgTDEwMCw0NSBMMTAwLDQwIEw5MCw0MCBMOTAsMzUgTDgwLDM1IEw4MCwzMCBMNzAsMzAgTDcwLDI1IEw2MCwyNSBMNjAsMjAgTDUwLDIwIEw1MCwxNSBMNDAsMTUgTDQwLDEwIFoiLz4KPC9nPgo8L3N2Zz4K';
     
     return `
       <!DOCTYPE html>
@@ -139,14 +147,14 @@ export class BrevoService {
       <body>
         <div class="email-container">
           <div class="header">
-            ${options.includeLogo ? `<img src="${logoBase64}" alt="Konti Hidroplast Logo" class="logo">` : ''}
+                         ${options.includeLogo ? `<img src="${logoBase64}" alt="URBAN ROHR Logo" class="logo">` : ''}
             <h1>${options.title}</h1>
           </div>
           <div class="content">
             ${options.content}
           </div>
           <div class="footer">
-            <p>${options.footerText || '© 2024 Konti Hidroplast. All rights reserved.'}</p>
+            <p>${options.footerText || '© 2024 URBAN ROHR. All rights reserved.'}</p>
             <p>This email was sent from our secure system. Please do not reply directly to this email.</p>
           </div>
         </div>
@@ -165,6 +173,49 @@ export class BrevoService {
     }
   }
 
+  // Check configuration status and provide helpful information
+  async checkConfigurationStatus(): Promise<{ configured: boolean; details: string[] }> {
+    const details: string[] = [];
+    let configured = true;
+
+    const envSmtpLogin = process.env.BREVO_SMTP_LOGIN;
+    const envSmtpKey = process.env.BREVO_SMTP_KEY;
+    const envSenderEmail = process.env.BREVO_SENDER_EMAIL;
+
+    if (!envSmtpLogin) {
+      details.push('❌ BREVO_SMTP_LOGIN not set');
+      configured = false;
+    } else {
+      details.push(`✅ BREVO_SMTP_LOGIN: ${envSmtpLogin}`);
+    }
+
+    if (!envSmtpKey) {
+      details.push('❌ BREVO_SMTP_KEY not set');
+      configured = false;
+    } else {
+      details.push(`✅ BREVO_SMTP_KEY: ${envSmtpKey.substring(0, 10)}...`);
+    }
+
+    if (!envSenderEmail) {
+      details.push('❌ BREVO_SENDER_EMAIL not set');
+      configured = false;
+    } else {
+      details.push(`✅ BREVO_SENDER_EMAIL: ${envSenderEmail}`);
+    }
+
+    if (!configured) {
+      details.push('');
+      details.push('📧 To fix this, create a .env file in your project root with:');
+      details.push('   BREVO_SMTP_LOGIN=your_email@gmail.com');
+      details.push('   BREVO_SMTP_KEY=your_smtp_key_here');
+      details.push('   BREVO_SENDER_EMAIL=your_email@gmail.com');
+      details.push('🔑 Get your SMTP key from: https://app.brevo.com/settings/keys/smtp');
+      details.push('📖 See BREVO_CONFIGURATION_GUIDE.md for detailed setup instructions');
+    }
+
+    return { configured, details };
+  }
+
   private async createTransporter() {
     const config = await this.getConfig();
     
@@ -177,12 +228,16 @@ export class BrevoService {
       // Use apiKey (SMTP key) if available, otherwise use brevoApiKey
       const smtpKey = config.apiKey || config.brevoApiKey;
       
+      // Get SMTP login from environment (different from sender email)
+      const smtpLogin = process.env.BREVO_SMTP_LOGIN || config.senderEmail;
+      
       console.log('Creating Brevo transporter with config:', {
         host: 'smtp-relay.brevo.com',
         port: 587,
-        secure: false,
+        secure: false, // Use STARTTLS
+        requireTLS: true, // Require TLS encryption
         auth: {
-          user: config.senderEmail,
+          user: smtpLogin,
           pass: smtpKey
         }
       });
@@ -190,10 +245,11 @@ export class BrevoService {
       const transporter = nodemailer.createTransport({
         host: 'smtp-relay.brevo.com',
         port: 587,
-        secure: false,
+        secure: false, // Use STARTTLS (not direct SSL)
+        requireTLS: true, // Require TLS encryption
         auth: {
-          user: config.senderEmail, // This should be your SMTP login email from Brevo SMTP tab
-          pass: smtpKey // This should be your SMTP key (not API key)
+          user: smtpLogin, // Use SMTP login email for authentication
+          pass: smtpKey // This should be your SMTP key
         },
         connectionTimeout: 10000, // 10 seconds
         greetingTimeout: 10000,   // 10 seconds
@@ -318,7 +374,8 @@ export class BrevoService {
       
       const config = await this.getConfig();
       if (!config || !config.isActive || (!config.apiKey && !config.brevoApiKey) || !config.senderEmail) {
-        console.log('Brevo not configured - skipping contact notification');
+        console.log('⚠️  Brevo not configured - skipping contact notification');
+        console.log('💡 Contact form data was saved to database, but email notification was not sent');
         return false;
       }
       
@@ -345,26 +402,26 @@ export class BrevoService {
         text: `
           New contact form submission:
           
-          Name: ${contactData.fullName}
-          Email: ${contactData.email}
+          Name: ${contactData.fullName || 'Not provided'}
+          Email: ${contactData.email || 'Not provided'}
           Phone: ${contactData.phone || 'Not provided'}
           Company: ${contactData.company || 'Not provided'}
           
           Message:
-          ${contactData.message}
+          ${contactData.message || ''}
         `,
         html: this.createEmailTemplate({
           title: 'New Contact Form Submission',
           content: `
             <h2>New Contact Form Submission</h2>
             <div class="highlight">
-              <p><strong>Name:</strong> ${contactData.fullName}</p>
-              <p><strong>Email:</strong> ${contactData.email}</p>
+              <p><strong>Name:</strong> ${contactData.fullName || 'Not provided'}</p>
+              <p><strong>Email:</strong> ${contactData.email || 'Not provided'}</p>
               <p><strong>Phone:</strong> ${contactData.phone || 'Not provided'}</p>
               <p><strong>Company:</strong> ${contactData.company || 'Not provided'}</p>
             </div>
             <p><strong>Message:</strong></p>
-            <p>${contactData.message.replace(/\n/g, '<br>')}</p>
+            <p>${contactData.message && typeof contactData.message === 'string' ? contactData.message.replace(/\n/g, '<br>') : ''}</p>
           `,
           includeLogo: true
         })
@@ -405,23 +462,23 @@ export class BrevoService {
       
       console.log('Transporter created, sending auto-reply...');
       
-      const emailContent = {
-        from: `"${config.senderName || 'Konti Hidroplast'}" <${config.senderEmail}>`,
-        to: contactData.email,
+             const emailContent = {
+         from: `"${config.senderName || 'URBAN ROHR'}" <${config.senderEmail}>`,
+         to: contactData.email || 'no-email@example.com',
         subject: 'Thank you for your message',
         text: `
-          Dear ${contactData.fullName},
+          Dear ${contactData.fullName || 'Valued Customer'},
           
           Thank you for contacting us. We have received your message and will get back to you as soon as possible.
           
           Best regards,
-          The Konti Hidroplast Team
+          The URBAN ROHR Team
         `,
         html: this.createEmailTemplate({
           title: 'Thank you for your message',
           content: `
             <h2>Thank you for your message</h2>
-            <p>Dear <strong>${contactData.fullName}</strong>,</p>
+            <p>Dear <strong>${contactData.fullName || 'Valued Customer'}</strong>,</p>
             <div class="highlight">
               <p>Thank you for contacting us. We have received your message and will get back to you as soon as possible.</p>
             </div>
@@ -447,7 +504,8 @@ export class BrevoService {
       
       const config = await this.getConfig();
       if (!config || !config.isActive || (!config.apiKey && !config.brevoApiKey) || !config.senderEmail) {
-        console.log('Brevo not configured - skipping job application notification');
+        console.log('⚠️  Brevo not configured - skipping job application notification');
+        console.log('💡 Job application data was saved to database, but email notification was not sent');
         return false;
       }
       
@@ -467,6 +525,10 @@ export class BrevoService {
       
       console.log('Transporter created, sending job application notification...');
       
+      const safeMessage = jobData.message && typeof jobData.message === 'string'
+        ? jobData.message.replace(/\n/g, '<br>')
+        : '';
+
       const emailContent = {
         from: `"${config.senderName || 'Website Contact'}" <${config.senderEmail}>`,
         to: config.senderEmail,
@@ -474,26 +536,28 @@ export class BrevoService {
         text: `
           New job application received:
           
-          Name: ${jobData.fullName}
-          Email: ${jobData.email}
+          Name: ${jobData.fullName || 'Not provided'}
+          Email: ${jobData.email || 'Not provided'}
           Phone: ${jobData.phone || 'Not provided'}
-          Position: ${jobData.position}
+          Position: ${jobData.position || 'Not provided'}
           
           Message:
-          ${jobData.message}
+          ${jobData.message && typeof jobData.message === 'string' ? jobData.message : ''}
         `,
         html: this.createEmailTemplate({
           title: 'New Job Application',
           content: `
             <h2>New Job Application</h2>
             <div class="highlight">
-              <p><strong>Name:</strong> ${jobData.fullName}</p>
-              <p><strong>Email:</strong> ${jobData.email}</p>
+              <p><strong>Name:</strong> ${jobData.fullName || 'Not provided'}</p>
+              <p><strong>Email:</strong> ${jobData.email || 'Not provided'}</p>
               <p><strong>Phone:</strong> ${jobData.phone || 'Not provided'}</p>
-              <p><strong>Position:</strong> ${jobData.position}</p>
+              <p><strong>Position:</strong> ${jobData.position || 'Not provided'}</p>
             </div>
-            <p><strong>Message:</strong></p>
-            <p>${jobData.message.replace(/\n/g, '<br>')}</p>
+            ${jobData.message && typeof jobData.message === 'string' && jobData.message.trim() !== '' ? `
+              <p><strong>Message:</strong></p>
+              <p>${safeMessage}</p>
+            ` : ''}
           `,
           includeLogo: true
         })
@@ -535,29 +599,29 @@ export class BrevoService {
       console.log('Transporter created, sending job application auto-reply...');
       
       const emailContent = {
-        from: `"${config.senderName || 'Konti Hidroplast'}" <${config.senderEmail}>`,
-        to: jobData.email,
+        from: `"${config.senderName || 'URBAN ROHR'}" <${config.senderEmail}>`,
+        to: jobData.email || 'no-email@example.com',
         subject: 'Thank you for your job application',
         text: `
-          Dear ${jobData.fullName},
+          Dear ${jobData.fullName || 'Applicant'},
           
-          Thank you for your interest in the ${jobData.position} position. We have received your application and will review it carefully.
+          Thank you for your interest in the ${jobData.position || 'the position'} position. We have received your application and will review it carefully.
           
           We will contact you if your qualifications match our requirements.
           
           Best regards,
-          The Konti Hidroplast Team
+          The URBAN ROHR Team
         `,
         html: this.createEmailTemplate({
           title: 'Thank you for your job application',
           content: `
             <h2>Thank you for your job application</h2>
-            <p>Dear <strong>${jobData.fullName}</strong>,</p>
+            <p>Dear <strong>${jobData.fullName || 'Applicant'}</strong>,</p>
             <div class="highlight">
-              <p>Thank you for your interest in the <strong>${jobData.position}</strong> position. We have received your application and will review it carefully.</p>
+              <p>Thank you for your interest in the <strong>${jobData.position || 'the position'}</strong> position. We have received your application and will review it carefully.</p>
               <p>We will contact you if your qualifications match our requirements.</p>
             </div>
-            <p>Best regards,<br><strong>The Konti Hidroplast Team</strong></p>
+            <p>Best regards,<br><strong>The URBAN ROHR Team</strong></p>
           `,
           includeLogo: true,
           footerText: 'We appreciate your interest in joining our team.'
@@ -606,7 +670,7 @@ export class BrevoService {
       console.log('Transporter created, sending generic email...');
       
       const emailContent = {
-        from: `"${config.senderName || 'Konti Hidroplast'}" <${config.senderEmail}>`,
+        from: `"${config.senderName || 'URBAN ROHR'}" <${config.senderEmail}>`,
         to: emailData.to,
         subject: emailData.subject,
         text: emailData.textContent || '',
