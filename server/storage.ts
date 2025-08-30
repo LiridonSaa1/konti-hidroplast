@@ -2035,17 +2035,16 @@ export class DatabaseStorage implements IStorage {
     }
   }
 
-  // Job application methods - in-memory storage for development
+  // Job application methods
   async getAllJobApplications(): Promise<JobApplication[]> {
-    return this.jobApplicationsData.sort((a, b) => {
-      const aTime = a.createdAt?.getTime() || 0;
-      const bTime = b.createdAt?.getTime() || 0;
-      return bTime - aTime;
-    });
+    if (!db) throw new Error('Database not available');
+    return await db.select().from(jobApplications).orderBy(desc(jobApplications.createdAt));
   }
 
   async getJobApplication(id: number): Promise<JobApplication | undefined> {
-    return this.jobApplicationsData.find(application => application.id === id);
+    if (!db) throw new Error('Database not available');
+    const [application] = await db.select().from(jobApplications).where(eq(jobApplications.id, id));
+    return application || undefined;
   }
 
   async createJobApplication(application: InsertJobApplication): Promise<JobApplication> {
@@ -2058,22 +2057,26 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateJobApplication(id: number, application: Partial<JobApplication>): Promise<JobApplication> {
-    const index = this.jobApplicationsData.findIndex(a => a.id === id);
-    if (index === -1) throw new Error('Job application not found');
+    if (!db) throw new Error('Database not available');
+    const [updatedApplication] = await db
+      .update(jobApplications)
+      .set({
+        ...application,
+        updatedAt: new Date()
+      })
+      .where(eq(jobApplications.id, id))
+      .returning();
     
-    this.jobApplicationsData[index] = {
-      ...this.jobApplicationsData[index],
-      ...application,
-      updatedAt: new Date()
-    };
-    return this.jobApplicationsData[index];
+    if (!updatedApplication) {
+      throw new Error('Job application not found');
+    }
+    
+    return updatedApplication;
   }
 
   async deleteJobApplication(id: number): Promise<void> {
-    const index = this.jobApplicationsData.findIndex(a => a.id === id);
-    if (index !== -1) {
-      this.jobApplicationsData.splice(index, 1);
-    }
+    if (!db) throw new Error('Database not available');
+    await db.delete(jobApplications).where(eq(jobApplications.id, id));
   }
 
   // Brochure download methods - in-memory storage for development
