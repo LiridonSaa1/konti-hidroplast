@@ -52,16 +52,16 @@ const translations = {
     "hero.title.line3": "for Pipeline Precision",
     "hero.banner.title": "HIGH-QUALITY PIPES",
     "hero.banner.subtitle": "DRIVING PROGRESS WITH INNOVATION",
-    "hero.videoTitle": "Konti Hidroplast Corporate Video",
+    "hero.videoTitle": "Corporate Video",
 
     // About Section
     "about.title": "About Us",
     "about.description":
       "Export-oriented Macedonian company for production of PE and PP pipes since 1975. We are committed to delivering the highest quality pipeline solutions with European standards.",
     "about.text1":
-      "Konti Hidroplast is export oriented macedonian company for production of PE (polyethylene) and PP (polypropylene) pipes.",
+      "We are an export oriented macedonian company for production of PE (polyethylene) and PP (polypropylene) pipes.",
     "about.text2":
-      "Situated in Southern Macedonia, municipality of Gevgelija Konti Hidroplast was founded in 1975 as a small plant for production of tools and elements of injection molded plastic.",
+      "Situated in Southern Macedonia, municipality of Gevgelija, we were founded in 1975 as a small plant for production of tools and elements of injection molded plastic.",
     "about.text3":
       "Following the successful start aided by the experience gained by successfully realized projects in Republic of Macedonia, today our company is export-oriented, and 95% of its products are exported in international markets.",
     "about.mission":
@@ -109,7 +109,7 @@ const translations = {
     "news.article1.excerpt":
       "Latest advancements in pipeline maintenance technologies...",
     "news.article2.title":
-      "Konti Hidroplast Donated €100,000 to Hospital in Gevgelija",
+      "Company Donated €100,000 to Hospital in Gevgelija",
     "news.article2.excerpt":
       "Supporting our community with significant healthcare...",
     "news.article3.title": "EPD – Environmental Product Declaration",
@@ -121,11 +121,11 @@ const translations = {
 
     // Testimonials
     "testimonials.petar.quote":
-      "As your long-term partner, we are very happy to work with you and your company. Over the years, we have received very good service, great quality of products, fast and competent responses from Konti Hidroplast.All employees are responsive, competent and well-known in the products you produce. We always receive the right decision for choosing the right product. We highly recommend Konti Hidroplast to all our partners and customers.",
+      "As your long-term partner, we are very happy to work with you and your company. Over the years, we have received very good service, great quality of products, fast and competent responses from the company. All employees are responsive, competent and well-known in the products you produce. We always receive the right decision for choosing the right product. We highly recommend the company to all our partners and customers.",
     "testimonials.petar.author": "Petar Ermenliev",
     "testimonials.petar.company": "Eurocom 2000",
     "testimonials.alex.quote":
-      "Working with Konti Hidroplast has been a truly positive experience. Their professionalism, attention to detail, and commitment to delivering high-quality products & services consistently exceed our expectations. The team's expertise and responsiveness make every project smooth and efficient, and their dedication to customer satisfaction is evident in everything they do. We truly value our partnership and highly recommend Konti Hidroplast to anyone seeking reliable products and solutions",
+      "Working with the company has been a truly positive experience. Their professionalism, attention to detail, and commitment to delivering high-quality products & services consistently exceed our expectations. The team's expertise and responsiveness make every project smooth and efficient, and their dedication to customer satisfaction is evident in everything they do. We truly value our partnership and highly recommend the company to anyone seeking reliable products and solutions",
     "testimonials.alex.author": "Alex Negrescu",
     "testimonials.alex.company": "General Manager, Dematek Water Management",
 
@@ -208,7 +208,7 @@ const translations = {
       "A modern factory, a leader in the region for development and production of plastic products for infrastructure buildings, within the frames of an environmentally safe system with maximum safety for all stakeholders.",
     "aboutUs.valuesTitle": "Values",
     "aboutUs.valuesText":
-      "At Konti Hidroplast, we're dedicated to leading the industry with top-quality, eco-friendly pipes while prioritizing environmental protection and employee safety.",
+      "At our company, we're dedicated to leading the industry with top-quality, eco-friendly pipes while prioritizing environmental protection and employee safety.",
     "aboutUs.timelineTitle": "Our Journey",
     "aboutUs.projectsTitle": "Projects",
     "aboutUs.leadership": "Leadership",
@@ -222,13 +222,13 @@ const translations = {
     "aboutUs.companyStoryText2":
       "Besides the experience, our large range of products and top quality, by all internationally recognized standards, enabled us to get access to international markets. Our current production program covers all fields of application: pipes and hoses for water supply systems, sewage systems, PE and PP manholes, pipes for transporting gas and oil products, pipes and hoses for protection of telecommunication cables, drainage systems and fittings for all dimensions, which also range from a minimum diameter of 12mm up to 2000mm.",
     "aboutUs.companyStoryText3":
-      "Konti Hidroplast became known to the market through quality supply and constant application of flexibility in operation, which is very important in an industry where the complexity of managing all processes is quite high.",
+      "Our company became known to the market through quality supply and constant application of flexibility in operation, which is very important in an industry where the complexity of managing all processes is quite high.",
     "aboutUs.companyStoryText4":
-      "One of the key factors for sustainability despite tough competition is constant reinvestment in innovative technologies and pursuing general technological progress. The combination of all these key factors are contributing for Konti Hidroplast to play an important role in the domestic and foreign markets with the constant presence of all major and minor infrastructure projects.",
+      "One of the key factors for sustainability despite tough competition is constant reinvestment in innovative technologies and pursuing general technological progress. The combination of all these key factors are contributing for our company to play an important role in the domestic and foreign markets with the constant presence of all major and minor infrastructure projects.",
     "aboutUs.since1975": "Since 1975",
     "aboutUs.leadershipMessage": "Leadership Message",
     "aboutUs.leadershipTitle": "Building the Future of Infrastructure",
-    "aboutUs.leadershipDescription1": "At Konti Hidroplast, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
+    "aboutUs.leadershipDescription1": "At our company, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
     "aboutUs.leadershipDescription2": "Together, we build not just for today, but for a future our next generations will be proud of.",
     "aboutUs.leaderName": "Boris Madjunkov",
     "aboutUs.leaderPosition": "General Director",
@@ -263,7 +263,7 @@ const translations = {
     "productsPage.heroImageAlt": "High-quality PE and PP pipe systems in manufacturing facility",
     "productsPage.heroDrivingProgress": "Driving Progress With Innovation",
     "productsPage.productRange": "Product Range",
-    "productsPage.applicationDescription1": "Konti Hidroplast products find a broad range of applications in the industrial and utilities market on a worldwide scale. The water and gas distribution enterprises are important sectors for high integrity products where the maintenance of water quality and the safe transport of gaseous fuels are of paramount importance.",
+    "productsPage.applicationDescription1": "Our products find a broad range of applications in the industrial and utilities market on a worldwide scale. The water and gas distribution enterprises are important sectors for high integrity products where the maintenance of water quality and the safe transport of gaseous fuels are of paramount importance.",
     "productsPage.applicationDescription2": "Industrial applications include alternative energy installations in landfill gas systems to effluent transportation and mineral slurry. Products are widely used in pipeline installation, repair and maintenance.",
     "productsPage.peTechnicalAlt": "PE Pipe Technical Specifications Diagram",
     "productsPage.peFlowAlt": "PE Technical Specifications Flow Diagram",
@@ -675,7 +675,7 @@ const translations = {
     "spiralPipes.manufacturing": "KONTI KAN SPIRAL pipes manufacturing",
     "spiralPipes.premiumQuality": "Premium Quality",
     "spiralPipes.productOverview": "Product Overview",
-    "spiralPipes.latestDevelopment": "Latest development of production of Konti Hidroplast is manufacturing sewage pipes for non-pressure applications. Konti Kan Spiral pipe and complete range of Konti Kan Spiral fittings.",
+    "spiralPipes.latestDevelopment": "Latest development of production is manufacturing sewage pipes for non-pressure applications. Konti Kan Spiral pipe and complete range of Konti Kan Spiral fittings.",
     "spiralPipes.constructionDescription": "Konti Kan Spiral pipes are made of hollow PE-HD sections helically wound on a drum with a specific diameter. Konti Kan Spiral Pipe provides all technical advantages of equivalent polyethylene solid wall pipe with substantial saving in weight combining greater ease of installation with increased cost effectiveness. Its unique structure can offer a range of pipe sizes and ring stiffness, depending of customers requirements.",
     "spiralPipes.rawMaterialCharacteristics": "The characteristics of raw material and the technology of production are combined to insure application in:",
     "spiralPipes.municipalityInfrastructure": "Municipality for infrastructure objects",
@@ -996,7 +996,7 @@ const translations = {
     "newsPage.noDescription": "No description available",
     "newsPage.showingArticles": "Showing {current} of {total} articles",
     "newsPage.noNewsYet": "No News Articles Yet",
-    "newsPage.checkBackSoon": "Check back soon for the latest updates and insights from Konti Hidroplast.",
+    "newsPage.checkBackSoon": "Check back soon for the latest updates and insights from our company.",
     "newsPage.allArticlesShown": "You've seen all our latest news articles!",
     "newsPage.checkBackMore": "Check back soon for more updates and insights.",
     "newsPage.wantToStayUpdated": "Want to stay updated with our latest news and innovations? Contact our team for more information.",
@@ -1006,7 +1006,7 @@ const translations = {
     "careerPage.alwaysOnLookout": "ALWAYS ON THE",
     "careerPage.lookoutFor": "LOOKOUT FOR",
     "careerPage.topTalent": "TOP TALENT",
-    "careerPage.heroDescription": "Join Konti Hidroplast and become part of a team dedicated to excellence in pipe manufacturing. We're looking for talented professionals to grow with us.",
+    "careerPage.heroDescription": "Join our company and become part of a team dedicated to excellence in pipe manufacturing. We're looking for talented professionals to grow with us.",
     "careerPage.dynamicTeam": "Dynamic Team",
     "careerPage.professionalGrowth": "Professional Growth",
     "careerPage.careerDevelopment": "Career Development",
@@ -2912,16 +2912,16 @@ const translations = {
     "hero.title.line3": "für Rohrleitungspräzision",
     "hero.banner.title": "HOCHWERTIGE ROHRE",
     "hero.banner.subtitle": "FORTSCHRITT DURCH INNOVATION",
-    "hero.videoTitle": "Konti Hidroplast Unternehmensvideo",
+    "hero.videoTitle": "Unternehmensvideo",
 
     // About Section
     "about.title": "Über uns",
     "about.description":
       "Exportorientiertes mazedonisches Unternehmen für die Herstellung von PE- und PP-Rohren seit 1975. Wir sind verpflichtet, höchste Qualität bei Rohrleitungslösungen mit europäischen Standards zu liefern.",
     "about.text1":
-      "Konti Hidroplast ist ein exportorientiertes mazedonisches Unternehmen für die Herstellung von PE- (Polyethylen) und PP- (Polypropylen) Rohren.",
+      "Wir sind ein exportorientiertes mazedonisches Unternehmen für die Herstellung von PE- (Polyethylen) und PP- (Polypropylen) Rohren.",
     "about.text2":
-      "In Südmazedonien gelegen, Gemeinde Gevgelija, wurde Konti Hidroplast 1975 als kleine Fabrik für die Herstellung von Werkzeugen und Elementen aus spritzgegossenem Kunststoff gegründet.",
+      "In Südmazedonien gelegen, Gemeinde Gevgelija, wurden wir 1975 als kleine Fabrik für die Herstellung von Werkzeugen und Elementen aus spritzgegossenem Kunststoff gegründet.",
     "about.text3":
       "Nach dem erfolgreichen Start, unterstützt durch die Erfahrung aus erfolgreich realisierten Projekten in der Republik Mazedonien, ist unser Unternehmen heute exportorientiert und 95% seiner Produkte werden auf internationale Märkte exportiert.",
     "about.mission":
@@ -2969,7 +2969,7 @@ const translations = {
     "news.article1.excerpt":
       "Neueste Fortschritte in der Pipeline-Wartungstechnologie...",
     "news.article2.title":
-      "Konti Hidroplast spendete €100.000 an das Krankenhaus in Gevgelija",
+      "Unternehmen spendete €100.000 an das Krankenhaus in Gevgelija",
     "news.article2.excerpt":
       "Unterstützung unserer Gemeinde mit erheblicher Gesundheitsversorgung...",
     "news.article3.title": "EPD – Umwelt-Produktdeklaration",
@@ -2980,11 +2980,11 @@ const translations = {
 
     // Testimonials
     "testimonials.petar.quote":
-      "Als Ihr langfristiger Partner sind wir sehr glücklich, mit Ihnen und Ihrem Unternehmen zu arbeiten. Über die Jahre haben wir sehr guten Service, große Qualität der Produkte und schnelle, kompetente Antworten von Konti Hidroplast erhalten. Alle Mitarbeiter sind reaktionsschnell, kompetent und bekannt für die Produkte, die Sie herstellen.",
+      "Als Ihr langfristiger Partner sind wir sehr glücklich, mit Ihnen und Ihrem Unternehmen zu arbeiten. Über die Jahre haben wir sehr guten Service, große Qualität der Produkte und schnelle, kompetente Antworten vom Unternehmen erhalten. Alle Mitarbeiter sind reaktionsschnell, kompetent und bekannt für die Produkte, die Sie herstellen.",
     "testimonials.petar.author": "Petar Ermenliev",
     "testimonials.petar.company": "Eurocom 2000",
     "testimonials.alex.quote":
-      "Die Zusammenarbeit mit Konti Hidroplast war eine wirklich positive Erfahrung. Ihr Professionalität, Liebe zum Detail und Engagement für die Lieferung hochwertiger Produkte und Dienstleistungen übertreffen unsere Erwartungen kontinuierlich. Die Expertise und Reaktionsfähigkeit des Teams machen jedes Projekt reibungslos und effizient.",
+      "Die Zusammenarbeit mit dem Unternehmen war eine wirklich positive Erfahrung. Ihr Professionalität, Liebe zum Detail und Engagement für die Lieferung hochwertiger Produkte und Dienstleistungen übertreffen unsere Erwartungen kontinuierlich. Die Expertise und Reaktionsfähigkeit des Teams machen jedes Projekt reibungslos und effizient.",
     "testimonials.alex.author": "Alex Negrescu",
     "testimonials.alex.company": "General Manager, Dematek Wassermanagement",
 
@@ -3136,7 +3136,7 @@ const translations = {
       "Eine moderne Fabrik, ein Marktführer in der Region für die Entwicklung und Produktion von Kunststoffprodukten für Infrastrukturbauten, innerhalb eines umweltfreundlichen Systems mit maximaler Sicherheit für alle Beteiligten.",
     "aboutUs.valuesTitle": "Werte",
     "aboutUs.valuesText":
-      "Bei Konti Hidroplast sind wir bestrebt, die Branche mit hochwertigen, umweltfreundlichen Rohren anzuführen und dabei Umweltschutz und Mitarbeitersicherheit zu priorisieren.",
+      "Bei unserem Unternehmen sind wir bestrebt, die Branche mit hochwertigen, umweltfreundlichen Rohren anzuführen und dabei Umweltschutz und Mitarbeitersicherheit zu priorisieren.",
     "aboutUs.timelineTitle": "Unsere Reise",
     "aboutUs.projectsTitle": "Projekte",
     "aboutUs.leadership": "Führung",
@@ -3150,13 +3150,13 @@ const translations = {
     "aboutUs.companyStoryText2":
       "Neben der Erfahrung ermöglichten uns unsere große Produktpalette und Spitzenqualität nach allen international anerkannten Standards den Zugang zu internationalen Märkten. Unser aktuelles Produktionsprogramm deckt alle Anwendungsbereiche ab: Rohre und Schläuche für Wasserversorgungssysteme, Abwassersysteme, PE- und PP-Schächte, Rohre für den Transport von Gas- und Ölprodukten, Rohre und Schläuche zum Schutz von Telekommunikationskabeln, Entwässerungssysteme und Fittings für alle Dimensionen, die auch von einem Mindestdurchmesser von 12 mm bis 2000 mm reichen.",
     "aboutUs.companyStoryText3":
-      "Konti Hidroplast wurde auf dem Markt durch qualitativ hochwertige Lieferungen und die ständige Anwendung von Flexibilität im Betrieb bekannt, was in einer Branche, in der die Komplexität der Verwaltung aller Prozesse recht hoch ist, sehr wichtig ist.",
+      "Unser Unternehmen wurde auf dem Markt durch qualitativ hochwertige Lieferungen und die ständige Anwendung von Flexibilität im Betrieb bekannt, was in einer Branche, in der die Komplexität der Verwaltung aller Prozesse recht hoch ist, sehr wichtig ist.",
     "aboutUs.companyStoryText4":
-      "Einer der Schlüsselfaktoren für Nachhaltigkeit trotz harter Konkurrenz ist die kontinuierliche Reinvestition in innovative Technologien und das Verfolgen des allgemeinen technologischen Fortschritts. Die Kombination all dieser Schlüsselfaktoren trägt dazu bei, dass Konti Hidroplast eine wichtige Rolle auf den inländischen und ausländischen Märkten mit der ständigen Präsenz bei allen großen und kleinen Infrastrukturprojekten spielt.",
+      "Einer der Schlüsselfaktoren für Nachhaltigkeit trotz harter Konkurrenz ist die kontinuierliche Reinvestition in innovative Technologien und das Verfolgen des allgemeinen technologischen Fortschritts. Die Kombination all dieser Schlüsselfaktoren trägt dazu bei, dass unser Unternehmen eine wichtige Rolle auf den inländischen und ausländischen Märkten mit der ständigen Präsenz bei allen großen und kleinen Infrastrukturprojekten spielt.",
     "aboutUs.since1975": "Seit 1975",
     "aboutUs.leadershipMessage": "Botschaft der Geschäftsführung",
     "aboutUs.leadershipTitle": "Die Zukunft der Infrastruktur gestalten",
-    "aboutUs.leadershipDescription1": "Bei Konti Hidroplast war unsere Mission schon immer klar: mit Innovation zu führen, Qualität nach europäischen Standards zu liefern und in unserer Branche die Nase vorn zu haben. Wir sind bestrebt, nachhaltige Lösungen zu schaffen, in neue Märkte zu expandieren und Wissen mit allen zu teilen, die wachsen möchten.",
+    "aboutUs.leadershipDescription1": "Bei unserem Unternehmen war unsere Mission schon immer klar: mit Innovation zu führen, Qualität nach europäischen Standards zu liefern und in unserer Branche die Nase vorn zu haben. Wir sind bestrebt, nachhaltige Lösungen zu schaffen, in neue Märkte zu expandieren und Wissen mit allen zu teilen, die wachsen möchten.",
     "aboutUs.leadershipDescription2": "Gemeinsam bauen wir nicht nur für heute, sondern für eine Zukunft, auf die unsere nächsten Generationen stolz sein werden.",
     "aboutUs.leaderName": "Boris Madjunkov",
     "aboutUs.leaderPosition": "Geschäftsführer",
@@ -3191,7 +3191,7 @@ const translations = {
     "productsPage.heroImageAlt": "Hochwertige PE- und PP-Rohrsysteme in Fertigungsanlage",
     "productsPage.heroDrivingProgress": "Fortschritt durch Innovation",
     "productsPage.productRange": "Produktpalette",
-    "productsPage.applicationDescription1": "Konti Hidroplast-Produkte finden ein breites Anwendungsspektrum im Industrie- und Versorgungsmarkt auf weltweiter Ebene. Die Wasser- und Gasverteilungsunternehmen sind wichtige Sektoren für Produkte mit hoher Integrität, bei denen die Aufrechterhaltung der Wasserqualität und der sichere Transport gasförmiger Brennstoffe von größter Bedeutung sind.",
+    "productsPage.applicationDescription1": "Unsere Produkte finden ein breites Anwendungsspektrum im Industrie- und Versorgungsmarkt auf weltweiter Ebene. Die Wasser- und Gasverteilungsunternehmen sind wichtige Sektoren für Produkte mit hoher Integrität, bei denen die Aufrechterhaltung der Wasserqualität und der sichere Transport gasförmiger Brennstoffe von größter Bedeutung sind.",
     "productsPage.applicationDescription2": "Industrielle Anwendungen umfassen alternative Energieanlagen in Deponiegas-Systemen bis hin zum Transport von Abwasser und Mineralschlamm. Die Produkte werden weit verbreitet bei Rohrleitungsinstallation, Reparatur und Wartung eingesetzt.",
     "productsPage.peTechnicalAlt": "PE-Rohr technische Spezifikationen Diagramm",
     "productsPage.peFlowAlt": "PE technische Spezifikationen Flussdiagramm",
@@ -3603,7 +3603,7 @@ const translations = {
     "spiralPipes.manufacturing": "KONTI KAN SPIRAL Rohrherstellung",
     "spiralPipes.premiumQuality": "Premium-Qualität",
     "spiralPipes.productOverview": "Produktübersicht",
-    "spiralPipes.latestDevelopment": "Die neueste Entwicklung in der Produktion von Konti Hidroplast ist die Herstellung von Abwasserrohren für drucklose Anwendungen. Konti Kan Spiral Rohr und komplettes Sortiment an Konti Kan Spiral Fittings.",
+    "spiralPipes.latestDevelopment": "Die neueste Entwicklung in der Produktion ist die Herstellung von Abwasserrohren für drucklose Anwendungen. Konti Kan Spiral Rohr und komplettes Sortiment an Konti Kan Spiral Fittings.",
     "spiralPipes.constructionDescription": "Konti Kan Spiral Rohre werden aus hohlen PE-HD Profilen hergestellt, die spiralförmig auf eine Trommel mit spezifischem Durchmesser gewickelt werden. Konti Kan Spiral Rohre bieten alle technischen Vorteile äquivalenter Polyethylen-Vollwandrohre mit erheblicher Gewichtseinsparung und kombinieren größere Installationsleichtigkeit mit erhöhter Kosteneffizienz. Ihre einzigartige Struktur kann eine Reihe von Rohrgrößen und Ringsteifigkeiten bieten, je nach Kundenanforderungen.",
     "spiralPipes.rawMaterialCharacteristics": "Die Eigenschaften des Rohstoffs und die Produktionstechnologie werden kombiniert, um Anwendungen zu gewährleisten in:",
     "spiralPipes.municipalityInfrastructure": "Gemeinde für Infrastrukturobjekte",
@@ -3924,7 +3924,7 @@ const translations = {
     "newsPage.noDescription": "Keine Beschreibung verfügbar",
     "newsPage.showingArticles": "Zeige {current} von {total} Artikeln",
     "newsPage.noNewsYet": "Noch keine Nachrichtenartikel",
-    "newsPage.checkBackSoon": "Schauen Sie bald wieder vorbei für die neuesten Updates und Einblicke von Konti Hidroplast.",
+    "newsPage.checkBackSoon": "Schauen Sie bald wieder vorbei für die neuesten Updates und Einblicke von unserem Unternehmen.",
     "newsPage.allArticlesShown": "Sie haben alle unsere neuesten Nachrichtenartikel gesehen!",
     "newsPage.checkBackMore": "Schauen Sie bald wieder vorbei für weitere Updates und Einblicke.",
     "newsPage.wantToStayUpdated": "Möchten Sie über unsere neuesten Nachrichten und Innovationen auf dem Laufenden bleiben? Kontaktieren Sie unser Team für weitere Informationen.",
@@ -3934,7 +3934,7 @@ const translations = {
     "careerPage.alwaysOnLookout": "IMMER AUF DER",
     "careerPage.lookoutFor": "SUCHE NACH",
     "careerPage.topTalent": "TOP-TALENTEN",
-    "careerPage.heroDescription": "Treten Sie Konti Hidroplast bei und werden Sie Teil eines Teams, das sich der Exzellenz in der Rohrherstellung verschrieben hat. Wir suchen talentierte Fachkräfte, die mit uns wachsen.",
+    "careerPage.heroDescription": "Treten Sie unserem Unternehmen bei und werden Sie Teil eines Teams, das sich der Exzellenz in der Rohrherstellung verschrieben hat. Wir suchen talentierte Fachkräfte, die mit uns wachsen.",
     "careerPage.dynamicTeam": "Dynamisches Team",
     "careerPage.professionalGrowth": "Berufliches Wachstum",
     "careerPage.careerDevelopment": "Karriereentwicklung",

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { ChevronDown, Play } from "lucide-react";
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
@@ -9,7 +9,7 @@ export function HeroSection() {
   const { t } = useLanguage();
   const { data: companyInfo } = useCompanyInfo();
   const [, setLocation] = useLocation();
-  const [showVideo, setShowVideo] = useState(false);
+  const [showVideo, setShowVideo] = useState(true); // Changed to true for immediate autoplay
 
   const scrollToAbout = () => {
     const aboutSection = document.getElementById("about");
@@ -22,16 +22,25 @@ export function HeroSection() {
     setShowVideo(true);
   };
 
+  // Auto-show video after a short delay for better user experience
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowVideo(true);
+    }, 1000); // 1 second delay
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       data-testid="hero-section"
     >
-      {/* Video Background - Lazy Loaded YouTube */}
+      {/* Video Background - Autoplay YouTube */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         {!showVideo ? (
-          // Video Thumbnail with Play Button
+          // Video Thumbnail with Play Button (fallback)
           <div className="relative w-full h-full bg-black">
             <img
               src="https://img.youtube.com/vi/R7b9-m_EM2s/maxresdefault.jpg"
@@ -50,7 +59,7 @@ export function HeroSection() {
             </div>
           </div>
         ) : (
-          // YouTube iframe (only loads when user clicks play)
+          // YouTube iframe with autoplay and loop
           <iframe
             src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=1&playlist=R7b9-m_EM2s&controls=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
             title={t("hero.videoTitle")}

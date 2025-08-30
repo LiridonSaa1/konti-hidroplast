@@ -135,10 +135,10 @@ function ProductsPage() {
                 data-testid="products-hero-title"
               >
                 {t("productsPage.title").toUpperCase()}{" "}
-                <span className="text-red-500">KONTI</span>
+                <span className="text-red-500">{companyInfo.companyName?.split(' ')[0] || 'KONTI'}</span>
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  HIDROPLAST
+                  {companyInfo.companyName?.split(' ').slice(1).join(' ') || 'HIDROPLAST'}
                 </span>
               </h1>
               <p

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
@@ -7,7 +7,7 @@ import { Link } from "wouter";
 
 export function AboutSection() {
   const { t } = useLanguage();
-  const [showVideo, setShowVideo] = useState(false);
+  const [showVideo, setShowVideo] = useState(true); // Changed to true for immediate autoplay
   const { ref: sectionRef, hasIntersected } = useIntersectionObserver({
     threshold: 0.1,
     rootMargin: "0px 0px -100px 0px"
@@ -16,6 +16,15 @@ export function AboutSection() {
   const handlePlayVideo = () => {
     setShowVideo(true);
   };
+
+  // Auto-show video after a short delay for better user experience
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowVideo(true);
+    }, 1000); // 1 second delay
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <section
@@ -116,14 +125,14 @@ export function AboutSection() {
                     <div className="relative w-full h-full bg-black">
                       <img
                         src="https://img.youtube.com/vi/R7b9-m_EM2s/maxresdefault.jpg"
-                        alt="Konti Hidroplast Corporate Video Thumbnail"
+                        alt="Corporate Video Thumbnail"
                         className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                         <button
                           onClick={handlePlayVideo}
                           className="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 transition-all duration-300 transform hover:scale-110 shadow-2xl"
-                          aria-label="Play Konti Hidroplast Corporate Video"
+                          aria-label="Play Corporate Video"
                         >
                           <Play className="w-8 h-8 ml-1" />
                         </button>
@@ -132,8 +141,8 @@ export function AboutSection() {
                   ) : (
                     // YouTube iframe (only loads when user clicks play)
                     <iframe
-                      src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=0&controls=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
-                      title="Konti Hidroplast Corporate Video"
+                      src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=1&playlist=R7b9-m_EM2s&controls=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
+                      title="Corporate Video"
                       className="w-full h-full"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen

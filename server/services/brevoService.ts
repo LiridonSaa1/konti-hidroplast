@@ -482,7 +482,7 @@ export class BrevoService {
             <div class="highlight">
               <p>Thank you for contacting us. We have received your message and will get back to you as soon as possible.</p>
             </div>
-            <p>Best regards,<br><strong>The Konti Hidroplast Team</strong></p>
+            <p>Best regards,<br><strong>The Company Team</strong></p>
           `,
           includeLogo: true,
           footerText: 'We appreciate your interest in our products and services.'

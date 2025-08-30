@@ -21,7 +21,8 @@ export class EmailService {
     companyName: string,
     brochureName: string,
     brochureCategory: string,
-    pdfUrl: string
+    pdfUrl: string,
+    companyInfo?: { companyName: string; email?: string; phone?: string; website?: string }
   ): Promise<boolean> {
     try {
       const timestamp = Date.now();
@@ -36,13 +37,14 @@ export class EmailService {
         companyName,
         brochureName,
         brochureCategory,
-        downloadLink
+        downloadLink,
+        companyInfo
       );
 
       // Send email using Brevo service
       const result = await this.brevoService.sendEmail({
         to: email,
-        subject: `Your ${brochureName} Brochure Download Link - Konti Hidroplast`,
+        subject: `Your ${brochureName} Brochure Download Link - ${companyInfo?.companyName || 'Konti Hidroplast'}`,
         htmlContent: emailContent.html,
         textContent: emailContent.text
       });
@@ -59,7 +61,8 @@ export class EmailService {
     companyName: string,
     brochureName: string,
     brochureCategory: string,
-    downloadLink: string
+    downloadLink: string,
+    companyInfo?: { companyName: string; email?: string; phone?: string; website?: string }
   ) {
     const htmlContent = `
       <!DOCTYPE html>
@@ -82,7 +85,7 @@ export class EmailService {
         <div class="container">
           <div class="header">
             <h1>📄 Your Brochure is Ready!</h1>
-            <p>Thank you for your interest in Konti Hidroplast solutions</p>
+            <p>Thank you for your interest in ${companyInfo?.companyName || 'our company'} solutions</p>
           </div>
           
           <div class="content">
@@ -112,20 +115,20 @@ export class EmailService {
             
             <div class="info-box">
               <h3>📞 Contact Information:</h3>
-              <p><strong>Email:</strong> info@kontihidroplast.com.mk</p>
-              <p><strong>Phone:</strong> +389 2 3120 100</p>
-              <p><strong>Website:</strong> <a href="https://konti-hidroplast.com.mk">konti-hidroplast.com.mk</a></p>
+              <p><strong>Email:</strong> ${companyInfo?.email || 'info@kontihidroplast.com.mk'}</p>
+              <p><strong>Phone:</strong> ${companyInfo?.phone || '+389 2 3120 100'}</p>
+              <p><strong>Website:</strong> <a href="${companyInfo?.website || 'https://konti-hidroplast.com.mk'}">${companyInfo?.website || 'konti-hidroplast.com.mk'}</a></p>
             </div>
             
-            <p>We appreciate your interest in Konti Hidroplast and look forward to potentially working together on your projects.</p>
+            <p>We appreciate your interest in ${companyInfo?.companyName || 'our company'} and look forward to potentially working together on your projects.</p>
             
             <p>Best regards,<br>
-            <strong>The Konti Hidroplast Team</strong></p>
+            <strong>The ${companyInfo?.companyName || 'Konti Hidroplast'} Team</strong></p>
           </div>
           
           <div class="footer">
             <p>This email was sent to ${email} because you requested a brochure download.</p>
-            <p>© ${new Date().getFullYear()} Konti Hidroplast. All rights reserved.</p>
+            <p>© ${new Date().getFullYear()} ${companyInfo?.companyName || 'Konti Hidroplast'}. All rights reserved.</p>
           </div>
         </div>
       </body>
@@ -154,17 +157,17 @@ Important: This download link is unique to you and will expire for security reas
 If you have any questions about our products or need technical support, our team is here to help:
 
 Contact Information:
-- Email: info@kontihidroplast.com.mk
-- Phone: +389 2 3120 100
-- Website: https://konti-hidroplast.com.mk
+- Email: ${companyInfo?.email || 'info@kontihidroplast.com.mk'}
+- Phone: ${companyInfo?.phone || '+389 2 3120 100'}
+- Website: ${companyInfo?.website || 'https://konti-hidroplast.com.mk'}
 
-We appreciate your interest in Konti Hidroplast and look forward to potentially working together on your projects.
+We appreciate your interest in ${companyInfo?.companyName || 'our company'} and look forward to potentially working together on your projects.
 
 Best regards,
-The Konti Hidroplast Team
+The ${companyInfo?.companyName || 'Konti Hidroplast'} Team
 
 This email was sent to ${email} because you requested a brochure download.
-© ${new Date().getFullYear()} Konti Hidroplast. All rights reserved.
+© ${new Date().getFullYear()} ${companyInfo?.companyName || 'Konti Hidroplast'}. All rights reserved.
     `;
 
     return { html: htmlContent, text: textContent };

@@ -98,7 +98,7 @@ export default function Apply() {
                 Application Submitted!
               </h2>
               <p className="text-green-700 mb-6">
-                Thank you for your interest in joining Konti Hidroplast. We have received your application and will review it carefully.
+                Thank you for your interest in joining {companyInfo.companyName || 'our company'}. We have received your application and will review it carefully.
               </p>
               <p className="text-sm text-gray-600 mb-6">
                 Our HR team will contact you if your profile matches our requirements.
@@ -125,7 +125,7 @@ export default function Apply() {
             Join Our Team
           </h1>
           <p className="text-lg text-gray-600 max-w-xl mx-auto">
-            Be part of Konti Hidroplast's mission to provide high-quality PE and PP pipes. 
+            Be part of {companyInfo.companyName || 'our company'}'s mission to provide high-quality PE and PP pipes. 
             Submit your application and let's build the future together.
           </p>
         </div>
@@ -247,7 +247,7 @@ export default function Apply() {
                     id="coverLetter"
                     {...form.register("coverLetter")}
                     className="border-gray-300 focus:border-blue-500 focus:ring-blue-500 min-h-[120px]"
-                    placeholder="Tell us why you want to work at Konti Hidroplast and what makes you a great fit for this position..."
+                                          placeholder="Tell us why you want to work at {companyInfo.companyName || 'our company'} and what makes you a great fit for this position..."
                   />
                 </div>
 
@@ -298,7 +298,7 @@ export default function Apply() {
               </div>
 
               <p className="text-xs text-gray-500 text-center">
-                By submitting this form, you agree to allow Konti Hidroplast to process your personal data for recruitment purposes.
+                By submitting this form, you agree to allow {companyInfo.companyName || 'our company'} to process your personal data for recruitment purposes.
               </p>
             </form>
           </CardContent>

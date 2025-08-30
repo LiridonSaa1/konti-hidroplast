@@ -422,7 +422,16 @@ export default function AboutUs() {
   const [activeYear, setActiveYear] = useState("1990");
   const [sliderValue, setSliderValue] = useState([0]);
   const [activeTeamTabIndex, setActiveTeamTabIndex] = useState(0);
-  const [showVideo, setShowVideo] = useState(false);
+  const [showVideo, setShowVideo] = useState(true); // Changed to true for immediate autoplay
+
+  // Auto-show video after a short delay for better user experience
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowVideo(true);
+    }, 1000); // 1 second delay
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Use the dynamic team data hook
   const { teamCategories, teamData, positions, isLoading: isTeamLoading } = useTeamData();
@@ -874,7 +883,7 @@ export default function AboutUs() {
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
                 {!showVideo ? (
-                  // Video Thumbnail with Play Button
+                  // Video Thumbnail with Play Button (fallback)
                   <div className="relative w-full h-full bg-black">
                     <img
                       src="https://img.youtube.com/vi/R7b9-m_EM2s/maxresdefault.jpg"
@@ -892,7 +901,7 @@ export default function AboutUs() {
                     </div>
                   </div>
                 ) : (
-                  // YouTube iframe (only loads when user clicks play)
+                  // YouTube iframe with autoplay and loop
                   <iframe
                     src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&loop=1&playlist=R7b9-m_EM2s&mute=1&controls=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
                     title="Konti Hidroplast - Corporate 2024"
