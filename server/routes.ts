@@ -6,7 +6,7 @@ import path from "path";
 import { promises as fs } from "fs";
 import fsSync from "fs";
 import bcrypt from "bcryptjs";
-import { storage } from "./storage";
+import { storage } from "./simple-storage";
 import { translationService } from "./services/translationService";
 import translationRoutes from "./routes/translation";
 // import { brevoService } from "./services/brevoService";
