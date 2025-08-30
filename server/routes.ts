@@ -1955,6 +1955,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let adminEmailSent = false;
       
       try {
+        // Get company information for dynamic email content
+        const companyInfoArray = await storage.getAllCompanyInfo();
+        const companyInfoMap = companyInfoArray.reduce((acc: Record<string, string>, item: any) => {
+          acc[item.key] = item.value;
+          return acc;
+        }, {});
+        
+        const companyInfo = {
+          companyName: companyInfoMap.companyName || 'Konti Hidroplast',
+          email: companyInfoMap.email || 'info@kontihidroplast.com.mk',
+          phone: companyInfoMap.phone || '+389 2 3120 100',
+          website: companyInfoMap.website || 'https://konti-hidroplast.com.mk'
+        };
+        
         // Send email to user with download link
         const { EmailService } = await import('./services/emailService.js');
         const emailService = new EmailService();
@@ -1966,7 +1980,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             downloadData.companyName,
             downloadData.brochureName,
             downloadData.brochureCategory,
-            downloadData.pdfUrl
+            downloadData.pdfUrl,
+            companyInfo
           );
         }
         
