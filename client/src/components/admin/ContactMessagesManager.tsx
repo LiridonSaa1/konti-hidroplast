@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, Trash2, Search, MessageSquare, Clock, Mail, Phone, Building, User } from "lucide-react";
 import { format } from "date-fns";
@@ -214,19 +215,37 @@ export function ContactMessagesManager() {
                 Mark as Read
               </Button>
             )}
-            <Button
-              variant="destructive"
-              onClick={() => {
-                if (confirm("Are you sure you want to delete this message?")) {
-                  deleteMessageMutation.mutate(selectedMessage.id);
-                  setSelectedMessage(null);
-                }
-              }}
-              disabled={deleteMessageMutation.isPending}
-            >
-              <Trash2 className="h-4 w-4 mr-2" />
-              Delete Message
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="destructive"
+                  disabled={deleteMessageMutation.isPending}
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete Message
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete Message</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure you want to delete this message? This action cannot be undone.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => {
+                      deleteMessageMutation.mutate(selectedMessage.id);
+                      setSelectedMessage(null);
+                    }}
+                    className="bg-red-600 hover:bg-red-700"
+                  >
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </CardContent>
       </Card>
@@ -436,20 +455,36 @@ export function ContactMessagesManager() {
                               <Eye className="h-4 w-4" />
                             </Button>
                           )}
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={() => {
-                              if (confirm("Are you sure you want to delete this message?")) {
-                                deleteMessageMutation.mutate(message.id);
-                              }
-                            }}
-                            disabled={deleteMessageMutation.isPending}
-                            className="hover:bg-red-100 hover:text-red-700 h-8 w-8 p-0"
-                            data-testid={`button-delete-${message.id}`}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                          <AlertDialog>
+                            <AlertDialogTrigger asChild>
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                disabled={deleteMessageMutation.isPending}
+                                className="hover:bg-red-100 hover:text-red-700 h-8 w-8 p-0"
+                                data-testid={`button-delete-${message.id}`}
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>Delete Message</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  Are you sure you want to delete this message? This action cannot be undone.
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                  onClick={() => deleteMessageMutation.mutate(message.id)}
+                                  className="bg-red-600 hover:bg-red-700"
+                                >
+                                  Delete
+                                </AlertDialogAction>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
                         </div>
                       </td>
                     </tr>

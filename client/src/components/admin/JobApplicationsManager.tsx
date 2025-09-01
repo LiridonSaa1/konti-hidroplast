@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { 
   Select, 
   SelectContent, 
@@ -21,6 +22,7 @@ import {
   TableHeader, 
   TableRow 
 } from "@/components/ui/table";
+import { ConfirmDeleteDialog } from "@/components/ui/confirm-delete-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { 
   FileText, 
@@ -45,6 +47,10 @@ export function JobApplicationsManager() {
   const [statusFilter, setStatusFilter] = useState("all");
   const [selectedApplication, setSelectedApplication] = useState<JobApplication | null>(null);
   const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [selectedApplications, setSelectedApplications] = useState<number[]>([]);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<{ type: 'single' | 'multiple', id?: number } | null>(null);
+  const headerCheckboxRef = useRef<HTMLInputElement>(null);
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -86,6 +92,7 @@ export function JobApplicationsManager() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/admin/job-applications"] });
+      setSelectedApplications([]);
       toast({
         title: "Success",
         description: "Job application deleted successfully.",
@@ -96,6 +103,29 @@ export function JobApplicationsManager() {
       toast({
         title: "Error",
         description: error.message || "Failed to delete job application.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    },
+  });
+
+  const deleteMultipleApplicationsMutation = useMutation({
+    mutationFn: async (ids: number[]): Promise<void> => {
+      await Promise.all(ids.map(id => apiRequest(`/api/admin/job-applications/${id}`, "DELETE")));
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/job-applications"] });
+      setSelectedApplications([]);
+      toast({
+        title: "Success",
+        description: `${selectedApplications.length} job application(s) deleted successfully.`,
+        duration: 3000,
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete job applications.",
         variant: "destructive",
         duration: 5000,
       });
@@ -149,10 +179,57 @@ export function JobApplicationsManager() {
     });
   };
 
-  const handleDeleteApplication = (id: number) => {
-    if (window.confirm("Are you sure you want to delete this job application?")) {
-      deleteApplicationMutation.mutate(id);
+  // Update header checkbox state when filtered applications change
+  useEffect(() => {
+    if (headerCheckboxRef.current) {
+      const el = headerCheckboxRef.current as HTMLInputElement;
+      if (selectedApplications.length === 0) {
+        el.checked = false;
+        el.indeterminate = false;
+      } else if (selectedApplications.length === filteredApplications.length) {
+        el.checked = true;
+        el.indeterminate = false;
+      } else {
+        el.checked = false;
+        el.indeterminate = true;
+      }
     }
+  }, [selectedApplications.length, filteredApplications.length]);
+
+  const handleSelectAll = () => {
+    if (selectedApplications.length === filteredApplications.length) {
+      setSelectedApplications([]);
+    } else {
+      setSelectedApplications(filteredApplications.map(app => app.id));
+    }
+  };
+
+  const handleSelectApplication = (applicationId: number) => {
+    setSelectedApplications(prev => 
+      prev.includes(applicationId)
+        ? prev.filter(id => id !== applicationId)
+        : [...prev, applicationId]
+    );
+  };
+
+  const handleDeleteApplication = (id: number) => {
+    setDeleteTarget({ type: 'single', id });
+    setShowDeleteDialog(true);
+  };
+
+  const handleDeleteSelected = () => {
+    setDeleteTarget({ type: 'multiple' });
+    setShowDeleteDialog(true);
+  };
+
+  const confirmDelete = () => {
+    if (deleteTarget?.type === 'single' && deleteTarget.id) {
+      deleteApplicationMutation.mutate(deleteTarget.id);
+    } else if (deleteTarget?.type === 'multiple') {
+      deleteMultipleApplicationsMutation.mutate(selectedApplications);
+    }
+    setShowDeleteDialog(false);
+    setDeleteTarget(null);
   };
 
   if (isLoading) {
@@ -221,9 +298,34 @@ export function JobApplicationsManager() {
             <CardDescription>All applications in your database</CardDescription>
           </CardHeader>
           <CardContent>
+            {/* Bulk Actions Bar */}
+            {selectedApplications.length > 0 && (
+              <div className="flex items-center justify-between p-4 mb-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <span className="text-sm text-blue-700">
+                  {selectedApplications.length} application(s) selected
+                </span>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleDeleteSelected}
+                  disabled={deleteMultipleApplicationsMutation.isPending}
+                  className="flex items-center gap-2"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete Selected
+                </Button>
+              </div>
+            )}
+            
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-12">
+                    <Checkbox
+                      ref={headerCheckboxRef}
+                      onCheckedChange={handleSelectAll}
+                    />
+                  </TableHead>
                   <TableHead>Candidate</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Applied</TableHead>
@@ -233,6 +335,12 @@ export function JobApplicationsManager() {
               <TableBody>
                 {filteredApplications.map((application) => (
                   <TableRow key={application.id}>
+                    <TableCell>
+                      <Checkbox
+                        checked={selectedApplications.includes(application.id)}
+                        onCheckedChange={() => handleSelectApplication(application.id)}
+                      />
+                    </TableCell>
                     <TableCell>
                       <div className="space-y-1">
                         <div className="font-medium flex items-center gap-2">
@@ -467,6 +575,24 @@ export function JobApplicationsManager() {
           </Card>
         </div>
       )}
+
+      {/* Confirm Delete Dialog */}
+      <ConfirmDeleteDialog
+        isOpen={showDeleteDialog}
+        onClose={() => {
+          setShowDeleteDialog(false);
+          setDeleteTarget(null);
+        }}
+        onConfirm={confirmDelete}
+        title={deleteTarget?.type === 'multiple' ? "Delete Selected Applications" : "Delete Application"}
+        description={
+          deleteTarget?.type === 'multiple'
+            ? `Are you sure you want to delete ${selectedApplications.length} selected application(s)? This action cannot be undone.`
+            : "Are you sure you want to delete this job application? This action cannot be undone."
+        }
+        confirmText="Delete"
+        cancelText="Cancel"
+      />
     </div>
   );
 }
