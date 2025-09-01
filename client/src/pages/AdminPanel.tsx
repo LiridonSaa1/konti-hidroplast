@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -20,9 +20,12 @@ import {
   ChevronRight,
   Menu,
   X,
-  Download
+  Download,
+  Bell,
+  Clock
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
@@ -57,6 +60,8 @@ export default function AdminPanel() {
   const [isCertificatesDropdownOpen, setIsCertificatesDropdownOpen] = useState(false);
   const [isContactDropdownOpen, setIsContactDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
+  const notificationDropdownRef = useRef<HTMLDivElement>(null);
 
   // Always declare hooks at the top level, before any conditional returns
   const { data: newsCount = 0 } = useQuery({
@@ -120,6 +125,19 @@ export default function AdminPanel() {
     enabled: isAuthenticated,
   });
 
+  // Get counts for notifications
+  const { data: unreadContactMessagesCount = 0 } = useQuery({
+    queryKey: ["/api/admin/contact-messages"],
+    select: (data: any) => data?.filter((msg: any) => msg.status === 'unread')?.length || 0,
+    enabled: isAuthenticated,
+  });
+
+  const { data: pendingJobApplicationsCount = 0 } = useQuery({
+    queryKey: ["/api/admin/job-applications"],
+    select: (data: any) => data?.filter((app: any) => app.status === 'pending')?.length || 0,
+    enabled: isAuthenticated,
+  });
+
   // Recent activity data
   const { data: recentNews = [] } = useQuery({
     queryKey: ["/api/admin/news"],
@@ -173,6 +191,23 @@ export default function AdminPanel() {
     platform?: string;
     lastMonth?: string;
   };
+
+  // Close notification dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notificationDropdownRef.current && !notificationDropdownRef.current.contains(event.target as Node)) {
+        setIsNotificationDropdownOpen(false);
+      }
+    };
+
+    if (isNotificationDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isNotificationDropdownOpen]);
 
   // Calculate percentages and trends
   const totalContent = newsCount + certificatesCount + brochuresCount + projectsCount;
@@ -250,7 +285,150 @@ export default function AdminPanel() {
                 </p>
               </div>
             </div>
-            <UserDropdown />
+            <div className="flex items-center gap-3">
+              {/* Notification Dropdown */}
+              <div className="relative" ref={notificationDropdownRef}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="relative p-2"
+                  onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
+                  data-testid="notification-toggle"
+                >
+                  <Bell className="h-5 w-5" />
+                  {(unreadContactMessagesCount > 0 || pendingJobApplicationsCount > 0) && (
+                    <Badge 
+                      variant="destructive" 
+                      className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                    >
+                      {unreadContactMessagesCount + pendingJobApplicationsCount}
+                    </Badge>
+                  )}
+                </Button>
+                
+                {/* Notification Dropdown Content */}
+                {isNotificationDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-slate-200 z-50">
+                    <div className="p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-sm font-semibold text-slate-900">Notifications</h3>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-6 w-6 p-0"
+                          onClick={() => setIsNotificationDropdownOpen(false)}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      
+                                             <div className="space-y-3 max-h-96 overflow-y-auto">
+                         {/* Unread Contact Messages */}
+                         {recentContactMessages
+                           .filter((message: any) => message.status === 'unread')
+                           .slice(0, 3)
+                           .map((message: any) => (
+                          <div key={message.id} className="flex items-start gap-3 p-3 hover:bg-slate-50 rounded-lg">
+                            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                              <Mail className="h-4 w-4 text-blue-600" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-slate-900 truncate">
+                                {message.fullName || message.email}
+                              </p>
+                              <p className="text-xs text-slate-600 truncate">
+                                {message.message?.substring(0, 50)}...
+                              </p>
+                              <p className="text-xs text-slate-500 mt-1">
+                                {new Date(message.createdAt).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <Badge 
+                              variant={message.status === 'unread' ? 'destructive' : 'secondary'} 
+                              className="text-xs"
+                            >
+                              {message.status === 'unread' ? 'Unread' : 'Read'}
+                            </Badge>
+                          </div>
+                        ))}
+                        
+                                                 {/* Pending Job Applications */}
+                         {recentJobApplications
+                           .filter((application: any) => application.status === 'pending')
+                           .slice(0, 3)
+                           .map((application: any) => (
+                          <div key={application.id} className="flex items-start gap-3 p-3 hover:bg-slate-50 rounded-lg">
+                            <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                              <Briefcase className="h-4 w-4 text-green-600" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-slate-900 truncate">
+                                {application.fullName}
+                              </p>
+                              <p className="text-xs text-slate-600 truncate">
+                                {application.position}
+                              </p>
+                              <p className="text-xs text-slate-500 mt-1">
+                                {new Date(application.createdAt).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <Badge 
+                              variant={application.status === 'pending' ? 'destructive' : 'secondary'} 
+                              className="text-xs"
+                            >
+                              {application.status === 'pending' ? 'Pending' : application.status}
+                            </Badge>
+                          </div>
+                        ))}
+                        
+                                                 {/* No notifications message */}
+                         {unreadContactMessagesCount === 0 && pendingJobApplicationsCount === 0 && (
+                          <div className="text-center py-8">
+                            <Bell className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                            <p className="text-sm text-slate-500">No notifications</p>
+                            <p className="text-xs text-slate-400">You're all caught up!</p>
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Action buttons */}
+                      {(unreadContactMessagesCount > 0 || pendingJobApplicationsCount > 0) && (
+                        <div className="mt-4 pt-3 border-t border-slate-200 flex gap-2">
+                          {unreadContactMessagesCount > 0 && (
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => {
+                                setActiveTab("contact-messages");
+                                setIsNotificationDropdownOpen(false);
+                              }}
+                              className="flex-1"
+                            >
+                              View Messages
+                            </Button>
+                          )}
+                          {pendingJobApplicationsCount > 0 && (
+                            <Button 
+                              variant="outline" 
+                              size="sm"
+                              onClick={() => {
+                                setActiveTab("job-applications");
+                                setIsNotificationDropdownOpen(false);
+                              }}
+                              className="flex-1"
+                            >
+                              View Applications
+                            </Button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              <UserDropdown />
+            </div>
           </div>
         </div>
       </div>
@@ -582,6 +760,11 @@ export default function AdminPanel() {
                       : ""
                   }`} />
                   Contact Management
+                  {(unreadContactMessagesCount > 0 || pendingJobApplicationsCount > 0) && (
+                    <Badge variant="destructive" className="ml-auto text-xs">
+                      {unreadContactMessagesCount + pendingJobApplicationsCount}
+                    </Badge>
+                  )}
                   {isContactDropdownOpen ? (
                     <ChevronDown className="h-4 w-4 ml-auto" />
                   ) : (
@@ -601,6 +784,11 @@ export default function AdminPanel() {
                 >
                   <Mail className={`h-3 w-3 mr-2 ${activeTab === "contact-messages" ? "text-blue-600" : ""}`} />
                   Messages
+                  {unreadContactMessagesCount > 0 && (
+                    <Badge variant="destructive" className="ml-auto text-xs">
+                      {unreadContactMessagesCount}
+                    </Badge>
+                  )}
                 </Button>
                 
                 <Button
@@ -614,6 +802,11 @@ export default function AdminPanel() {
                 >
                   <Briefcase className={`h-3 w-3 mr-2 ${activeTab === "job-applications" ? "text-blue-600" : ""}`} />
                   Applications
+                  {pendingJobApplicationsCount > 0 && (
+                    <Badge variant="secondary" className="ml-auto text-xs">
+                      {pendingJobApplicationsCount}
+                    </Badge>
+                  )}
                 </Button>
               </CollapsibleContent>
             </Collapsible>
@@ -889,6 +1082,12 @@ export default function AdminPanel() {
                                   <p className="text-sm font-medium text-slate-900 truncate">{message.name}</p>
                                   <p className="text-xs text-slate-500">{message.email}</p>
                                 </div>
+                                <Badge 
+                                  variant={message.status === 'unread' ? 'destructive' : 'secondary'} 
+                                  className="text-xs"
+                                >
+                                  {message.status === 'unread' ? 'Unread' : 'Read'}
+                                </Badge>
                               </div>
                             ))}
                           </div>
@@ -907,6 +1106,12 @@ export default function AdminPanel() {
                                   <p className="text-sm font-medium text-slate-900 truncate">{application.fullName}</p>
                                   <p className="text-xs text-slate-500">{application.position}</p>
                                 </div>
+                                <Badge 
+                                  variant={application.status === 'pending' ? 'destructive' : 'secondary'} 
+                                  className="text-xs"
+                                >
+                                  {application.status === 'pending' ? 'Pending' : application.status}
+                                </Badge>
                               </div>
                             ))}
                           </div>

@@ -2017,22 +2017,26 @@ export class DatabaseStorage implements IStorage {
   }
 
   async updateContactMessage(id: number, message: Partial<ContactMessage>): Promise<ContactMessage> {
-    const index = this.contactMessagesData.findIndex(m => m.id === id);
-    if (index === -1) throw new Error('Contact message not found');
+    if (!db) throw new Error('Database not available');
+    const [updatedMessage] = await db
+      .update(contactMessages)
+      .set({
+        ...message,
+        updatedAt: new Date()
+      })
+      .where(eq(contactMessages.id, id))
+      .returning();
     
-    this.contactMessagesData[index] = {
-      ...this.contactMessagesData[index],
-      ...message,
-      updatedAt: new Date()
-    };
-    return this.contactMessagesData[index];
+    if (!updatedMessage) {
+      throw new Error('Contact message not found');
+    }
+    
+    return updatedMessage;
   }
 
   async deleteContactMessage(id: number): Promise<void> {
-    const index = this.contactMessagesData.findIndex(m => m.id === id);
-    if (index !== -1) {
-      this.contactMessagesData.splice(index, 1);
-    }
+    if (!db) throw new Error('Database not available');
+    await db.delete(contactMessages).where(eq(contactMessages.id, id));
   }
 
   // Job application methods
