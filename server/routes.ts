@@ -549,6 +549,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Public Company Info routes (no authentication required)
+  app.get("/api/company-info", async (req, res) => {
+    try {
+      const allInfo = await storage.getAllCompanyInfo();
+      res.json(allInfo);
+    } catch (error) {
+      console.error("Error fetching public company info:", error);
+      res.status(500).json({ error: "Failed to fetch company info" });
+    }
+  });
+
   app.get("/api/company-info/:key", async (req, res) => {
     try {
       const info = await storage.getCompanyInfoByKey(req.params.key);

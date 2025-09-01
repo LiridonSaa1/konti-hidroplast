@@ -15,7 +15,7 @@ interface CompanyInfoData {
 
 export function useCompanyInfo() {
   const { data: companyInfo = [], isLoading, error } = useQuery<CompanyInfo[]>({
-    queryKey: ["/api/admin/company-info"],
+    queryKey: ["/api/company-info"],
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
   });
