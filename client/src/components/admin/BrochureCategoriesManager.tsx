@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Edit, Trash2, Search, FolderOpen, Settings, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -40,6 +41,7 @@ export function BrochureCategoriesManager() {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<BrochureCategory | null>(null);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [sortField, setSortField] = useState<keyof BrochureCategory | null>(null);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [formData, setFormData] = useState<CategoryFormData>({
@@ -133,6 +135,29 @@ export function BrochureCategoriesManager() {
     },
   });
 
+  const deleteMultipleMutation = useMutation({
+    mutationFn: async (ids: number[]): Promise<void> => {
+      await Promise.all(ids.map(id => apiRequest(`/api/admin/brochure-categories/${id}`, "DELETE")));
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/brochure-categories"] });
+      setSelectedCategories([]);
+      toast({
+        title: "Success",
+        description: `${selectedCategories.length} categories deleted successfully.`,
+        duration: 3000,
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to delete some categories.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    },
+  });
+
   const resetForm = () => {
     setFormData({
       title: "",
@@ -195,6 +220,29 @@ export function BrochureCategoriesManager() {
     updateMutation.mutate({ id: selectedCategory.id, data: { ...updateData, translations: formData.translations } as any });
   };
 
+  // Multi-select functions
+  const handleSelectAll = (checked: boolean) => {
+    if (checked) {
+      setSelectedCategories(filteredAndSortedCategories.map(category => category.id));
+    } else {
+      setSelectedCategories([]);
+    }
+  };
+
+  const handleSelectCategory = (categoryId: number, checked: boolean) => {
+    if (checked) {
+      setSelectedCategories(prev => [...prev, categoryId]);
+    } else {
+      setSelectedCategories(prev => prev.filter(id => id !== categoryId));
+    }
+  };
+
+  const handleDeleteSelected = () => {
+    if (selectedCategories.length > 0) {
+      deleteMultipleMutation.mutate(selectedCategories);
+    }
+  };
+
   const handleDelete = (id: number) => {
     deleteMutation.mutate(id);
   };
@@ -242,6 +290,9 @@ export function BrochureCategoriesManager() {
       if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
       return 0;
     });
+
+  const isAllSelected = filteredAndSortedCategories.length > 0 && selectedCategories.length === filteredAndSortedCategories.length;
+  const isIndeterminate = selectedCategories.length > 0 && selectedCategories.length < filteredAndSortedCategories.length;
 
   const getStatusBadgeColor = (status: string) => {
     const option = STATUS_OPTIONS.find(opt => opt.value === status);
@@ -410,20 +461,53 @@ export function BrochureCategoriesManager() {
               All brochure categories in your database
             </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleSort('title')}
-                      className="h-auto p-0 font-semibold hover:bg-transparent"
-                    >
-                      Title
-                      {getSortIcon('title')}
-                    </Button>
-                  </TableHead>
+                     <CardContent>
+             {/* Bulk Actions */}
+             {selectedCategories.length > 0 && (
+               <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 mb-4 flex items-center justify-between">
+                 <div className="flex items-center space-x-2">
+                   <span className="text-sm font-medium text-blue-900">
+                     {selectedCategories.length} categor{selectedCategories.length !== 1 ? 'ies' : 'y'} selected
+                   </span>
+                 </div>
+                 <div className="flex items-center space-x-2">
+                   <Button
+                     variant="destructive"
+                     size="sm"
+                     onClick={handleDeleteSelected}
+                     disabled={deleteMultipleMutation.isPending}
+                     className="flex items-center space-x-1"
+                   >
+                     <Trash2 className="h-4 w-4" />
+                     <span>Delete Selected</span>
+                   </Button>
+                 </div>
+               </div>
+             )}
+             <Table>
+               <TableHeader>
+                 <TableRow>
+                   <TableHead>
+                     <Checkbox
+                       checked={isAllSelected}
+                       onCheckedChange={handleSelectAll}
+                       ref={(el) => {
+                         if (el && 'indeterminate' in el) {
+                           (el as HTMLInputElement).indeterminate = isIndeterminate;
+                         }
+                       }}
+                     />
+                   </TableHead>
+                   <TableHead>
+                     <Button
+                       variant="ghost"
+                       onClick={() => handleSort('title')}
+                       className="h-auto p-0 font-semibold hover:bg-transparent"
+                     >
+                       Title
+                       {getSortIcon('title')}
+                     </Button>
+                   </TableHead>
 
                   <TableHead>
                     <Button
@@ -469,11 +553,17 @@ export function BrochureCategoriesManager() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredAndSortedCategories.map((category) => (
-                  <TableRow key={category.id} data-testid={`category-row-${category.id}`}>
-                    <TableCell className="font-medium" data-testid={`category-title-${category.id}`}>
-                      {category.title}
-                    </TableCell>
+                                 {filteredAndSortedCategories.map((category) => (
+                   <TableRow key={category.id} data-testid={`category-row-${category.id}`}>
+                     <TableCell>
+                       <Checkbox
+                         checked={selectedCategories.includes(category.id)}
+                         onCheckedChange={(checked) => handleSelectCategory(category.id, checked as boolean)}
+                       />
+                     </TableCell>
+                     <TableCell className="font-medium" data-testid={`category-title-${category.id}`}>
+                       {category.title}
+                     </TableCell>
                     <TableCell>
                       <Badge 
                         className={getStatusBadgeColor(category.status)}
