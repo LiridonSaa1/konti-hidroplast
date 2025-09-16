@@ -873,7 +873,7 @@ export default function AboutUs() {
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <video
-                  src="/attached_assets/Konti Hidroplast - Corporate 2024.mp4"
+                  src="https://res.cloudinary.com/dq9evtw8g/video/upload/v1758019713/Konti_Hidroplast_-_Corporate_2024_rf6ch1.mp4"
                   title="Konti Hidroplast - Corporate 2024"
                   className="w-full h-full object-cover"
                   autoPlay
