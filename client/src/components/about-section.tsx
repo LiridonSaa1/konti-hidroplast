@@ -140,14 +140,17 @@ export function AboutSection() {
                     </div>
                   ) : (
                     // YouTube iframe (only loads when user clicks play)
-                    <iframe
-                      src="https://res.cloudinary.com/dq9evtw8g/video/upload/v1758019713/Konti_Hidroplast_-_Corporate_2024_rf6ch1.mp4"
-                      title="Corporate Video"
-                      className="w-full h-full"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                      data-testid="about-video"
-                    />
+                    <video
+                    src="https://res.cloudinary.com/dq9evtw8g/video/upload/v1758019713/Konti_Hidroplast_-_Corporate_2024_rf6ch1.mp4"
+                    title="Konti Hidroplast - Corporate 2024"
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    controls={false}
+                    style={{ pointerEvents: 'none' }}
+                  />
                   )}
                 </div>
               </div>
