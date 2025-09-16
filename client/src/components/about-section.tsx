@@ -124,7 +124,7 @@ export function AboutSection() {
                     // Video Thumbnail with Play Button
                     <div className="relative w-full h-full bg-black">
                       <img
-                        src="https://res.cloudinary.com/dq9evtw8g/video/upload/v1758019713/Konti_Hidroplast_-_Corporate_2024_rf6ch1.mp4"
+                        src="https://img.youtube.com/vi/R7b9-m_EM2s/maxresdefault.jpg"
                         alt="Corporate Video Thumbnail"
                         className="w-full h-full object-cover"
                       />
@@ -141,7 +141,7 @@ export function AboutSection() {
                   ) : (
                     // YouTube iframe (only loads when user clicks play)
                     <iframe
-                      src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=1&playlist=R7b9-m_EM2s&controls=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
+                      src="https://res.cloudinary.com/dq9evtw8g/video/upload/v1758019713/Konti_Hidroplast_-_Corporate_2024_rf6ch1.mp4"
                       title="Corporate Video"
                       className="w-full h-full"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
