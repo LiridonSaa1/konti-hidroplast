@@ -124,7 +124,7 @@ export function AboutSection() {
                     // Video Thumbnail with Play Button
                     <div className="relative w-full h-full bg-black">
                       <img
-                        src="https://img.youtube.com/vi/R7b9-m_EM2s/maxresdefault.jpg"
+                        src="https://res.cloudinary.com/dq9evtw8g/video/upload/v1758019713/Konti_Hidroplast_-_Corporate_2024_rf6ch1.mp4"
                         alt="Corporate Video Thumbnail"
                         className="w-full h-full object-cover"
                       />
