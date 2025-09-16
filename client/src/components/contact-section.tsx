@@ -245,7 +245,6 @@ export function ContactSection() {
                           value={formData.phone}
                           onChange={(e) => handleInputChange("phone", e.target.value)}
                           className="w-full h-12 px-4 border-2 border-gray-200 rounded-xl transition-all duration-300 bg-gray-50 hover:bg-white"
-                          placeholder={t('contact.form.phone.placeholder')}
                           data-testid="input-phone"
                         />
                         <div className="absolute inset-0 bg-gradient-to-r from-konti-blue/5 to-transparent rounded-xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
