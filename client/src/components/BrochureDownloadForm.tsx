@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 interface BrochureDownloadFormProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
   brochure: {
     id: string;
     name: string;
@@ -25,7 +26,7 @@ interface DownloadFormData {
   description: string;
 }
 
-export function BrochureDownloadForm({ isOpen, onClose, brochure }: BrochureDownloadFormProps) {
+export function BrochureDownloadForm({ isOpen, onClose, onSuccess, brochure }: BrochureDownloadFormProps) {
   const [formData, setFormData] = useState<DownloadFormData>({
     fullName: "",
     email: "",
@@ -47,6 +48,18 @@ export function BrochureDownloadForm({ isOpen, onClose, brochure }: BrochureDown
       return;
     }
 
+    // Debug: Log the brochure data
+    console.log('Brochure data:', brochure);
+
+    if (!brochure.pdfUrl) {
+      toast({
+        title: "Error",
+        description: "Brochure PDF URL is missing. Please contact support.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -61,7 +74,10 @@ export function BrochureDownloadForm({ isOpen, onClose, brochure }: BrochureDown
         description: formData.description.trim() || null,
         downloadDate: new Date().toISOString(),
         pdfUrl: brochure.pdfUrl, // Include the PDF URL for email sending
+        senderEmail: 'noreply@kontihidroplast.com', // Will be set by server from env
       };
+
+      console.log('Sending download data:', downloadData);
 
       const response = await fetch("/api/brochure-downloads", {
         method: "POST",
@@ -72,17 +88,27 @@ export function BrochureDownloadForm({ isOpen, onClose, brochure }: BrochureDown
       });
 
       if (!response.ok) {
-        throw new Error("Failed to track download");
+        const errorText = await response.text();
+        console.error('API Error:', response.status, errorText);
+        throw new Error(`Failed to track download: ${response.status} ${errorText}`);
       }
 
-      // Show success message
+      // Show success message and open preview
       toast({
         title: "Success",
-        description: "Check your email for the download link!",
+        description: "Brochure downloaded! Opening preview...",
       });
+
+      // Open the PDF in a new tab for preview
+      window.open(brochure.pdfUrl, '_blank');
 
       // Close the form
       onClose();
+
+      // Call success callback if provided
+      if (onSuccess) {
+        onSuccess();
+      }
 
       // Reset form
       setFormData({

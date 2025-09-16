@@ -192,6 +192,12 @@ function GasPipelineSystemsPage() {
   const [activeFittingTab, setActiveFittingTab] = useState("butt-welding");
   const [activeFittingTabIndex, setActiveFittingTabIndex] = useState(0);
 
+  const handleBrochureDownload = (spec: any) => {
+    // Redirect to brochures page with parameter to auto-open modal
+    setLocation('/brochures?from=products');
+  };
+
+
   // Get translated data
   const gasSpecifications = getGasSpecifications(t);
   const gasFittingTypes = getGasFittingTypes(t);
@@ -389,24 +395,13 @@ function GasPipelineSystemsPage() {
                   </div>
 
                   <div className="flex flex-wrap gap-4">
-                    <a
-                      href={spec.specifications}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-[#ffffff] rounded-lg transition-colors"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      {t("gasPipeline.downloadSpecs")}
-                    </a>
-                    <a
-                      href={spec.brochure}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => handleBrochureDownload(spec)}
                       className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
                       {t("gasPipeline.downloadBrochure")}
-                    </a>
+                    </button>
                   </div>
                 </div>
 
@@ -573,6 +568,7 @@ function GasPipelineSystemsPage() {
         </div>
       </section>
       <Footer />
+      
     </div>
   );
 }

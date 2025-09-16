@@ -23,12 +23,14 @@ interface NavigationLink {
   href: string;
   label: string;
   type: "link";
+  scrollTo?: string;
 }
 
 interface DropdownItem {
   label: string;
   href: string;
   external?: boolean;
+  type?: "brochure"; // For brochure download items
   items?: DropdownItem[]; // For nested dropdowns
 }
 
@@ -66,6 +68,7 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
       },
       { label: t("nav.products.gasPipeline"), href: "/products/gas-pipeline-systems" },
       { label: t("nav.products.cableProtection"), href: "/products/cable-protection" },
+      { label: "Download Brochure", href: "/brochures", type: "brochure" },
       // { label: "Full Catalog", href: "https://konti-hidroplast.com.mk/products/", external: true },
     ],
   },
@@ -83,12 +86,13 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
       },
     ],
   },
-  { href: "/news", label: t("nav.news"), type: "link" },
-  {
-    label: t("nav.contact"),
-    type: "dropdown",
-    items: [{ label: t("nav.contact.career"), href: "/career" }],
-  },
+  { href: "/", label: t("nav.contact"), type: "link", scrollTo: "contact" },
+  // { href: "/news", label: t("nav.news"), type: "link" },
+  // {
+  //   label: t("nav.contact"),
+  //   type: "dropdown",
+  //   items: [{ label: t("nav.contact.career"), href: "/career" }],
+  // },
 ];
 
 export function Navigation() {
@@ -148,7 +152,7 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleSectionChange);
   }, []);
 
-  const scrollToSection = (href: string) => {
+  const scrollToSection = (href: string, scrollTo?: string) => {
     if (href.startsWith("#")) {
       const element = document.querySelector(href);
       if (element) {
@@ -158,6 +162,16 @@ export function Navigation() {
       // Internal navigation - scroll to top immediately when changing pages
       window.scrollTo({ top: 0, behavior: "instant" });
       setLocation(href);
+      
+      // If scrollTo is specified, scroll to that section after navigation
+      if (scrollTo) {
+        setTimeout(() => {
+          const element = document.querySelector(`#${scrollTo}`);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }, 100); // Small delay to ensure page has loaded
+      }
     } else {
       window.open(href, "_blank", "noopener,noreferrer");
     }
@@ -166,6 +180,16 @@ export function Navigation() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const handleBrochureDownload = () => {
+    // Close any open dropdowns
+    setOpenDropdown(null);
+    setMobileDropdowns({});
+    
+    // Redirect to brochures page with parameter to auto-open modal
+    setLocation('/brochures?from=products');
+  };
+
 
   const handleDropdownClick = (href: string, external?: boolean) => {
     if (external) {
@@ -224,14 +248,15 @@ export function Navigation() {
   ) => {
     if (item.type === "link") {
       // Check if this navigation item is active based on current URL
-      const isActive = location === item.href;
+      // Special case: Contact link should not be active when on home page
+      const isActive = location === item.href && !(item.href === "/" && item.scrollTo === "contact");
 
       if (isMobile) {
         return (
           <button
             key={item.href}
             onClick={() => {
-              scrollToSection(item.href);
+              scrollToSection(item.href, item.scrollTo);
               setMobileMenuOpen(false);
               closeMobileDropdowns();
             }}
@@ -251,7 +276,7 @@ export function Navigation() {
       return (
         <button
           key={item.href}
-          onClick={() => scrollToSection(item.href)}
+          onClick={() => scrollToSection(item.href, item.scrollTo)}
           className={`px-4 py-3 font-medium transition-all duration-300 text-[15px] ${
             isActive
               ? isScrolled
@@ -323,6 +348,25 @@ export function Navigation() {
                     </div>
                   );
                 }
+                // Handle brochure download item for mobile
+                if (subItem.type === "brochure") {
+                  return (
+                    <button
+                      key={index}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleBrochureDownload();
+                        setMobileMenuOpen(false);
+                      }}
+                      className="w-full text-left px-6 py-3 text-base text-gray-600 hover:text-konti-blue transition-colors flex items-center justify-between"
+                      data-testid={`mobile-nav-${item.label.toLowerCase()}-download-brochure`}
+                    >
+                      {subItem.label}
+                    </button>
+                  );
+                }
+                
                 return (
                   <button
                     key={index}
@@ -449,6 +493,26 @@ export function Navigation() {
               } else {
                 // Regular dropdown item
                 const isSubItemActive = location === subItem.href;
+                
+                // Handle brochure download item
+                if (subItem.type === "brochure") {
+                  return (
+                    <DropdownMenuItem
+                      key={index}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        handleBrochureDownload();
+                      }}
+                      onMouseEnter={handleDropdownAreaMouseEnter}
+                      className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
+                      data-testid={`nav-${item.label.toLowerCase()}-download-brochure`}
+                    >
+                      <span>{subItem.label}</span>
+                    </DropdownMenuItem>
+                  );
+                }
+                
                 return (
                   <DropdownMenuItem
                     key={index}
@@ -559,6 +623,7 @@ export function Navigation() {
           </div>
         </div>
       </div>
+      
     </nav>
   );
 }

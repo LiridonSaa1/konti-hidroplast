@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
+import { BrochureDownloadForm } from "@/components/BrochureDownloadForm";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
@@ -15,20 +16,56 @@ function BrochuresPage() {
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("water-supply");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const [isDownloadPopupOpen, setIsDownloadPopupOpen] = useState(false);
-  const [selectedBrochure, setSelectedBrochure] = useState<Brochure | null>(null);
-  const [downloadFormData, setDownloadFormData] = useState({
-    fullName: '',
-    email: '',
-    companyName: '',
-    description: ''
+  const [brochureModal, setBrochureModal] = useState<{
+    isOpen: boolean;
+    brochure: {
+      id: string;
+      name: string;
+      category: string;
+      pdfUrl: string;
+    } | null;
+  }>({
+    isOpen: false,
+    brochure: null,
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Fetch brochures from API
   const { data: brochures = [], isLoading: brochuresLoading } = useQuery<Brochure[]>({
     queryKey: ['/api/admin/brochures'],
   });
+
+  // Debug: Log brochures data
+  useEffect(() => {
+    console.log('Brochures loaded:', brochures);
+    console.log('Brochures loading:', brochuresLoading);
+  }, [brochures, brochuresLoading]);
+
+  // Auto-open modal when coming from products dropdown
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromProducts = urlParams.get('from') === 'products';
+    
+    if (fromProducts && brochures.length > 0 && !brochuresLoading) {
+      // Get the first brochure (since there will only be one)
+      const brochure = brochures[0];
+      
+      if (brochure) {
+        setBrochureModal({
+          isOpen: true,
+          brochure: {
+            id: brochure.id || 'main-brochure',
+            name: brochure.name || brochure.title || 'Product Brochure',
+            category: 'Products',
+            pdfUrl: brochure.pdfUrl || '',
+          },
+        });
+        
+        // Clean up the URL parameter
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
+      }
+    }
+  }, [brochures, brochuresLoading]);
 
   // Fetch brochure categories from API
   const { data: categories = [] } = useQuery<BrochureCategory[]>({
@@ -130,93 +167,28 @@ function BrochuresPage() {
     // This will trigger a re-render with the new language
   }, [language]);
 
-  const handleDownloadClick = (brochure: Brochure) => {
-    setSelectedBrochure(brochure);
-    setIsDownloadPopupOpen(true);
-  };
-
-  const handleDownloadSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedBrochure || !downloadFormData.fullName || !downloadFormData.companyName || !downloadFormData.email) {
-      alert(language === 'en' ? 'Please fill in all required fields' : 
-            language === 'mk' ? 'Ве молиме пополнете ги сите задолжителни полиња' : 
-            language === 'de' ? 'Bitte füllen Sie alle erforderlichen Felder aus' : 'Please fill in all required fields');
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      // Prepare the data to send
-      const downloadData = {
-        brochureId: selectedBrochure.id || 0,
-        brochureName: selectedBrochure.name || selectedBrochure.title || 'Unknown Brochure',
-        brochureCategory: selectedBrochure.category || 'General',
-        fullName: downloadFormData.fullName.trim(),
-        companyName: downloadFormData.companyName.trim(),
-        email: downloadFormData.email.trim(),
-        description: downloadFormData.description.trim() || null,
-        pdfUrl: selectedBrochure.pdfUrl || '',
-        downloadDate: new Date().toISOString()
-      };
-
-      console.log('Sending download data:', downloadData);
-
-      // Save download data to admin panel
-      const response = await fetch('/api/brochure-downloads', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(downloadData),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        console.log('Download saved successfully:', result);
-        
-        // Show success message and close popup
-        alert(language === 'en' ? 'Check your email for the download link!' : 
-              language === 'mk' ? 'Проверете ја вашата е-пошта за линкот за преземање!' : 
-              language === 'de' ? 'Überprüfen Sie Ihre E-Mail für den Download-Link!' : 'Check your email for the download link!');
-        
-        // Close popup and reset form
-        setIsDownloadPopupOpen(false);
-        setSelectedBrochure(null);
-        setDownloadFormData({
-          fullName: '',
-          companyName: '',
-          email: '',
-          description: ''
-        });
-      } else {
-        // Handle error response
-        const errorData = await response.json().catch(() => ({}));
-        console.error('Failed to save download:', errorData);
-        
-        alert(language === 'en' ? `Failed to save download: ${response.statusText}` : 
-              language === 'mk' ? `Неуспешно зачувување на преземањето: ${response.statusText}` : 
-              language === 'de' ? `Download konnte nicht gespeichert werden: ${response.statusText}` : `Failed to save download: ${response.statusText}`);
-      }
-    } catch (error) {
-      console.error('Error saving download data:', error);
-      alert(language === 'en' ? 'An error occurred while saving the download. Please try again.' : 
-            language === 'mk' ? 'Се појави грешка при зачувување на преземањето. Обидете се повторно.' : 
-            language === 'de' ? 'Beim Speichern des Downloads ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.' : 'An error occurred while saving the download. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleClosePopup = () => {
-    setIsDownloadPopupOpen(false);
-    setSelectedBrochure(null);
-    setDownloadFormData({
-      fullName: '',
-      companyName: '',
-      email: '',
-      description: ''
+  const handleDownloadClick = (brochure: Brochure, categoryTitle: string) => {
+    console.log('Brochure data from API:', brochure);
+    console.log('Category title:', categoryTitle);
+    
+    setBrochureModal({
+      isOpen: true,
+      brochure: {
+        id: brochure.id?.toString() || `${categoryTitle.toLowerCase().replace(/\s+/g, '-')}-${brochure.name?.toLowerCase().replace(/\s+/g, '-')}`,
+        name: brochure.name || 'Brochure',
+        category: categoryTitle,
+        pdfUrl: brochure.pdfUrl || '',
+      },
     });
   };
+
+  const handleCloseBrochureModal = () => {
+    setBrochureModal({
+      isOpen: false,
+      brochure: null,
+    });
+  };
+
 
   useEffect(() => {
     // Set page title
@@ -408,7 +380,7 @@ function BrochuresPage() {
                             </h3>
                             {brochure.pdfUrl ? (
                               <button
-                                onClick={() => handleDownloadClick(brochure)}
+                                onClick={() => handleDownloadClick(brochure, groupedBrochures[activeTabIndex].title)}
                                 className={`inline-flex items-center justify-center px-4 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white font-medium rounded transition-colors ${
                                   groupedBrochures[activeTabIndex].brochures.length === 1 
                                     ? 'w-full text-base py-3' 
@@ -472,128 +444,13 @@ function BrochuresPage() {
                  </div>
        </section>
 
-       {/* Download Popup Modal */}
-       {isDownloadPopupOpen && selectedBrochure && (
-         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-           <div className="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-             <div className="flex items-center justify-between p-6 border-b">
-               <h3 className="text-lg font-semibold text-[#1c2d56]">
-                 {language === 'en' ? 'Download Brochure' : 
-                  language === 'mk' ? 'Преземи Брошура' : 
-                  language === 'de' ? 'Broschüre herunterladen' : 'Download Brochure'}
-               </h3>
-               <button
-                 onClick={handleClosePopup}
-                 className="text-gray-400 hover:text-gray-600 transition-colors"
-               >
-                 <X className="w-5 h-5" />
-               </button>
-             </div>
-             
-             <form onSubmit={handleDownloadSubmit} className="p-6 space-y-4">
-               <div>
-                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                   {language === 'en' ? 'Full Name *' : 
-                    language === 'mk' ? 'Цело име *' : 
-                    language === 'de' ? 'Vollständiger Name *' : 'Full Name *'}
-                 </label>
-                 <input
-                   type="text"
-                   required
-                   value={downloadFormData.fullName}
-                   onChange={(e) => setDownloadFormData(prev => ({ ...prev, fullName: e.target.value }))}
-                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56]"
-                   placeholder={language === 'en' ? 'Enter your full name' : 
-                              language === 'mk' ? 'Внесете го вашето цело име' : 
-                              language === 'de' ? 'Geben Sie Ihren vollständigen Namen ein' : 'Enter your full name'}
-                 />
-               </div>
-               
-               <div>
-                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                   {language === 'en' ? 'Email *' : 
-                    language === 'mk' ? 'Е-пошта *' : 
-                    language === 'de' ? 'E-Mail *' : 'Email *'}
-                 </label>
-                 <input
-                   type="email"
-                   required
-                   value={downloadFormData.email}
-                   onChange={(e) => setDownloadFormData(prev => ({ ...prev, email: e.target.value }))}
-                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56]"
-                   placeholder={language === 'en' ? 'Enter email address' : 
-                              language === 'mk' ? 'Внесете е-пошта' : 
-                              language === 'de' ? 'E-Mail-Adresse eingeben' : 'Enter email address'}
-                 />
-               </div>
-               
-               <div>
-                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                   {language === 'en' ? 'Company Name *' : 
-                    language === 'mk' ? 'Име на компанија *' : 
-                    language === 'de' ? 'Firmenname *' : 'Company Name *'}
-                 </label>
-                 <input
-                   type="text"
-                   required
-                   value={downloadFormData.companyName}
-                   onChange={(e) => setDownloadFormData(prev => ({ ...prev, companyName: e.target.value }))}
-                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56]"
-                   placeholder={language === 'en' ? 'Enter company name' : 
-                              language === 'mk' ? 'Внесете име на компанија' : 
-                              language === 'de' ? 'Firmenname eingeben' : 'Enter company name'}
-                 />
-               </div>
-               
-               <div>
-                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                   {language === 'en' ? 'Description (Optional)' : 
-                    language === 'mk' ? 'Опис (Опционално)' : 
-                    language === 'de' ? 'Beschreibung (Optional)' : 'Description (Optional)'}
-                 </label>
-                 <textarea
-                   value={downloadFormData.description}
-                   onChange={(e) => setDownloadFormData(prev => ({ ...prev, description: e.target.value }))}
-                   rows={3}
-                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#1c2d56] focus:border-[#1c2d56] resize-none"
-                   placeholder={language === 'en' ? 'Enter description or additional information' : 
-                              language === 'mk' ? 'Внесете опис или дополнителни информации' : 
-                              language === 'de' ? 'Beschreibung oder zusätzliche Informationen eingeben' : 'Enter description or additional information'}
-                 />
-               </div>
-               
-               <div className="flex space-x-3 pt-4">
-                 <button
-                   type="button"
-                   onClick={handleClosePopup}
-                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
-                 >
-                   {language === 'en' ? 'Cancel' : 
-                    language === 'mk' ? 'Откажи' : 
-                    language === 'de' ? 'Abbrechen' : 'Cancel'}
-                 </button>
-                 <button
-                   type="submit"
-                   disabled={isSubmitting}
-                   className="flex-1 px-4 py-2 bg-[#1c2d56] text-white rounded-md hover:bg-[#1c2d56]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                 >
-                   {isSubmitting ? (
-                     <span className="flex items-center justify-center">
-                       <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                       {language === 'en' ? 'Submitting...' : 
-                        language === 'mk' ? 'Се праќа...' : 
-                        language === 'de' ? 'Wird gesendet...' : 'Submitting...'}
-                     </span>
-                   ) : (
-                     language === 'en' ? 'Download PDF' : 
-                     language === 'mk' ? 'Преземи PDF' : 
-                     language === 'de' ? 'PDF herunterladen' : 'Download PDF'
-                   )}
-                 </button>
-               </div>
-             </form>
-           </div>
-         </div>
+       {/* Brochure Download Modal */}
+       {brochureModal.brochure && (
+         <BrochureDownloadForm
+           isOpen={brochureModal.isOpen}
+           onClose={handleCloseBrochureModal}
+           brochure={brochureModal.brochure}
+         />
        )}
 
        <Footer />

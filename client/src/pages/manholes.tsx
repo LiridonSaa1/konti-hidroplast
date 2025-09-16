@@ -233,6 +233,12 @@ export default function ManholesPage() {
   const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("hdpe-manholes");
 
+  const handleBrochureDownload = (spec: any) => {
+    // Redirect to brochures page with parameter to auto-open modal
+    setLocation('/brochures?from=products');
+  };
+
+
   useEffect(() => {
     // Set page title
     document.title = `Manholes - ${companyInfo.companyName || "Konti Hidroplast"}`;
@@ -406,15 +412,13 @@ export default function ManholesPage() {
                   </div>
 
                   <div className="flex flex-wrap gap-4">
-                    <a
-                      href={spec.brochure}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => handleBrochureDownload(spec)}
                       className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                     >
                       <Download className="w-4 h-4 mr-2" />
                       {t("manholes.downloadBrochure")}
-                    </a>
+                    </button>
                   </div>
                 </div>
 
@@ -512,6 +516,7 @@ export default function ManholesPage() {
         </div>
       </section>
       <Footer />
+      
     </div>
   );
 }

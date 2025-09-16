@@ -98,6 +98,12 @@ function PPHMSmoothODPage() {
   const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("pp-hm-smooth-od");
 
+  const handleBrochureDownload = (product: any) => {
+    // Redirect to brochures page with parameter to auto-open modal
+    setLocation('/brochures?from=products');
+  };
+
+
   useEffect(() => {
     // Set page title
     document.title = `PP-HM SMOOTH OD - ${companyInfo.companyName || "Konti Hidroplast"}`;
@@ -286,24 +292,17 @@ function PPHMSmoothODPage() {
                 </div>
 
                 <div className="flex flex-wrap gap-4">
-                  <a
-                    href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-smooth-pipe-tabela-so-dimenzii-en.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-white rounded-lg transition-colors"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download Specs
-                  </a>
-                  <a
-                    href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/Broshura-Cevki-PPHM-Smooth-Wall_EN2021_compressed.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => handleBrochureDownload({
+                      id: 'pp-hm-smooth-od',
+                      title: 'PP-HM Smooth OD Pipes',
+                      brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/Broshura-Cevki-PPHM-Smooth-Wall_EN2021_compressed.pdf'
+                    })}
                     className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                   >
                     <Download className="w-4 h-4 mr-2" />
                     Download Brochure
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -360,6 +359,7 @@ function PPHMSmoothODPage() {
         </div>
       </section>
       <Footer />
+      
     </div>
   );
 }

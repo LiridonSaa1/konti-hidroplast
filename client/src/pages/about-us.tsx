@@ -31,7 +31,6 @@ import {
   Globe,
   Phone,
   ArrowLeft,
-  Play,
 } from "lucide-react";
 import { useCompanyInfo } from "@/hooks/use-company-info";
 
@@ -422,16 +421,7 @@ export default function AboutUs() {
   const [activeYear, setActiveYear] = useState("1990");
   const [sliderValue, setSliderValue] = useState([0]);
   const [activeTeamTabIndex, setActiveTeamTabIndex] = useState(0);
-  const [showVideo, setShowVideo] = useState(true); // Changed to true for immediate autoplay
-
-  // Auto-show video after a short delay for better user experience
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowVideo(true);
-    }, 1000); // 1 second delay
-
-    return () => clearTimeout(timer);
-  }, []);
+  const [showVideo, setShowVideo] = useState(true);
 
   // Use the dynamic team data hook
   const { teamCategories, teamData, positions, isLoading: isTeamLoading } = useTeamData();
@@ -882,35 +872,15 @@ export default function AboutUs() {
 
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
-                {!showVideo ? (
-                  // Video Thumbnail with Play Button (fallback)
-                  <div className="relative w-full h-full bg-black">
-                    <img
-                      src="https://img.youtube.com/vi/R7b9-m_EM2s/maxresdefault.jpg"
-                      alt="Konti Hidroplast Corporate Video Thumbnail"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                      <button
-                        onClick={() => setShowVideo(true)}
-                        className="bg-red-600 hover:bg-red-700 text-white rounded-full p-6 transition-all duration-300 transform hover:scale-110 shadow-2xl"
-                        aria-label="Play Konti Hidroplast Corporate Video"
-                      >
-                        <Play className="w-12 h-12 ml-1" />
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  // YouTube iframe with autoplay and loop
-                  <iframe
-                    src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&loop=1&playlist=R7b9-m_EM2s&mute=1&controls=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
-                    title="Konti Hidroplast - Corporate 2024"
-                    className="w-full h-full"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                  ></iframe>
-                )}
+                <iframe
+                  src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&loop=1&playlist=R7b9-m_EM2s&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&cc_load_policy=0&iv_load_policy=3&start=0&end=0&enablejsapi=0&origin=null&widget_referrer=null&html5=1&wmode=opaque"
+                  title="Konti Hidroplast - Corporate 2024"
+                  className="w-full h-full"
+                  frameBorder="0"
+                  allow="autoplay"
+                  allowFullScreen={false}
+                  style={{ pointerEvents: 'none' }}
+                ></iframe>
               </div>
               <div className="absolute -bottom-4 -right-4 bg-red-600 text-white px-4 py-2 rounded-full shadow-lg">
                 <span className="text-sm font-medium">
@@ -1008,17 +978,15 @@ export default function AboutUs() {
         </div>
       </section>
       {/* Company Timeline */}
-      <section className="py-20 bg-white">
+      {/* <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-8">
-            {/* Timeline Header with Language Indicator */}
             <div className="text-center mb-8">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
                 {t("aboutUs.timelineTitle")}
               </h2>
             </div>
             
-            {/* Timeline Slider */}
             <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8">
               <div className="flex items-center justify-between mb-6">
                 <div className="text-white px-4 py-2 rounded-full font-semibold bg-[#1c2d56]">
@@ -1069,7 +1037,6 @@ export default function AboutUs() {
               </div>
             </div>
 
-            {/* Timeline Content */}
             <div>
               {timelineData.map((item) => (
                 <div
@@ -1103,7 +1070,7 @@ export default function AboutUs() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       {/* Leadership Message Section */}
       <section className="py-20 bg-gradient-to-r from-[#1c2d56] via-[#2a3f6b] to-[#1c2d56] relative overflow-hidden">
         {/* Background Pattern */}
@@ -1203,7 +1170,7 @@ export default function AboutUs() {
         </div>
       </section>
       {/* Team Section */}
-      <section className="py-20 bg-gray-50">
+      {/* <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
@@ -1215,7 +1182,6 @@ export default function AboutUs() {
             </div>
           </div>
 
-          {/* Team Tab Slider - matching certificates page design */}
           {teamCategories.length > 0 && (
             <div className="flex items-center justify-center mb-12">
               <button
@@ -1258,7 +1224,6 @@ export default function AboutUs() {
             </div>
           )}
 
-          {/* Team Content - showing active team category */}
           {isTeamLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[...Array(4)].map((_, index) => (
@@ -1288,7 +1253,6 @@ export default function AboutUs() {
                             alt={member.name}
                             className="w-full h-full object-cover"
                             onError={(e) => {
-                              // Fallback to placeholder if image fails to load
                               e.currentTarget.src = `data:image/svg+xml;base64,${btoa(`
                               <svg width="144" height="144" xmlns="http://www.w3.org/2000/svg">
                                 <rect width="144" height="144" fill="#f3f4f6"/>
@@ -1336,7 +1300,7 @@ export default function AboutUs() {
             </div>
           )}
         </div>
-      </section>
+      </section> */}
       {/* Certifications */}
       <CertificationsSection />
       {/* Projects Section */}

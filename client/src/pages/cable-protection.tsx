@@ -92,6 +92,12 @@ function CableProtectionPage() {
   const [activeTab, setActiveTab] = useState("konti-kan-duct");
   const [location, setLocation] = useLocation();
 
+  const handleBrochureDownload = (product: any) => {
+    // Redirect to brochures page with parameter to auto-open modal
+    setLocation('/brochures?from=products');
+  };
+
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
@@ -315,26 +321,14 @@ function CableProtectionPage() {
                   </div>
 
                   <div className="flex flex-wrap gap-4 mt-8">
-                    <a
-                      href={product.specifications}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-[#ffffff] rounded-lg transition-colors"
-                      data-testid="download-specs"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      {t("cableProtection.downloadSpecs")}
-                    </a>
-                    <a
-                      href={product.brochure}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <button
+                      onClick={() => handleBrochureDownload(product)}
                       className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                       data-testid="download-brochure"
                     >
                       <Download className="w-4 h-4 mr-2" />
                       {t("cableProtection.downloadBrochure")}
-                    </a>
+                    </button>
                   </div>
                 </div>
 
@@ -381,6 +375,7 @@ function CableProtectionPage() {
         </div>
       </section>
       <Footer />
+      
     </div>
   );
 }

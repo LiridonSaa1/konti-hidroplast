@@ -7,11 +7,9 @@ export function StatisticsSection() {
   const { t } = useLanguage();
 
   const statistics = [
-    { value: 35, labelKey: "stats.years", suffix: "" },
-    { value: 9682, labelKey: "stats.products", suffix: "+" },
-    { value: 3150, labelKey: "stats.projects", suffix: "+" },
-    { value: 210, labelKey: "stats.employees", suffix: "+" },
-    { value: 52000000, labelKey: "stats.turnover", suffix: "+" },
+    { value: 15, labelKey: "stats.years", suffix: "+" },
+    { value: 9500, labelKey: "stats.products", suffix: "+" },
+    { value: 3000, labelKey: "stats.projects", suffix: "+" },
   ];
 
   return (
@@ -21,10 +19,10 @@ export function StatisticsSection() {
       data-testid="statistics-section"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Mobile layout: 2x2 grid with centered turnover */}
+        {/* Mobile layout: 2x2 grid with centered projects */}
         <div className="lg:hidden">
-          <div className="grid grid-cols-2 gap-8 mb-8">
-            {statistics.slice(0, 4).map((stat, index) => (
+          <div className="grid grid-cols-2 gap-12 mb-12">
+            {statistics.slice(0, 2).map((stat, index) => (
               <StatisticCard
                 key={stat.labelKey}
                 value={stat.value}
@@ -35,21 +33,21 @@ export function StatisticsSection() {
               />
             ))}
           </div>
-          {/* Centered turnover */}
-          <div className="flex justify-center">
+          {/* Centered projects */}
+          <div className="flex justify-center mb-12">
             <StatisticCard
-              key={statistics[4].labelKey}
-              value={statistics[4].value}
-              label={t(statistics[4].labelKey)}
-              suffix={statistics[4].suffix}
+              key={statistics[2].labelKey}
+              value={statistics[2].value}
+              label={t(statistics[2].labelKey)}
+              suffix={statistics[2].suffix}
               isActive={hasIntersected}
-              delay={4 * 200}
+              delay={2 * 200}
             />
           </div>
         </div>
         
-        {/* Desktop layout: single row */}
-        <div className="hidden lg:grid lg:grid-cols-5 gap-8">
+        {/* Desktop layout: single row centered */}
+        <div className="hidden lg:flex lg:justify-center lg:gap-8">
           {statistics.map((stat, index) => (
             <StatisticCard
               key={stat.labelKey}

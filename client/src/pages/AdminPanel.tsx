@@ -478,7 +478,7 @@ export default function AdminPanel() {
               Projects
             </Button>
             
-            <Button
+            {/* <Button
               variant={activeTab === "news" ? "default" : "ghost"}
               className="w-full justify-start"
               onClick={() => {
@@ -489,7 +489,7 @@ export default function AdminPanel() {
             >
               <FileText className="h-4 w-4 mr-2" />
               News & Articles
-            </Button>
+            </Button> */}
             
             <Collapsible 
               open={isCertificatesDropdownOpen} 
@@ -633,7 +633,7 @@ export default function AdminPanel() {
               onOpenChange={setIsTeamDropdownOpen}
               className="w-full"
             >
-              <CollapsibleTrigger asChild>
+              {/* <CollapsibleTrigger asChild>
                 <Button
                   variant={activeTab === "teams" || activeTab === "positions" || activeTab === "leadership" ? "default" : "ghost"}
                   className="w-full justify-start"
@@ -647,7 +647,7 @@ export default function AdminPanel() {
                     <ChevronRight className="h-4 w-4 ml-auto" />
                   )}
                 </Button>
-              </CollapsibleTrigger>
+              </CollapsibleTrigger> */}
               <CollapsibleContent className="pl-6 space-y-1">
                 <Button
                   variant="ghost"
@@ -791,7 +791,7 @@ export default function AdminPanel() {
                   )}
                 </Button>
                 
-                <Button
+                {/* <Button
                   variant="ghost"
                   className={`w-full justify-start text-sm ${activeTab === "job-applications" ? "text-blue-600" : "text-slate-700 hover:text-slate-900"}`}
                   onClick={() => {
@@ -807,7 +807,7 @@ export default function AdminPanel() {
                       {pendingJobApplicationsCount}
                     </Badge>
                   )}
-                </Button>
+                </Button> */}
               </CollapsibleContent>
             </Collapsible>
             

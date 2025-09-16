@@ -61,8 +61,8 @@ export default function Home() {
         <StatisticsSection />
         <ProductsSection />
         <CertificationsSection />
-        <NewsSection />
-        <TestimonialsSection />
+        {/* <NewsSection /> */}
+        {/* <TestimonialsSection /> */}
         <ContactSection />
       </main>
       <Footer />

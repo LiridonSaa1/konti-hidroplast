@@ -136,6 +136,12 @@ function KontiKanPipesAndFittingsPage() {
   const [activeFittingTab, setActiveFittingTab] = useState("injection-molding");
   const [activeFittingTabIndex, setActiveFittingTabIndex] = useState(0);
 
+  const handleBrochureDownload = (product: any) => {
+    // Redirect to brochures page with parameter to auto-open modal
+    setLocation('/brochures?from=products');
+  };
+
+
   const nextFittingTab = () => {
     const nextIndex =
       activeFittingTabIndex === getFittingTypes(t).length - 1
@@ -351,24 +357,17 @@ function KontiKanPipesAndFittingsPage() {
                 </div>
 
                 <div className="flex flex-wrap gap-4">
-                  <a
-                    href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/09/Konti_kan_cevki-tabela_za_dimenzii_i_tezini-en.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-[#1c2d56] px-6 py-3 bg-white rounded-lg transition-colors"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    {t("sewagePipes.downloadSpecs")}
-                  </a>
-                  <a
-                    href="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-Konti-Kan-siv_EN-2021-so-korekcii-MART-2021-2.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    onClick={() => handleBrochureDownload({
+                      id: 'konti-kan-pipes',
+                      title: 'Konti Kan Pipes and Fittings',
+                      brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-Konti-Kan-siv_EN-2021-so-korekcii-MART-2021-2.pdf'
+                    })}
                     className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                   >
                     <Download className="w-4 h-4 mr-2" />
                     {t("sewagePipes.downloadBrochure")}
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -536,6 +535,7 @@ function KontiKanPipesAndFittingsPage() {
         </div>
       </section>
       <Footer />
+      
     </div>
   );
 }
