@@ -1,0 +1,26 @@
+{
+  "name": "Urban Rohr - Konti Hidroplast",
+  "short_name": "Urban Rohr",
+  "description": "Leading manufacturer of high-quality plastic pipes and fittings",
+  "icons": [
+    {
+      "src": "/attached_assets/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/attached_assets/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/attached_assets/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#1c2d56",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "start_url": "/"
+}

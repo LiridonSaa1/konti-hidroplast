@@ -1,0 +1,20 @@
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .logo-line { stroke: white; stroke-width: 2.5; stroke-linecap: round; fill: none; }
+      .logo-circle { stroke: white; stroke-width: 2.5; fill: none; }
+    </style>
+  </defs>
+  
+  <!-- Dark blue background -->
+  <rect width="32" height="32" fill="#1c2d56"/>
+  
+  <!-- Three horizontal lines on the left -->
+  <line x1="8" y1="10" x2="16" y2="10" class="logo-line"/>
+  <line x1="8" y1="16" x2="24" y2="16" class="logo-line"/>
+  <line x1="8" y1="22" x2="16" y2="22" class="logo-line"/>
+  
+  <!-- Concentric circles on the right -->
+  <circle cx="24" cy="16" r="5" class="logo-circle"/>
+  <circle cx="24" cy="16" r="3" class="logo-circle"/>
+</svg>

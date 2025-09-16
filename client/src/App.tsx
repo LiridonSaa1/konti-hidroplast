@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { LoadingScreen } from "@/components/loading-screen";
+import { Favicon } from "@/components/favicon";
 import { useScrollToTop } from "@/hooks/use-scroll-to-top";
 import Home from "@/pages/home";
 import AboutUs from "@/pages/about-us";
@@ -87,6 +88,7 @@ function App() {
       <LanguageProvider>
         <AuthProvider>
           <TooltipProvider>
+            <Favicon />
             <Toaster />
             {isLoading && <LoadingScreen onLoadingComplete={handleLoadingComplete} />}
             <Router />

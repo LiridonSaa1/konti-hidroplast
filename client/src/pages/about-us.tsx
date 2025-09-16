@@ -872,15 +872,17 @@ export default function AboutUs() {
 
             <div className="relative">
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
-                <iframe
-                  src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&loop=1&playlist=R7b9-m_EM2s&mute=1&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&disablekb=1&fs=0&cc_load_policy=0&iv_load_policy=3&start=0&end=0&enablejsapi=0&origin=null&widget_referrer=null&html5=1&wmode=opaque"
+                <video
+                  src="/attached_assets/Konti Hidroplast - Corporate 2024.mp4"
                   title="Konti Hidroplast - Corporate 2024"
-                  className="w-full h-full"
-                  frameBorder="0"
-                  allow="autoplay"
-                  allowFullScreen={false}
+                  className="w-full h-full object-cover"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  controls={false}
                   style={{ pointerEvents: 'none' }}
-                ></iframe>
+                />
               </div>
               <div className="absolute -bottom-4 -right-4 bg-red-600 text-white px-4 py-2 rounded-full shadow-lg">
                 <span className="text-sm font-medium">
