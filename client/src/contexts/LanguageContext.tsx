@@ -164,7 +164,7 @@ const translations = {
 
     // Footer
     "footer.description":
-      "Export-oriented Macedonian company for production of PE and PP pipes. Founded in 1975, we are committed to delivering unmatched European standards for pipeline precision.",
+      "Urban Rohr GmbH – Ihr Partner für Rohrsysteme.Mit über 20 Jahren Erfahrung, 9.000+ Produkten und 1.000+ realisierten Projekten in 16 Ländern stehen wir für Qualität und Verlässlichkeit. Von PE, PP, Guss und PVC bis zu Speziallösungen für Gas, Wasser und Industrie – Urban Rohr GmbH garantiert Innovation, Service und Erfolg für jedes Projekt.",
     "footer.quickLinks": "Quick Links",
     "footer.aboutUs": "About Us",
     "footer.products": "Products",
@@ -2919,11 +2919,11 @@ const translations = {
     "about.description":
       "Exportorientiertes mazedonisches Unternehmen für die Herstellung von PE- und PP-Rohren seit 1975. Wir sind verpflichtet, höchste Qualität bei Rohrleitungslösungen mit europäischen Standards zu liefern.",
     "about.text1":
-      "Wir sind ein exportorientiertes mazedonisches Unternehmen für die Herstellung von PE- (Polyethylen) und PP- (Polypropylen) Rohren.",
+      "Seit über 20 Jahren stehen wir für Qualität, Zuverlässigkeit und Kompetenz.",
     "about.text2":
-      "In Südmazedonien gelegen, Gemeinde Gevgelija, wurden wir 1975 als kleine Fabrik für die Herstellung von Werkzeugen und Elementen aus spritzgegossenem Kunststoff gegründet.",
+      "Mit mehr als 9.000 Produkten und über 1.000 erfolgreich realisierten Projekten beliefern wir Kunden in 16 Staaten. ",
     "about.text3":
-      "Nach dem erfolgreichen Start, unterstützt durch die Erfahrung aus erfolgreich realisierten Projekten in der Republik Mazedonien, ist unser Unternehmen heute exportorientiert und 95% seiner Produkte werden auf internationale Märkte exportiert.",
+      "Polyethylen, Polypropylen, Guss, PVC oder spezialisierte Lösungen für Gas, Wasser und Industrie – wir bieten umfassende Rohrsysteme für Bau, Infrastruktur und Industrie. Vertrauen Sie auf Erfahrung, Innovation und Service – Urban Rohr GmbH, damit Ihr Projekt ein Erfolg wird.",
     "about.mission":
       "Unsere Mission ist es, innovative und zuverlässige Rohrsysteme bereitzustellen, die den sich entwickelnden Bedürfnissen unserer Kunden weltweit gerecht werden.",
     "about.vision":
@@ -2989,9 +2989,9 @@ const translations = {
     "testimonials.alex.company": "General Manager, Dematek Wassermanagement",
 
     // Contact
-    "contact.title": "In Kontakt kommen: Verbinden Sie sich heute mit uns!",
+    "contact.title": "An unseren Rohrlösungen interessiert? Kontaktieren Sie uns noch heute!",
     "contact.subtitle":
-      "Bereit, Ihre Pipeline-Bedürfnisse zu besprechen? Wir sind hier, um zu helfen.",
+      "Kontaktieren Sie uns",
     "contact.form.title": "Senden Sie uns eine Nachricht",
     "contact.form.subtitle":
       "Wir melden uns innerhalb von 24 Stunden bei Ihnen",
