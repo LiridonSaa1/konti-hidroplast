@@ -725,6 +725,24 @@ export default function AboutUs() {
     console.log(`Current language: ${language}`);
     console.log(`Leadership content:`, leadershipContent);
     
+    // Static content for German language
+    if (language === 'de') {
+      switch (field) {
+        case 'title':
+          return "Die Zukunft der Infrastruktur gemeinsam gestalten";
+        case 'description1':
+          return "Bei der Urban Rohr GmbH ist unsere Mission klar: Wir wollen mit Innovationen vorangehen, Rohrsysteme nach höchsten europäischen Standards liefern und unseren Kunden stets einen Schritt voraus sein. Unsere Stärke liegt in nachhaltigen Lösungen, kontinuierlicher Expansion in internationale Märkte und dem Anspruch, Wissen und Erfahrung mit Partnern zu teilen, die mit uns wachsen wollen.";
+        case 'description2':
+          return "Gemeinsam bauen wir nicht nur für die Anforderungen von heute, sondern für eine Zukunft, die kommende Generationen stolz macht. Vertrauen, Qualität und Innovation sind dabei die Eckpfeiler unseres Handelns.";
+        case 'leaderName':
+          return "— Xhevxhet Ajeti, Louis de Paris, Xhemail Jashari & Zekirja Bajrami";
+        case 'leaderPosition':
+          return "";
+        default:
+          break;
+      }
+    }
+    
     if (!leadershipContent || !leadershipContent[field as keyof typeof leadershipContent]) {
       console.log(`No content found for field: ${field}, using translation key`);
       // Fallback to translation keys
@@ -1306,7 +1324,7 @@ export default function AboutUs() {
       {/* Certifications */}
       <CertificationsSection />
       {/* Projects Section */}
-      <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
+      {/* <section className="py-20 bg-gradient-to-br from-slate-50 to-blue-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
@@ -1318,7 +1336,6 @@ export default function AboutUs() {
             </div>
           </div>
 
-          {/* Dynamic Projects Grid */}
           {isProjectsLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
               {[...Array(4)].map((_, index) => (
@@ -1402,7 +1419,7 @@ export default function AboutUs() {
             </div>
           )}
         </div>
-      </section>
+      </section> */}
       {/* Products Section */}
       <section className="py-20 relative overflow-hidden bg-[#1c2d56] text-[#ffffff]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">

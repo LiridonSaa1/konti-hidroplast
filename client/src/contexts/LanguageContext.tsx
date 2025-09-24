@@ -59,11 +59,11 @@ const translations = {
     "about.description":
       "Export-oriented Macedonian company for production of PE and PP pipes since 1975. We are committed to delivering the highest quality pipeline solutions with European standards.",
     "about.text1":
-      "We are an export oriented macedonian company for production of PE (polyethylene) and PP (polypropylene) pipes.",
+      "Urban Rohr GmbH – Ihr Partner für Rohrsysteme",
     "about.text2":
-      "Situated in Southern Macedonia, municipality of Gevgelija, we were founded in 1975 as a small plant for production of tools and elements of injection molded plastic.",
+      "Seit über 20 Jahren stehen wir für Qualität, Zuverlässigkeit und Kompetenz. Mit mehr als 9.000 Produkten und über 1.000 erfolgreich realisierten Projekten beliefern wir Kunden in 16 Staaten. ",
     "about.text3":
-      "Following the successful start aided by the experience gained by successfully realized projects in Republic of Macedonia, today our company is export-oriented, and 95% of its products are exported in international markets.",
+      "Ob Polyethylen, Polypropylen, Guss, PVC oder spezialisierte Lösungen für Gas, Wasser und Industrie – wir bieten umfassende Rohrsysteme für Bau, Infrastruktur und Industrie. Vertrauen Sie auf Erfahrung, Innovation und Service – Urban Rohr GmbH, damit Ihr Projekt ein Erfolg wird.",
     "about.mission":
       "Our mission is to provide innovative and reliable pipe systems that meet the evolving needs of our customers worldwide.",
     "about.vision":
@@ -2900,7 +2900,7 @@ const translations = {
     "nav.products.ppMlCompact": "PP ML Kompaktrohre OD",
     "nav.products.manholes": "Schächte",
     "nav.products.drainage": "Konti Kan Drainage",
-    "nav.products.gasPipeline": "Gasleitungssystem",
+    "nav.products.gasPipeline": "Gasleitungssysteme",
     "nav.products.cableProtection": "Kabelschutz",
     "nav.downloads.brochures": "Broschüren",
     "nav.downloads.certificates": "Zertifikate",
@@ -2917,7 +2917,7 @@ const translations = {
     // About Section
     "about.title": "Über uns",
     "about.description":
-      "Exportorientiertes mazedonisches Unternehmen für die Herstellung von PE- und PP-Rohren seit 1975. Wir sind verpflichtet, höchste Qualität bei Rohrleitungslösungen mit europäischen Standards zu liefern.",
+      "Urban Rohr GmbH – Ihr Partner für Rohrsysteme.\nMit über 20 Jahren Erfahrung, 9.000+ Produkten und 1.000+ realisierten Projekten in 16 Ländern stehen wir für Qualität und Verlässlichkeit. Von PE, PP, Guss und PVC bis zu Speziallösungen für Gas, Wasser und Industrie – Urban Rohr GmbH garantiert Innovation, Service und Erfolg für jedes Projekt.",
     "about.text1":
       "Seit über 20 Jahren stehen wir für Qualität, Zuverlässigkeit und Kompetenz.",
     "about.text2":
@@ -3026,8 +3026,7 @@ const translations = {
     "contact.phone": "Telefon",
 
     // Footer
-    "footer.description":
-      "Exportorientiertes mazedonisches Unternehmen für die Herstellung von PE- und PP-Rohren. Gegründet 1975, sind wir verpflichtet, unübertroffene europäische Standards für Pipeline-Präzision zu liefern.",
+    "footer.description":"Urban Rohr GmbH – Ihr Partner für Rohrsysteme.Mit über 20 Jahren Erfahrung, 9.000+ Produkten und 1.000+ realisierten Projekten in 16 Ländern stehen wir für Qualität und Verlässlichkeit. Von PE, PP, Guss und PVC bis zu Speziallösungen für Gas, Wasser und Industrie – Urban Rohr GmbH garantiert Innovation, Service und Erfolg für jedes Projekt.",
     "footer.quickLinks": "Schnellzugriff",
     "footer.aboutUs": "Über uns",
     "footer.products": "Produkte",
@@ -3123,20 +3122,20 @@ const translations = {
     "common.next": "Nächste",
 
     // About Us Page
-    "aboutUs.title": "Über uns",
-    "aboutUs.heroTitle": "Unsere Geschichte",
+    "aboutUs.title": "Urban Rohr GmbH - Über uns",
+    "aboutUs.heroTitle": "Ihr erfahrener Partner seit über 20 Jahren",
     "aboutUs.heroSubtitle":
-      "Pioniere der Exzellenz in der Rohrherstellung seit 1975",
+      "Ihr erfahrener Partner seit über 20 Jahren",
     "aboutUs.companyOverview": "Unternehmensübersicht",
     "aboutUs.missionTitle": "Mission",
     "aboutUs.missionText":
-      "Förderung neuer Technologien unter Einhaltung strenger EU-Standards. Mit zertifizierter Qualität und wettbewerbsfähigen Preisen übernehmen wir Vorschriften und ökologische Verantwortung.",
+      "Die Urban Rohr GmbH fördert den Einsatz modernster Technologien unter strenger Einhaltung europäischer Standards. Mit zertifizierter Qualität, wettbewerbsfähigen Preisen und einem klaren Bekenntnis zu ökologischer Verantwortung stellen wir sicher, dass unsere Rohrsysteme höchsten Anforderungen gerecht werden.",
     "aboutUs.visionTitle": "Vision",
     "aboutUs.visionText":
-      "Eine moderne Fabrik, ein Marktführer in der Region für die Entwicklung und Produktion von Kunststoffprodukten für Infrastrukturbauten, innerhalb eines umweltfreundlichen Systems mit maximaler Sicherheit für alle Beteiligten.",
+      "Unsere Vision ist es, als führendes Unternehmen in der Region für Entwicklung und Produktion hochwertiger Rohrsysteme für Infrastruktur- und Industriebauten anerkannt zu werden. Mit einer modernen Fertigung und einem umweltfreundlichen Ansatz schaffen wir sichere und nachhaltige Lösungen für unsere Partner und Kunden weltweit.",
     "aboutUs.valuesTitle": "Werte",
     "aboutUs.valuesText":
-      "Bei unserem Unternehmen sind wir bestrebt, die Branche mit hochwertigen, umweltfreundlichen Rohren anzuführen und dabei Umweltschutz und Mitarbeitersicherheit zu priorisieren.",
+      "Bei der Urban Rohr GmbH stehen Qualität, Nachhaltigkeit und Sicherheit im Mittelpunkt. Wir setzen auf umweltfreundliche Materialien, verantwortungsbewusste Prozesse und den Schutz unserer Mitarbeiter. Unser Ziel ist es, die Branche durch Innovation, Verlässlichkeit und nachhaltige Produkte aktiv mitzugestalten.",
     "aboutUs.timelineTitle": "Unsere Reise",
     "aboutUs.projectsTitle": "Projekte",
     "aboutUs.leadership": "Führung",
@@ -3146,20 +3145,20 @@ const translations = {
     "aboutUs.isoCertified": "ISO-zertifiziert",
     "aboutUs.corporate2024": "Corporate 2024",
     "aboutUs.companyStoryText1":
-      "Nach dem erfolgreichen Start, unterstützt durch die Erfahrung aus erfolgreich realisierten Projekten in der Republik Nordmazedonien, ist unser Unternehmen heute exportorientiert und 95% seiner Produkte werden auf internationale Märkte exportiert.",
+      "Urban Rohr GmbH – Ihr Partner für Rohrsysteme",
     "aboutUs.companyStoryText2":
-      "Neben der Erfahrung ermöglichten uns unsere große Produktpalette und Spitzenqualität nach allen international anerkannten Standards den Zugang zu internationalen Märkten. Unser aktuelles Produktionsprogramm deckt alle Anwendungsbereiche ab: Rohre und Schläuche für Wasserversorgungssysteme, Abwassersysteme, PE- und PP-Schächte, Rohre für den Transport von Gas- und Ölprodukten, Rohre und Schläuche zum Schutz von Telekommunikationskabeln, Entwässerungssysteme und Fittings für alle Dimensionen, die auch von einem Mindestdurchmesser von 12 mm bis 2000 mm reichen.",
+      "Die Urban Rohr GmbH ist ein international ausgerichtetes Unternehmen, das seit über 20 Jahren erfolgreich im Bereich moderner Rohrsysteme tätig ist. Mit einer breiten Produktpalette von über 9.000 Artikeln – darunter Rohre und Lösungen aus PE (Polyethylen), PP (Polypropylen), Guss und PVC – beliefern wir Bau-, Infrastruktur- und Industrieprojekte in 16 Ländern.",
     "aboutUs.companyStoryText3":
-      "Unser Unternehmen wurde auf dem Markt durch qualitativ hochwertige Lieferungen und die ständige Anwendung von Flexibilität im Betrieb bekannt, was in einer Branche, in der die Komplexität der Verwaltung aller Prozesse recht hoch ist, sehr wichtig ist.",
+      "Unsere Rohrsysteme decken alle relevanten Anwendungsbereiche ab: Wasserversorgung, Abwasserentsorgung, Gas- und Ölleitungen, Telekommunikationsschutz, Entwässerung sowie Schächte und Fittings in allen Dimensionen von 12 mm bis 2000 mm.",
     "aboutUs.companyStoryText4":
-      "Einer der Schlüsselfaktoren für Nachhaltigkeit trotz harter Konkurrenz ist die kontinuierliche Reinvestition in innovative Technologien und das Verfolgen des allgemeinen technologischen Fortschritts. Die Kombination all dieser Schlüsselfaktoren trägt dazu bei, dass unser Unternehmen eine wichtige Rolle auf den inländischen und ausländischen Märkten mit der ständigen Präsenz bei allen großen und kleinen Infrastrukturprojekten spielt.",
+      "Bekannt sind wir für höchste Qualität, Flexibilität und Verlässlichkeit – Faktoren, die uns in einem komplexen Marktumfeld auszeichnen. Durch kontinuierliche Investitionen in innovative Technologien, nachhaltige Prozesse und modernste Standards sichern wir uns langfristig eine starke Position im internationalen Wettbewerb. Die Kombination aus Erfahrung, Produktvielfalt und Innovationskraft macht die Urban Rohr GmbH zu einem verlässlichen Partner für große wie kleine Infrastrukturprojekte – im In- und Ausland.",
     "aboutUs.since1975": "Seit 1975",
     "aboutUs.leadershipMessage": "Botschaft der Geschäftsführung",
-    "aboutUs.leadershipTitle": "Die Zukunft der Infrastruktur gestalten",
-    "aboutUs.leadershipDescription1": "Bei unserem Unternehmen war unsere Mission schon immer klar: mit Innovation zu führen, Qualität nach europäischen Standards zu liefern und in unserer Branche die Nase vorn zu haben. Wir sind bestrebt, nachhaltige Lösungen zu schaffen, in neue Märkte zu expandieren und Wissen mit allen zu teilen, die wachsen möchten.",
-    "aboutUs.leadershipDescription2": "Gemeinsam bauen wir nicht nur für heute, sondern für eine Zukunft, auf die unsere nächsten Generationen stolz sein werden.",
-    "aboutUs.leaderName": "Boris Madjunkov",
-    "aboutUs.leaderPosition": "Geschäftsführer",
+    "aboutUs.leadershipTitle": "Die Zukunft der Infrastruktur gemeinsam gestalten",
+    "aboutUs.leadershipDescription1": "Bei der Urban Rohr GmbH ist unsere Mission klar: Wir wollen mit Innovationen vorangehen, Rohrsysteme nach höchsten europäischen Standards liefern und unseren Kunden stets einen Schritt voraus sein. Unsere Stärke liegt in nachhaltigen Lösungen, kontinuierlicher Expansion in internationale Märkte und dem Anspruch, Wissen und Erfahrung mit Partnern zu teilen, die mit uns wachsen wollen.",
+    "aboutUs.leadershipDescription2": "Gemeinsam bauen wir nicht nur für die Anforderungen von heute, sondern für eine Zukunft, die kommende Generationen stolz macht. Vertrauen, Qualität und Innovation sind dabei die Eckpfeiler unseres Handelns.",
+    "aboutUs.leaderName": "— Xhevxhet Ajeti, Louis de Paris, Xhemail Jashari & Zekirja Bajrami",
+    "aboutUs.leaderPosition": "",
     "aboutUs.teamTitle": "Unser Team",
     "aboutUs.contactUsButton": "Kontaktieren Sie uns",
     "aboutUs.noTeamMembers": "Noch keine Teammitglieder",
@@ -3172,14 +3171,14 @@ const translations = {
     "aboutUs.productsTitle": "Produkte",
     "aboutUs.waterSupplySystems": "WASSERVERSORGUNGSSYSTEME",
     "aboutUs.sewerageSystems": "ABWASSERSYSTEME",
-    "aboutUs.gasPipelineSystem": "GASLEITUNGSSYSTEM",
+    "aboutUs.gasPipelineSystem": "GASLEITUNGSSYSTEME",
     "aboutUs.cableProtection": "KABELSCHUTZ",
     "aboutUs.galleryTitle": "Galerie",
     "aboutUs.viewGallery": "Galerie ansehen",
     "aboutUs.noGalleryCategories": "Keine Galerie-Kategorien",
     "aboutUs.galleryCategoriesDescription": "Galerie-Kategorien werden hier angezeigt, sobald sie hinzugefügt wurden.",
-    "aboutUs.getInTouchTitle": "Kontakt aufnehmen: Verbinden Sie sich noch heute mit uns!",
-    "aboutUs.getInTouchDescription": "Benötigen Sie weitere Informationen zu unseren Kabelschutzlösungen? Kontaktieren Sie unser Expertenteam.",
+    "aboutUs.getInTouchTitle": "An unseren Rohrlösungen interessiert? Kontaktieren Sie uns noch heute!",
+    "aboutUs.getInTouchDescription": "Kontaktieren Sie uns",
     "aboutUs.englishLang": "🇺🇸 Englisch",
     "aboutUs.macedonianLang": "🇲🇰 Mazedonisch",
     "aboutUs.germanLang": "🇩🇪 Deutsch",
@@ -3325,8 +3324,8 @@ const translations = {
     "gasPipeline.downloadBrochure": "Broschüre herunterladen",
     "gasPipeline.peFittings": "PE-Armaturen",
     "gasPipeline.buttWelding": "Stumpfschweißen",
-    "gasPipeline.contactTitle": "Kontakt aufnehmen: Verbinden Sie sich noch heute mit uns!",
-    "gasPipeline.contactDescription": "Benötigen Sie weitere Informationen zu unseren Gaspipeline-Lösungen? Kontaktieren Sie unser Expertenteam.",
+    "gasPipeline.contactTitle": "An unseren Rohrlösungen interessiert? Kontaktieren Sie uns noch heute!",
+    "gasPipeline.contactDescription": "Kontaktieren Sie uns",
     "gasPipeline.contactUs": "Kontaktieren Sie uns",
     "gasPipeline.pipeline": "PIPELINE",
     "gasPipeline.system": "SYSTEM",
@@ -3388,8 +3387,8 @@ const translations = {
     "cableProtection.quadruplePipe": "Vierfachrohre, bestehend aus zwei verschiedenen Durchmessern von 32 und 40 mm",
     "cableProtection.downloadSpecs": "Spezifikationen herunterladen",
     "cableProtection.downloadBrochure": "Broschüre herunterladen",
-    "cableProtection.contactTitle": "Kontakt aufnehmen: Verbinden Sie sich noch heute mit uns!",
-    "cableProtection.contactDescription": "Benötigen Sie weitere Informationen zu unseren Kabelschutzlösungen? Kontaktieren Sie unser Expertenteam.",
+    "cableProtection.contactTitle": "An unseren Rohrlösungen interessiert? Kontaktieren Sie uns noch heute!",
+    "cableProtection.contactDescription": "Kontaktieren Sie uns",
     "cableProtection.contactUs": "Kontaktieren Sie uns",
     
     // Konti Kan Optic Cable Protection
@@ -3497,9 +3496,9 @@ const translations = {
     "sewagePipes.gasket": "Dichtung",
     
     // Contact
-    "sewagePipes.contactTitle": "Kontakt aufnehmen: Verbinden Sie sich noch heute mit uns!",
-    "sewagePipes.contactDescription": "Benötigen Sie weitere Informationen zu unseren Konti Kan Abwasserrohrlösungen? Kontaktieren Sie unser Expertenteam.",
-    "sewagePipes.contactDescriptionGeneral": "Benötigen Sie weitere Informationen zu unseren Abwasserrohrlösungen? Kontaktieren Sie unser Expertenteam.",
+    "sewagePipes.contactTitle": "An unseren Rohrlösungen interessiert? Kontaktieren Sie uns noch heute!",
+    "sewagePipes.contactDescription": "Kontaktieren Sie uns",
+    "sewagePipes.contactDescriptionGeneral": "Kontaktieren Sie uns",
     "sewagePipes.contactUs": "Kontaktieren Sie uns",
     
     // PP HM Konti Kan Sewage Pipes
@@ -3588,9 +3587,9 @@ const translations = {
     "ppHmPipes.gasket": "Dichtung",
     
     // Contact
-    "ppHmPipes.contactTitle": "Kontakt aufnehmen: Verbinden Sie sich noch heute mit uns!",
-    "ppHmPipes.contactDescriptionPpHm": "Benötigen Sie weitere Informationen zu unseren PP HM Abwasserrohrlösungen? Kontaktieren Sie unser Expertenteam.",
-    "ppHmPipes.contactDescriptionGeneral": "Benötigen Sie weitere Informationen zu unseren PP HM Rohrlösungen? Kontaktieren Sie unser Expertenteam.",
+    "ppHmPipes.contactTitle": "An unseren Rohrlösungen interessiert? Kontaktieren Sie uns noch heute!",
+    "ppHmPipes.contactDescriptionPpHm": "Kontaktieren Sie uns",
+    "ppHmPipes.contactDescriptionGeneral": "Kontaktieren Sie uns",
     "ppHmPipes.contactUs": "Kontaktieren Sie uns",
     
     // KONTI KAN SPIRAL Pipes
@@ -3673,9 +3672,9 @@ const translations = {
     "spiralPipes.renovation": "Renovierung",
     
     // Contact
-    "spiralPipes.contactTitle": "Kontakt aufnehmen: Verbinden Sie sich noch heute mit uns!",
-    "spiralPipes.contactDescriptionSpecific": "Benötigen Sie weitere Informationen zu unseren KONTI KAN SPIRAL Rohrlösungen? Kontaktieren Sie unser Expertenteam.",
-    "spiralPipes.contactDescriptionGeneral": "Benötigen Sie weitere Informationen zu unseren Spiralrohrlösungen? Kontaktieren Sie unser Expertenteam.",
+    "spiralPipes.contactTitle": "An unseren Rohrlösungen interessiert? Kontaktieren Sie uns noch heute!",
+    "spiralPipes.contactDescriptionSpecific": "Kontaktieren Sie uns",
+    "spiralPipes.contactDescriptionGeneral": "Kontaktieren Sie uns",
     "spiralPipes.contactUs": "Kontaktieren Sie uns",
     
     // PP ML COMPACT PIPE
@@ -3727,9 +3726,9 @@ const translations = {
     "ppMlCompact.crossSection": "PP ML KOMPAKT ROHR Querschnitt",
     
     // Contact
-    "ppMlCompact.contactTitle": "Kontakt aufnehmen: Verbinden Sie sich noch heute mit uns!",
-    "ppMlCompact.contactDescriptionSpecific": "Benötigen Sie weitere Informationen zu unseren PP ML KOMPAKT ROHR Lösungen? Kontaktieren Sie unser Expertenteam.",
-    "ppMlCompact.contactDescriptionGeneral": "Benötigen Sie weitere Informationen zu unseren PP HM glatten OD Lösungen? Kontaktieren Sie unser Expertenteam.",
+    "ppMlCompact.contactTitle": "An unseren Rohrlösungen interessiert? Kontaktieren Sie uns noch heute!",
+    "ppMlCompact.contactDescriptionSpecific": "Kontaktieren Sie uns",
+    "ppMlCompact.contactDescriptionGeneral": "Kontaktieren Sie uns",
     "ppMlCompact.contactUs": "Kontaktieren Sie uns",
     
     // Manholes
@@ -3818,8 +3817,8 @@ const translations = {
     "manholes.ppCostEffective": "Kostengünstig, wartungsarm",
     
     // Contact
-    "manholes.contactTitle": "Kontakt aufnehmen: Verbinden Sie sich noch heute mit uns!",
-    "manholes.contactDescription": "Benötigen Sie weitere Informationen zu unseren Schachtlösungen? Kontaktieren Sie unser Expertenteam.",
+    "manholes.contactTitle": "An unseren Rohrlösungen interessiert? Kontaktieren Sie uns noch heute!",
+    "manholes.contactDescription": "Kontaktieren Sie uns",
     "manholes.contactUs": "Kontaktieren Sie uns",
     
     // Drainage
@@ -3879,9 +3878,9 @@ const translations = {
     "drainage.downloadBrochure": "Broschüre herunterladen",
     
     // Contact
-    "drainage.contactTitle": "Kontakt aufnehmen: Verbinden Sie sich noch heute mit uns!",
-    "drainage.contactDescriptionCableProtection": "Benötigen Sie weitere Informationen zu unseren Kabelschutzlösungen? Kontaktieren Sie unser Expertenteam.",
-    "drainage.contactDescriptionDrainage": "Benötigen Sie weitere Informationen zu unseren Entwässerungslösungen? Kontaktieren Sie unser Expertenteam.",
+    "drainage.contactTitle": "An unseren Rohrlösungen interessiert? Kontaktieren Sie uns noch heute!",
+    "drainage.contactDescriptionCableProtection": "Kontaktieren Sie uns",
+    "drainage.contactDescriptionDrainage": "Kontaktieren Sie uns",
     "drainage.contactUs": "Kontaktieren Sie uns",
     
     // Common Product Page Elements
@@ -3893,9 +3892,9 @@ const translations = {
     "productPages.downloadBrochure": "Broschüre herunterladen",
     "productPages.downloadPdf": "PDF herunterladen",
     "productPages.learnMore": "Mehr erfahren",
-    "productPages.contactExperts": "Kontaktieren Sie unser Expertenteam",
-    "productPages.needMoreInfo": "Benötigen Sie weitere Informationen zu unseren",
-    "productPages.solutions": "Lösungen",
+    "productPages.contactExperts": "Kontaktieren Sie uns noch heute!",
+    "productPages.needMoreInfo": "An unseren Rohrlösungen interessiert?",
+    "productPages.solutions": "",
     "productPages.qualityAssurance": "QUALITÄTSSICHERUNG",
     "productPages.productDocumentation": "PRODUKTDOKUMENTATION",
     "productPages.productBrochures": "PRODUKTBROSCHÜREN",

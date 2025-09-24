@@ -12,7 +12,7 @@ interface QuickLink {
 }
 
 export function Footer() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { data: companyInfo } = useCompanyInfo();
   const [, setLocation] = useLocation();
   
@@ -23,6 +23,13 @@ export function Footer() {
     { labelKey: "footer.contact", path: "/", isContact: true },
     { labelKey: "footer.privacyPolicy", path: "/privacy-policy" },
   ];
+
+  const getStaticDescription = () => {
+    if (language === 'de') {
+      return "Urban Rohr GmbH – Ihr Partner für Rohrsysteme.\nMit über 20 Jahren Erfahrung, 9.000+ Produkten und 1.000+ realisierten Projekten in 16 Ländern stehen wir für Qualität und Verlässlichkeit. Von PE, PP, Guss und PVC bis zu Speziallösungen für Gas, Wasser und Industrie – Urban Rohr GmbH garantiert Innovation, Service und Erfolg für jedes Projekt.";
+    }
+    return "Export-oriented Macedonian company for production of PE and PP pipes. Founded in 1975, we are committed to delivering unmatched European standards for pipeline precision.";
+  };
 
   const handleNavigation = (path: string, isContact: boolean = false) => {
     console.log('Footer navigation clicked:', { path, isContact });
@@ -66,7 +73,7 @@ export function Footer() {
               className="text-gray-300 mb-6 max-w-md"
               data-testid="footer-description"
             >
-              {companyInfo.description || t('footer.description')}
+              {getStaticDescription()}
             </p>
             <div className="flex space-x-4" data-testid="footer-social">
               {companyInfo.socialLinkedIn && (
