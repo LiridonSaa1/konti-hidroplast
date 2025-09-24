@@ -59,11 +59,11 @@ const translations = {
     "about.description":
       "Export-oriented Macedonian company for production of PE and PP pipes since 1975. We are committed to delivering the highest quality pipeline solutions with European standards.",
     "about.text1":
-      "Urban Rohr GmbH – Ihr Partner für Rohrsysteme",
+      "Urban Rohr GmbH – Your Partner for Pipe Systems",
     "about.text2":
-      "Seit über 20 Jahren stehen wir für Qualität, Zuverlässigkeit und Kompetenz. Mit mehr als 9.000 Produkten und über 1.000 erfolgreich realisierten Projekten beliefern wir Kunden in 16 Staaten. ",
+      "With over 20 years of experience, we stand for quality, reliability and competence. With more than 9,000 products and over 1,000 successfully completed projects, we supply customers in 16 countries.",
     "about.text3":
-      "Ob Polyethylen, Polypropylen, Guss, PVC oder spezialisierte Lösungen für Gas, Wasser und Industrie – wir bieten umfassende Rohrsysteme für Bau, Infrastruktur und Industrie. Vertrauen Sie auf Erfahrung, Innovation und Service – Urban Rohr GmbH, damit Ihr Projekt ein Erfolg wird.",
+      "Whether polyethylene, polypropylene, cast iron, PVC or specialized solutions for gas, water and industry – we offer comprehensive pipe systems for construction, infrastructure and industry. Trust in experience, innovation and service – Urban Rohr GmbH, so your project becomes a success.",
     "about.mission":
       "Our mission is to provide innovative and reliable pipe systems that meet the evolving needs of our customers worldwide.",
     "about.vision":
@@ -227,11 +227,11 @@ const translations = {
       "One of the key factors for sustainability despite tough competition is constant reinvestment in innovative technologies and pursuing general technological progress. The combination of all these key factors are contributing for our company to play an important role in the domestic and foreign markets with the constant presence of all major and minor infrastructure projects.",
     "aboutUs.since1975": "Since 1975",
     "aboutUs.leadershipMessage": "Leadership Message",
-    "aboutUs.leadershipTitle": "Building the Future of Infrastructure",
-    "aboutUs.leadershipDescription1": "At our company, our mission has always been clear: to lead with innovation, deliver quality by European standards, and stay ahead of the curve in our industry. We are committed to creating sustainable solutions, expanding into new markets, and sharing knowledge with all who seek to grow.",
-    "aboutUs.leadershipDescription2": "Together, we build not just for today, but for a future our next generations will be proud of.",
-    "aboutUs.leaderName": "Boris Madjunkov",
-    "aboutUs.leaderPosition": "General Director",
+    "aboutUs.leadershipTitle": "Shaping the Future of Infrastructure Together",
+    "aboutUs.leadershipDescription1": "At Urban Rohr GmbH, our mission is clear: we want to lead with innovation, deliver pipe systems to the highest European standards, and always stay one step ahead of our customers. Our strength lies in sustainable solutions, continuous expansion into international markets, and the commitment to share knowledge and experience with partners who want to grow with us.",
+    "aboutUs.leadershipDescription2": "Together, we build not only for today's requirements, but for a future that will make future generations proud. Trust, quality and innovation are the cornerstones of our actions.",
+    "aboutUs.leaderName": "— Xhevxhet Ajeti, Louis de Paris, Xhemail Jashari & Zekirja Bajrami",
+    "aboutUs.leaderPosition": "",
     "aboutUs.teamTitle": "Our Team",
     "aboutUs.contactUsButton": "Contact Us",
     "aboutUs.noTeamMembers": "No Team Members Yet",
@@ -2919,11 +2919,11 @@ const translations = {
     "about.description":
       "Urban Rohr GmbH – Ihr Partner für Rohrsysteme.\nMit über 20 Jahren Erfahrung, 9.000+ Produkten und 1.000+ realisierten Projekten in 16 Ländern stehen wir für Qualität und Verlässlichkeit. Von PE, PP, Guss und PVC bis zu Speziallösungen für Gas, Wasser und Industrie – Urban Rohr GmbH garantiert Innovation, Service und Erfolg für jedes Projekt.",
     "about.text1":
-      "Seit über 20 Jahren stehen wir für Qualität, Zuverlässigkeit und Kompetenz.",
+      "Urban Rohr GmbH – Ihr Partner für Rohrsysteme",
     "about.text2":
-      "Mit mehr als 9.000 Produkten und über 1.000 erfolgreich realisierten Projekten beliefern wir Kunden in 16 Staaten. ",
+      "Seit über 20 Jahren stehen wir für Qualität, Zuverlässigkeit und Kompetenz. Mit mehr als 9.000 Produkten und über 1.000 erfolgreich realisierten Projekten beliefern wir Kunden in 16 Staaten.",
     "about.text3":
-      "Polyethylen, Polypropylen, Guss, PVC oder spezialisierte Lösungen für Gas, Wasser und Industrie – wir bieten umfassende Rohrsysteme für Bau, Infrastruktur und Industrie. Vertrauen Sie auf Erfahrung, Innovation und Service – Urban Rohr GmbH, damit Ihr Projekt ein Erfolg wird.",
+      "Ob Polyethylen, Polypropylen, Guss, PVC oder spezialisierte Lösungen für Gas, Wasser und Industrie – wir bieten umfassende Rohrsysteme für Bau, Infrastruktur und Industrie. Vertrauen Sie auf Erfahrung, Innovation und Service – Urban Rohr GmbH, damit Ihr Projekt ein Erfolg wird.",
     "about.mission":
       "Unsere Mission ist es, innovative und zuverlässige Rohrsysteme bereitzustellen, die den sich entwickelnden Bedürfnissen unserer Kunden weltweit gerecht werden.",
     "about.vision":

@@ -718,14 +718,14 @@ export default function AboutUs() {
     }
   }, [language, galleryCategories, isGalleryLoading]);
 
-  // Function to get localized leadership content
+    // Function to get localized leadership content
   const getLocalizedLeadershipContent = (field: string) => {
     console.log(`=== getLocalizedLeadershipContent called ===`);
     console.log(`Field: ${field}`);
     console.log(`Current language: ${language}`);
     console.log(`Leadership content:`, leadershipContent);
     
-    // Static content for German language
+    // Static content for both languages
     if (language === 'de') {
       switch (field) {
         case 'title':
@@ -739,7 +739,22 @@ export default function AboutUs() {
         case 'leaderPosition':
           return "";
         default:
-          break;
+          return '';
+      }
+    } else if (language === 'en') {
+      switch (field) {
+        case 'title':
+          return "Shaping the future of infrastructure together";
+        case 'description1':
+          return "At Urban Rohr GmbH, our mission is clear: We want to lead the way with innovation, deliver piping systems according to the highest European standards, and always be one step ahead of our customers. Our strength lies in sustainable solutions, continuous expansion into international markets, and the commitment to sharing knowledge and experience with partners who want to grow with us.";
+        case 'description2':
+          return "Together, we are building not only for the needs of today, but for a future that will make future generations proud. Trust, quality, and innovation are the cornerstones of our actions.";
+        case 'leaderName':
+          return "— Xhevxhet Ajeti, Louis de Paris, Xhemail Jashari & Zekirja Bajrami";
+        case 'leaderPosition':
+          return "";
+        default:
+          return '';
       }
     }
     
@@ -1115,11 +1130,11 @@ export default function AboutUs() {
                     <div className="w-80 h-80 bg-white rounded-2xl p-4 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
                       <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
                         <img
-                          src={
-                            leadershipContent.leaderImage ||
-                            "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg"
-                          }
-                          alt={`${leadershipContent.leaderName || "Boris Madjunkov"} - ${leadershipContent.leaderPosition || "General Director"}`}
+                          // src={
+                          //   leadershipContent.leaderImage ||
+                          //   "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg"
+                          // }
+                          // alt={`${leadershipContent.leaderName || "Boris Madjunkov"} - ${leadershipContent.leaderPosition || "General Director"}`}
                           className="w-full h-full object-cover rounded-xl"
                         />
                       </div>
