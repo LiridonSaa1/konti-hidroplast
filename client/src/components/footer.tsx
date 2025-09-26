@@ -75,41 +75,41 @@ export function Footer() {
             >
               {getStaticDescription()}
             </p>
-            <div className="flex space-x-4" data-testid="footer-social">
-              {companyInfo.socialLinkedIn && (
-                <a
-                  href={companyInfo.socialLinkedIn}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors"
-                  data-testid="footer-linkedin"
-                >
-                  <FaLinkedin className="text-xl" />
-                </a>
-              )}
-              {companyInfo.socialFacebook && (
-                <a
-                  href={companyInfo.socialFacebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors"
-                  data-testid="footer-facebook"
-                >
-                  <FaFacebook className="text-xl" />
-                </a>
-              )}
-              {companyInfo.socialInstagram && (
-                <a
-                  href={companyInfo.socialInstagram}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-gray-400 hover:text-white transition-colors"
-                  data-testid="footer-instagram"
-                >
-                  <FaInstagram className="text-xl" />
-                </a>
-              )}
-            </div>
+              {/* <div className="flex space-x-4" data-testid="footer-social">
+                {companyInfo.socialLinkedIn && (
+                  <a
+                    href={companyInfo.socialLinkedIn}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-white transition-colors"
+                    data-testid="footer-linkedin"
+                  >
+                    <FaLinkedin className="text-xl" />
+                  </a>
+                )}
+                {companyInfo.socialFacebook && (
+                  <a
+                    href={companyInfo.socialFacebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-white transition-colors"
+                    data-testid="footer-facebook"
+                  >
+                    <FaFacebook className="text-xl" />
+                  </a>
+                )}
+                {companyInfo.socialInstagram && (
+                  <a
+                    href={companyInfo.socialInstagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-400 hover:text-white transition-colors"
+                    data-testid="footer-instagram"
+                  >
+                    <FaInstagram className="text-xl" />
+                  </a>
+                )}
+              </div> */}
           </div>
 
           {/* Quick Links */}

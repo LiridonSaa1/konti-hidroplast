@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Download, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface BrochureDownloadFormProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ interface DownloadFormData {
 }
 
 export function BrochureDownloadForm({ isOpen, onClose, onSuccess, brochure }: BrochureDownloadFormProps) {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<DownloadFormData>({
     fullName: "",
     email: "",
@@ -41,8 +43,8 @@ export function BrochureDownloadForm({ isOpen, onClose, onSuccess, brochure }: B
     
     if (!formData.fullName.trim() || !formData.email.trim() || !formData.companyName.trim()) {
       toast({
-        title: "Error",
-        description: "Please fill in all required fields",
+        title: t("brochureDownload.error"),
+        description: t("brochureDownload.fillRequiredFields"),
         variant: "destructive",
       });
       return;
@@ -53,8 +55,8 @@ export function BrochureDownloadForm({ isOpen, onClose, onSuccess, brochure }: B
 
     if (!brochure.pdfUrl) {
       toast({
-        title: "Error",
-        description: "Brochure PDF URL is missing. Please contact support.",
+        title: t("brochureDownload.error"),
+        description: t("brochureDownload.missingPdfUrl"),
         variant: "destructive",
       });
       return;
@@ -95,8 +97,8 @@ export function BrochureDownloadForm({ isOpen, onClose, onSuccess, brochure }: B
 
       // Show success message and open preview
       toast({
-        title: "Success",
-        description: "Brochure downloaded! Opening preview...",
+        title: t("brochureDownload.success"),
+        description: t("brochureDownload.downloadedOpeningPreview"),
       });
 
       // Open the PDF in a new tab for preview
@@ -120,8 +122,8 @@ export function BrochureDownloadForm({ isOpen, onClose, onSuccess, brochure }: B
     } catch (error) {
       console.error("Error tracking download:", error);
       toast({
-        title: "Error",
-        description: "Failed to track download. Please try again.",
+        title: t("brochureDownload.error"),
+        description: t("brochureDownload.failedToTrack"),
         variant: "destructive",
       });
     } finally {
@@ -139,7 +141,7 @@ export function BrochureDownloadForm({ isOpen, onClose, onSuccess, brochure }: B
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Download className="h-5 w-5 text-blue-600" />
-            Download Brochure
+            {t("brochureDownload.title")}
           </DialogTitle>
         </DialogHeader>
         
@@ -151,51 +153,51 @@ export function BrochureDownloadForm({ isOpen, onClose, onSuccess, brochure }: B
 
           <div className="space-y-2">
             <Label htmlFor="fullName">
-              Full Name <span className="text-red-500">*</span>
+              {t("brochureDownload.fullName")} <span className="text-red-500">*</span>
             </Label>
             <Input
               id="fullName"
               value={formData.fullName}
               onChange={(e) => handleInputChange("fullName", e.target.value)}
-              placeholder="Enter your full name"
+              placeholder={t("brochureDownload.fullNamePlaceholder")}
               required
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="email">
-              Email <span className="text-red-500">*</span>
+              {t("brochureDownload.email")} <span className="text-red-500">*</span>
             </Label>
             <Input
               id="email"
               type="email"
               value={formData.email}
               onChange={(e) => handleInputChange("email", e.target.value)}
-              placeholder="Enter your email address"
+              placeholder={t("brochureDownload.emailPlaceholder")}
               required
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="companyName">
-              Company Name <span className="text-red-500">*</span>
+              {t("brochureDownload.companyName")} <span className="text-red-500">*</span>
             </Label>
             <Input
               id="companyName"
               value={formData.companyName}
               onChange={(e) => handleInputChange("companyName", e.target.value)}
-              placeholder="Enter your company name"
+              placeholder={t("brochureDownload.companyNamePlaceholder")}
               required
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Description (Optional)</Label>
+            <Label htmlFor="description">{t("brochureDownload.description")}</Label>
             <Textarea
               id="description"
               value={formData.description}
               onChange={(e) => handleInputChange("description", e.target.value)}
-              placeholder="Tell us about your project or requirements"
+              placeholder={t("brochureDownload.descriptionPlaceholder")}
               rows={3}
             />
           </div>
@@ -208,7 +210,7 @@ export function BrochureDownloadForm({ isOpen, onClose, onSuccess, brochure }: B
               className="flex-1"
               disabled={isSubmitting}
             >
-              Cancel
+              {t("brochureDownload.cancel")}
             </Button>
             <Button
               type="submit"
@@ -218,12 +220,12 @@ export function BrochureDownloadForm({ isOpen, onClose, onSuccess, brochure }: B
               {isSubmitting ? (
                 <>
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Processing...
+                  {t("brochureDownload.processing")}
                 </>
               ) : (
                 <>
                   <Download className="h-4 w-4 mr-2" />
-                  Download PDF
+                  {t("brochureDownload.downloadPdf")}
                 </>
               )}
             </Button>

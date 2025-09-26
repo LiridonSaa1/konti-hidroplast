@@ -7,9 +7,9 @@ export function StatisticsSection() {
   const { t } = useLanguage();
 
   const statistics = [
-    { value: 15, labelKey: "stats.years", suffix: "+" },
-    { value: 9500, labelKey: "stats.products", suffix: "+" },
-    { value: 3000, labelKey: "stats.projects", suffix: "+" },
+    { value: 20, labelKey: "stats.years", suffix: "+" },
+    { value: 9000, labelKey: "stats.products", suffix: "+" },
+    { value: 500, labelKey: "stats.projects", suffix: "+" },
   ];
 
   return (

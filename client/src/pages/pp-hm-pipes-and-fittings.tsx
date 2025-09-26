@@ -201,8 +201,7 @@ function PPHMPipesAndFittingsPage() {
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
                 {t("ppHmPipes.ppHmKontiKan")}
                 <br />
-                <span className="text-red-500">{t("ppHmPipes.sewagePipe").split(" ")[0]}</span>
-                <br />
+                <span className="text-red-500">{t("ppHmPipes.sewagePipe").split(" ")[0]} </span>
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
                   {t("ppHmPipes.sewagePipe").split(" ")[1]}
                 </span>
@@ -396,7 +395,7 @@ function PPHMPipesAndFittingsPage() {
       </section>
 
       {/* PP HM Fittings Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50">
+      {/* <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
@@ -408,7 +407,6 @@ function PPHMPipesAndFittingsPage() {
             </div>
           </div>
 
-          {/* Fitting Tab Slider - matching water supply systems page design */}
           <div className="flex items-center justify-center mb-12">
             <button
               onClick={prevFittingTab}
@@ -450,7 +448,6 @@ function PPHMPipesAndFittingsPage() {
             </button>
           </div>
 
-          {/* Fitting Content */}
           {fittingTypes(t).map((fitting) => (
             <div
               key={fitting.id}
@@ -458,7 +455,6 @@ function PPHMPipesAndFittingsPage() {
             >
               <div className="bg-white rounded-2xl p-8 shadow-sm">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                  {/* Left Column - Fittings List */}
                   <div>
                     <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
                       {fitting.title}
@@ -497,7 +493,6 @@ function PPHMPipesAndFittingsPage() {
                     </div>
                   </div>
 
-                  {/* Right Column - Fitting Image */}
                   <div className="relative">
                     <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg overflow-hidden p-8 flex items-center justify-center">
                       <img
@@ -512,7 +507,7 @@ function PPHMPipesAndFittingsPage() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Contact Section */}
       <section className="py-20 bg-[#ffffff]">

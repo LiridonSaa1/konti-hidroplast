@@ -134,11 +134,10 @@ function ProductsPage() {
                 className="text-5xl md:text-6xl font-bold mb-8 leading-tight"
                 data-testid="products-hero-title"
               >
-                {t("productsPage.title").toUpperCase()}{" "}
-                <span className="text-red-500">{companyInfo.companyName?.split(' ')[0] || 'KONTI'}</span>
-                <br />
+                {t("productsPage.title").toUpperCase()}
+                <span className="text-red-500">   {'URBAN'} </span>
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  {companyInfo.companyName?.split(' ').slice(1).join(' ') || 'HIDROPLAST'}
+                  {'ROHR'}
                 </span>
               </h1>
               <p

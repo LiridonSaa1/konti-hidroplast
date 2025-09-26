@@ -420,7 +420,7 @@ function GasPipelineSystemsPage() {
         </div>
       </section>
       {/* Gas Fittings Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50">
+      {/* <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
@@ -432,7 +432,6 @@ function GasPipelineSystemsPage() {
             </div>
           </div>
 
-          {/* Fitting Tab Slider */}
           <div className="flex items-center justify-center mb-12">
             <button
               onClick={prevFittingTab}
@@ -474,7 +473,6 @@ function GasPipelineSystemsPage() {
             </button>
           </div>
 
-          {/* Fitting Content */}
           {gasFittingTypes.map((fitting) => (
             <div
               key={fitting.id}
@@ -482,7 +480,6 @@ function GasPipelineSystemsPage() {
             >
               <div className="bg-white rounded-2xl p-8 shadow-sm">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-                  {/* Left Column - Fittings List */}
                   <div>
                     <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
                       {fitting.title}
@@ -522,7 +519,6 @@ function GasPipelineSystemsPage() {
                     </div>
                   </div>
 
-                  {/* Right Column - Fitting Image */}
                   <div className="relative">
                     <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg overflow-hidden p-8 flex items-center justify-center">
                       <img
@@ -537,7 +533,7 @@ function GasPipelineSystemsPage() {
             </div>
           ))}
         </div>
-      </section>
+      </section> */}
       {/* Contact Section */}
       <section className="py-20 bg-[#ffffff]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

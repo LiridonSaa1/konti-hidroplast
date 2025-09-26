@@ -89,7 +89,7 @@ export function HeroSection() {
 
 
         {/* Social Media Links */}
-        <div className="flex justify-center space-x-6 mb-8" data-testid="social-links">
+        {/* <div className="flex justify-center space-x-6 mb-8" data-testid="social-links">
           {companyInfo.socialLinkedIn && (
             <a
               href={companyInfo.socialLinkedIn}
@@ -129,7 +129,7 @@ export function HeroSection() {
               <FaInstagram className="text-3xl" />
             </a>
           )}
-        </div>
+        </div> */}
 
 
       </div>

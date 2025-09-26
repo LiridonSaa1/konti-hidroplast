@@ -117,11 +117,8 @@ function CableProtectionPage() {
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                {t("cableProtection.cableProtection")}<span className="text-red-500"> {t("cableProtection.systems")}</span>
+                {t("cableProtection.cableProtection").toUpperCase()}<span className="text-red-500"> {t("cableProtection.systems")}</span>
                 <br />
-                <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  {t("cableProtection.systems")}
-                </span>
               </h1>
               <p
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
