@@ -8,7 +8,7 @@ import { useLocation } from "wouter";
 import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 import { BrochureDownloadForm } from "@/components/BrochureDownloadForm";
 import URBAN_ROHR_CATALOGS from "../../public/attached_assets/URBAN.png";
-import URBAN_ROHR_CATALOGS_PDF from "../../public/attached_assets/URBANROHR(PDF).pdf";
+// import URBAN_ROHR_CATALOGS_PDF from "../../public/attached_assets/URBANROHR(PDF).pdf";
 // Brochures data organized by category (static)
 const brochureCategories = [
   {
@@ -18,7 +18,7 @@ const brochureCategories = [
       {
         title: "URBAN ROHR CATALOGS",
         image: URBAN_ROHR_CATALOGS,
-        downloadUrl: URBAN_ROHR_CATALOGS_PDF,
+        // downloadUrl: URBAN_ROHR_CATALOGS_PDF,
       },
     ],
   },
