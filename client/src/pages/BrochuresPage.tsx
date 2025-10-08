@@ -151,6 +151,20 @@ function BrochuresPage() {
   // Update active tab when language changes
   useEffect(() => {
     if (groupedBrochures.length > 0) {
+      // Read category from query param if present
+      const urlParams = new URLSearchParams(window.location.search);
+      const requestedCategory = (urlParams.get('category') || '').toLowerCase();
+
+      if (requestedCategory) {
+        const match = groupedBrochures.find(cat => cat.id === requestedCategory);
+        if (match) {
+          const matchIndex = groupedBrochures.findIndex(cat => cat.id === requestedCategory);
+          setActiveTab(match.id);
+          setActiveTabIndex(matchIndex >= 0 ? matchIndex : 0);
+          return;
+        }
+      }
+
       const currentCategory = groupedBrochures.find(cat => cat.id === activeTab);
       if (!currentCategory) {
         setActiveTab(groupedBrochures[0].id);

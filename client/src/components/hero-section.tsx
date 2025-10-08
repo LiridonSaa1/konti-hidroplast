@@ -59,13 +59,15 @@ export function HeroSection() {
             </div>
           </div>
         ) : (
-          // YouTube iframe with autoplay and loop
-          <iframe
-            src="https://www.youtube.com/embed/R7b9-m_EM2s?autoplay=1&mute=1&loop=1&playlist=R7b9-m_EM2s&controls=1&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1"
-            title={t("hero.videoTitle")}
-            className="video-fullscreen"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
+          <video
+            src="https://res.cloudinary.com/dq9evtw8g/video/upload/v1759933307/Konti_Hidroplast_-_Corporate_2024_-_Konti_Hidroplast_720p_h264_youtube_qo8lem.mp4"
+            className="w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            aria-hidden="true"
             data-testid="hero-video"
           />
         )}

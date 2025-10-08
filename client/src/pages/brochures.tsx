@@ -7,145 +7,41 @@ import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 import { BrochureDownloadForm } from "@/components/BrochureDownloadForm";
-
-// Brochures data organized by category
+import URBAN_ROHR_CATALOGS from "../../public/attached_assets/URBAN.png";
+import URBAN_ROHR_CATALOGS_PDF from "../../public/attached_assets/URBANROHR(PDF).pdf";
+// Brochures data organized by category (static)
 const brochureCategories = [
   {
-    id: "water-supply",
-    title: "Water-supply Systems",
+    id: "statistics",
+    title: "URBAN ROHR CATALOGS",
     brochures: [
       {
-        title: "PE 80/100",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pe-80-100-en.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf",
-      },
-      {
-        title: "PE 100 RC",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pe-100-rc-en.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-PE100-RC_EN_2021_compressed.pdf",
-      },
-      {
-        title: "PE FITTINGS FOR BUTT WELDING",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pe-elektrofuzioni-fitinzi.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf",
-      },
-      {
-        title: "ELECTROFUSION FITTINGS",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pe_fitinzi_za_celno_zavaruvanje.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/08/Broshura-Water-Pipes_EN_2021_compressed.pdf",
+        title: "URBAN ROHR CATALOGS",
+        image: URBAN_ROHR_CATALOGS,
+        downloadUrl: URBAN_ROHR_CATALOGS_PDF,
       },
     ],
   },
-  {
-    id: "sewerage",
-    title: "Sewerage Systems",
-    brochures: [
-      {
-        title: "KONTI KAN",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-cevki-en.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-cevki-en.pdf",
-      },
-      {
-        title: "KONTI KAN SPIRAL",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral-cevki-en.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral-cevki-en.pdf",
-      },
-      {
-        title: "KONTI KAN FITTINGS",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-fitinzi.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-fitinzi.pdf",
-      },
-      {
-        title: "KONTI KAN PPHM FITTINGS",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-pp-hm-2023-en.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-fitinzi.pdf",
-      },
-      {
-        title: "KONTI KAN PPHM",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-pp-hm-2023-en-1.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-pp-hm-2023-en.pdf",
-      },
-      {
-        title: "PPHM HIGH PERFORMANCE",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-visoki-performansi-en-1.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/pphm-visoki-performansi-en.pdf",
-      },
-      {
-        title: "DRAINAGE PIPES",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-drenaza-en-1.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-drenaza-en.pdf",
-      },
-      {
-        title: "POLYPROPYLENE MANHOLES",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/polipropilenski-sahti-en-1.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/polipropilenski-sahti-en.pdf",
-      },
-    ],
-  },
-  {
-    id: "gas",
-    title: "Gas Systems",
-    brochures: [
-      {
-        title: "GAS PIPES",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/priroden-gas-en.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/priroden-gas-en.pdf",
-      },
-      {
-        title: "PETROL GAS",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/petrol-gas-en.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/petrol-gas-en.pdf",
-      },
-    ],
-  },
-  {
-    id: "cable-protection",
-    title: "Cable Protection",
-    brochures: [
-      {
-        title: "KONTI KAN DUCT",
-        image:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-dakt-en.jpg",
-        downloadUrl:
-          "https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/konti-kan-dakt-en.pdf",
-      },
-    ],
-  },
+  // {
+  //   id: "cable-protection",
+  //   title: "Cable Protection",
+  //   brochures: [
+  //     {
+  //       title: "KONTI KAN DUCT",
+  //       image:
+  //         "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-dakt-en.jpg",
+  //       downloadUrl:
+  //         "https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/konti-kan-dakt-en.pdf",
+  //     },
+  //   ],
+  // },
 ];
 
 function BrochuresPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
   const { data: companyInfo } = useCompanyInfo();
-  const [activeTab, setActiveTab] = useState("water-supply");
+  const [activeTab, setActiveTab] = useState(brochureCategories[0].id);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const [selectedBrochure, setSelectedBrochure] = useState<{
     id: string;
@@ -218,7 +114,7 @@ function BrochuresPage() {
                 {t("productPages.andCatalogs")}
               </span>
             </h1>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            <p className="text-xl text-white max-w-3xl mx-auto mb-8">
               {t("productPages.brochuresDescription")}
             </p>
           </div>
@@ -289,11 +185,11 @@ function BrochuresPage() {
                 // Single brochure - show larger and centered
                 <div className="flex justify-center">
                   <div className="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-                    <div className="aspect-[1/4] bg-gray-100">
+                    <div className=" bg-gray-100">
                       <img
                         src={category.brochures[0].image}
                         alt={category.brochures[0].title}
-                        className="w-full h-full object-cover"
+                        className="w-full object-cover"
                       />
                     </div>
                     <div className="p-8 text-center">

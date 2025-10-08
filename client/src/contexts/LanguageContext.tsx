@@ -44,6 +44,7 @@ const translations = {
     "nav.products.cableProtection": "Cable Protection",
     "nav.downloads.brochures": "Brochures",
     "nav.downloads.certificates": "Certificates",
+    "nav.downloads.statistics": "Statistics",
     "nav.contact.career": "Career",
 
     // Hero Section
@@ -299,7 +300,7 @@ const translations = {
     "waterSupply.premiumQuality": "Premium Quality",
     "waterSupply.technicalSpecifications": "Technical Specifications",
     "waterSupply.colorDescription": "The pipes' color is black with an inner white layer and coextruded blue lines, or blue with an inner white layer.",
-    "waterSupply.diameterRange": "The range of diameters is from DN 16mm to DN 630mm, and the pressures are from PN 6 to PN 32 bar.",
+    "waterSupply.diameterRange": "The range of diameters is from DN 16mm to DN 800mm, and the pressures are from PN 6 to PN 32 bar.",
     "waterSupply.smallPipesDescription": "Pipes of the DN-16-110mm range are easily bended, so they can be wound in coils of different lengths, and the requirements for fittings and the time for installation can be reduced. Pipes of range 125-800mm are produced in straight pipes of 6 or 12m.",
     "waterSupply.generalProperties": "General Properties",
     "waterSupply.lowSpecificWeight": "Low specific weight",
@@ -315,7 +316,7 @@ const translations = {
     "waterSupply.pe100": "PE-100",
     "waterSupply.pe100RC": "PE-100 RC",
     "waterSupply.pe80Description": "High density polyethylene pipes designed for medium-pressure water supply applications",
-    "waterSupply.designStress": "Design stress: σ=6.3МПа",
+    "waterSupply.designStress": "Design stress: σ=6.3 MPa",
     "waterSupply.mrs": "MRS: 8",
     "waterSupply.factorOfSafety": "Factor of safety: C=1.25",
     "waterSupply.color": "Color: black with blue coextruded lines or light blue",
@@ -368,7 +369,7 @@ const translations = {
     // PE Pipe Specifications
 
     "waterSupply.pe100Description": "Third generation PE of high density for high-pressure applications and critical utility services",
-    "waterSupply.pe100DesignStress": "Design stress: σ=8.0 МПа",
+    "waterSupply.pe100DesignStress": "Design stress: σ=8.0 MPa",
     "waterSupply.pe100MRS": "MRS: 10",
     "waterSupply.pe100FactorOfSafety": "Factor of safety: C=1.25",
     "waterSupply.pe100Color": "Color: black with blue coextruded lines or blue",
@@ -1487,10 +1488,11 @@ const translations = {
     "nav.products.ppMlCompact": "ПП МЛ компактни цевки ОД",
     "nav.products.manholes": "Шахти",
     "nav.products.drainage": "Конти Кан дренажа",
-    "nav.products.gasPipeline": "Систем за гасоводи",
-    "nav.products.cableProtection": "Заштита на кабли",
     "nav.downloads.brochures": "Брошури",
     "nav.downloads.certificates": "Сертификати",
+    "nav.downloads.statistics": "Статистика",
+    "nav.products.gasPipeline": "Систем за гасоводи",
+    "nav.products.cableProtection": "Заштита на кабли",
     "nav.contact.career": "Кариера",
 
     // Hero Section
@@ -2925,6 +2927,7 @@ const translations = {
     "nav.products.cableProtection": "Kabelschutz",
     "nav.downloads.brochures": "Broschüren",
     "nav.downloads.certificates": "Zertifikate",
+    "nav.downloads.statistics": "Statistiken",
     "nav.contact.career": "Karriere",
 
     // Hero Section
@@ -3262,7 +3265,7 @@ const translations = {
     "waterSupply.pe100": "PE-100",
     "waterSupply.pe100RC": "PE-100 RC",
     "waterSupply.pe80Description": "Hochdichte Polyethylenrohre für Mitteldruckwasserversorgungsanwendungen",
-    "waterSupply.designStress": "Bemessungsspannung: σ=6.3МПа",
+    "waterSupply.designStress": "Bemessungsspannung: σ=6.3 MPa",
     "waterSupply.mrs": "MRS: 8",
     "waterSupply.factorOfSafety": "Sicherheitsfaktor: C=1.25",
     "waterSupply.color": "Farbe: schwarz mit blauen koextrudierten Linien oder hellblau",
@@ -3315,7 +3318,7 @@ const translations = {
     // PE Pipe Specifications
 
     "waterSupply.pe100Description": "Dritte Generation PE hoher Dichte für Hochdruckanwendungen und kritische Versorgungsdienstleistungen",
-    "waterSupply.pe100DesignStress": "Bemessungsspannung: σ=8.0 МПа",
+    "waterSupply.pe100DesignStress": "Bemessungsspannung: σ=8.0 MPa",
     "waterSupply.pe100MRS": "MRS: 10",
     "waterSupply.pe100FactorOfSafety": "Sicherheitsfaktor: C=1.25",
     "waterSupply.pe100Color": "Farbe: schwarz mit blauen koextrudierten Linien oder blau",
