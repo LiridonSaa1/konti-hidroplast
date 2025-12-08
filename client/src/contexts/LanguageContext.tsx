@@ -2933,9 +2933,9 @@ const translations = {
     "nav.contact.career": "Karriere",
 
     // Hero Section
-    "hero.title.line1": "Unvergleichliche europäische",
-    "hero.title.line2": "Standards",
-    "hero.title.line3": "für Rohrleitungspräzision",
+    "hero.title.line1": "Technik, die schützt.",
+    "hero.title.line2": "Qualität, die überzeugt.",
+    "hero.title.line3": "Rohre, die performen.",
     "hero.banner.title": "HOCHWERTIGE ROHRE",
     "hero.banner.subtitle": "FORTSCHRITT DURCH INNOVATION",
     "hero.videoTitle": "Unternehmensvideo",
@@ -2966,10 +2966,10 @@ const translations = {
     "products.title": "Produkte",
     "products.subtitle":
       "Hochwertige PE- und PP-Rohrlösungen für verschiedene Anwendungen",
-    "products.waterSupply": "WASSERVERSORGUNGS",
+    "products.waterSupply": "WASSERVERSORGUNGSSYSTEM",
     "products.sewerage": "ABWASSERSYSTEME",
-    "products.gasPipeline": "GASLEITUNGSSYSTEM",
-    "products.cableProtection": "KABELSCHUTZ",
+    "products.gasPipeline": "GASLEITUNGSSYSTEME",
+    "products.cableProtection": "KABELSCHUTZSYSTEME",
     "products.learnMore": "Mehr erfahren",
     "products.pe.title": "PE-Rohre",
     "products.pe.description":

@@ -317,7 +317,11 @@ function ProductsPage() {
                   </h3>
 
                   {/* Learn More Button */}
-                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                  <a
+                    href="/konti-kan-pipes-and-fittings"
+                    className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
+                    data-testid="button-water-supply-learn-more"
+                  >
                     <span>{t('products.learnMore')}</span>
                     <svg
                       className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
@@ -332,7 +336,7 @@ function ProductsPage() {
                         d="M9 5l7 7-7 7"
                       />
                     </svg>
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -360,7 +364,11 @@ function ProductsPage() {
                   </h3>
 
                   {/* Learn More Button */}
-                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                  <a
+                    href="/products/gas-pipeline-systems"
+                    className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
+                    data-testid="button-water-supply-learn-more"
+                  >
                     <span>{t('products.learnMore')}</span>
                     <svg
                       className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
@@ -375,7 +383,7 @@ function ProductsPage() {
                         d="M9 5l7 7-7 7"
                       />
                     </svg>
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -403,7 +411,11 @@ function ProductsPage() {
                   </h3>
 
                   {/* Learn More Button */}
-                  <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
+                  <a
+                    href="/products/cable-protection"
+                    className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
+                    data-testid="button-water-supply-learn-more"
+                  >
                     <span>{t('products.learnMore')}</span>
                     <svg
                       className="w-4 h-4 ml-2 group-hover:ml-3 transition-all duration-300"
@@ -418,7 +430,7 @@ function ProductsPage() {
                         d="M9 5l7 7-7 7"
                       />
                     </svg>
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
