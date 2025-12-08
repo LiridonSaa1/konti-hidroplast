@@ -1,5 +1,5 @@
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
-import { MapPin, Phone } from "lucide-react";
+import { Building2Icon, Globe, Mail, MapPin, Phone } from "lucide-react";
 import logoWhite from "@assets/urban-rohr-logo-white.svg";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCompanyInfo } from "@/hooks/use-company-info";
@@ -22,6 +22,7 @@ export function Footer() {
     { labelKey: "footer.news", path: "/news" },
     { labelKey: "footer.contact", path: "/", isContact: true },
     { labelKey: "footer.privacyPolicy", path: "/privacy-policy" },
+    { labelKey: "footer.Impressum", path: "/" },
   ];
 
   const getStaticDescription = () => {
@@ -159,22 +160,15 @@ export function Footer() {
               {t('footer.contactInfo')}
             </h4>
             <div className="space-y-4 text-gray-300">
-              {companyInfo.address && (
-                <div className="flex items-start" data-testid="footer-address">
-                  <MapPin className="text-gray-300 mr-3 mt-1 flex-shrink-0" />
-                  <span>{companyInfo.address}</span>
+              <div className="flex items-start" data-testid="footer-phone">
+                <div className="">
+                  <div className="flex items-center gap-2"><Building2Icon className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> Urban Rohr GmbH</div>
+                  <div className="flex items-center gap-2 mt-2"><MapPin className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> Karlsdorfer Straße 56,88069, Tettnang</div>
+                  <div className="flex items-center gap-2 mt-2"><Phone className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> +49 7542 9396210</div>
+                  <div className="flex items-center gap-2 mt-2"><Mail className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> kontakt@urban-rohr.com</div>
+                  <div className="flex items-center gap-2 mt-2"><Globe className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> www.urban-rohr.com</div>
                 </div>
-              )}
-              {companyInfo.phones.length > 0 && (
-                <div className="flex items-start" data-testid="footer-phone">
-                  <Phone className="text-gray-300 mr-3 mt-1 flex-shrink-0" />
-                  <div>
-                    {companyInfo.phones.map((phone, index) => (
-                      <div key={index}>{phone}</div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              </div>
             </div>
           </div>
         </div>

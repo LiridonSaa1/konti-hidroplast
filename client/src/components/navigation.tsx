@@ -551,14 +551,16 @@ export function Navigation() {
         <div className="flex justify-between items-center h-24">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <img
-              src={isScrolled ? logoScrolled : logoDefault}
-              alt="Urban Rohr"
-              className="h-14 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
-              onClick={scrollToTop}
-              data-testid="logo"
-              style={isScrolled ? { filter: 'brightness(0) saturate(100%) invert(17%) sepia(25%) saturate(1349%) hue-rotate(205deg) brightness(97%) contrast(95%)' } : {}}
-            />
+            <a href="/">
+              <img
+                src={isScrolled ? logoScrolled : logoDefault}
+                alt="Urban Rohr"
+                className="h-14 w-auto nav-logo-enhanced cursor-pointer transition-all duration-300"
+                onClick={scrollToTop}
+                data-testid="logo"
+                style={isScrolled ? { filter: 'brightness(0) saturate(100%) invert(17%) sepia(25%) saturate(1349%) hue-rotate(205deg) brightness(97%) contrast(95%)' } : {}}
+              />
+            </a>
           </div>
 
           {/* Desktop Navigation */}

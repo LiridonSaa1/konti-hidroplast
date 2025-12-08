@@ -878,11 +878,7 @@ export default function AboutUs() {
               </Badge>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
                 {t("aboutUs.title").toUpperCase()}{" "}
-                <span className="text-red-500">KONTI</span>
-                <br />
-                <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  HIDROPLAST
-                </span>
+                
               </h1>
               <p className="text-xl text-gray-300 mb-8 leading-relaxed">
                 {t("aboutUs.heroSubtitle")}
@@ -941,10 +937,6 @@ export default function AboutUs() {
 
           <div className="prose prose-lg max-w-none">
             <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 mb-12">
-              <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                {t("about.text1")}
-              </p>
-
               <p className="text-lg leading-relaxed text-gray-700 mb-6">
                 {t("aboutUs.companyStoryText1")}
               </p>
@@ -1130,11 +1122,7 @@ export default function AboutUs() {
                     <div className="w-80 h-80 bg-white rounded-2xl p-4 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
                       <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
                         <img
-                          // src={
-                          //   leadershipContent.leaderImage ||
-                          //   "/attached_assets/Boris-Madjunkov-General-Manager-600x600_1755184653598.jpg"
-                          // }
-                          // alt={`${leadershipContent.leaderName || "Boris Madjunkov"} - ${leadershipContent.leaderPosition || "General Director"}`}
+                          src="https://res.cloudinary.com/dq9evtw8g/image/upload/v1765193146/Logo_PDF_page-0001_kspf2o.jpg"
                           className="w-full h-full object-cover rounded-xl"
                         />
                       </div>
@@ -1193,7 +1181,7 @@ export default function AboutUs() {
                       <div className="flex items-center space-x-4">
                         <div className="w-12 h-0.5 bg-blue-200"></div>
                         <span className="text-sm text-white/70 font-medium tracking-wider">
-                          KONTI HIDROPLAST
+                          URBAN ROHR GMBH
                         </span>
                       </div>
                     </div>
