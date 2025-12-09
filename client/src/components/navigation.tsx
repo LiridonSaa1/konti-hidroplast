@@ -100,6 +100,7 @@ export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const [isHoveringDropdownArea, setIsHoveringDropdownArea] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileDropdowns, setMobileDropdowns] = useState<Record<string, boolean>>({});
@@ -109,6 +110,32 @@ export function Navigation() {
   const navigationItems = useNavigationItems(t);
   const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const dropdownContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    // Close desktop dropdown when clicking anywhere outside the dropdown trigger/content
+    if (!openDropdown) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node;
+
+      const isInTriggerContainer =
+        !!dropdownContainerRef.current?.contains(target);
+
+      // Dropdown content is rendered in a portal; detect clicks inside it via class
+      const dropdownContentEl = document.querySelector(".nav-dropdown");
+      const isInDropdownContent = dropdownContentEl
+        ? dropdownContentEl.contains(target)
+        : false;
+
+      if (!isInTriggerContainer && !isInDropdownContent) {
+        setOpenDropdown(null);
+        setOpenSubmenu(null);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [openDropdown]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -402,14 +429,10 @@ export function Navigation() {
         key={item.label}
         modal={false}
         open={isOpen}
-        onOpenChange={() => {
-          // Prevent automatic closing
-        }}
+        onOpenChange={() => {}}
       >
         <div
           ref={dropdownContainerRef}
-          onMouseEnter={() => handleDropdownMouseEnter(item.label)}
-          onMouseLeave={handleDropdownMouseLeave}
         >
           <DropdownMenuTrigger asChild>
             <button
@@ -420,6 +443,14 @@ export function Navigation() {
               }`}
               style={isParentActive ? { color: "#eb2127" } : {}}
               data-testid={`nav-${item.label.toLowerCase()}`}
+              onClick={(e) => {
+                e.preventDefault();
+                const willOpen = !isOpen;
+                setOpenDropdown(willOpen ? item.label : null);
+                if (!willOpen) {
+                  setOpenSubmenu(null);
+                }
+              }}
             >
               {item.label}
               <ChevronDown
@@ -432,12 +463,11 @@ export function Navigation() {
             className="nav-dropdown w-56 bg-white shadow-lg border-0 z-50"
             sideOffset={8}
             onCloseAutoFocus={(event) => event.preventDefault()}
-            onMouseEnter={handleDropdownAreaMouseEnter}
-            onMouseLeave={handleDropdownAreaMouseLeave}
             onInteractOutside={(event) => {
               // Only close if clicking outside, not on hover
               if (event.type === "pointerdown") {
                 setOpenDropdown(null);
+                setOpenSubmenu(null);
               } else {
                 event.preventDefault();
               }
@@ -445,24 +475,44 @@ export function Navigation() {
             onEscapeKeyDown={(event) => {
               event.preventDefault();
               setOpenDropdown(null);
+              setOpenSubmenu(null);
             }}
           >
             {item.items.map((subItem, index) => {
               if (subItem.items && subItem.items.length > 0) {
                 // Nested dropdown for sewerage systems
                 return (
-                  <DropdownMenuSub key={index}>
+                  <DropdownMenuSub
+                    key={index}
+                    open={openSubmenu === subItem.label}
+                    onOpenChange={() => {}}
+                  >
                     <DropdownMenuSubTrigger
                       className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium text-konti-gray hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
-                      onMouseEnter={handleDropdownAreaMouseEnter}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setOpenSubmenu((prev) =>
+                          prev === subItem.label ? null : subItem.label,
+                        );
+                      }}
                     >
                       <span>{subItem.label}</span>
                     </DropdownMenuSubTrigger>
                     <DropdownMenuSubContent
                       className="w-56 bg-white shadow-lg border-0 z-50"
                       sideOffset={8}
-                      onMouseEnter={handleDropdownAreaMouseEnter}
-                      onMouseLeave={handleDropdownAreaMouseLeave}
+                      onInteractOutside={(event) => {
+                        if (event.type === "pointerdown") {
+                          setOpenSubmenu(null);
+                        } else {
+                          event.preventDefault();
+                        }
+                      }}
+                      onEscapeKeyDown={(event) => {
+                        event.preventDefault();
+                        setOpenSubmenu(null);
+                      }}
                     >
                       {subItem.items.map((nestedItem, nestedIndex) => {
                         const isNestedActive = location === nestedItem.href;
@@ -470,12 +520,15 @@ export function Navigation() {
                           <DropdownMenuItem
                             key={nestedIndex}
                             onClick={() =>
-                              handleDropdownClick(
-                                nestedItem.href,
-                                nestedItem.external,
-                              )
+                              {
+                                handleDropdownClick(
+                                  nestedItem.href,
+                                  nestedItem.external,
+                                );
+                                setOpenDropdown(null);
+                                setOpenSubmenu(null);
+                              }
                             }
-                            onMouseEnter={handleDropdownAreaMouseEnter}
                             className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
                             style={isNestedActive ? { color: "#eb2127", backgroundColor: "#fef2f2" } : {}}
                             data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase()}-${nestedItem.label.toLowerCase().replace(/\s+/g, "-")}`}
@@ -503,8 +556,9 @@ export function Navigation() {
                         e.preventDefault();
                         e.stopPropagation();
                         handleBrochureDownload();
+                        setOpenDropdown(null);
+                        setOpenSubmenu(null);
                       }}
-                      onMouseEnter={handleDropdownAreaMouseEnter}
                       className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
                       data-testid={`nav-${item.label.toLowerCase()}-download-brochure`}
                     >
@@ -517,9 +571,12 @@ export function Navigation() {
                   <DropdownMenuItem
                     key={index}
                     onClick={() =>
-                      handleDropdownClick(subItem.href, subItem.external)
+                      {
+                        handleDropdownClick(subItem.href, subItem.external);
+                        setOpenDropdown(null);
+                        setOpenSubmenu(null);
+                      }
                     }
-                    onMouseEnter={handleDropdownAreaMouseEnter}
                     className="nav-dropdown-item cursor-pointer hover:bg-gray-50 flex items-center justify-between text-sm font-medium hover:text-konti-blue focus:bg-gray-50 focus:text-konti-blue focus:outline-none"
                     style={isSubItemActive ? { color: "#eb2127", backgroundColor: "#fef2f2" } : {}}
                     data-testid={`nav-${item.label.toLowerCase()}-${subItem.label.toLowerCase().replace(/\s+/g, "-")}`}

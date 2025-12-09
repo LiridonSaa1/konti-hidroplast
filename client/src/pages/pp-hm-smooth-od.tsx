@@ -12,6 +12,7 @@ import {
   CheckCircle,
   ChevronLeft,
   ChevronRight,
+  Check,
 } from "lucide-react";
 
 // PP-HM Smooth OD pipes translation helper function
@@ -97,7 +98,15 @@ function PPHMSmoothODPage() {
   const [, setLocation] = useLocation();
   const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("pp-hm-smooth-od");
-
+  const [activeProductTab, setActiveProductTab] = useState<"hdpe" | "pphm" | "spiral" | "ppml" | "manholes" | "drainage">("ppml");
+  const productTabs = [
+    { id: "hdpe", label: t("nav.products.hdpeKontiKan") },
+    { id: "pphm", label: t("nav.products.pphmKontiKan") },
+    { id: "spiral", label: t("nav.products.spiralKontiKan") },
+    { id: "ppml", label: t("nav.products.ppMlCompact") },
+    { id: "manholes", label: t("nav.products.manholes") },
+    { id: "drainage", label: t("nav.products.drainage") },
+  ];
   const handleBrochureDownload = (product: any) => {
     // Redirect to brochures page with parameter to auto-open modal
     setLocation('/brochures?from=products');
@@ -138,34 +147,34 @@ function PPHMSmoothODPage() {
                 </span>
               </div>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                PP-HM SMOOTH OD
+              PP-HM GLATTMANTEL-
                 <br />
-                <span className="text-red-500">PIPES</span>
+                <span className="text-red-500">ROHRE</span>
                 <br />
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  MANUFACTURING
+                Herstellung
                 </span>
               </h1>
               <p
                 className="text-xl text-gray-300 mb-8 leading-relaxed"
                 data-testid="hero-description"
               >
-                PP-HM (Polypropylene High Modulus) smooth OD pipes are high-performance thermoplastic pipes designed for demanding applications in sewage, drainage, and industrial systems.
+               PP-HM (Polypropylen High Modulus) Glattmantelrohre sind leistungsstarke thermoplastische Rohre, die für anspruchsvolle Anwendungen in Abwasser-, Entwässerungs- und industriellen Systemen entwickelt wurden.
               </p>
               <div className="flex flex-wrap gap-4">
                 <div className="flex items-center gap-2 text-blue-300">
                   <CheckCircle className="w-5 h-5" />
                   <span className="text-sm font-medium">
-                    50+ Years Lifespan
+                    Lebensdauer von über 50 Jahren
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-green-300">
                   <CheckCircle className="w-5 h-5" />
-                  <span className="text-sm font-medium">Fully Recyclable</span>
+                  <span className="text-sm font-medium">Vollständig recycelbar</span>
                 </div>
                 <div className="flex items-center gap-2 text-yellow-300">
                   <CheckCircle className="w-5 h-5" />
-                  <span className="text-sm font-medium">High Stiffness & Strength</span>
+                  <span className="text-sm font-medium">Hohe Steifigkeit und Festigkeit</span>
                 </div>
               </div>
             </div>
@@ -193,7 +202,7 @@ function PPHMSmoothODPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Technical Specifications
+                Technische Spezifikationen
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -202,24 +211,604 @@ function PPHMSmoothODPage() {
           <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 max-w-6xl mx-auto">
             <div className="space-y-6 text-gray-700">
               <p className="text-lg leading-relaxed">
-                PP-HM smooth OD pipes offer exceptional strength, chemical resistance, and durability, making them ideal for both pressure and non-pressure applications in challenging environments.
+              PP-HM Glattmantelrohre bieten außergewöhnliche Festigkeit, hohe chemische Beständigkeit und hervorragende Haltbarkeit. Dadurch eignen sie sich ideal für Druck- und Nichtdruckanwendungen in anspruchsvollen Umgebungen.
               </p>
               <p className="text-lg leading-relaxed">
-                <strong>Production standard:</strong> EN 13476-2:2007 (Type А1) and ONR 201513:2011
+                <strong>Produktionsstandards:</strong> EN 13476-2:2007 (Typ A1) und ONR 201513:2011
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* PP-HM Smooth OD Pipes Section */}
-      <section className="py-20 bg-[#1c2d56]">
+     {/* Sewerage sub-products tabs */}
+     <section className="py-6 bg-[#1c2d56]">
+        <div className="max-w-6xl mx-auto px-1 sm:px-6 lg:px-1">
+          <div className="bg-white/10 rounded-xl p-2 flex flex-wrap gap-3">
+            {productTabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveProductTab(tab.id as typeof activeProductTab)}
+                className={`px-4 py-2 rounded-lg text-sm md:text-base transition-all ${
+                  activeProductTab === tab.id
+                    ? "bg-white text-[#1c2d56] font-semibold shadow"
+                    : "text-white/90 hover:text-white hover:bg-white/10"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* HDPE Konti Kan Pipes Section */}
+      {activeProductTab === "hdpe" && (
+      <section className="py-10 bg-[#1c2d56]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-white">
-                Material Properties
+                {t("sewagePipes.hdpeKontiKanPipes")}
+              </h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+          </div>
+
+          {/* Tab Content */}
+          <div className="transition-all duration-500">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              <div>
+                <h3 className="text-3xl font-bold text-white mb-4">
+                  {t("sewagePipes.hdpeKontiKanTitle")}
+                </h3>
+                <p className="text-white mb-6">
+                  {t("sewagePipes.pipeDescription")}
+                </p>
+
+                <h4 className="text-xl font-bold text-white mb-4">
+                  {t("sewagePipes.materialProperties")}
+                </h4>
+                <div className="space-y-3 mb-6">
+                  {[
+                    t("sewagePipes.hdpeMaterial"),
+                    t("sewagePipes.lightweightDurable"),
+                    t("sewagePipes.chemicalResistance"),
+                    t("sewagePipes.nonCorrosive"),
+                  ].map((property, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{property}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <h4 className="text-xl font-bold text-white mb-4">
+                  {t("sewagePipes.application")}
+                </h4>
+                <div className="space-y-3 mb-6">
+                  {[
+                    t("sewagePipes.municipalSewage"),
+                    t("sewagePipes.stormwaterDrainage"),
+                    t("sewagePipes.industrialWastewater"),
+                    t("sewagePipes.agriculturalDrainage"),
+                  ].map((application, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{application}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <h4 className="text-xl font-bold text-white mb-4">
+                  {t("sewagePipes.characteristics")}
+                </h4>
+                <div className="space-y-3 mb-8">
+                  {[
+                    t("sewagePipes.stiffnessRatings"),
+                    t("sewagePipes.dimensionRange"),
+                    t("sewagePipes.color"),
+                    t("sewagePipes.smoothInnerSurface"),
+                    t("sewagePipes.highFlowCapacity"),
+                    t("sewagePipes.corrugatedOuterWall"),
+                    t("sewagePipes.uvResistance"),
+                    t("sewagePipes.flexibleResistant"),
+                    t("sewagePipes.serviceLife"),
+                    t("sewagePipes.easyHandling"),
+                    t("sewagePipes.temperatureRange"),
+                    t("sewagePipes.fullyRecyclable"),
+                  ].map((characteristic, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{characteristic}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap gap-4">
+                  <button
+                    onClick={() => handleBrochureDownload({
+                      id: 'konti-kan-pipes',
+                      title: 'Konti Kan Pipes and Fittings',
+                      brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-Konti-Kan-siv_EN-2021-so-korekcii-MART-2021-2.pdf'
+                    })}
+                    className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    {t("sewagePipes.downloadBrochure")}
+                  </button>
+                </div>
+              </div>
+
+              <div className="relative max-w-md mx-auto lg:mx-0">
+                <div className="space-y-6">
+                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                    <img
+                      src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/09/konti-kan-1.jpg"
+                      alt={t("sewagePipes.hdpeKontiKanPipes")}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                    <img
+                      src="/attached_assets/Konti-Hidroplast-Proizvodstvo-27-1 (1)_1755354410219.jpg"
+                      alt={t("sewagePipes.hdpeKontiKanManufacturing")}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      )}
+
+      {/* Konti Kan Drainage content (inline tab) */}
+      {activeProductTab === "drainage" && (
+      <section className="py-10 bg-[#1c2d56]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-white">
+                {t("drainage.kontiDren")}
+              </h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <p className="text-white mb-6">
+                {t("drainage.kontiDrenDescription")}
+              </p>
+              <p className="text-white mb-6">
+                {t("drainage.materialDescription")}
+              </p>
+
+              <div className="space-y-3 mb-8">
+                {[
+                  t("drainage.durableChemicalResistant"),
+                  t("drainage.smoothInnerSurface"),
+                  t("drainage.highRingStiffness"),
+                  t("drainage.temperatureRange"),
+                  t("drainage.optimizedInfiltration"),
+                  t("drainage.pipeRange"),
+                  t("drainage.uvStabilized"),
+                  t("drainage.lightweightEasyInstall"),
+                  t("drainage.minimalMaintenance"),
+                  t("drainage.serviceLife"),
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-white">{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-4">
+                <button
+                  onClick={() => handleBrochureDownload({
+                    id: 'konti-kan-drainage',
+                    title: 'Konti Kan Drainage',
+                    brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/konti-kan-drenaza-en.pdf'
+                  })}
+                  className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  {t("productPages.downloadPdf")}
+                </button>
+              </div>
+            </div>
+
+            <div className="relative max-w-md mx-auto lg:mx-0">
+              <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                <img
+                  src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/drenazni-cevki-1.jpg"
+                  alt="Konti Kan Drainage"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      )}
+      {/* Schächte (Manholes) content (inline tab) */}
+      {activeProductTab === "manholes" && (
+      <section className="py-10 bg-[#1c2d56]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-white">
+                {t("manholes.manholes")}
+              </h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+          </div>
+
+          {/* Tabs mimic: show HDPE by default with key bullets and image */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h3 className="text-3xl font-bold text-white mb-4">
+                {t("manholes.hdpeManholes")}
+              </h3>
+              <p className="text-white mb-6">
+                {t("manholes.hdpeDescription")}
+              </p>
+
+              <div className="space-y-3 mb-8">
+                {[
+                  t("manholes.hdpeMaterial"),
+                  t("manholes.hdpeChemicalBiological"),
+                  t("manholes.hdpeServiceLife"),
+                  t("manholes.hdpeTemperatureRange"),
+                  t("manholes.hdpeSmoothSurface"),
+                  t("manholes.hdpeStiffnessFlexibility"),
+                  t("manholes.hdpeLightweight"),
+                  t("manholes.hdpeRecyclable"),
+                  t("manholes.hdpeAffordable"),
+                  t("manholes.hdpeCostEffective"),
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-white">{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-4">
+                <button
+                  onClick={() => handleBrochureDownload({
+                    id: 'manholes',
+                    title: 'HDPE Manholes',
+                    brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/sahti-en.pdf'
+                  })}
+                  className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  {t("manholes.downloadBrochure")}
+                </button>
+              </div>
+            </div>
+
+            <div className="relative max-w-md mx-auto lg:mx-0">
+              <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                <img
+                  src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/1-8.jpg"
+                  alt="HDPE Manholes"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* PP Manholes brief */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mt-16">
+            <div>
+              <h3 className="text-3xl font-bold text-white mb-4">
+                {t("manholes.ppManholes")}
+              </h3>
+              <p className="text-white mb-6">
+                {t("manholes.ppDescription")}
+              </p>
+              <div className="space-y-3 mb-8">
+                {[
+                  t("manholes.ppMaterial"),
+                  t("manholes.ppTemperatureRange"),
+                  t("manholes.ppSmoothSurface"),
+                  t("manholes.ppCompliesEN124"),
+                  t("manholes.ppEasyTransport"),
+                  t("manholes.ppRecyclable"),
+                  t("manholes.ppCostEffective"),
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-white">{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-4">
+                <button
+                  onClick={() => handleBrochureDownload({
+                    id: 'pp-manholes',
+                    title: 'PP Manholes',
+                    brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/polipropilenski-sahti-en.pdf'
+                  })}
+                  className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  {t("manholes.downloadBrochure")}
+                </button>
+              </div>
+            </div>
+
+            <div className="relative max-w-md mx-auto lg:mx-0">
+              <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                <img
+                  src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/polipropilenski-sahti-1.jpg"
+                  alt="PP Manholes"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      )}
+      {/* PPHM Konti Kan ID content (inline tab) */}
+      {activeProductTab === "pphm" && (
+      <section className="py-10 bg-[#1c2d56]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-white">
+                {t("ppHmPipes.ppHmKontiKanPipes")}
+              </h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+          </div>
+
+          <div className="transition-all duration-500">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              <div>
+                <h3 className="text-3xl font-bold text-white mb-4">
+                  {t("ppHmPipes.ppHmKontiKanTitle")}
+                </h3>
+                <p className="text-white mb-6">
+                  {t("ppHmPipes.pipeDescription")}
+                </p>
+
+                <h4 className="text-xl font-bold text-white mb-4">
+                  {t("ppHmPipes.materialProperties")}
+                </h4>
+                <div className="space-y-3 mb-6">
+                  {[
+                    t("ppHmPipes.ppMaterial"),
+                    t("ppHmPipes.strengthToWeightRatio"),
+                    t("ppHmPipes.chemicalThermalResistance"),
+                    t("ppHmPipes.abrasionResistance"),
+                    t("ppHmPipes.rigidDurable"),
+                  ].map((property, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{property}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <h4 className="text-xl font-bold text-white mb-4">
+                  {t("ppHmPipes.application")}
+                </h4>
+                <div className="space-y-3 mb-6">
+                  {[
+                    t("ppHmPipes.municipalIndustrialWastewater"),
+                    t("ppHmPipes.stormwaterHarvesting"),
+                    t("ppHmPipes.roadRailInfrastructure"),
+                  ].map((application, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{application}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <h4 className="text-xl font-bold text-white mb-4">
+                  {t("ppHmPipes.characteristics")}
+                </h4>
+                <div className="space-y-3 mb-8">
+                  {[
+                    t("ppHmPipes.corrugatedStructure"),
+                    t("ppHmPipes.smoothInnerWall"),
+                    t("ppHmPipes.stiffnessRatings"),
+                    t("ppHmPipes.dimensionRange"),
+                    t("ppHmPipes.color"),
+                    t("ppHmPipes.manningsCoefficient"),
+                    t("ppHmPipes.highFlowRates"),
+                    t("ppHmPipes.uvStabilized"),
+                    t("ppHmPipes.serviceLife"),
+                    t("ppHmPipes.temperatureRange"),
+                    t("ppHmPipes.fullyRecyclable"),
+                  ].map((characteristic, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <CheckCircle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{characteristic}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap gap-4">
+                  <button
+                    onClick={() => handleBrochureDownload({
+                      id: 'pp-hm-pipes',
+                      title: 'PP-HM Pipes and Fittings',
+                      brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-PPHM_EN-2024_posledna-promena_MART_compressed.pdf'
+                    })}
+                    className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    {t("ppHmPipes.downloadBrochure")}
+                  </button>
+                </div>
+              </div>
+
+              <div className="relative max-w-md mx-auto lg:mx-0">
+                <div className="space-y-6">
+                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                    <img
+                      src="https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/1000x1000-2.jpg"
+                      alt={t("ppHmPipes.ppHmKontiKanPipes")}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                    <img
+                      src="https://konti-hidroplast.com.mk/wp-content/uploads/2025/02/1000x1000.jpg"
+                      alt={t("ppHmPipes.ppHmManufacturing")}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      )}
+
+      {/* Konti Kan Spiral HDPE/ID content (inline tab) */}
+      {activeProductTab === "spiral" && (
+      <section className="py-10 bg-[#1c2d56]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-white">
+                {t("spiralPipes.kontiKanSpiralPipes")}
+              </h2>
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+            </div>
+          </div>
+
+          <div className="transition-all duration-500">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              <div>
+                <h3 className="text-3xl font-bold text-white mb-4">
+                  {t("spiralPipes.kontiKanSpiral")}
+                </h3>
+                <p className="text-white mb-6">
+                  {t("spiralPipes.heroDescription")}
+                </p>
+
+                <h4 className="text-xl font-bold text-white mb-4">
+                  {t("spiralPipes.materialProperties")}
+                </h4>
+                <div className="space-y-3 mb-6">
+                  {[
+                    t("spiralPipes.hdpeMaterial"),
+                    t("spiralPipes.lightweightStrong"),
+                    t("spiralPipes.chemicalBiologicalResistance"),
+                    t("spiralPipes.flexibleResistant"),
+                  ].map((property, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{property}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <h4 className="text-xl font-bold text-white mb-4">
+                  {t("spiralPipes.application")}
+                </h4>
+                <div className="space-y-3 mb-6">
+                  {[
+                    t("spiralPipes.sewerageStormwater"),
+                    t("spiralPipes.waterTransportStorage"),
+                    t("spiralPipes.industrialEffluent"),
+                    t("spiralPipes.culvertsIrrigation"),
+                    t("spiralPipes.ventilationDucts"),
+                  ].map((application, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{application}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <h4 className="text-xl font-bold text-white mb-4">
+                  {t("spiralPipes.characteristics")}
+                </h4>
+                <div className="space-y-3 mb-8">
+                  {[
+                    t("spiralPipes.stiffnessClasses"),
+                    t("spiralPipes.diameterRange"),
+                    t("spiralPipes.colorLength"),
+                    t("spiralPipes.acidAlkalineResistance"),
+                    t("spiralPipes.serviceLife"),
+                    t("spiralPipes.aboveGroundUse"),
+                    t("spiralPipes.temperatureRange"),
+                    t("spiralPipes.fullyRecyclable"),
+                  ].map((characteristic, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-white">{characteristic}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex flex-wrap gap-4">
+                  <button
+                    onClick={() => handleBrochureDownload({
+                      id: 'konti-kan-spiral',
+                      title: 'Konti Kan Spiral Pipes',
+                      brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-KONTI-SPIRAL_EN_2021_compressed.pdf'
+                    })}
+                    className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    {t("productPages.downloadPdf")}
+                  </button>
+                </div>
+              </div>
+
+              <div className="relative max-w-md mx-auto lg:mx-0">
+                <div className="space-y-6">
+                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                    <img
+                      src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-spiral.jpg"
+                      alt="KONTI KAN SPIRAL Pipes"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
+                    <img
+                      src="https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/Gogo_20240824_9420-24.jpg"
+                      alt="KONTI KAN SPIRAL Manufacturing"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      )}
+
+      {/* PP ML Kompaktrohre OD (PP-HM Smooth OD) content (inline tab) */}
+      {activeProductTab === "ppml" && (
+      <section className="py-10 bg-[#1c2d56]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center mb-8">
+              <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
+              <h2 className="text-4xl font-bold mx-8 text-white">
+              Materialeigenschaften
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
@@ -230,24 +819,24 @@ function PPHMSmoothODPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
               <div>
                 <p className="text-white mb-6">
-                  PP-HM smooth OD pipes are manufactured using high-modulus polypropylene, providing superior mechanical properties and long-term performance in demanding applications.
+                PP-HM Glattmantelrohre werden aus Polypropylen High Modulus (PP-HM) hergestellt, das hervorragende mechanische Eigenschaften und eine langfristig hohe Leistungsfähigkeit für anspruchsvolle Anwendungen bietet.
                 </p>
 
                 <h4 className="text-xl font-bold text-white mb-4">
-                  Material Properties:
+                Materialeigenschaften:
                 </h4>
                 <div className="space-y-4 mb-6">
                   <div className="p-4 bg-white/10 rounded-lg">
-                    <h5 className="font-bold text-orange-300 mb-2">Polypropylene High Modulus (PP-HM):</h5>
-                    <p className="text-white text-sm">High stiffness and strength for demanding applications</p>
+                    <h5 className="font-bold text-orange-300 mb-2">Polypropylen High Modulus (PP-HM):</h5>
+                    <p className="text-white text-sm">Hohe Steifigkeit und Festigkeit für anspruchsvolle Einsatzbereiche</p>
                   </div>
                   <div className="p-4 bg-white/10 rounded-lg">
-                    <h5 className="font-bold text-gray-300 mb-2">High stiffness and strength for demanding applications:</h5>
-                    <p className="text-white text-sm">Excellent resistance to chemicals and biological degradation</p>
+                    <h5 className="font-bold text-gray-300 mb-2">Überragende dimensionsstabilität und Kriechfestigkeit Anwendungsbereiche:</h5>
+                    <p className="text-white text-sm">Abwasser- und Regenwasserentsorgungssysteme</p>
                   </div>
                   <div className="p-4 bg-white/10 rounded-lg">
-                    <h5 className="font-bold text-yellow-300 mb-2">Superior dimensional stability and creep resistance:</h5>
-                    <p className="text-white text-sm">Superior dimensional stability and creep resistance</p>
+                    <h5 className="font-bold text-yellow-300 mb-2">Industrielle Abwasser- und chemische Abfallleitungen:</h5>
+                    <p className="text-white text-sm">Hochtemperaturanwendungen</p>
                   </div>
                 </div>
 
@@ -275,14 +864,14 @@ function PPHMSmoothODPage() {
                 </h4>
                 <div className="space-y-3 mb-8">
                   {[
-                    "High ring stiffness for structural integrity",
-                    "Excellent chemical resistance to acids, bases, and solvents",
-                    "Superior temperature resistance up to 90°C",
-                    "Low thermal expansion coefficient",
-                    "High impact resistance and toughness",
-                    "Smooth inner surface for optimal flow",
-                    "UV-stabilized for outdoor applications",
-                    "Lightweight and easy to handle",
+                    "Hochtemperaturanwendungen",
+                    "Anlagen der chemischen Industrie",
+                    "Kommunale Infrastrukturprojekte",
+                    "Landwirtschaftliche Drainagesysteme",
+                    "Technische Eigenschaften",
+                    "Hohe Ringsteifigkeit für strukturelle Stabilität",
+                    "Hervorragende chemische Beständigkeit gegenüber Säuren, Basen und Lösungsmitteln",
+                    "Sehr gute Temperaturbeständigkeit bis 90 °C",
                   ].map((characteristic, index) => (
                     <div key={index} className="flex items-start gap-3">
                       <CheckCircle className="w-5 h-5 text-yellow-400 flex-shrink-0 mt-0.5" />
@@ -328,6 +917,7 @@ function PPHMSmoothODPage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Contact Section */}
       <section className="py-20 bg-[#ffffff]">
