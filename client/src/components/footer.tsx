@@ -22,7 +22,7 @@ export function Footer() {
     { labelKey: "footer.news", path: "/news" },
     { labelKey: "footer.contact", path: "/", isContact: true },
     { labelKey: "footer.privacyPolicy", path: "/privacy-policy" },
-    { labelKey: "footer.Impressum", path: "/" },
+    { labelKey: "footer.Impressum", path: "/impressum" },
   ];
 
   const getStaticDescription = () => {
@@ -163,10 +163,34 @@ export function Footer() {
               <div className="flex items-start" data-testid="footer-phone">
                 <div className="">
                   <div className="flex items-center gap-2"><Building2Icon className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> Urban Rohr GmbH</div>
-                  <div className="flex items-center gap-2 mt-2"><MapPin className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> Karlsdorfer Straße 56,88069, Tettnang</div>
-                  <div className="flex items-center gap-2 mt-2"><Phone className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> +49 7542 9396210</div>
-                  <div className="flex items-center gap-2 mt-2"><Mail className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> kontakt@urban-rohr.com</div>
-                  <div className="flex items-center gap-2 mt-2"><Globe className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> www.urban-rohr.com</div>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Karlsdorfer%20Stra%C3%9Fe%2056%2C%2088069%20Tettnang"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 mt-2 hover:text-white focus:text-white"
+                  >
+                    <MapPin className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> Karlsdorfer Straße 56,88069, Tettnang
+                  </a>
+                  <a
+                    href="tel:+4975429396210"
+                    className="flex items-center gap-2 mt-2 hover:text-white focus:text-white"
+                  >
+                    <Phone className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> +49 7542 9396210
+                  </a>
+                  <a
+                    href="mailto:kontakt@urban-rohr.com"
+                    className="flex items-center gap-2 mt-2 hover:text-white focus:text-white"
+                  >
+                    <Mail className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> kontakt@urban-rohr.com
+                  </a>
+                  <a
+                    href="https://www.urban-rohr.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 mt-2 hover:text-white focus:text-white"
+                  >
+                    <Globe className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> www.urban-rohr.com
+                  </a>
                 </div>
               </div>
             </div>
