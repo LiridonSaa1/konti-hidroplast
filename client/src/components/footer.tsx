@@ -1,6 +1,6 @@
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 import { Building2Icon, Globe, Mail, MapPin, Phone } from "lucide-react";
-import footerIcon from "@assets/urban-rohr-footer-icon.png";
+import logoWhite from "@assets/urban-rohr-logo-white.svg";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCompanyInfo } from "@/hooks/use-company-info";
 import { useLocation } from "wouter";
@@ -64,12 +64,15 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="md:col-span-2">
+            {/* <h1 className="text-white font-bold" style={{ color: '#fff', lineHeight: '20px', fontSize: '19px' }}>URBAN</h1>
+            <h2 className="text-white  font-bold mb-6" style={{ fontWeight: 'normal' }}>ROHR</h2> */}
             <img
-              src={footerIcon}
+              src={logoWhite}
               alt={companyInfo.companyName || "Urban Rohr"}
               className="h-16 w-auto mb-6 ml-[0px] mr-[0px]"
               data-testid="footer-logo"
             />
+
             <p
               className="text-gray-300 mb-6 max-w-md"
               data-testid="footer-description"
@@ -176,12 +179,6 @@ export function Footer() {
                     className="flex items-center gap-2 mt-2 hover:text-white focus:text-white"
                   >
                     <Phone className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> +49 7542 9396210
-                  </a>
-                  <a
-                    href="mailto:info@urban-rohr.com"
-                    className="flex items-center gap-2 mt-2 hover:text-white focus:text-white"
-                  >
-                    <Mail className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> info@urban-rohr.com
                   </a>
                   <a
                     href="mailto:info@urban-rohr.com"
