@@ -44,7 +44,7 @@ export default function ImpressumPage() {
       <h2 className="text-xl font-semibold mt-6 mb-2">Kontakt</h2>
       <p className="mb-4">
         Telefon: 015115793884<br />
-        E-Mail: kontakt@urban-rohr.com
+        E-Mail: info@urban-rohr.com
       </p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">Umsatzsteuer-ID</h2>
@@ -74,7 +74,7 @@ export default function ImpressumPage() {
         Unsere zentrale Kontaktstelle für Nutzer und Behörden nach Art. 11, 12 DSA erreichen Sie wie folgt:
       </p>
       <p className="mb-4">
-        E-Mail: kontakt@urban-rohr.com<br />
+        E-Mail: info@urban-rohr.com<br />
         Telefon: 015115793884
       </p>
       <p>Die für den Kontakt zur Verfügung stehenden Sprachen sind: Deutsch, Englisch.</p>
@@ -104,7 +104,7 @@ export default function ImpressumPage() {
       <h2 className="text-xl font-semibold mt-6 mb-2">Contact</h2>
       <p className="mb-4">
         Phone: 015115793884<br />
-        Email: kontakt@urban-rohr.com
+        Email: info@urban-rohr.com
       </p>
 
       <h2 className="text-xl font-semibold mt-6 mb-2">VAT ID</h2>
@@ -134,7 +134,7 @@ export default function ImpressumPage() {
         Our single point of contact for users and authorities pursuant to Arts. 11 and 12 DSA can be reached as follows:
       </p>
       <p className="mb-4">
-        Email: kontakt@urban-rohr.com<br />
+        Email: info@urban-rohr.com<br />
         Phone: 015115793884
       </p>
       <p>The languages available for contact are: German, English.</p>

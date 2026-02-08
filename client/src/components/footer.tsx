@@ -1,6 +1,6 @@
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 import { Building2Icon, Globe, Mail, MapPin, Phone } from "lucide-react";
-import logoWhite from "@assets/urban-rohr-logo-white.svg";
+import footerIcon from "@assets/urban-rohr-footer-icon.png";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCompanyInfo } from "@/hooks/use-company-info";
 import { useLocation } from "wouter";
@@ -65,7 +65,7 @@ export function Footer() {
           {/* Company Info */}
           <div className="md:col-span-2">
             <img
-              src={logoWhite}
+              src={footerIcon}
               alt={companyInfo.companyName || "Urban Rohr"}
               className="h-16 w-auto mb-6 ml-[0px] mr-[0px]"
               data-testid="footer-logo"
@@ -178,18 +178,16 @@ export function Footer() {
                     <Phone className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> +49 7542 9396210
                   </a>
                   <a
-                    href="mailto:kontakt@urban-rohr.com"
+                    href="mailto:info@urban-rohr.com"
                     className="flex items-center gap-2 mt-2 hover:text-white focus:text-white"
                   >
-                    <Mail className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> kontakt@urban-rohr.com
+                    <Mail className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> info@urban-rohr.com
                   </a>
                   <a
-                    href="https://www.urban-rohr.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="mailto:info@urban-rohr.com"
                     className="flex items-center gap-2 mt-2 hover:text-white focus:text-white"
                   >
-                    <Globe className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> www.urban-rohr.com
+                    <Mail className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> info@urban-rohr.com
                   </a>
                 </div>
               </div>
