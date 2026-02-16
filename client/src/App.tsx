@@ -15,6 +15,15 @@ import ProductsPage from "@/pages/products";
 import WaterSupplySystemsPage from "@/pages/water-supply-systems";
 import GasPipelineSystemsPage from "@/pages/gas-pipeline-systems";
 import CableProtectionPage from "@/pages/cable-protection";
+import CTPPipesPage from "@/pages/ctp-pipes";
+import CTPFittingsPage from "@/pages/ctp-fittings";
+import CTPMansonsPage from "@/pages/ctp-mansons";
+import CTPMenholPage from "@/pages/ctp-menhol";
+import CTPTankPage from "@/pages/ctp-tank";
+import SpecialApplicationsPage from "@/pages/special-applications";
+import MarineLugPage from "@/pages/marine-lug";
+import DarkLinerPage from "@/pages/dark-liner";
+import TrenchlessSystemsPage from "@/pages/trenchless-systems";
 import BrochuresPage from "@/pages/brochures";
 import DownloadBrochurePage from "@/pages/download-brochure";
 import CertificatesPage from "@/pages/certificates";
@@ -51,6 +60,15 @@ function Router() {
       <Route path="/products/water-supply-systems" component={WaterSupplySystemsPage} />
       <Route path="/products/gas-pipeline-systems" component={GasPipelineSystemsPage} />
       <Route path="/products/cable-protection" component={CableProtectionPage} />
+      <Route path="/products/ctp-pipes" component={CTPPipesPage} />
+      <Route path="/products/ctp-fittings" component={CTPFittingsPage} />
+      <Route path="/products/ctp-mansons" component={CTPMansonsPage} />
+      <Route path="/products/ctp-menhol" component={CTPMenholPage} />
+      <Route path="/products/ctp-tank" component={CTPTankPage} />
+      <Route path="/ozel-uygulamalar" component={SpecialApplicationsPage} />
+      <Route path="/products/marine-lug" component={MarineLugPage} />
+      <Route path="/products/dark-liner" component={DarkLinerPage} />
+      <Route path="/products/trenchless-systems" component={TrenchlessSystemsPage} />
       <Route path="/brochures" component={BrochuresPage} />
       <Route path="/download-brochure" component={DownloadBrochurePage} />
       <Route path="/certificates" component={CertificatesPage} />

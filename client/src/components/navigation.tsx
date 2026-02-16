@@ -68,8 +68,20 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
       },
       { label: t("nav.products.gasPipeline"), href: "/products/gas-pipeline-systems" },
       { label: t("nav.products.cableProtection"), href: "/products/cable-protection" },
-      // { label: "Download Brochure", href: "/brochures", type: "brochure" },
-      // { label: "Full Catalog", href: "https://konti-hidroplast.com.mk/products/", external: true },
+      { label: t("nav.products.ctpBoru"), href: "/products/ctp-pipes" },
+      { label: t("nav.products.ctpFittings"), href: "/products/ctp-fittings" },
+      { label: t("nav.products.ctpMansons"), href: "/products/ctp-mansons" },
+      { label: t("nav.products.ctpMenhol"), href: "/products/ctp-menhol" },
+      { label: t("nav.products.ctpTank"), href: "/products/ctp-tank" },
+      {
+        label: t("nav.products.specialApps"),
+        href: "/ozel-uygulamalar",
+        items: [
+          { label: t("nav.products.marineLug"), href: "/products/marine-lug" },
+          { label: t("nav.products.darkLiner"), href: "/products/dark-liner" },
+          { label: t("nav.products.trenchless"), href: "/products/trenchless-systems" },
+        ],
+      },
     ],
   },
   {
