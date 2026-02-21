@@ -97,8 +97,13 @@ export function serveStatic(app: Express) {
     console.log('❌ Uploads directory not found at:', uploadsPath);
   }
 
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
+  // SPA fallback only for route-like URLs. Asset/file URLs should return 404, not index.html.
+  app.use("*", (req, res) => {
+    if (path.extname(req.path)) {
+      res.status(404).end();
+      return;
+    }
+
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }
