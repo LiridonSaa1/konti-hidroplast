@@ -15,7 +15,8 @@ const app = express();
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: false, limit: '100mb' }));
 
-const SITE_ACCESS_PASSWORD = process.env.SITE_ACCESS_PASSWORD;
+const DEFAULT_SITE_ACCESS_PASSWORD = "konti-maintenance";
+const SITE_ACCESS_PASSWORD = (process.env.SITE_ACCESS_PASSWORD || DEFAULT_SITE_ACCESS_PASSWORD).trim();
 const SITE_ACCESS_COOKIE_NAME = "site_access";
 const SITE_ACCESS_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
 
@@ -162,11 +163,6 @@ function renderSiteAccessPage(invalidPassword = false, returnTo = "/"): string {
 }
 
 function siteAccessMiddleware(req: Request, res: Response, next: NextFunction) {
-  if (!SITE_ACCESS_PASSWORD) {
-    next();
-    return;
-  }
-
   if (req.path.startsWith("/api")) {
     next();
     return;
