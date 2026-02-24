@@ -163,6 +163,12 @@ function renderSiteAccessPage(invalidPassword = false, returnTo = "/"): string {
 }
 
 function siteAccessMiddleware(req: Request, res: Response, next: NextFunction) {
+  const setNoStore = () => {
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, private");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+  };
+
   if (req.path.startsWith("/api")) {
     next();
     return;
@@ -182,10 +188,12 @@ function siteAccessMiddleware(req: Request, res: Response, next: NextFunction) {
         "Set-Cookie",
         `${SITE_ACCESS_COOKIE_NAME}=${encodeURIComponent(cookieValue)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${SITE_ACCESS_TTL_SECONDS}${secureCookie}`,
       );
+      setNoStore();
       res.redirect(returnTo);
       return;
     }
 
+    setNoStore();
     res.status(401).type("html").send(renderSiteAccessPage(true, returnTo));
     return;
   }
@@ -197,16 +205,19 @@ function siteAccessMiddleware(req: Request, res: Response, next: NextFunction) {
       "Set-Cookie",
       `${SITE_ACCESS_COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${secureCookie}`,
     );
+    setNoStore();
     res.redirect("/site-access");
     return;
   }
 
   if (req.method === "GET" && req.path === "/site-access") {
     if (hasValidSiteAccessCookie(req)) {
+      setNoStore();
       res.redirect("/");
       return;
     }
 
+    setNoStore();
     res.status(200).type("html").send(renderSiteAccessPage(false, "/"));
     return;
   }
@@ -216,6 +227,7 @@ function siteAccessMiddleware(req: Request, res: Response, next: NextFunction) {
     return;
   }
 
+  setNoStore();
   res.status(401).type("html").send(renderSiteAccessPage(false, sanitizeReturnTo(req.originalUrl)));
 }
 
