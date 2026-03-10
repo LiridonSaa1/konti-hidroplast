@@ -38,31 +38,11 @@ function DarkLinerPage() {
               <p className="text-lg text-blue-100 leading-relaxed">
                 {t("darkLiner.heroDesc")}
               </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{t("darkLiner.badge1")}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{t("darkLiner.badge2")}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{t("darkLiner.badge3")}</span>
-                </div>
-              </div>
             </div>
             <div className="lg:w-1/2 flex justify-center">
               <img
                 src="/attached_assets/dark-liner-hero.jpg"
-                alt="Dark Liner CTP Boru"
+                alt="Dark Liner GFK-Rohre"
                 className="max-w-sm w-full h-auto object-contain drop-shadow-2xl"
               />
             </div>
@@ -100,25 +80,35 @@ function DarkLinerPage() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
               <div className="lg:col-span-1">
                 <h2 className="text-4xl font-bold text-[#1c2d56] mb-6 uppercase tracking-wide">
-                  CTP BORU
+                  {t("darkLiner.tab1SectionTitle")}
                 </h2>
                 <p className="text-lg text-gray-600 leading-relaxed">
                   {t("darkLiner.tab1ShortDesc")}
                 </p>
-                <a href="#" className="inline-flex items-center mt-6 text-[#ef4444] font-semibold hover:underline">
-                  <span>» {t("darkLiner.details")}</span>
-                </a>
+             
               </div>
               <div className="lg:col-span-2">
                 {/* Product Thumbnails */}
                 <div className="flex gap-3 mb-6">
-                  <img src="/attached_assets/dark-liner-thumb-01.jpg" alt="Dark Liner View 1" className="w-28 h-20 object-cover rounded" />
-                  <img src="/attached_assets/dark-liner-thumb-02.jpg" alt="Dark Liner View 2" className="w-28 h-20 object-cover rounded" />
-                  <img src="/attached_assets/dark-liner-thumb-03.png" alt="Dark Liner View 3" className="w-28 h-20 object-cover rounded" />
-                  <img src="/attached_assets/dark-liner-thumb-04.png" alt="Dark Liner View 4" className="w-28 h-20 object-cover rounded" />
-                  <img src="/attached_assets/dark-liner-thumb-05.jpg" alt="Dark Liner View 5" className="w-28 h-20 object-cover rounded" />
+                  <img src="/attached_assets/dark-liner-thumb-01.jpg" alt="PowerLiner View 1" className="w-28 h-20 object-cover rounded" />
+                  <img src="/attached_assets/dark-liner-thumb-02.jpg" alt="PowerLiner View 2" className="w-28 h-20 object-cover rounded" />
+                  <img src="/attached_assets/dark-liner-thumb-03.png" alt="PowerLiner View 3" className="w-28 h-20 object-cover rounded" />
+                  <img src="/attached_assets/dark-liner-thumb-04.png" alt="PowerLiner View 4" className="w-28 h-20 object-cover rounded" />
+                  <img src="/attached_assets/dark-liner-thumb-05.jpg" alt="PowerLiner View 5" className="w-28 h-20 object-cover rounded" />
                 </div>
 
+                <h3 className="text-xl font-bold text-[#1c2d56] mb-3">{t("darkLiner.tab1ProductDescTitle")}</h3>
+                <p className="text-gray-700 leading-relaxed text-base mb-3">
+                  {t("darkLiner.tab1DescIntro")}
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {["tab1DescBullet1", "tab1DescBullet2", "tab1DescBullet3", "tab1DescBullet4"].map((key) => (
+                    <li key={key} className="flex items-start gap-3">
+                      <span className="mt-1.5 w-2 h-2 bg-[#ef4444] rounded-full flex-shrink-0"></span>
+                      <span className="text-gray-700 leading-relaxed">{t(`darkLiner.${key}`)}</span>
+                    </li>
+                  ))}
+                </ul>
                 <p className="text-gray-700 leading-relaxed text-base">
                   {t("darkLiner.tab1Desc")}
                 </p>
@@ -130,24 +120,14 @@ function DarkLinerPage() {
               <div className="rounded-xl overflow-hidden shadow-lg">
                 <img
                   src="/attached_assets/dark-liner-main.png"
-                  alt="Dark Liner CTP Boru"
+                  alt="PowerLiner GFK-Rohr"
                   className="w-full h-auto object-cover"
                 />
               </div>
             </div>
 
             {/* Product Advantages */}
-            <div className="mt-12">
-              <h3 className="text-xl font-bold text-[#ef4444] mb-4">{t("darkLiner.tab1AdvTitle")}</h3>
-              <ul className="space-y-2">
-                {["tab1Adv1", "tab1Adv2", "tab1Adv3", "tab1Adv4"].map((key) => (
-                  <li key={key} className="flex items-start gap-3">
-                    <span className="mt-1.5 w-2 h-2 bg-[#ef4444] rounded-full flex-shrink-0"></span>
-                    <span className="text-gray-700 leading-relaxed">{t(`darkLiner.${key}`)}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            
           </div>
         </section>
       </div>

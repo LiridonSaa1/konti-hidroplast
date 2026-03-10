@@ -52,29 +52,9 @@ function MarineLugPage() {
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
                 {t("marineLug.heroTitle")}
               </h1>
-              <p className="text-lg text-blue-100 leading-relaxed">
+              <p className="text-lg text-blue-100 leading-relaxed whitespace-pre-line">
                 {t("marineLug.heroDesc")}
               </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{t("marineLug.badge1")}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{t("marineLug.badge2")}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{t("marineLug.badge3")}</span>
-                </div>
-              </div>
             </div>
             <div className="lg:w-1/2 flex justify-center">
               <img
@@ -116,10 +96,10 @@ function MarineLugPage() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
               <div className="lg:col-span-1">
-                <h2 className="text-4xl font-bold text-[#1c2d56] mb-6 uppercase tracking-wide">
+                <h2 className="text-4xl font-bold text-[#1c2d56] mb-6 tracking-wide">
                   {t("marineLug.tab1SystemsTitle")}
                 </h2>
-                <p className="text-lg text-gray-600 leading-relaxed">
+                <p className="text-lg text-gray-600 leading-relaxed whitespace-pre-line">
                   {t("marineLug.tab1ShortDesc")}
                 </p>
               </div>
@@ -132,7 +112,7 @@ function MarineLugPage() {
                 </div>
 
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{t("marineLug.tab1WhatTitle")}</h3>
-                <p className="text-gray-700 leading-relaxed text-base mb-6">
+                <p className="text-gray-700 leading-relaxed text-base mb-6 whitespace-pre-line">
                   {t("marineLug.tab1WhatDesc")}
                 </p>
               </div>
@@ -156,7 +136,7 @@ function MarineLugPage() {
               {/* Usage Areas */}
               <div>
                 <h3 className="text-xl font-bold text-[#1c2d56] mb-4">{t("marineLug.tab1UsageTitle")}</h3>
-                <p className="text-gray-700 leading-relaxed text-base mb-4">
+                <p className="text-gray-700 leading-relaxed text-base mb-4 whitespace-pre-line">
                   {t("marineLug.tab1UsageDesc")}
                 </p>
               </div>

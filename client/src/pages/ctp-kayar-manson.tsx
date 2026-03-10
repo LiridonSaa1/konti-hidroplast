@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
-import { Navigation } from "@/components/navigation";
-import { Footer } from "@/components/footer";
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCompanyInfo } from "@/hooks/use-company-info";
-import { Button } from "@/components/ui/button";
-import { useLocation } from "wouter";
+import { Navigation } from "@/components/navigation";
+import { Footer } from "@/components/footer";
 import { Check } from "lucide-react";
 
 const mansonTableData = [
@@ -57,85 +55,72 @@ const angularDeflectionData = [
   { range: "DN 1900 – DN 4000", deflection: "0,5°" },
 ];
 
-function CTPMansonsPage() {
+const tabs = [
+  { id: "tab1", labelKey: "ctpKayarManson.tab1Label" },
+  { id: "tab2", labelKey: "ctpKayarManson.tab2Label" },
+  { id: "tab3", labelKey: "ctpKayarManson.tab3Label" },
+];
+
+function CTPKayarMansonPage() {
   const { t } = useLanguage();
-  const [, setLocation] = useLocation();
   const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("tab1");
 
   useEffect(() => {
-    document.title = `${t("ctpMansons.pageTitle")} - ${companyInfo.companyName || "Urban Rohr"}`;
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute("content", t("ctpMansons.metaDescription"));
+    document.title = `${t("ctpKayarManson.pageTitle")} - ${companyInfo.companyName || "Urban Rohr"}`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute("content", t("ctpKayarManson.heroDesc"));
     }
   }, [t, companyInfo.companyName]);
-
-  const tabs = [
-    { id: "tab1", labelKey: "ctpMansons.tab1Label" },
-    { id: "tab2", labelKey: "ctpMansons.tab2Label" },
-    { id: "tab3", labelKey: "ctpMansons.tab3Label" },
-  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navigation />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 text-white pt-32 pb-20">
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
-        <div className="absolute top-0 right-0 w-1/3 h-full opacity-10">
-          <div className="h-full w-full bg-gradient-to-l from-white/20 to-transparent transform skew-x-12"></div>
+      <section className="relative bg-gradient-to-br from-[#1c2d56] via-[#1c2d56] to-[#2a4a8a] pt-32 pb-20 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#ef4444]/10 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-400/10 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3" />
         </div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div>
-              <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
-                <span className="text-sm font-medium">{t("ctpMansons.heroBadge")}</span>
-              </div>
-              <h1 className="text-5xl md:text-5xl font-bold mb-8 leading-tight">
-                <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                  {t("ctpMansons.heroTitle")}
-                </span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-12">
+            <div className="lg:w-1/2">
+              <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                {t("ctpKayarManson.heroTitle")}
               </h1>
-              <p className="text-lg text-gray-300 mb-8 leading-relaxed whitespace-pre-line">
-                {t("ctpMansons.heroDescription")}
+              <p className="text-lg text-blue-100 leading-relaxed">
+                {t("ctpKayarManson.heroDesc")}
               </p>
-              <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 text-blue-300">
-                  <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">{t("ctpMansons.heroFeature1")}</span>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <div className="flex items-center gap-2 text-sm text-white/80">
+                  <Check className="w-5 h-5 text-[#ef4444]" />
+                  <span>{t("ctpKayarManson.heroFeature1")}</span>
                 </div>
-                <div className="flex items-center gap-2 text-green-300">
-                  <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">{t("ctpMansons.heroFeature2")}</span>
+                <div className="flex items-center gap-2 text-sm text-white/80">
+                  <Check className="w-5 h-5 text-[#ef4444]" />
+                  <span>{t("ctpKayarManson.heroFeature2")}</span>
                 </div>
-                <div className="flex items-center gap-2 text-cyan-300">
-                  <Check className="w-5 h-5" />
-                  <span className="text-sm font-medium">{t("ctpMansons.heroFeature3")}</span>
+                <div className="flex items-center gap-2 text-sm text-white/80">
+                  <Check className="w-5 h-5 text-[#ef4444]" />
+                  <span>{t("ctpKayarManson.heroFeature3")}</span>
                 </div>
               </div>
             </div>
-
-            <div className="relative">
-              <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
-                <img
-                  src="/attached_assets/superlit-manson.jpg"
-                  alt={t("ctpMansons.heroTitle")}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-4 -right-4 text-white px-4 py-2 rounded-full shadow-lg bg-[#ef4444]">
-                <span className="text-sm font-medium">DN 300 - DN 4000</span>
-              </div>
+            <div className="lg:w-1/2 flex justify-center">
+              <img
+                src="/attached_assets/kayar-manson-001-tr.webp"
+                alt={t("ctpKayarManson.heroTitle")}
+                className="max-w-sm w-full h-auto object-contain drop-shadow-2xl rounded-lg"
+              />
             </div>
           </div>
         </div>
       </section>
 
       {/* Tab Navigation */}
-      <section className="bg-white border-b border-gray-200 sticky top-[72px] z-30">
+      <section className="bg-white border-b border-gray-200 sticky top-0 z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-center">
             <div className="flex overflow-x-auto">
@@ -143,10 +128,10 @@ function CTPMansonsPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-6 py-4 font-semibold text-sm uppercase tracking-wide border-b-3 transition-all whitespace-nowrap ${
+                  className={`px-6 py-4 text-sm font-semibold tracking-wider transition-all duration-300 border-b-[3px] whitespace-nowrap ${
                     activeTab === tab.id
-                      ? "text-blue-900 border-b-[3px] border-blue-900 bg-red-50/50"
-                      : "text-gray-600 border-b-[3px] border-transparent hover:text-[#1c2d56] hover:bg-gray-50"
+                      ? "text-blue-900 border-blue-900"
+                      : "text-gray-600 border-transparent hover:text-gray-800 hover:border-gray-300"
                   }`}
                 >
                   {t(tab.labelKey)}
@@ -163,62 +148,56 @@ function CTPMansonsPage() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
               <div className="lg:col-span-1">
-                <h2 className="text-4xl font-bold text-[#1c2d56] mb-6 tracking-wide">
-                  {t("ctpMansons.tab1Title2")}
+                <h2 className="text-4xl font-bold text-[#1c2d56] mb-6 uppercase tracking-wide">
+                  {t("ctpKayarManson.tab1Title2")}
                 </h2>
-                <p className="text-lg text-gray-600 leading-relaxed whitespace-pre-line">
-                  {t("ctpMansons.tab1ShortDesc")}
+                <p className="text-lg text-gray-600 leading-relaxed">
+                  {t("ctpKayarManson.tab1ShortDesc")}
                 </p>
               </div>
               <div className="lg:col-span-2">
-                {/* Product Thumbnails */}
-                <div className="flex gap-3 mb-6">
-                  <img src="/attached_assets/manson-main.jpg"  className="w-24 h-20 object-cover rounded" />
-                  <img src="/attached_assets/manson-01.jpg"  className="w-24 h-20 object-cover rounded" />
-                  <img src="/attached_assets/manson-02.jpg" className="w-24 h-20 object-cover rounded" />
-                  <img src="/attached_assets/manson-03.jpg"  className="w-24 h-20 object-cover rounded" />
-                  <img src="/attached_assets/manson-04.jpg"  className="w-24 h-20 object-cover rounded" />
+                <div className="flex gap-7 mb-6">
+                  <img src="/attached_assets/kayar-manson-001-tr.webp" alt="CTP Kayar Manşon" className="w-44 h-30 object-cover rounded" />
+                  <img src="/attached_assets/kayar-manson-002-tr.webp" alt="CTP Kayar Manşon" className="w-44 h-30 object-cover rounded" />
+                  <img src="/attached_assets/kayar-manson-003-tr.webp" alt="CTP Kayar Manşon" className="w-44 h-30 object-cover rounded" />
+                  <img src="/attached_assets/kayar-manson-004-tr.webp" alt="CTP Kayar Manşon" className="w-44 h-30 object-cover rounded" />
                 </div>
-                <p className="text-gray-700 leading-relaxed text-base whitespace-pre-line">
-                  {t("ctpMansons.tab1LongDesc")}
+                <p className="text-gray-700 leading-relaxed text-base">
+                  {t("ctpKayarManson.tab1LongDesc")}
                 </p>
+                <div className="mt-6 flex flex-wrap gap-4">
+                  <a
+                    href="https://www.youtube.com/watch?v=1AfkuI6vCJU"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 rounded-lg font-medium text-sm text-white bg-[#ef4444] hover:bg-red-600 transition-colors"
+                  >
+                    {t("ctpKayarManson.productVideo")}
+                  </a>
+                  <a
+                    href="https://www.superlit.com/assets/catalogs/2025/tr-ctp-boru-urun-katalog-ctp-m-07-rev-00--04-12-2024.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 rounded-lg font-medium text-sm text-[#1c2d56] border-2 border-[#1c2d56] hover:bg-[#1c2d56] hover:text-white transition-colors"
+                  >
+                    {t("ctpKayarManson.productBrochure")}
+                  </a>
+                </div>
               </div>
             </div>
 
-            {/* Divider */}
-            <div className="flex items-center w-full my-12">
-              <div className="flex-1 h-px bg-gray-300"></div>
-              <div className="px-4">
-                   
-              </div>
-              <div className="flex-1 h-px bg-gray-300"></div>
-            </div>
-
-            {/* Product Images Gallery */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
-                <img
-                  src="/attached_assets/manson-01.jpg"
-                  className="w-full h-auto object-cover"
-                />
+                <img src="/attached_assets/kayar-manson-004-tr.webp" alt="CTP Kayar Manşon" className="w-full h-auto object-cover" />
               </div>
               <div className="bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
-                <img
-                  src="/attached_assets/manson-02.jpg"
-                  className="w-full h-auto object-cover"
-                />
+                <img src="/attached_assets/kayar-manson-003-tr.webp" alt="CTP Kayar Manşon" className="w-full h-auto object-cover" />
               </div>
               <div className="bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
-                <img
-                  src="/attached_assets/manson-03.jpg"
-                  className="w-full h-auto object-cover"
-                />
+                <img src="/attached_assets/kayar-manson-002-tr.webp" alt="CTP Kayar Manşon" className="w-full h-auto object-cover" />
               </div>
               <div className="bg-gray-50 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
-                <img
-                  src="/attached_assets/manson-04.jpg"
-                  className="w-full h-auto object-cover"
-                />
+                <img src="/attached_assets/kayar-manson-001-tr.webp" alt="CTP Kayar Manşon" className="w-full h-auto object-cover" />
               </div>
             </div>
           </div>
@@ -230,14 +209,14 @@ function CTPMansonsPage() {
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-[#1c2d56] mb-4">
-              {t("ctpMansons.tab2Title")}
+              {t("ctpKayarManson.tab2Title")}
             </h2>
-            <p className="text-gray-700 mb-8 leading-relaxed whitespace-pre-line">
-              {t("ctpMansons.tab2Desc")}
+            <p className="text-gray-700 mb-8 leading-relaxed">
+              {t("ctpKayarManson.tab2Desc")}
             </p>
 
             <h3 className="text-2xl font-bold text-[#1c2d56] mb-6 text-center uppercase tracking-wide">
-              {t("ctpMansons.tab2TableTitle")}
+              {t("ctpKayarManson.tab2TableTitle")}
             </h3>
 
             <div className="overflow-x-auto border border-gray-200">
@@ -245,18 +224,18 @@ function CTPMansonsPage() {
                 <thead>
                   <tr className="bg-[#1c2d56] text-white">
                     <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider border-r border-b border-white">
-                      {t("ctpMansons.tab2Header1")}
+                      Anma Çapı
                     </th>
                     <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider border-r border-b border-white">
-                      {t("ctpMansons.tab2Header2")}
+                      Manşon Genişliği
                     </th>
                     <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider border-b border-white" colSpan={6}>
-                      {t("ctpMansons.tab2Header3")}
+                      Manşon Dış Çapı De (mm)
                     </th>
                   </tr>
                   <tr className="bg-[#1c2d56] text-white">
-                    <th className="px-4 py-2 text-center font-semibold text-xs border-r border-white">{t("ctpMansons.tab2ColDN")}</th>
-                    <th className="px-4 py-2 text-center font-semibold text-xs border-r border-white">{t("ctpMansons.tab2ColW")}</th>
+                    <th className="px-4 py-2 text-center font-semibold text-xs border-r border-white">{t("ctpKayarManson.tab2ColDN")}</th>
+                    <th className="px-4 py-2 text-center font-semibold text-xs border-r border-white">{t("ctpKayarManson.tab2ColW")}</th>
                     <th className="px-4 py-2 text-center font-semibold text-xs border-r border-white">PN (1-10)</th>
                     <th className="px-4 py-2 text-center font-semibold text-xs border-r border-white">PN 12</th>
                     <th className="px-4 py-2 text-center font-semibold text-xs border-r border-white">PN 16</th>
@@ -290,31 +269,29 @@ function CTPMansonsPage() {
         <section className="py-16 bg-white">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-2xl font-bold text-[#1c2d56] mb-4">
-              {t("ctpMansons.tab3Title")}
+              {t("ctpKayarManson.tab3Title")}
             </h2>
-            <p className="text-gray-700 mb-10 leading-relaxed whitespace-pre-line">
-              {t("ctpMansons.tab3Desc")}
+            <p className="text-gray-700 mb-10 leading-relaxed">
+              {t("ctpKayarManson.tab3Desc")}
             </p>
 
-            {/* Technical drawing */}
-            {/* <div className="mb-10 flex items-center justify-center">
+            <div className="mb-10 flex items-center justify-center">
               <img
                 src="/attached_assets/acisal-sapma-drawing.png"
                 alt="Angular Deflection Technical Drawing"
                 className="w-full h-auto max-w-2xl object-contain"
               />
-            </div> */}
+            </div>
 
-            {/* Angular deflection table */}
             <div className="max-w-xl mx-auto overflow-x-auto rounded-xl shadow-lg border border-gray-200">
               <table className="w-full text-base">
                 <thead>
                   <tr className="bg-[#1c2d56] text-white">
-                    <th className="px-6 py-4 text-center font-bold  border-white border-r">
-                      {t("ctpMansons.tab3ColPipe")}
+                    <th className="px-6 py-4 text-center font-bold border-white border-r">
+                      {t("ctpKayarManson.tab3ColPipe")}
                     </th>
-                    <th className="px-6 py-4 text-center font-bold  border-white">
-                      {t("ctpMansons.tab3ColDeflection")}
+                    <th className="px-6 py-4 text-center font-bold border-white">
+                      {t("ctpKayarManson.tab3ColDeflection")}
                     </th>
                   </tr>
                 </thead>
@@ -331,9 +308,10 @@ function CTPMansonsPage() {
           </div>
         </section>
       </div>
+
       <Footer />
     </div>
   );
 }
 
-export default CTPMansonsPage;
+export default CTPKayarMansonPage;

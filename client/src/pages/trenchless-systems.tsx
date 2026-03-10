@@ -63,26 +63,6 @@ function TrenchlessSystemsPage() {
               <p className="text-lg text-blue-100 leading-relaxed">
                 {t("trenchless.heroDesc")}
               </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{t("trenchless.badge1")}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{t("trenchless.badge2")}</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>{t("trenchless.badge3")}</span>
-                </div>
-              </div>
             </div>
             <div className="lg:w-1/2 flex justify-center">
               <img
@@ -124,26 +104,35 @@ function TrenchlessSystemsPage() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
               <div className="lg:col-span-1">
-                <h2 className="text-4xl font-bold text-[#1c2d56] mb-6 uppercase tracking-wide">
-                  JACKING &amp; RE-LINING
+                <h2 className="text-4xl font-bold text-[#1c2d56] mb-2 uppercase tracking-wide">
+                  {t("trenchless.tab1Title1")}
                 </h2>
+                <h3 className="text-2xl font-bold text-[#1c2d56] mb-6">
+                  {t("trenchless.tab1Title2")}
+                </h3>
                 <p className="text-lg text-gray-600 leading-relaxed">
                   {t("trenchless.tab1ShortDesc")}
                 </p>
               </div>
               <div className="lg:col-span-2">
-                {/* Product Thumbnails */}
-                <div className="flex gap-3 mb-6">
-                  <img src="/attached_assets/trenchless-thumb-01.jpg" alt="View 1" className="w-28 h-20 object-cover rounded" />
-                  <img src="/attached_assets/trenchless-thumb-02.jpg" alt="View 2" className="w-28 h-20 object-cover rounded" />
-                  <img src="/attached_assets/trenchless-thumb-03.png" alt="View 3" className="w-28 h-20 object-cover rounded" />
-                  <img src="/attached_assets/trenchless-thumb-04.png" alt="View 4" className="w-28 h-20 object-cover rounded" />
-                  <img src="/attached_assets/trenchless-thumb-05.jpg" alt="View 5" className="w-28 h-20 object-cover rounded" />
-                </div>
+                <p className="text-gray-700 leading-relaxed text-base mb-3">
+                  {t("trenchless.tab1MethodsIntro")}
+                </p>
+                <ul className="space-y-2 mb-6">
+                  {["tab1Method1", "tab1Method2"].map((key) => (
+                    <li key={key} className="flex items-start gap-3">
+                      <span className="mt-1.5 w-2 h-2 bg-[#ef4444] rounded-full flex-shrink-0"></span>
+                      <span className="text-gray-700 leading-relaxed text-sm">{t(`trenchless.${key}`)}</span>
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-gray-700 leading-relaxed text-base mb-6">
+                  {t("trenchless.tab1DescAfterMethods")}
+                </p>
 
                 <h3 className="text-lg font-bold text-[#1c2d56] mb-3">{t("trenchless.tab1AdvTitle")}</h3>
                 <ul className="space-y-2 mb-6">
-                  {["tab1Adv1", "tab1Adv2", "tab1Adv3", "tab1Adv4", "tab1Adv5", "tab1Adv6", "tab1Adv7", "tab1Adv8"].map((key) => (
+                  {["tab1Adv1", "tab1Adv2", "tab1Adv3", "tab1Adv4", "tab1Adv5", "tab1Adv6", "tab1Adv7", "tab1Adv8", "tab1Adv9"].map((key) => (
                     <li key={key} className="flex items-start gap-3">
                       <span className="mt-1.5 w-2 h-2 bg-[#ef4444] rounded-full flex-shrink-0"></span>
                       <span className="text-gray-700 leading-relaxed text-sm">{t(`trenchless.${key}`)}</span>
@@ -151,14 +140,14 @@ function TrenchlessSystemsPage() {
                   ))}
                 </ul>
 
-                <p className="text-gray-700 leading-relaxed text-sm italic">
-                  {t("trenchless.tab1SuperlitNote")}
+                <p className="text-gray-700 leading-relaxed text-base">
+                  {t("trenchless.tab1ClosingNote")}
                 </p>
               </div>
             </div>
 
             {/* Main Image */}
-            <div className="mt-12">
+            {/* <div className="mt-12">
               <div className="rounded-xl overflow-hidden shadow-lg">
                 <img
                   src="/attached_assets/trenchless-main.jpg"
@@ -166,10 +155,10 @@ function TrenchlessSystemsPage() {
                   className="w-full h-auto object-cover"
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* Design Tables Section */}
-            <div className="mt-12">
+            {/* <div className="mt-12">
               <h3 className="text-xl font-bold text-[#1c2d56] mb-2">{t("trenchless.tab1TablesTitle")}</h3>
               <p className="text-gray-500 text-sm mb-6">{t("trenchless.tab1TablesDesc")}</p>
               <ul className="space-y-3">
@@ -184,7 +173,7 @@ function TrenchlessSystemsPage() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </div> */}
           </div>
         </section>
       </div>

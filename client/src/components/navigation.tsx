@@ -70,7 +70,15 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
       { label: t("nav.products.cableProtection"), href: "/products/cable-protection" },
       { label: t("nav.products.ctpBoru"), href: "/products/ctp-pipes" },
       { label: t("nav.products.ctpFittings"), href: "/products/ctp-fittings" },
-      { label: t("nav.products.ctpMansons"), href: "/products/ctp-mansons" },
+      {
+        label: t("nav.products.ctpCouplings"),
+        href: "/products/ctp-mansons",
+        items: [
+          { label: t("nav.products.ctpFullFaceManson"), href: "/products/ctp-mansons" },
+          { label: t("nav.products.ctpKayarManson"), href: "/products/ctp-kayar-manson" },
+          { label: t("nav.products.ctpJackingManson"), href: "/products/ctp-jacking-manson" },
+        ],
+      },
       { label: t("nav.products.ctpMenhol"), href: "/products/ctp-menhol" },
       { label: t("nav.products.ctpTank"), href: "/products/ctp-tank" },
       {

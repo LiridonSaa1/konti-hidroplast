@@ -59,7 +59,7 @@ function CTPFittingsPage() {
                   {t("ctpFittings.heroTitle")}
                 </span>
               </h1>
-              <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+              <p className="text-lg text-gray-300 mb-8 leading-relaxed whitespace-pre-line">
                 {t("ctpFittings.heroDescription")}
               </p>
               <div className="flex flex-wrap gap-4">
@@ -214,9 +214,6 @@ function CTPFittingsPage() {
             <h2 className="text-3xl font-bold text-[#1c2d56] mb-6">
               {t("ctpFittings.elbowsTitle")}
             </h2>
-            <p className="text-gray-700 mb-8 leading-relaxed">
-              {t("ctpFittings.elbowsDesc")}
-            </p>
 
             <div className="overflow-x-auto rounded-xl shadow-lg border border-gray-200">
               <table className="w-full text-sm">

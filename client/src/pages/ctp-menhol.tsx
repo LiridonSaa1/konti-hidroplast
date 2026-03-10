@@ -36,29 +36,9 @@ function CTPMenholPage() {
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
                 {t("ctpMenhol.heroTitle")}
               </h1>
-              <p className="text-lg text-blue-100 leading-relaxed">
+              <p className="text-lg text-blue-100 leading-relaxed whitespace-pre-line">
                 {t("ctpMenhol.heroDesc")}
               </p>
-              <div className="mt-8 flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>EPDM Gasket</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>High Corrosion Resistance</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-white/80">
-                  <svg className="w-5 h-5 text-[#ef4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <span>50+ Years Lifespan</span>
-                </div>
-              </div>
             </div>
             <div className="lg:w-1/2 flex justify-center">
               <img
@@ -100,10 +80,10 @@ function CTPMenholPage() {
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
               <div className="lg:col-span-1">
-                <h2 className="text-4xl font-bold text-[#1c2d56] mb-6 uppercase tracking-wide">
+                <h2 className="text-4xl font-bold text-[#1c2d56] mb-6 tracking-wide">
                   {t("ctpMenhol.tab1Title2")}
                 </h2>
-                <p className="text-lg text-gray-600 leading-relaxed">
+                <p className="text-lg text-gray-600 leading-relaxed whitespace-pre-line">
                   {t("ctpMenhol.tab1ShortDesc")}
                 </p>
               </div>
@@ -118,7 +98,7 @@ function CTPMenholPage() {
                 </div>
 
                 <h3 className="text-xl font-bold text-gray-900 mb-3">{t("ctpMenhol.tab1WhatIs")}</h3>
-                <p className="text-gray-700 leading-relaxed text-base mb-6">
+                <p className="text-gray-700 leading-relaxed text-base mb-6 whitespace-pre-line">
                   {t("ctpMenhol.tab1WhatIsDesc")}
                 </p>
               </div>
@@ -128,14 +108,14 @@ function CTPMenholPage() {
             <div className="mt-12 space-y-8">
               <div>
                 <h3 className="text-xl font-bold text-[#1c2d56] mb-3">{t("ctpMenhol.tab1UsageTitle")}</h3>
-                <p className="text-gray-700 leading-relaxed">
+                <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                   {t("ctpMenhol.tab1UsageDesc")}
                 </p>
               </div>
 
               <div>
                 <h3 className="text-xl font-bold text-[#1c2d56] mb-3">{t("ctpMenhol.tab1AdvTitle")}</h3>
-                <p className="text-gray-700 leading-relaxed mb-3">
+                <p className="text-gray-700 leading-relaxed mb-3 whitespace-pre-line">
                   {t("ctpMenhol.tab1AdvDesc")}
                 </p>
                 <p className="text-gray-700 leading-relaxed">
@@ -145,7 +125,7 @@ function CTPMenholPage() {
 
               <div>
                 <h3 className="text-xl font-bold text-[#1c2d56] mb-3">{t("ctpMenhol.tab1QualityTitle")}</h3>
-                <p className="text-gray-700 leading-relaxed mb-3">
+                <p className="text-gray-700 leading-relaxed mb-3 whitespace-pre-line">
                   {t("ctpMenhol.tab1QualityDesc")}
                 </p>
                 <p className="text-gray-700 leading-relaxed">

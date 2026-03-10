@@ -18,6 +18,8 @@ import CableProtectionPage from "@/pages/cable-protection";
 import CTPPipesPage from "@/pages/ctp-pipes";
 import CTPFittingsPage from "@/pages/ctp-fittings";
 import CTPMansonsPage from "@/pages/ctp-mansons";
+import CTPKayarMansonPage from "@/pages/ctp-kayar-manson";
+import CTPJackingMansonPage from "@/pages/ctp-jacking-manson";
 import CTPMenholPage from "@/pages/ctp-menhol";
 import CTPTankPage from "@/pages/ctp-tank";
 import SpecialApplicationsPage from "@/pages/special-applications";
@@ -63,6 +65,8 @@ function Router() {
       <Route path="/products/ctp-pipes" component={CTPPipesPage} />
       <Route path="/products/ctp-fittings" component={CTPFittingsPage} />
       <Route path="/products/ctp-mansons" component={CTPMansonsPage} />
+      <Route path="/products/ctp-kayar-manson" component={CTPKayarMansonPage} />
+      <Route path="/products/ctp-jacking-manson" component={CTPJackingMansonPage} />
       <Route path="/products/ctp-menhol" component={CTPMenholPage} />
       <Route path="/products/ctp-tank" component={CTPTankPage} />
       <Route path="/ozel-uygulamalar" component={SpecialApplicationsPage} />

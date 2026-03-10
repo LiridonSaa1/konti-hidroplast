@@ -85,14 +85,14 @@ function CTPPipesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             <div>
               <div className="mb-6 text-white px-4 py-2 rounded-full inline-block bg-[#ef4444]">
-                <span className="text-sm font-medium">CTP BORU</span>
+                <span className="text-sm font-medium">GFK-Rohre</span>
               </div>
               <h1 className="text-5xl md:text-5xl font-bold mb-8 leading-tight">
                 <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
                   {t("ctpPipes.heroTitle")}
                 </span>
               </h1>
-              <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+              <p className="text-lg text-gray-300 mb-8 leading-relaxed whitespace-pre-line">
                 {t("ctpPipes.heroDescription")}
               </p>
               <div className="flex flex-wrap gap-4">
@@ -117,7 +117,7 @@ function CTPPipesPage() {
               <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
                 <img
                   src="/attached_assets/ctp-boru.jpg"
-                  alt="CTP Boru"
+                  alt="GFK-Rohre"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -158,14 +158,14 @@ function CTPPipesPage() {
       <div className={activeTab === "tab1" ? "block" : "hidden"}>
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <p className="text-gray-700 text-lg leading-relaxed mb-8">
+            <p className="text-gray-700 text-lg leading-relaxed mb-8 whitespace-pre-line">
               {t("ctpPipes.tab1Intro")}
             </p>
 
             <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
               {t("ctpPipes.tab1WhatTitle")}
             </h3>
-            <p className="text-gray-700 leading-relaxed mb-10">
+            <p className="text-gray-700 leading-relaxed mb-10 whitespace-pre-line">
               {t("ctpPipes.tab1WhatText")}
             </p>
 
@@ -209,18 +209,6 @@ function CTPPipesPage() {
                 </li>
               ))}
             </ul>
-
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-2xl p-8 mt-8">
-              <h3 className="text-2xl font-bold text-[#1c2d56] mb-4">
-                {t("ctpPipes.tab1QualityTitle")}
-              </h3>
-              <p className="text-gray-700 leading-relaxed mb-4">
-                {t("ctpPipes.tab1QualityText1")}
-              </p>
-              <p className="text-gray-700 leading-relaxed">
-                {t("ctpPipes.tab1QualityText2")}
-              </p>
-            </div>
           </div>
         </section>
       </div>
@@ -280,19 +268,19 @@ function CTPPipesPage() {
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[
-                  "TS EN 1796 (su temini)",
-                  "TS EN 14364 (atık su)",
-                  "ASTM D3262 (atık su)",
-                  "ASTM D3754 (atık su)",
-                  "ASTM D3517 (su temini)",
-                  "AWWA M45 (tasarım ve döşeme)",
-                  "AS 3571.1 (atık su)",
-                  "AS 3571.2 (temiz su)",
-                  "AS/NZS 2566.2 (döşeme)",
-                ].map((std, i) => (
+                  "ctpPipes.standard1",
+                  "ctpPipes.standard2",
+                  "ctpPipes.standard3",
+                  "ctpPipes.standard4",
+                  "ctpPipes.standard5",
+                  "ctpPipes.standard6",
+                  "ctpPipes.standard7",
+                  "ctpPipes.standard8",
+                  "ctpPipes.standard9",
+                ].map((key, i) => (
                   <div key={i} className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
-                    <span className="text-gray-700 text-sm">{std}</span>
+                    <span className="text-gray-700 text-sm">{t(key)}</span>
                   </div>
                 ))}
               </div>
