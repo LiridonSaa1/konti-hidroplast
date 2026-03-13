@@ -224,13 +224,13 @@ function CTPKayarMansonPage() {
                 <thead>
                   <tr className="bg-[#1c2d56] text-white">
                     <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider border-r border-b border-white">
-                      Anma Çapı
+                      {t("ctpKayarManson.tab2Header1")}
                     </th>
                     <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider border-r border-b border-white">
-                      Manşon Genişliği
+                      {t("ctpKayarManson.tab2Header2")}
                     </th>
                     <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wider border-b border-white" colSpan={6}>
-                      Manşon Dış Çapı De (mm)
+                      {t("ctpKayarManson.tab2Header3")}
                     </th>
                   </tr>
                   <tr className="bg-[#1c2d56] text-white">
@@ -275,7 +275,7 @@ function CTPKayarMansonPage() {
               {t("ctpKayarManson.tab3Desc")}
             </p>
 
-            <div className="mb-10 flex items-center justify-center">
+            <div className="mb-10 flex items-center justify-center invisible">
               <img
                 src="/attached_assets/acisal-sapma-drawing.png"
                 alt="Angular Deflection Technical Drawing"
