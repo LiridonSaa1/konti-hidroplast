@@ -19,6 +19,7 @@ const DEFAULT_SITE_ACCESS_PASSWORD = "konti-maintenance";
 const SITE_ACCESS_PASSWORD = (process.env.SITE_ACCESS_PASSWORD || DEFAULT_SITE_ACCESS_PASSWORD).trim();
 const SITE_ACCESS_COOKIE_NAME = "site_access";
 const SITE_ACCESS_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
+const SITE_ACCESS_ENABLED = (process.env.SITE_ACCESS_ENABLED || "false").trim().toLowerCase() === "true";
 
 function parseCookies(cookieHeader?: string): Record<string, string> {
   if (!cookieHeader) return {};
@@ -231,7 +232,12 @@ function siteAccessMiddleware(req: Request, res: Response, next: NextFunction) {
   res.status(401).type("html").send(renderSiteAccessPage(false, sanitizeReturnTo(req.originalUrl)));
 }
 
-app.use(siteAccessMiddleware);
+if (SITE_ACCESS_ENABLED) {
+  app.use(siteAccessMiddleware);
+  log("site access lock is enabled");
+} else {
+  log("site access lock is disabled");
+}
 
 // Serve attached assets statically
 app.use("/attached_assets", express.static(path.resolve(__dirname, "..", "attached_assets")));
