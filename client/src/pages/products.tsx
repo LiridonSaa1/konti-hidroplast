@@ -455,7 +455,7 @@ function ProductsPage() {
             <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
                 <img
-                  src="/attached_assets/manson-removebg-preview.png"
+                  src="/attached_assets/kayar-manson-001-tr.webp"
                   alt="CTP Kayar Manşon"
                   className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105"
                 />
@@ -480,7 +480,36 @@ function ProductsPage() {
               </div>
             </div>
 
-            {/* Product 9 - GRP Manholes */}
+            {/* Product 9 - GFK Jacking-Kupplung */}
+            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+              <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
+                <img
+                  src="/attached_assets/jacking-jpeg2.webp"
+                  alt="GFK Jacking-Kupplung"
+                  className="w-full h-full object-contain p-4 transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent group-hover:from-black/5 transition-all duration-500" />
+              </div>
+              <div className="p-5 relative">
+                <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
+                <div className="mt-3">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                    GFK Jacking-Kupplung
+                  </h3>
+                  <a
+                    href="/products/ctp-jacking-manson"
+                    className="inline-flex items-center px-5 py-2.5 rounded-lg font-semibold text-xs text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
+                  >
+                    <span>{t('products.learnMore')}</span>
+                    <svg className="w-3.5 h-3.5 ml-2 group-hover:ml-3 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Product 10 - GRP Manholes */}
             <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
                 <img
@@ -509,7 +538,7 @@ function ProductsPage() {
               </div>
             </div>
 
-            {/* Product 10 - GRP Tanks */}
+            {/* Product 11 - GRP Tanks */}
             <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
                 <img
@@ -538,7 +567,7 @@ function ProductsPage() {
               </div>
             </div>
 
-            {/* Product 11 - Special Applications */}
+            {/* Product 12 - Special Applications */}
             <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
                 <img
@@ -578,19 +607,19 @@ function ProductsPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Product Brochures & Catalogs
+                {t("brochures.title")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              Download detailed product brochures, technical specifications, and catalogs for all our solutions.
+              {t("brochures.description")}
             </p>
             <a
               href="/brochures"
               className="inline-flex items-center px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"
               data-testid="brochures-button"
             >
-              View All Brochures
+              {t("brochures.button")}
             </a>
           </div>
         </div>
@@ -607,9 +636,7 @@ function ProductsPage() {
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
-            <p className="text-xl text-gray-600 mb-8">
-              {t("aboutUs.getInTouchDescription")}
-            </p>
+            
             <Button
               onClick={() => {
                 // Store scroll target in sessionStorage

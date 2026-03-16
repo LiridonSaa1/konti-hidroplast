@@ -877,7 +877,7 @@ export default function AboutUs() {
                 {t("aboutUs.since1975")}
               </Badge>
               <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-                {t("aboutUs.title").toUpperCase()}{" "}
+                {t("aboutUs.title")}{" "}
                 
               </h1>
               <p className="text-xl text-gray-300 mb-8 leading-relaxed">
@@ -912,11 +912,6 @@ export default function AboutUs() {
                   controls={false}
                   style={{ pointerEvents: 'none' }}
                 />
-              </div>
-              <div className="absolute -bottom-4 -right-4 bg-red-600 text-white px-4 py-2 rounded-full shadow-lg">
-                <span className="text-sm font-medium">
-                  {t("aboutUs.corporate2024")}
-                </span>
               </div>
             </div>
           </div>
@@ -1433,11 +1428,8 @@ export default function AboutUs() {
             </div>
           </div>
 
-          {/* Products Grid - Vertical Card Design */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-            {/* Product 1 - Water Supply Systems */}
             <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
-              {/* Product Image - Top */}
               <div className="h-64 relative overflow-hidden">
                 <img
                   src="/attached_assets/Water-supply-min-1_1755115058874.jpg"
@@ -1447,9 +1439,7 @@ export default function AboutUs() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
               </div>
 
-              {/* Product Content - Bottom */}
               <div className="p-8 relative">
-                {/* Decorative accent */}
                 <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
 
                 <div className="mt-4">
@@ -1457,7 +1447,6 @@ export default function AboutUs() {
                     {t("aboutUs.waterSupplySystems")}
                   </h3>
 
-                  {/* Learn More Button */}
                   <Link href="/products/water-supply-systems">
                     <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
                       <span>{t('products.learnMore')}</span>
@@ -1527,7 +1516,6 @@ export default function AboutUs() {
 
             {/* Product 3 - Gas Pipeline System */}
             <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
-              {/* Product Image - Top */}
               <div className="h-64 relative overflow-hidden">
                 <img
                   src="/attached_assets/GAS-PIPELINE-SYSTEM-min-1_1755115129403.jpg"
@@ -1537,9 +1525,7 @@ export default function AboutUs() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
               </div>
 
-              {/* Product Content - Bottom */}
               <div className="p-8 relative">
-                {/* Decorative accent */}
                 <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
 
                 <div className="mt-4">
@@ -1547,7 +1533,6 @@ export default function AboutUs() {
                     {t("aboutUs.gasPipelineSystem")}
                   </h3>
 
-                  {/* Learn More Button */}
                   <Link href="/products/gas-pipeline-systems">
                     <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
                       <span>{t('products.learnMore')}</span>
@@ -1570,9 +1555,7 @@ export default function AboutUs() {
               </div>
             </div>
 
-            {/* Product 4 - Cable Protection */}
             <div className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100">
-              {/* Product Image - Top */}
               <div className="h-64 relative overflow-hidden">
                 <img
                   src="/attached_assets/CABLE-PROTECTION-min-1_1755115210995.jpg"
@@ -1582,9 +1565,7 @@ export default function AboutUs() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
               </div>
 
-              {/* Product Content - Bottom */}
               <div className="p-8 relative">
-                {/* Decorative accent */}
                 <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
 
                 <div className="mt-4">
@@ -1592,7 +1573,6 @@ export default function AboutUs() {
                     {t("aboutUs.cableProtection")}
                   </h3>
 
-                  {/* Learn More Button */}
                   <Link href="/products/cable-protection">
                     <button className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]">
                       <span>{t('products.learnMore')}</span>
@@ -1618,7 +1598,7 @@ export default function AboutUs() {
         </div>
       </section>
       {/* Gallery Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50 relative overflow-hidden">
+      {/* <section className="py-20 bg-gradient-to-r from-blue-50 to-cyan-50 relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <div className="flex items-center justify-center mb-8">
@@ -1628,7 +1608,6 @@ export default function AboutUs() {
             </div>
           </div>
 
-          {/* Dynamic Gallery Grid */}
           {isGalleryLoading ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
               {[...Array(4)].map((_, index) => (
@@ -1654,7 +1633,6 @@ export default function AboutUs() {
                     key={category.id}
                     className="group bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100"
                   >
-                    {/* Gallery Image - Top */}
                     <div className="h-64 relative overflow-hidden">
                       {category.imageUrl ? (
                         <img
@@ -1670,9 +1648,7 @@ export default function AboutUs() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent group-hover:from-black/10 transition-all duration-500" />
                     </div>
 
-                    {/* Gallery Content - Bottom */}
                     <div className="p-8 relative">
-                      {/* Decorative accent */}
                       <div className="absolute top-6 left-8 w-12 h-1 bg-[#1c2d56] rounded-full group-hover:w-16 transition-all duration-300" />
 
                       <div className="mt-4">
@@ -1680,7 +1656,6 @@ export default function AboutUs() {
                           {getLocalizedGalleryTitle(category)}
                         </h3>
 
-                        {/* View Gallery Button */}
                         <a
                           href={`/gallery/${category.title.toLowerCase().replace(/\s+/g, "-")}`}
                           className="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-sm text-white transition-all duration-300 group-hover:translate-x-1 hover:shadow-lg bg-[#1c2d56]"
@@ -1705,7 +1680,7 @@ export default function AboutUs() {
             </div>
           )}
         </div>
-      </section>
+      </section> */}
       <section className="py-20 bg-[#ffffff]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -1721,9 +1696,7 @@ export default function AboutUs() {
             </p>
             <Button
               onClick={() => {
-                // Store scroll target in sessionStorage
                 sessionStorage.setItem("scrollToContact", "true");
-                // Navigate to home page
                 setLocation("/");
               }}
               className="px-8 py-4 rounded-lg font-semibold text-lg text-white bg-[#1c2d56] hover:bg-[#1c2d56]/90 transition-colors"

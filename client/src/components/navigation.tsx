@@ -104,6 +104,10 @@ const useNavigationItems = (t: (key: string) => string): NavigationItem[] => [
         label: t("nav.downloads.certificates"),
         href: "/certificates",
       },
+      {
+        label: "Zertifikate - GFK-Rohre",
+        href: "/certificates-gfk",
+      },
     ],
   },
   { href: "/", label: t("nav.contact"), type: "link", scrollTo: "contact" },
@@ -298,10 +302,12 @@ export function Navigation() {
       // Special case: Contact link should not be active when on home page
       const isActive = location === item.href && !(item.href === "/" && item.scrollTo === "contact");
 
+      const key = `${item.href}-${item.label}`;
+
       if (isMobile) {
         return (
           <button
-            key={item.href}
+            key={key}
             onClick={() => {
               scrollToSection(item.href, item.scrollTo);
               setMobileMenuOpen(false);
@@ -322,7 +328,7 @@ export function Navigation() {
 
       return (
         <button
-          key={item.href}
+          key={key}
           onClick={() => scrollToSection(item.href, item.scrollTo)}
           className={`px-4 py-3 font-medium transition-all duration-300 text-[15px] ${
             isActive

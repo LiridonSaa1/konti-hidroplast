@@ -24,6 +24,7 @@ Go to your Replit project settings and add these secrets:
 - `BREVO_API_KEY` - For email functionality (contact forms)
 - `SESSION_SECRET` - Custom session secret (uses default if not set)
 - `BREVO_SENDER_EMAIL` - Email address for sending emails
+- `VITE_CONTACT_EMAIL_ENDPOINT` - Public HTTPS form endpoint for sending contact emails from the frontend (e.g. Formspree URL)
 
 ## 🗄️ Database Setup
 

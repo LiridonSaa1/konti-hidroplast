@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
-import { BrochureDownloadForm } from "@/components/BrochureDownloadForm";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { useCompanyInfo } from "@/hooks/use-company-info";
@@ -13,21 +13,11 @@ import type { Brochure, BrochureCategory } from "@shared/schema";
 function BrochuresPage() {
   const { t, language } = useLanguage();
   const { data: companyInfo } = useCompanyInfo();
+  const { isAuthenticated } = useAuth();
   const [, setLocation] = useLocation();
   const [activeTab, setActiveTab] = useState("water-supply");
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const [brochureModal, setBrochureModal] = useState<{
-    isOpen: boolean;
-    brochure: {
-      id: string;
-      name: string;
-      category: string;
-      pdfUrl: string;
-    } | null;
-  }>({
-    isOpen: false,
-    brochure: null,
-  });
+  const [downloadCounts, setDownloadCounts] = useState<Record<string, number>>({});
 
   // Fetch brochures from API
   const { data: brochures = [], isLoading: brochuresLoading } = useQuery<Brochure[]>({
@@ -40,7 +30,20 @@ function BrochuresPage() {
     console.log('Brochures loading:', brochuresLoading);
   }, [brochures, brochuresLoading]);
 
-  // Auto-open modal when coming from products dropdown
+  // Load download counts from localStorage (per-browser tracking) - only relevant when authenticated
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    try {
+      const stored = localStorage.getItem("brochureDownloadCounts");
+      if (stored) {
+        setDownloadCounts(JSON.parse(stored));
+      }
+    } catch (e) {
+      console.error("Failed to load brochure download counts from localStorage", e);
+    }
+  }, [isAuthenticated]);
+
+  // Auto-open brochure when coming from products dropdown
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const fromProducts = urlParams.get('from') === 'products';
@@ -50,15 +53,10 @@ function BrochuresPage() {
       const brochure = brochures[0];
       
       if (brochure) {
-        setBrochureModal({
-          isOpen: true,
-          brochure: {
-            id: brochure.id || 'main-brochure',
-            name: brochure.name || brochure.title || 'Product Brochure',
-            category: 'Products',
-            pdfUrl: brochure.pdfUrl || '',
-          },
-        });
+        // Directly open the brochure PDF in a new tab if available
+        if (brochure.pdfUrl) {
+          window.open(brochure.pdfUrl, "_blank", "noopener,noreferrer");
+        }
         
         // Clean up the URL parameter
         const newUrl = window.location.pathname;
@@ -181,26 +179,27 @@ function BrochuresPage() {
     // This will trigger a re-render with the new language
   }, [language]);
 
-  const handleDownloadClick = (brochure: Brochure, categoryTitle: string) => {
-    console.log('Brochure data from API:', brochure);
-    console.log('Category title:', categoryTitle);
-    
-    setBrochureModal({
-      isOpen: true,
-      brochure: {
-        id: brochure.id?.toString() || `${categoryTitle.toLowerCase().replace(/\s+/g, '-')}-${brochure.name?.toLowerCase().replace(/\s+/g, '-')}`,
-        name: brochure.name || 'Brochure',
-        category: categoryTitle,
-        pdfUrl: brochure.pdfUrl || '',
-      },
-    });
-  };
+  const handleDownloadClick = (brochure: Brochure) => {
+    if (isAuthenticated) {
+      const key = brochure.id?.toString() || brochure.name || brochure.title || "";
+      
+      if (key) {
+        setDownloadCounts((prev) => {
+          const next = { ...prev, [key]: (prev[key] || 0) + 1 };
+          try {
+            localStorage.setItem("brochureDownloadCounts", JSON.stringify(next));
+          } catch (e) {
+            console.error("Failed to save brochure download counts to localStorage", e);
+          }
+          return next;
+        });
+      }
+    }
 
-  const handleCloseBrochureModal = () => {
-    setBrochureModal({
-      isOpen: false,
-      brochure: null,
-    });
+    if (brochure.pdfUrl) {
+      // Open the PDF directly in a new tab, no intermediate form/page
+      window.open(brochure.pdfUrl, "_blank", "noopener,noreferrer");
+    }
   };
 
 
@@ -394,7 +393,7 @@ function BrochuresPage() {
                             </h3>
                             {brochure.pdfUrl ? (
                               <button
-                                onClick={() => handleDownloadClick(brochure, groupedBrochures[activeTabIndex].title)}
+                                onClick={() => handleDownloadClick(brochure)}
                                 className={`inline-flex items-center justify-center px-4 py-2 bg-[#1c2d56] hover:bg-[#1c2d56]/90 text-white font-medium rounded transition-colors ${
                                   groupedBrochures[activeTabIndex].brochures.length === 1 
                                     ? 'w-full text-base py-3' 
@@ -403,9 +402,20 @@ function BrochuresPage() {
                                 data-testid={`download-${brochure.id}`}
                               >
                                 <Download className="w-4 h-4 mr-2" />
-                                {language === 'en' ? 'Download' : 
-                                 language === 'mk' ? 'Преземи' : 
-                                 language === 'de' ? 'Herunterladen' : 'Download'}
+                                {(() => {
+                                  const baseLabel =
+                                    language === 'en' ? 'Download' : 
+                                    language === 'mk' ? 'Преземи' : 
+                                    language === 'de' ? 'Herunterladen' : 'Download';
+
+                                  if (!isAuthenticated) {
+                                    return baseLabel;
+                                  }
+
+                                  const key = brochure.id?.toString() || brochure.name || brochure.title || "";
+                                  const count = key ? downloadCounts[key] || 0 : 0;
+                                  return count > 0 ? `${baseLabel} (${count})` : baseLabel;
+                                })()}
                               </button>
                             ) : (
                               <div className={`inline-flex items-center justify-center px-4 py-2 bg-gray-300 text-gray-500 font-medium rounded cursor-not-allowed ${
@@ -457,15 +467,6 @@ function BrochuresPage() {
           </div>
                  </div>
        </section>
-
-       {/* Brochure Download Modal */}
-       {brochureModal.brochure && (
-         <BrochureDownloadForm
-           isOpen={brochureModal.isOpen}
-           onClose={handleCloseBrochureModal}
-           brochure={brochureModal.brochure}
-         />
-       )}
 
        <Footer />
      </div>

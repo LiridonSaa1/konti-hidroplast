@@ -19,7 +19,7 @@ export function Footer() {
   const quickLinks: QuickLink[] = [
     { labelKey: "footer.aboutUs", path: "/about-us" },
     { labelKey: "footer.products", path: "/products" },
-    { labelKey: "footer.news", path: "/news" },
+    // { labelKey: "footer.news", path: "/news" },
     { labelKey: "footer.contact", path: "/", isContact: true },
     { labelKey: "footer.privacyPolicy", path: "/privacy-policy" },
     { labelKey: "footer.Impressum", path: "/impressum" },

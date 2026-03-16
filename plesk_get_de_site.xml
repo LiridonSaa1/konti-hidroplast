@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<packet version="1.6.9.1">
+  <site>
+    <get>
+      <filter>
+        <name>urban-rohr.de</name>
+      </filter>
+      <dataset>
+        <hosting/>
+      </dataset>
+    </get>
+  </site>
+</packet>

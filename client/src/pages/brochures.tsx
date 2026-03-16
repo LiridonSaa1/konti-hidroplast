@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { Download, ChevronLeft, ChevronRight } from "lucide-react";
-import { BrochureDownloadForm } from "@/components/BrochureDownloadForm";
 
 // Public assets should be referenced via absolute paths, not imported from public/
 const URBAN_ROHR_CATALOGS = "/attached_assets/URBAN.png";
@@ -43,15 +43,24 @@ function BrochuresPage() {
   const { t } = useLanguage();
   const [, setLocation] = useLocation();
   const { data: companyInfo } = useCompanyInfo();
+  const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState(brochureCategories[0].id);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
-  const [selectedBrochure, setSelectedBrochure] = useState<{
-    id: string;
-    name: string;
-    category: string;
-    pdfUrl: string;
-  } | null>(null);
-  const [isDownloadFormOpen, setIsDownloadFormOpen] = useState(false);
+  const [selectedBrochure, setSelectedBrochure] = useState<null>(null);
+  const [downloadCounts, setDownloadCounts] = useState<Record<string, number>>({});
+
+  // Load download counts for static brochures from localStorage (only when authenticated)
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    try {
+      const stored = localStorage.getItem("brochureDownloadCountsStatic");
+      if (stored) {
+        setDownloadCounts(JSON.parse(stored));
+      }
+    } catch (e) {
+      console.error("Failed to load static brochure download counts from localStorage", e);
+    }
+  }, [isAuthenticated]);
 
   const nextTab = () => {
     const nextIndex =
@@ -67,17 +76,27 @@ function BrochuresPage() {
     setActiveTab(brochureCategories[prevIndex].id);
   };
 
-  const handleDownloadClick = (brochure: any, categoryTitle: string) => {
-    // Generate a unique ID based on category and title for tracking
-    const uniqueId = `${categoryTitle.toLowerCase().replace(/\s+/g, '-')}-${brochure.title.toLowerCase().replace(/\s+/g, '-')}`;
-    
-    setSelectedBrochure({
-      id: uniqueId,
-      name: brochure.title,
-      category: categoryTitle,
-      pdfUrl: brochure.downloadUrl,
-    });
-    setIsDownloadFormOpen(true);
+  const handleDownloadClick = (brochure: any) => {
+    if (isAuthenticated) {
+      const key = brochure.title || brochure.downloadUrl || "";
+
+      if (key) {
+        setDownloadCounts((prev) => {
+          const next = { ...prev, [key]: (prev[key] || 0) + 1 };
+          try {
+            localStorage.setItem("brochureDownloadCountsStatic", JSON.stringify(next));
+          } catch (e) {
+            console.error("Failed to save static brochure download counts to localStorage", e);
+          }
+          return next;
+        });
+      }
+    }
+
+    if (brochure.downloadUrl) {
+      // Directly open/download the PDF, no extra UI
+      window.open(brochure.downloadUrl, "_blank", "noopener,noreferrer");
+    }
   };
 
   useEffect(() => {
@@ -199,12 +218,22 @@ function BrochuresPage() {
                         {category.brochures[0].title}
                       </h3>
                       <button
-                        onClick={() => handleDownloadClick(category.brochures[0], category.title)}
+                        onClick={() => handleDownloadClick(category.brochures[0])}
                         className="inline-flex items-center justify-center px-6 py-3 bg-[#1c2d56] text-white rounded-lg hover:bg-[#1c2d56]/90 transition-colors text-base font-medium"
                         data-testid={`download-${category.id}-0`}
                       >
                         <Download className="w-5 h-5 mr-2" />
-                        {t("productPages.downloadPdf")}
+                        {(() => {
+                          const baseLabel = t("productPages.downloadPdf");
+
+                          if (!isAuthenticated) {
+                            return baseLabel;
+                          }
+
+                          const key = category.brochures[0].title || category.brochures[0].downloadUrl || "";
+                          const count = key ? downloadCounts[key] || 0 : 0;
+                          return count > 0 ? `${baseLabel} (${count})` : baseLabel;
+                        })()}
                       </button>
                     </div>
                   </div>
@@ -230,12 +259,22 @@ function BrochuresPage() {
                           {brochure.title}
                         </h3>
                         <button
-                          onClick={() => handleDownloadClick(brochure, category.title)}
+                          onClick={() => handleDownloadClick(brochure)}
                           className="inline-flex items-center w-full justify-center px-4 py-2 bg-[#1c2d56] text-white rounded-lg hover:bg-[#1c2d56]/90 transition-colors"
                           data-testid={`download-${category.id}-${index}`}
                         >
                           <Download className="w-4 h-4 mr-2" />
-                          {t("productPages.downloadPdf")}
+                          {(() => {
+                            const baseLabel = t("productPages.downloadPdf");
+
+                            if (!isAuthenticated) {
+                              return baseLabel;
+                            }
+
+                            const key = brochure.title || brochure.downloadUrl || "";
+                            const count = key ? downloadCounts[key] || 0 : 0;
+                            return count > 0 ? `${baseLabel} (${count})` : baseLabel;
+                          })()}
                         </button>
                       </div>
                     </div>
@@ -275,18 +314,6 @@ function BrochuresPage() {
           </div>
         </div>
       </section>
-
-      {/* Download Form */}
-      {selectedBrochure && (
-        <BrochureDownloadForm
-          isOpen={isDownloadFormOpen}
-          onClose={() => {
-            setIsDownloadFormOpen(false);
-            setSelectedBrochure(null);
-          }}
-          brochure={selectedBrochure}
-        />
-      )}
 
       <Footer />
     </div>

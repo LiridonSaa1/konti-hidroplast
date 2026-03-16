@@ -1,0 +1,9 @@
+DATABASE_URL=postgresql://postgres.vcczftlqrtabmotywsqj:Rohr2025$@aws-1-eu-central-2.pooler.supabase.com:5432/postgres
+NODE_ENV=production
+PORT=5000
+
+BREVO_SMTP_LOGIN=a5144f001@smtp-brevo.com
+BREVO_SMTP_KEY=bskXmhG7jHytyVG
+BREVO_SENDER_EMAIL=info@urban-rohr.com
+SITE_ACCESS_PASSWORD=LuanAjeti@!
+SITE_ACCESS_SECRET=urbanrohr-2026-maintenance-secret

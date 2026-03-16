@@ -29,6 +29,7 @@ import TrenchlessSystemsPage from "@/pages/trenchless-systems";
 import BrochuresPage from "@/pages/brochures";
 import DownloadBrochurePage from "@/pages/download-brochure";
 import CertificatesPage from "@/pages/certificates";
+import GFKCertificatesPage from "@/pages/certificates-gfk";
 import NewsPage from "@/pages/news";
 import NewsArticlePage from "@/pages/NewsArticlePage";
 import CareerPage from "@/pages/career";
@@ -76,6 +77,7 @@ function Router() {
       <Route path="/brochures" component={BrochuresPage} />
       <Route path="/download-brochure" component={DownloadBrochurePage} />
       <Route path="/certificates" component={CertificatesPage} />
+      <Route path="/certificates-gfk" component={GFKCertificatesPage} />
       <Route path="/news" component={NewsPage} />
       <Route path="/news/:slug" component={NewsArticlePage} />
       <Route path="/career" component={CareerPage} />

@@ -36,7 +36,6 @@ export default function ImpressumPage() {
       <p className="mb-4">
         <strong>Vertreten durch:</strong><br />
         Xhevxhet Ajeti<br />
-        Louis de Paris<br />
         Xhemail Jashari<br />
         Zekirja Bajrami
       </p>
@@ -172,8 +171,6 @@ export default function ImpressumPage() {
               </span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-              <span className="text-red-500">{language === "de" ? "Impressum" : "Imprint"}</span>
-              <br />
               <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
                 {language === "de" ? "Impressum" : "Imprint"}
               </span>

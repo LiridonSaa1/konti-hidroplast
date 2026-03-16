@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<packet version="1.6.9.1">
+  <site>
+    <set>
+      <filter>
+        <id>12</id>
+      </filter>
+      <values>
+        <hosting>
+          <vrt_hst>
+            <property>
+              <name>additional-ssl-settings</name>
+              <value></value>
+            </property>
+          </vrt_hst>
+        </hosting>
+      </values>
+    </set>
+  </site>
+</packet>

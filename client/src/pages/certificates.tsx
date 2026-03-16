@@ -903,32 +903,14 @@ function CertificatesPage() {
               <span className="text-sm font-medium">{t("productPages.qualityAssurance")}</span>
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
-              {t("productPages.qualityCertificates")}<span className="text-red-500"> </span>
-              <br />
-              <span className="bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
-                {t("productPages.andStandards")}
-              </span>
+              {t("productPages.qualityCertificates")}
             </h1>
             <p
-              className="text-xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
+              className="text-xl text-gray-300 mb-16 leading-relaxed max-w-3xl mx-auto"
               data-testid="hero-description"
             >
               {t("productPages.certificatesDescription")}
             </p>
-            <div className="flex justify-center space-x-8 text-sm">
-              <div className="flex items-center">
-                <Award className="w-5 h-5 mr-2 text-yellow-400" />
-                {t("productPages.isoCertified")}
-              </div>
-              <div className="flex items-center">
-                <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
-                {t("productPages.qualityAssured")}
-              </div>
-              <div className="flex items-center">
-                <Shield className="w-5 h-5 mr-2 text-blue-400" />
-                {t("productPages.europeanStandards")}
-              </div>
-            </div>
           </div>
         </div>
       </section>

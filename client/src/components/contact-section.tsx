@@ -10,6 +10,7 @@ import { useState } from "react";
 import { MapPin, Phone, Share2, ExternalLink } from "lucide-react";
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { sendContactEmail } from "@/lib/contactEmail";
 
 interface ContactFormData {
   fullName: string;
@@ -78,35 +79,44 @@ export function ContactSection() {
     }
 
     try {
-      // Submit form data to API
-      const response = await fetch('/api/contact', {
-        method: 'POST',
+      // Submit form data to API (store in backend)
+      const response = await fetch("/api/contact", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to send message');
+        throw new Error("Failed to send message");
       }
-      
+
       const result = await response.json();
-      
+
+      // After successful backend store, try to send external email notification
+      const emailResult = await sendContactEmail({
+        ...formData,
+        sourcePage: window.location.pathname || "contact",
+      });
+
       // Show success message with email status
-      if (result.emailsSent) {
+      if (emailResult.ok) {
         toast({
-          title: t('contact.success.title'),
-          description: `${t('contact.success.message')} Emails sent successfully.`,
+          title: t("contact.success.title"),
+          description: `${t("contact.success.message")} Emails sent successfully.`,
         });
       } else {
+        // Backend ok, but email either disabled or failed
         toast({
-          title: t('contact.success.title'),
-          description: `${t('contact.success.message')} Note: Email notifications are currently disabled.`,
+          title: t("contact.success.title"),
+          description: `${t(
+            "contact.success.message"
+          )} Note: Email notifications are currently disabled or temporarily unavailable.`,
           variant: "default",
         });
       }
-      
+
       // Reset form
       setFormData({
         fullName: "",
@@ -116,10 +126,10 @@ export function ContactSection() {
         message: "",
       });
     } catch (error) {
-      console.error('Contact form submission error:', error);
+      console.error("Contact form submission error:", error);
       toast({
-        title: t('contact.error.title'),
-        description: t('contact.error.message'),
+        title: t("contact.error.title"),
+        description: t("contact.error.message"),
         variant: "destructive",
       });
     } finally {

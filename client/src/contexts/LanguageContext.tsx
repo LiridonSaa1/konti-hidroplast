@@ -213,7 +213,7 @@ const translations = {
     "footer.Impressum": "Impressum",
     "footer.contactInfo": "Contact Info",
     "footer.address": "Industriska 6, 5480 Gevgelija, North Macedonia",
-    "footer.copyright": "Â© 2025 Urban Rohr. All rights reserved.",
+    "footer.copyright": "Urban Rohr GmbH",
 
     // Common
     "common.loading": "Loading...",
@@ -318,7 +318,7 @@ const translations = {
     "productsPage.ctpKayarManson": "CTP KAYAR MANÅžON",
     "productsPage.ctpManholes": "CTP MENHOL",
     "productsPage.ctpTank": "CTP TANK",
-    "productsPage.specialApplications": "ÖZEL UYGULAMALAR",
+    "productsPage.specialApplications": "Sonderanwendungen/Sonderprodukte",
 
     // CTP Pipes Page
     "ctpPipes.pageTitle": "GFK-Rohre",
@@ -1603,8 +1603,10 @@ const translations = {
     "certificates.error": "Error loading certificates",
 
     // Brochures Page
-    "brochures.title": "Product Brochures",
+    "brochures.title": "Product Brochures & Catalogs",
     "brochures.subtitle": "Technical Documentation and Product Information",
+    "brochures.description": "Download detailed product brochures, technical specifications, and catalogs for all our solutions.",
+    "brochures.button": "View All Brochures",
     "brochures.downloadPdf": "Download PDF",
     "brochures.viewDetails": "View Details",
 
@@ -2032,7 +2034,7 @@ const translations = {
     "footer.Impressum":"Ð¾Ñ‚Ð¿ÐµÑ‡Ð°Ñ‚Ð¾Ðº",
     "footer.contactInfo": "ÐšÐ¾Ð½Ñ‚Ð°ÐºÑ‚ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ð¸",
     "footer.address": "Ð˜Ð½Ð´ÑƒÑÑ‚Ñ€Ð¸ÑÐºÐ° 6, 5480 Ð“ÐµÐ²Ð³ÐµÐ»Ð¸Ñ˜Ð°, Ð¡ÐµÐ²ÐµÑ€Ð½Ð° ÐœÐ°ÐºÐµÐ´Ð¾Ð½Ð¸Ñ˜Ð°",
-    "footer.copyright": "Â© 2025 Ð£Ñ€Ð±Ð°Ð½ Ð Ð¾Ñ€. Ð¡Ð¸Ñ‚Ðµ Ð¿Ñ€Ð°Ð²Ð° ÑÐµ Ð·Ð°Ð´Ñ€Ð¶Ð°Ð½Ð¸.",
+    "footer.copyright": "Urban Rohr GmbH",
 
     // Privacy Policy Page - Macedonian
     "privacyPage.backToHome": "ÐÐ°Ð·Ð°Ð´ Ð½Ð° Ð¿Ð¾Ñ‡ÐµÑ‚Ð½Ð°",
@@ -2202,7 +2204,7 @@ const translations = {
     "productsPage.ctpKayarManson": "CTP KAYAR MANÅžON",
     "productsPage.ctpManholes": "CTP MENHOL",
     "productsPage.ctpTank": "CTP Ð¢ÐÐÐš",
-    "productsPage.specialApplications": "ÖZEL UYGULAMALAR",
+    "productsPage.specialApplications": "Sonderanwendungen/Sonderprodukte",
 
     // CTP Pipes Page
     "ctpPipes.pageTitle": "CTP Ð¦ÐµÐ²ÐºÐ¸",
@@ -3422,10 +3424,12 @@ const translations = {
     "certificates.error": "Ð“Ñ€ÐµÑˆÐºÐ° Ð¿Ñ€Ð¸ Ð²Ñ‡Ð¸Ñ‚ÑƒÐ²Ð°ÑšÐµ Ð½Ð° ÑÐµÑ€Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¸",
 
     // Brochures Page
-    "brochures.title": "Ð‘Ñ€Ð¾ÑˆÑƒÑ€Ð¸ Ð·Ð° Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸",
-    "brochures.subtitle": "Ð¢ÐµÑ…Ð½Ð¸Ñ‡ÐºÐ° Ð´Ð¾ÐºÑƒÐ¼ÐµÐ½Ñ‚Ð°Ñ†Ð¸Ñ˜Ð° Ð¸ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ð¸ Ð·Ð° Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð¸",
-    "brochures.downloadPdf": "ÐŸÑ€ÐµÐ·ÐµÐ¼Ð¸ PDF",
-    "brochures.viewDetails": "Ð’Ð¸Ð´Ð¸ Ð´ÐµÑ‚Ð°Ð»Ð¸",
+    "brochures.title": "Брошури и каталози за производи",
+    "brochures.subtitle": "Техничка документација и информации за производи",
+    "brochures.description": "Преземете детални производни брошури, технички спецификации и каталози за сите наши решенија.",
+    "brochures.button": "Види ги сите брошури",
+    "brochures.downloadPdf": "Преземи PDF",
+    "brochures.viewDetails": "Види детали",
 
     // Career Page
     "career.title": "ÐœÐ¾Ð¶Ð½Ð¾ÑÑ‚Ð¸ Ð·Ð° ÐºÐ°Ñ€Ð¸ÐµÑ€Ð°",
@@ -3716,7 +3720,7 @@ const translations = {
     "nav.products.darkLiner": "Dark Liner CTP Rohr",
     "nav.products.trenchless": "Grabenlose Systeme",
     "nav.downloads.brochures": "Broschüren",
-    "nav.downloads.certificates": "Zertifikate",
+    "nav.downloads.certificates": "Zertifikate - PE/PP",
     "nav.downloads.statistics": "Statistiken",
     "nav.contact.career": "Karriere",
 
@@ -3870,7 +3874,7 @@ const translations = {
     "footer.Impressum": "Impressum",
     "footer.contactInfo": "Kontaktinformationen",
     "footer.address": "Industriska 6, 5480 Gevgelija, Nordmazedonien",
-    "footer.copyright": "Â© 2025 Urban Rohr. Alle Rechte vorbehalten.",
+    "footer.copyright": "Urban Rohr GmbH",
 
     // Privacy Policy Page - German
     "privacyPage.backToHome": "Zurück zur Startseite",
@@ -4040,7 +4044,7 @@ const translations = {
     "productsPage.ctpKayarManson": "GFK SCHIEBEMUFFE",
     "productsPage.ctpManholes": "GFK SCHÄCHTE",
     "productsPage.ctpTank": "GFK TANKS",
-    "productsPage.specialApplications": "ÖZEL UYGULAMALAR",
+    "productsPage.specialApplications": "Sonderanwendungen/Sonderprodukte",
 
     // CTP Pipes Page
     "ctpPipes.pageTitle": "GFK-Rohre",
@@ -5261,8 +5265,10 @@ const translations = {
     "certificates.error": "Fehler beim Laden der Zertifikate",
 
     // Brochures Page
-    "brochures.title": "Produktbroschüren",
+    "brochures.title": "Produktbroschüren & Kataloge",
     "brochures.subtitle": "Technische Dokumentation und Produktinformationen",
+    "brochures.description": "Laden Sie detaillierte Produktbroschüren, technische Spezifikationen und Kataloge für alle unsere Lösungen herunter.",
+    "brochures.button": "Alle Broschüren anzeigen",
     "brochures.downloadPdf": "PDF herunterladen",
     "brochures.viewDetails": "Details anzeigen",
 
@@ -5527,9 +5533,32 @@ interface LanguageProviderProps {
 
 export function LanguageProvider({ children }: LanguageProviderProps) {
   const [language, setLanguage] = useState<Language>(() => {
-    // Get saved language from localStorage or default to English
-    const saved = localStorage.getItem("konti-language");
-    return saved === "mk" || saved === "en" || saved === "de" ? saved : "en";
+    // Get saved language from localStorage or detect from browser settings
+    try {
+      const saved = localStorage.getItem("konti-language");
+      if (saved === "mk" || saved === "en" || saved === "de") {
+        return saved;
+      }
+    } catch {
+      // Ignore access errors (e.g. in private mode) and fall back to detection
+    }
+
+    // Auto-detect language based on browser locale.
+    // For visitors from Germany, Austria or Switzerland (typically using a "de-*" locale),
+    // default to German ("de"); for all others default to English ("en").
+    if (typeof navigator !== "undefined") {
+      const browserLang =
+        (navigator.languages && navigator.languages[0]) ||
+        navigator.language ||
+        "";
+      const normalized = browserLang.toLowerCase();
+
+      if (normalized.startsWith("de")) {
+        return "de";
+      }
+    }
+
+    return "en";
   });
 
   useEffect(() => {

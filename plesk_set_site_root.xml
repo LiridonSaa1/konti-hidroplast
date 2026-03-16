@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<packet version="1.6.9.1">
+  <site>
+    <set>
+      <filter>
+        <id>12</id>
+      </filter>
+      <values>
+        <hosting>
+          <vrt_hst>
+            <property>
+              <name>additional-ssl-settings</name>
+              <value><![CDATA[<IfModule mod_passenger.c>
+  <Directory "/var/www/vhosts/urban-rohr.com/httpdocs/passenger-entry">
+    PassengerEnabled on
+    PassengerAppType node
+    PassengerNodejs "/opt/plesk/node/23/bin/node"
+    PassengerUser "urban-rohr.com_77m6vbt3oka"
+    PassengerGroup "psacln"
+    PassengerAppRoot "/var/www/vhosts/urban-rohr.com/httpdocs"
+    PassengerStartupFile "_passenger.cjs"
+    PassengerAppEnv "production"
+    AllowOverride None
+    Options -MultiViews
+  </Directory>
+</IfModule>
+]]></value>
+            </property>
+          </vrt_hst>
+        </hosting>
+      </values>
+    </set>
+  </site>
+</packet>

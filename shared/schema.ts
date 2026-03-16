@@ -249,7 +249,7 @@ export const brevoConfig = pgTable("brevo_config", {
   senderEmail: text("sender_email").notNull(), // SMTP login email for authentication
   validatedSenderEmail: text("validated_sender_email"), // Validated email for "from" field
   senderName: text("sender_name").notNull(),
-  recipientEmail: text("recipient_email").notNull().default("admin@kontihidroplast.com"), // Where to send contact form notifications
+  recipientEmail: text("recipient_email").notNull().default("info@urbanrohr.com"), // Where to send contact form notifications
   templateId: integer("template_id"),
   isActive: boolean("is_active").default(true),
   createdAt: timestamp("created_at").defaultNow(),
