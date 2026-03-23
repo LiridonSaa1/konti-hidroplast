@@ -3984,13 +3984,13 @@ const translations = {
     "aboutUs.isoCertified": "ISO-zertifiziert",
     "aboutUs.corporate2024": "Corporate 2024",
     "aboutUs.companyStoryText1":
-      "Urban Rohr GmbH - Ihr Partner für Rohrsysteme",
+      "Urban Rohr GmbH – Ihr Partner für Rohrsysteme",
     "aboutUs.companyStoryText2":
-      "Die Urban Rohr GmbH ist ein international ausgerichtetes Unternehmen, das seit über 20 Jahren erfolgreich im Bereich moderner Rohrsysteme tätig ist. Mit einer breiten Produktpalette von über 9.000 Artikeln - darunter Rohre und Lösungen aus PE (Polyethylen), PP (Polypropylen), Guss und PVC - beliefern wir Bau-, Infrastruktur- und Industrieprojekte in 16 Ländern.",
+      "Die Urban Rohr GmbH ist ein international tätiges Handels- und Vertriebsunternehmen für moderne Rohrsysteme mit über 20 Jahren Erfahrung. Unser Fokus liegt darauf, zuverlässige und wirtschaftliche Lösungen für Bau-, Infrastruktur- und Industrieprojekte bereitzustellen. Mit einem Sortiment von über 9.000 Artikeln bieten wir ein umfassendes Portfolio an Rohrsystemen aus PE (Polyethylen), PP (Polypropylen), GFK (GRP), PVC und Guss. Ergänzt wird dieses durch passende Schächte, Formstücke und Systemlösungen für unterschiedlichste Anforderungen. Unsere Produkte kommen in allen zentralen Anwendungsbereichen zum Einsatz – von der Wasserversorgung und Abwasserentsorgung bis hin zu Gas-, Druck- und Entwässerungssystemen sowie Telekommunikationsschutz.",
     "aboutUs.companyStoryText3":
-      "Unsere Rohrsysteme decken alle relevanten Anwendungsbereiche ab: Wasserversorgung, Abwasserentsorgung, Gas- und Ölleitungen, Telekommunikationsschutz, Entwässerung sowie Schächte und Fittings in allen Dimensionen von 12 mm bis 2000 mm.",
+      "Als Bindeglied zwischen internationalen Herstellern und ausführenden Unternehmen stehen wir für eine partnerschaftliche und lösungsorientierte Zusammenarbeit. Wir begleiten Projekte von der Planung bis zur Umsetzung und legen dabei großen Wert auf Qualität, Flexibilität und Termintreue. Unsere Tätigkeit konzentriert sich auf die wirtschaftsstarken Märkte Europas, insbesondere Deutschland, die Schweiz, Österreich, Frankreich und Italien. Durch unsere Erfahrung im Projektgeschäft sowie im direkten Austausch mit Bauunternehmen, Tiefbauern, Versorgern und Bauträgern verstehen wir die Anforderungen unserer Kunden genau.",
     "aboutUs.companyStoryText4":
-      "Bekannt sind wir für höchste Qualität, Flexibilität und Verlässlichkeit - Faktoren, die uns in einem komplexen Marktumfeld auszeichnen. Durch kontinuierliche Investitionen in innovative Technologien, nachhaltige Prozesse und modernste Standards sichern wir uns langfristig eine starke Position im internationalen Wettbewerb. Die Kombination aus Erfahrung, Produktvielfalt und Innovationskraft macht die Urban Rohr GmbH zu einem verlässlichen Partner für große wie kleine Infrastrukturprojekte - im In- und Ausland.",
+      "Urban Rohr steht für Verlässlichkeit, Kompetenz und nachhaltige Lösungen. Unser Anspruch ist es, langfristige Partnerschaften aufzubauen und jedes Projekt – unabhängig von seiner Größe – professionell und effizient zu unterstützen.",
     "aboutUs.since1975": "Seit 1975",
     "aboutUs.leadershipMessage": "Botschaft der Geschäftsführung",
     "aboutUs.leadershipTitle": "Die Zukunft der Infrastruktur gemeinsam gestalten",
