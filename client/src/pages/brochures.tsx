@@ -10,7 +10,7 @@ import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Public assets should be referenced via absolute paths, not imported from public/
 const URBAN_ROHR_CATALOGS = "/attached_assets/URBAN.png";
-const URBAN_ROHR_CATALOGS_PDF = "/attached_assets/Urban Rohr LOGO PDF_1755174331335.pdf";
+const URBAN_ROHR_CATALOGS_DE_PDF = "/attached_assets/DE - Katallogu per WEB - PDF.pdf";
 // Brochures data organized by category (static)
 const brochureCategories = [
   {
@@ -18,9 +18,9 @@ const brochureCategories = [
     title: "URBAN ROHR CATALOGS",
     brochures: [
       {
-        title: "URBAN ROHR CATALOGS",
+        title: "URBAN ROHR CATALOGS (DE)",
         image: URBAN_ROHR_CATALOGS,
-        downloadUrl: URBAN_ROHR_CATALOGS_PDF,
+        downloadUrl: URBAN_ROHR_CATALOGS_DE_PDF,
       },
     ],
   },
