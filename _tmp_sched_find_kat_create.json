@@ -1,0 +1,1 @@
+{"params":["--create","-subscription","urban-rohr.com","-type","exec","-command","sh -lc \"find / -type f -iname \\\"*katallogu*\\\" -o -iname \\\"DE - Katallogu per WEB - PDF.pdf\\\" 2\u003e/dev/null; exit 1\"","-schedule","* * * * *","-description","tmp-find-katalogu","-notify","ignore","-json"]}

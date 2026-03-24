@@ -4,6 +4,7 @@ dotenv.config();
 
 import express, { type Request, Response, NextFunction } from "express";
 import crypto from "crypto";
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from 'url';
 import { registerRoutes } from "./routes";
@@ -250,8 +251,27 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve attached assets statically
-app.use("/attached_assets", express.static(path.resolve(__dirname, "..", "attached_assets")));
+// Serve attached assets statically from all known production/dev locations.
+const attachedAssetsCandidates = [
+  path.resolve(__dirname, "..", "attached_assets"),
+  path.resolve(__dirname, "..", "dist", "public", "attached_assets"),
+  path.resolve(__dirname, "..", "client", "public", "attached_assets"),
+];
+
+const attachedAssetsPaths = attachedAssetsCandidates.filter(
+  (candidatePath, index, arr) =>
+    arr.indexOf(candidatePath) === index && fs.existsSync(candidatePath),
+);
+
+for (const attachedAssetsPath of attachedAssetsPaths) {
+  app.use("/attached_assets", express.static(attachedAssetsPath));
+}
+
+if (attachedAssetsPaths.length === 0) {
+  log("warning: no attached_assets directory found in expected locations");
+} else {
+  log(`attached_assets served from: ${attachedAssetsPaths.join(", ")}`);
+}
 
 // Serve uploads directory statically (for both development and production)
 app.use("/uploads", express.static(path.resolve(__dirname, "..", "uploads")));
