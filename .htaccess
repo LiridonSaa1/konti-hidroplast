@@ -2,7 +2,9 @@
     RewriteEngine On
 
     # Block direct access to this specific PDF file
-    RewriteRule ^DE\ -\ Katallogu\ per\ WEB\ -\ PDF\.pdf$ - [F,L,NC]
+    RewriteCond %{REQUEST_URI} ^/DE%20-%20Katallogu%20per%20WEB%20-%20PDF\.pdf$ [NC,OR]
+    RewriteCond %{REQUEST_URI} ^/DE\ -\ Katallogu\ per\ WEB\ -\ PDF\.pdf$ [NC]
+    RewriteRule ^ - [F,L]
 
     # Never rewrite real static-file requests to index.html.
     # If a file is missing, keep 404 (prevents JS/CSS MIME errors).
