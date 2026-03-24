@@ -20,6 +20,7 @@ const SITE_ACCESS_PASSWORD = (process.env.SITE_ACCESS_PASSWORD || DEFAULT_SITE_A
 const SITE_ACCESS_COOKIE_NAME = "site_access";
 const SITE_ACCESS_TTL_SECONDS = 60 * 60 * 24 * 7; // 7 days
 const SITE_ACCESS_ENABLED = (process.env.SITE_ACCESS_ENABLED || "false").trim().toLowerCase() === "true";
+const BLOCKED_PDF_FILENAME = "DE - Katallogu per WEB - PDF.pdf";
 
 function parseCookies(cookieHeader?: string): Record<string, string> {
   if (!cookieHeader) return {};
@@ -238,6 +239,16 @@ if (SITE_ACCESS_ENABLED) {
 } else {
   log("site access lock is disabled");
 }
+
+app.use((req, res, next) => {
+  const requestedPath = decodeURIComponent(req.path || "");
+  if (requestedPath.endsWith(`/${BLOCKED_PDF_FILENAME}`) || requestedPath === `/${BLOCKED_PDF_FILENAME}`) {
+    res.status(404).end();
+    return;
+  }
+
+  next();
+});
 
 // Serve attached assets statically
 app.use("/attached_assets", express.static(path.resolve(__dirname, "..", "attached_assets")));
