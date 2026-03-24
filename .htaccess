@@ -1,6 +1,9 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # Block direct access to this specific PDF file
+    RewriteRule ^DE\ -\ Katallogu\ per\ WEB\ -\ PDF\.pdf$ - [F,L,NC]
+
     # Never rewrite real static-file requests to index.html.
     # If a file is missing, keep 404 (prevents JS/CSS MIME errors).
     RewriteCond %{REQUEST_URI} \.(?:js|mjs|css|map|json|webmanifest|png|jpg|jpeg|gif|svg|ico|webp|avif|woff2?|ttf|eot|pdf|txt|xml|mp4|webm)$ [NC]

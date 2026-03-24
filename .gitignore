@@ -28,3 +28,6 @@ pids
 *.pid
 *.seed
 *.pid.lock
+
+# Block specific PDF from being tracked/deployed
+DE - Katallogu per WEB - PDF.pdf
