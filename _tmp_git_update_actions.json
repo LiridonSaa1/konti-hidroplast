@@ -1,0 +1,1 @@
+{"params":["--call","git","--update","-domain","urban-rohr.com","-name","konti-hidroplast","-run-actions","true","-actions","/opt/plesk/node/23/bin/npm install --no-audit --no-fund \u0026\u0026 /opt/plesk/node/23/bin/npm run build \u0026\u0026 touch tmp/restart.txt"]}

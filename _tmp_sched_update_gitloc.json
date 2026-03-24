@@ -1,0 +1,1 @@
+{"params":["--update","322","-command","sh -lc \"for d in /httpdocs /upbeat-chandrasekhar.84-46-246-41.plesk.page/httpdocs /urban-rohr.de/httpdocs /git; do echo ===$d===; if [ -d $d ]; then ls -la $d | sed -n \\\"1,12p\\\"; else echo MISSING; fi; if [ -d $d/.git ]; then echo HAS_GIT_REPO; fi; done; exit 1\"","-description","tmp-git-locate"]}

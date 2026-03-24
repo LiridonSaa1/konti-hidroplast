@@ -1,0 +1,1 @@
+{"params":["--update","322","-command","sh -lc \"ls -la /bin; echo ---; ls -la /usr/bin; echo ---; find / -maxdepth 4 -name git 2\u003e/dev/null; exit 1\"","-description","tmp-find-git"]}

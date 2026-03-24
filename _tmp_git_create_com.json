@@ -1,0 +1,1 @@
+{"params":["--call","git","--create","-domain","urban-rohr.com","-name","konti-hidroplast","-remote-url","https://github.com/LiridonSaa1/konti-hidroplast.git","-active-branch","main","-deployment-path","/httpdocs"]}

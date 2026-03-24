@@ -1,0 +1,1 @@
+{"params":["--update","322","-command","sh -lc \"[ -d /var/www ] \u0026\u0026 echo HAVE_VARWWW || echo NO_VARWWW; [ -d /var/www/vhosts ] \u0026\u0026 echo HAVE_VHOSTS || echo NO_VHOSTS; pwd; exit 1\"","-description","tmp-basic-probe"]}

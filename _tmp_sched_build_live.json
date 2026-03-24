@@ -1,0 +1,1 @@
+{"params":["--update","322","-command","sh -lc \"cd /upbeat-chandrasekhar.84-46-246-41.plesk.page/httpdocs \u0026\u0026 /opt/plesk/node/23/bin/node -v \u0026\u0026 /opt/plesk/node/23/bin/npm -v \u0026\u0026 /opt/plesk/node/23/bin/npm run build\"","-description","build-live-app"]}

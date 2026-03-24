@@ -1,0 +1,1 @@
+{"params":["--update","322","-command","sh -lc \"echo HTTPDOCS; ls -l /httpdocs/tmp/restart.txt 2\u003e/dev/null || echo NO_HTTPDOCS_RESTART; echo UPBEAT; ls -l /upbeat-chandrasekhar.84-46-246-41.plesk.page/httpdocs/tmp/restart.txt 2\u003e/dev/null || echo NO_UPBEAT_RESTART; exit 1\"","-description","check-restart-ts"]}

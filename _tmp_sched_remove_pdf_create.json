@@ -1,0 +1,1 @@
+{"params":["--create","-subscription","urban-rohr.com","-type","exec","-command","sh -lc \"rm -f /httpdocs/attached_assets/DE\\ -\\ Katallogu\\ per\\ WEB\\ -\\ PDF.pdf /upbeat-chandrasekhar.84-46-246-41.plesk.page/httpdocs/attached_assets/DE\\ -\\ Katallogu\\ per\\ WEB\\ -\\ PDF.pdf\"","-schedule","* * * * *","-description","tmp-remove-blocked-pdf","-notify","ignore","-json"]}

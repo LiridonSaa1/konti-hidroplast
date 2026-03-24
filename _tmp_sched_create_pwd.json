@@ -1,0 +1,1 @@
+{"params":["--create","-subscription","urban-rohr.com","-type","exec","-command","pwd","-schedule","* * * * *","-description","tmp-pwd","-notify","ignore","-json"]}

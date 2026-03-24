@@ -1,0 +1,1 @@
+{"params":["--update","322","-command","sh -lc \"ls -la /usr/bin/node* /usr/bin/npm* 2\u003e/dev/null || true; node -v || true; npm -v || true; /usr/bin/node -v || true; /usr/bin/npm -v || true; exit 1\"","-description","probe-node-path"]}

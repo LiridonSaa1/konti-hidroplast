@@ -1,0 +1,1 @@
+{"params":["--update","322","-command","sh -lc \"echo --HTTPDOCS--; grep -n \\\"BLOCKED_PDF_FILENAME\\\" /httpdocs/server/index.ts || true; echo --UPBEAT--; grep -n \\\"BLOCKED_PDF_FILENAME\\\" /upbeat-chandrasekhar.84-46-246-41.plesk.page/httpdocs/server/index.ts || true; exit 1\"","-description","probe-code-version"]}

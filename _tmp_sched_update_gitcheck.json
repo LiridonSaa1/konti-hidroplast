@@ -1,0 +1,1 @@
+{"params":["--update","322","-command","sh -lc \"git --version; ls -la /git/konti-hidroplast.git | head -n 20; exit 1\"","-description","tmp-git-check"]}

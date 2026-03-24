@@ -1,0 +1,1 @@
+{"params":["--update","322","-command","sh -lc \"touch /upbeat-chandrasekhar.84-46-246-41.plesk.page/httpdocs/tmp/restart.txt\"","-description","restart-passenger"]}
