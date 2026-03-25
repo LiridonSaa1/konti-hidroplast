@@ -1,6 +1,9 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # Typo-friendly brochure URL alias
+    RewriteRule ^brouchures/?$ /attached_assets/DE%20-%20Katallogu%20per%20WEB%20-%20PDF.pdf [R=302,L,NE]
+
     # Block direct access to this specific PDF file
     RewriteCond %{REQUEST_URI} ^/DE%20-%20Katallogu%20per%20WEB%20-%20PDF\.pdf$ [NC,OR]
     RewriteCond %{REQUEST_URI} ^/DE\ -\ Katallogu\ per\ WEB\ -\ PDF\.pdf$ [NC]
@@ -18,5 +21,8 @@
     # SPA fallback for everything else
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
+    # Only fallback if index.html exists in the current document root.
+    # Prevents internal redirect loops on Passenger roots without index.html.
+    RewriteCond %{DOCUMENT_ROOT}/index.html -f
 RewriteRule . /index.html [L]
 </IfModule>

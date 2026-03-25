@@ -27,6 +27,7 @@ import MarineLugPage from "@/pages/marine-lug";
 import DarkLinerPage from "@/pages/dark-liner";
 import TrenchlessSystemsPage from "@/pages/trenchless-systems";
 import BrochuresPage from "@/pages/brochures";
+import BrouchuresRedirectPage from "@/pages/brouchures";
 import DownloadBrochurePage from "@/pages/download-brochure";
 import CertificatesPage from "@/pages/certificates";
 import GFKCertificatesPage from "@/pages/certificates-gfk";
@@ -75,6 +76,7 @@ function Router() {
       <Route path="/products/dark-liner" component={DarkLinerPage} />
       <Route path="/products/trenchless-systems" component={TrenchlessSystemsPage} />
       <Route path="/brochures" component={BrochuresPage} />
+      <Route path="/brouchures" component={BrouchuresRedirectPage} />
       <Route path="/download-brochure" component={DownloadBrochurePage} />
       <Route path="/certificates" component={CertificatesPage} />
       <Route path="/certificates-gfk" component={GFKCertificatesPage} />
