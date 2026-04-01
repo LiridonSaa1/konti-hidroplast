@@ -203,7 +203,7 @@ const translations = {
 
     // Footer
     "footer.description":
-      "Urban Rohr GmbH - Ihr Partner für Rohrsysteme.Mit über 20 Jahren Erfahrung, 9.000+ Produkten und 1.000+ realisierten Projekten in 16 Ländern stehen wir für Qualität und Verlässlichkeit. Von PE, PP, Guss und PVC bis zu Speziallösungen für Gas, Wasser und Industrie - Urban Rohr GmbH garantiert Innovation, Service und Erfolg für jedes Projekt.",
+      "Urban Rohr GmbH – Ihr Partner für Rohrsysteme\n\nSeit über 20 Jahren stehen wir für Qualität, Zuverlässigkeit und technische Kompetenz. Mit einem Sortiment von über 9.000 Produkten beliefern wir Kunden in ganz Europa und realisieren anspruchsvolle Projekte im Infrastruktur- und Industriebereich.\n\nOb PE, PP, GFK, PVC oder Guss – wir bieten leistungsstarke Rohrsysteme und maßgeschneiderte Lösungen für Wasser, Abwasser, Gas und Industrieanwendungen. Vertrauen Sie auf Erfahrung, Effizienz und partnerschaftliche Zusammenarbeit – Urban Rohr GmbH.",
     "footer.quickLinks": "Quick Links",
     "footer.aboutUs": "About Us",
     "footer.products": "Products",
@@ -3742,13 +3742,13 @@ Colebrook-White coefficient:
     // About Section
     "about.title": "Über uns",
     "about.description":
-      "Urban Rohr GmbH - Ihr Partner für Rohrsysteme.\nMit über 20 Jahren Erfahrung, 9.000+ Produkten und 1.000+ realisierten Projekten in 16 Ländern stehen wir für Qualität und Verlässlichkeit. Von PE, PP, Guss und PVC bis zu Speziallösungen für Gas, Wasser und Industrie - Urban Rohr GmbH garantiert Innovation, Service und Erfolg für jedes Projekt.",
+      "Urban Rohr GmbH – Ihr Partner für Rohrsysteme\n\nSeit über 20 Jahren stehen wir für Qualität, Zuverlässigkeit und technische Kompetenz. Mit einem Sortiment von über 9.000 Produkten beliefern wir Kunden in ganz Europa und realisieren anspruchsvolle Projekte im Infrastruktur- und Industriebereich.\n\nOb PE, PP, GFK, PVC oder Guss – wir bieten leistungsstarke Rohrsysteme und maßgeschneiderte Lösungen für Wasser, Abwasser, Gas und Industrieanwendungen. Vertrauen Sie auf Erfahrung, Effizienz und partnerschaftliche Zusammenarbeit – Urban Rohr GmbH.",
     "about.text1":
-      "Urban Rohr GmbH - Ihr Partner für Rohrsysteme",
+      "Urban Rohr GmbH – Ihr Partner für Rohrsysteme",
     "about.text2":
-      "Seit über 20 Jahren stehen wir für Qualität, Zuverlässigkeit und Kompetenz. Mit mehr als 9.000 Produkten und über 1.000 erfolgreich realisierten Projekten beliefern wir Kunden in 16 Staaten.",
+      "Seit über 20 Jahren stehen wir für Qualität, Zuverlässigkeit und technische Kompetenz. Mit einem Sortiment von über 9.000 Produkten beliefern wir Kunden in ganz Europa und realisieren anspruchsvolle Projekte im Infrastruktur- und Industriebereich.",
     "about.text3":
-      "Ob Polyethylen, Polypropylen, Guss, PVC oder spezialisierte Lösungen für Gas, Wasser und Industrie - wir bieten umfassende Rohrsysteme für Bau, Infrastruktur und Industrie. Vertrauen Sie auf Erfahrung, Innovation und Service - Urban Rohr GmbH, damit Ihr Projekt ein Erfolg wird.",
+      "Ob PE, PP, GFK, PVC oder Guss – wir bieten leistungsstarke Rohrsysteme und maßgeschneiderte Lösungen für Wasser, Abwasser, Gas und Industrieanwendungen. Vertrauen Sie auf Erfahrung, Effizienz und partnerschaftliche Zusammenarbeit – Urban Rohr GmbH.",
     "about.mission":
       "Unsere Mission ist es, innovative und zuverlässige Rohrsysteme bereitzustellen, die den sich entwickelnden Bedürfnissen unserer Kunden weltweit gerecht werden.",
     "about.vision":
@@ -3871,7 +3871,7 @@ Colebrook-White coefficient:
     "contact.phone": "Telefon",
 
     // Footer
-    "footer.description":"Urban Rohr GmbH - Ihr Partner für Rohrsysteme.Mit über 20 Jahren Erfahrung, 9.000+ Produkten und 1.000+ realisierten Projekten in 16 Ländern stehen wir für Qualität und Verlässlichkeit. Von PE, PP, Guss und PVC bis zu Speziallösungen für Gas, Wasser und Industrie - Urban Rohr GmbH garantiert Innovation, Service und Erfolg für jedes Projekt.",
+    "footer.description":"Urban Rohr GmbH – Ihr Partner für Rohrsysteme\n\nSeit über 20 Jahren stehen wir für Qualität, Zuverlässigkeit und technische Kompetenz. Mit einem Sortiment von über 9.000 Produkten beliefern wir Kunden in ganz Europa und realisieren anspruchsvolle Projekte im Infrastruktur- und Industriebereich.\n\nOb PE, PP, GFK, PVC oder Guss – wir bieten leistungsstarke Rohrsysteme und maßgeschneiderte Lösungen für Wasser, Abwasser, Gas und Industrieanwendungen. Vertrauen Sie auf Erfahrung, Effizienz und partnerschaftliche Zusammenarbeit – Urban Rohr GmbH.",
     "footer.quickLinks": "Schnellzugriff",
     "footer.aboutUs": "Über uns",
     "footer.products": "Produkte",
