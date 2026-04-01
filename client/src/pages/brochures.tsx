@@ -11,6 +11,53 @@ import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 // Public assets should be referenced via absolute paths, not imported from public/
 const URBAN_ROHR_CATALOGS = "/attached_assets/URBAN.png";
 const URBAN_ROHR_CATALOGS_DE_PDF = "/attached_assets/DE - Katallogu per WEB - PDF.pdf";
+
+const sanitizeFileName = (value: string) =>
+  value
+    .trim()
+    .replace(/[\\/:*?"<>|]+/g, "-")
+    .replace(/\s+/g, " ")
+    .replace(/\.+$/, "");
+
+const triggerFileDownload = async (url: string, fileName?: string) => {
+  const resolvedUrl = new URL(url, window.location.href).toString();
+  const resolvedOrigin = new URL(resolvedUrl).origin;
+  const suggestedName = sanitizeFileName(fileName || "brochure");
+
+  const downloadViaAnchor = (href: string, downloadName?: string) => {
+    const link = document.createElement("a");
+    link.href = href;
+    if (downloadName) {
+      link.download = downloadName;
+    }
+    link.rel = "noopener noreferrer";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
+  if (resolvedOrigin === window.location.origin) {
+    downloadViaAnchor(resolvedUrl, suggestedName);
+    return;
+  }
+
+  try {
+    const response = await fetch(resolvedUrl, { mode: "cors" });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch file: ${response.status}`);
+    }
+
+    const blob = await response.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+    downloadViaAnchor(blobUrl, suggestedName);
+    setTimeout(() => window.URL.revokeObjectURL(blobUrl), 0);
+    return;
+  } catch (error) {
+    console.error("Falling back to direct download link", error);
+    downloadViaAnchor(resolvedUrl, suggestedName);
+  }
+};
+
 // Brochures data organized by category (static)
 const brochureCategories = [
   {
@@ -94,8 +141,8 @@ function BrochuresPage() {
     }
 
     if (brochure.downloadUrl) {
-      // Directly open/download the PDF, no extra UI
-      window.open(brochure.downloadUrl, "_blank", "noopener,noreferrer");
+      // Trigger a browser download instead of opening the PDF preview.
+      void triggerFileDownload(brochure.downloadUrl, brochure.title);
     }
   };
 
