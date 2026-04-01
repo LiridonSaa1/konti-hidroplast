@@ -577,7 +577,7 @@ function WaterSupplySystemsPage() {
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>
             <p className="text-xl text-gray-600 mb-8">
-              {t("productPages.needMoreInfo")} {t("waterSupply.waterSupplySystem").toLowerCase()} {t("productPages.solutions")}? {t("productPages.contactExperts")}.
+              {t("waterSupply.contactPrompt")}
             </p>
             <Button
               onClick={() => {
