@@ -386,12 +386,7 @@ const translations = {
     "ctpPipes.tab3FlowTitle": "Flow Rate",
     "ctpPipes.tab3FlowText": "The recommended flow rate for standard CTP pipe is max. 4 m/s. Pipes allowing higher fluid speeds can be designed with special design.",
     "ctpPipes.tab3CoefTitle": "Flow Coefficient",
-    "ctpPipes.tab3CoefText": "Values for hydraulic calculations with SUPERLIT CTP pipes:
-Hazen-Williams flow coefficient: C = 150
-Manning coefficient: n = 0.009
-Colebrook-White coefficient:
-- Continuous filament winding method: k = 0.029 mm
-- Centrifugal casting method: k = 0.012 mm",
+    "ctpPipes.tab3CoefText": "Values for hydraulic calculations with SUPERLIT CTP pipes:\nHazen-Williams flow coefficient: C = 150\nManning coefficient: n = 0.009\nColebrook-White coefficient:\n- Continuous filament winding method: k = 0.029 mm\n- Centrifugal casting method: k = 0.012 mm",
     "ctpPipes.tab3UVTitle": "UV Resistance",
     "ctpPipes.tab3UVText": "The performance of CTP pipes is not adversely affected by UV radiation. Color changes on the surface that do not affect strength are normal.",
     "ctpPipes.tab3PoissonTitle": "Poisson Ratio",
