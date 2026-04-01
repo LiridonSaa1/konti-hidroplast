@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import {
   ChevronDown,
-  Download,
   Play,
   Check,
   ChevronLeft,
@@ -258,12 +257,6 @@ function WaterSupplySystemsPage() {
     setActiveFittingTab(fittingTypes[prevIndex].id);
   };
 
-  const handleBrochureDownload = (spec: any) => {
-    // Redirect to brochures page with parameter to auto-open modal
-    setLocation('/brochures?from=products');
-  };
-
-
   useEffect(() => {
     // Set page title
     document.title = `${t("waterSupply.waterSupplySystem")} - ${companyInfo.companyName || "Konti Hidroplast"}`;
@@ -442,15 +435,6 @@ function WaterSupplySystemsPage() {
                     ))}
                   </div>
 
-                  <div className="flex flex-wrap gap-4">
-                    <button
-                      onClick={() => handleBrochureDownload(spec)}
-                      className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      {t("waterSupply.downloadBrochure")}
-                    </button>
-                  </div>
                 </div>
 
                 <div className="relative max-w-md mx-auto lg:mx-0">

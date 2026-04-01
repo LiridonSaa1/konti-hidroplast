@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Download, CheckCircle, Shield, Award, Check } from "lucide-react";
+import { CheckCircle, Shield, Award, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -91,12 +91,6 @@ function CableProtectionPage() {
   const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState("konti-kan-duct");
   const [location, setLocation] = useLocation();
-
-  const handleBrochureDownload = (product: any) => {
-    // Redirect to brochures page with parameter to auto-open modal
-    setLocation('/brochures?from=products');
-  };
-
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -317,16 +311,6 @@ function CableProtectionPage() {
                     )}
                   </div>
 
-                  <div className="flex flex-wrap gap-4 mt-8">
-                    <button
-                      onClick={() => handleBrochureDownload(product)}
-                      className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                      data-testid="download-brochure"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      {t("cableProtection.downloadBrochure")}
-                    </button>
-                  </div>
                 </div>
 
                 <div className="relative max-w-md mx-auto lg:mx-0">

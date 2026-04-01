@@ -3,9 +3,7 @@ import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useCompanyInfo } from "@/hooks/use-company-info";
-import { Button } from "@/components/ui/button";
-import { useLocation } from "wouter";
-import { Check, Download } from "lucide-react";
+import { Check } from "lucide-react";
 
 const elbowData = [
   { angle: "α ≤ 11.25°", pressures: ["1-6 Bar", "10 Bar", "16 Bar"] },
@@ -18,7 +16,6 @@ const elbowData = [
 
 function CTPFittingsPage() {
   const { t } = useLanguage();
-  const [, setLocation] = useLocation();
   const { data: companyInfo } = useCompanyInfo();
   const [activeTab, setActiveTab] = useState("tab1");
 
@@ -148,13 +145,7 @@ function CTPFittingsPage() {
                 {["PN 1-6", "PN 10", "PN 16"].map((pn) => (
                   <div key={pn} className="text-center py-4">
                     <p className="text-sm font-semibold text-gray-600 mb-2">{pn}</p>
-                    <a
-                      href="#"
-                      className="inline-flex items-center gap-1.5 text-blue-900 text-sm font-medium hover:underline"
-                    >
-                      <Download className="w-4 h-4" />
-                      <span>{t("ctpFittings.download")}</span>
-                    </a>
+                    <span className="text-sm font-medium text-gray-400">-</span>
                   </div>
                 ))}
               </div>
@@ -192,13 +183,7 @@ function CTPFittingsPage() {
                 {["PN 1-6", "PN 10", "PN 16"].map((pn) => (
                   <div key={pn} className="text-center py-4">
                     <p className="text-sm font-semibold text-gray-600 mb-2">{pn}</p>
-                    <a
-                      href="#"
-                      className="inline-flex items-center gap-1.5 text-blue-900 text-sm font-medium hover:underline"
-                    >
-                      <Download className="w-4 h-4" />
-                      <span>{t("ctpFittings.download")}</span>
-                    </a>
+                    <span className="text-sm font-medium text-gray-400">-</span>
                   </div>
                 ))}
               </div>
@@ -241,13 +226,7 @@ function CTPFittingsPage() {
                         )}
                         <td className="px-4 py-2.5 text-gray-700">{pressure}</td>
                         <td className="px-4 py-2.5 text-center">
-                          <a
-                            href="#"
-                            className="inline-flex items-center gap-1.5 text-blue-900 text-sm font-medium hover:underline"
-                          >
-                            <Download className="w-4 h-4" />
-                            <span>{t("ctpFittings.download")}</span>
-                          </a>
+                          <span className="text-sm font-medium text-gray-400">-</span>
                         </td>
                       </tr>
                     ))

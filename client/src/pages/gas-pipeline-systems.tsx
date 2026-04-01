@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import {
   ChevronDown,
-  Download,
   Play,
   Check,
   ChevronLeft,
@@ -191,12 +190,6 @@ function GasPipelineSystemsPage() {
   const [activeTab, setActiveTab] = useState("gas-pe");
   const [activeFittingTab, setActiveFittingTab] = useState("butt-welding");
   const [activeFittingTabIndex, setActiveFittingTabIndex] = useState(0);
-
-  const handleBrochureDownload = (spec: any) => {
-    // Redirect to brochures page with parameter to auto-open modal
-    setLocation('/brochures?from=products');
-  };
-
 
   // Get translated data
   const gasSpecifications = getGasSpecifications(t);
@@ -394,15 +387,6 @@ function GasPipelineSystemsPage() {
                     ))}
                   </div>
 
-                  <div className="flex flex-wrap gap-4">
-                    <button
-                      onClick={() => handleBrochureDownload(spec)}
-                      className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                    >
-                      <Download className="w-4 h-4 mr-2" />
-                      {t("gasPipeline.downloadBrochure")}
-                    </button>
-                  </div>
                 </div>
 
                 <div className="relative max-w-md mx-auto lg:mx-0">
