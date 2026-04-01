@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development PORT=3000 tsx server/index.ts",
-    "build": "node build.js",
+    "build": "sh -c 'node build.js || /opt/plesk/node/23/bin/node build.js'",
     "vite:build": "vite build",
     "esbuild:server": "esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "start": "cross-env NODE_ENV=production node dist/index.js",

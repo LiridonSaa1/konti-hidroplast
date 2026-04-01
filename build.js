@@ -4,6 +4,15 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const nodeBinDir = path.dirname(process.execPath);
+const childEnv = {
+  ...process.env,
+  PATH: `${nodeBinDir}:${process.env.PATH || ''}`,
+};
+const LIVE_PUBLIC_DIRS = [
+  '/var/www/vhosts/urban-rohr.com/httpdocs/dist/public',
+  '/var/www/vhosts/urban-rohr.com/upbeat-chandrasekhar.84-46-246-41.plesk.page/httpdocs/dist/public',
+];
 
 // Function to copy directory recursively
 function copyDir(src, dest) {
@@ -25,16 +34,30 @@ function copyDir(src, dest) {
   }
 }
 
+function mirrorLiveBuildOutput(sourceDir) {
+  for (const targetDir of LIVE_PUBLIC_DIRS) {
+    if (path.resolve(targetDir) === path.resolve(sourceDir)) {
+      continue;
+    }
+
+    if (fs.existsSync(targetDir)) {
+      console.log(`Mirroring build output to ${targetDir}...`);
+      copyDir(sourceDir, targetDir);
+      console.log(`Mirrored build output to ${targetDir}.`);
+    }
+  }
+}
+
 try {
   console.log('Building project...');
   
   // Run vite build using npm to ensure proper platform-specific dependencies
   console.log('Building client with Vite...');
-  execSync('npm run vite:build', { stdio: 'inherit' });
-  
+  execSync('npm run vite:build', { stdio: 'inherit', env: childEnv });
+
   // Run esbuild for server using npm
   console.log('Building server with esbuild...');
-  execSync('npm run esbuild:server', { stdio: 'inherit' });
+  execSync('npm run esbuild:server', { stdio: 'inherit', env: childEnv });
   
   // Copy attached_assets to dist/public
   const srcAssets = path.join(__dirname, 'attached_assets');
@@ -59,6 +82,8 @@ try {
   } else {
     console.log('uploads directory not found, skipping...');
   }
+
+  mirrorLiveBuildOutput(path.join(__dirname, 'dist', 'public'));
   
   console.log('Build completed successfully!');
 } catch (error) {
