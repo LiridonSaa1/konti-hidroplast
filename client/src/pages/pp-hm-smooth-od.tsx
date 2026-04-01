@@ -6,7 +6,6 @@ import { useCompanyInfo } from "@/hooks/use-company-info";
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import {
-  Download,
   Shield,
   Award,
   CheckCircle,
@@ -107,12 +106,6 @@ function PPHMSmoothODPage() {
     { id: "manholes", label: t("nav.products.manholes") },
     { id: "drainage", label: t("nav.products.drainage") },
   ];
-  const handleBrochureDownload = (product: any) => {
-    // Redirect to brochures page with parameter to auto-open modal
-    setLocation('/brochures?from=products');
-  };
-
-
   useEffect(() => {
     // Set page title
     document.title = `PP-HM SMOOTH OD - ${companyInfo.companyName || "Konti Hidroplast"}`;
@@ -326,19 +319,6 @@ function PPHMSmoothODPage() {
                   ))}
                 </div>
 
-                <div className="flex flex-wrap gap-4">
-                  <button
-                    onClick={() => handleBrochureDownload({
-                      id: 'konti-kan-pipes',
-                      title: 'Konti Kan Pipes and Fittings',
-                      brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-Konti-Kan-siv_EN-2021-so-korekcii-MART-2021-2.pdf'
-                    })}
-                    className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    {t("sewagePipes.downloadBrochure")}
-                  </button>
-                </div>
               </div>
 
               <div className="relative max-w-md mx-auto lg:mx-0">
@@ -408,20 +388,7 @@ function PPHMSmoothODPage() {
                 ))}
               </div>
 
-              <div className="flex flex-wrap gap-4">
-                <button
-                  onClick={() => handleBrochureDownload({
-                    id: 'konti-kan-drainage',
-                    title: 'Konti Kan Drainage',
-                    brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/konti-kan-drenaza-en.pdf'
-                  })}
-                  className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  {t("productPages.downloadPdf")}
-                </button>
               </div>
-            </div>
 
             <div className="relative max-w-md mx-auto lg:mx-0">
               <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
@@ -480,20 +447,7 @@ function PPHMSmoothODPage() {
                 ))}
               </div>
 
-              <div className="flex flex-wrap gap-4">
-                <button
-                  onClick={() => handleBrochureDownload({
-                    id: 'manholes',
-                    title: 'HDPE Manholes',
-                    brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/sahti-en.pdf'
-                  })}
-                  className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  {t("manholes.downloadBrochure")}
-                </button>
               </div>
-            </div>
 
             <div className="relative max-w-md mx-auto lg:mx-0">
               <div className="aspect-[4/3] bg-black rounded-2xl shadow-2xl overflow-hidden">
@@ -532,19 +486,6 @@ function PPHMSmoothODPage() {
                 ))}
               </div>
 
-              <div className="flex flex-wrap gap-4">
-                <button
-                  onClick={() => handleBrochureDownload({
-                    id: 'pp-manholes',
-                    title: 'PP Manholes',
-                    brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/11/polipropilenski-sahti-en.pdf'
-                  })}
-                  className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                >
-                  <Download className="w-4 h-4 mr-2" />
-                  {t("manholes.downloadBrochure")}
-                </button>
-              </div>
             </div>
 
             <div className="relative max-w-md mx-auto lg:mx-0">
@@ -642,19 +583,6 @@ function PPHMSmoothODPage() {
                   ))}
                 </div>
 
-                <div className="flex flex-wrap gap-4">
-                  <button
-                    onClick={() => handleBrochureDownload({
-                      id: 'pp-hm-pipes',
-                      title: 'PP-HM Pipes and Fittings',
-                      brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-PPHM_EN-2024_posledna-promena_MART_compressed.pdf'
-                    })}
-                    className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    {t("ppHmPipes.downloadBrochure")}
-                  </button>
-                </div>
               </div>
 
               <div className="relative max-w-md mx-auto lg:mx-0">
@@ -761,19 +689,6 @@ function PPHMSmoothODPage() {
                   ))}
                 </div>
 
-                <div className="flex flex-wrap gap-4">
-                  <button
-                    onClick={() => handleBrochureDownload({
-                      id: 'konti-kan-spiral',
-                      title: 'Konti Kan Spiral Pipes',
-                      brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/Broshura-KONTI-SPIRAL_EN_2021_compressed.pdf'
-                    })}
-                    className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    {t("productPages.downloadPdf")}
-                  </button>
-                </div>
               </div>
 
               <div className="relative max-w-md mx-auto lg:mx-0">
@@ -880,19 +795,6 @@ function PPHMSmoothODPage() {
                   ))}
                 </div>
 
-                <div className="flex flex-wrap gap-4">
-                  <button
-                    onClick={() => handleBrochureDownload({
-                      id: 'pp-hm-smooth-od',
-                      title: 'PP-HM Smooth OD Pipes',
-                      brochure: 'https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/Broshura-Cevki-PPHM-Smooth-Wall_EN2021_compressed.pdf'
-                    })}
-                    className="inline-flex items-center px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download Brochure
-                  </button>
-                </div>
               </div>
 
               <div className="relative max-w-md mx-auto lg:mx-0">

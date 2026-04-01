@@ -174,14 +174,6 @@ function CTPKayarMansonPage() {
                   >
                     {t("ctpKayarManson.productVideo")}
                   </a>
-                  <a
-                    href="https://www.superlit.com/assets/catalogs/2025/tr-ctp-boru-urun-katalog-ctp-m-07-rev-00--04-12-2024.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center px-4 py-2 rounded-lg font-medium text-sm text-[#1c2d56] border-2 border-[#1c2d56] hover:bg-[#1c2d56] hover:text-white transition-colors"
-                  >
-                    {t("ctpKayarManson.productBrochure")}
-                  </a>
                 </div>
               </div>
             </div>
