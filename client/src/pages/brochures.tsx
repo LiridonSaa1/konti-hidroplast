@@ -11,7 +11,7 @@ import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 // Public assets should be referenced via absolute paths, not imported from public/
 const URBAN_ROHR_CATALOGS = "/attached_assets/URBAN.png";
 const URBAN_ROHR_SUPERLIT_DE_PDF =
-  "/attached_assets/Superlit _URBAN_DE - per WEB - e perfundume.pdf";
+  "/attached_assets/Superlit _URBAN_DE - per WEB -  e perfundume.pdf";
 const URBAN_ROHR_CATALOGS_DE_PDF = "/attached_assets/DE - Katallogu per WEB - PDF.pdf";
 
 type StaticDownloadFile = {
@@ -87,7 +87,7 @@ function BrochuresPage() {
             downloadUrl: URBAN_ROHR_CATALOGS_DE_PDF,
             downloadFiles: [
               {
-                fileName: "Superlit _URBAN_DE - per WEB - e perfundume.pdf",
+                fileName: "Superlit _URBAN_DE - per WEB -  e perfundume.pdf",
                 url: URBAN_ROHR_SUPERLIT_DE_PDF,
               },
               {
