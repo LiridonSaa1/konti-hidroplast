@@ -249,7 +249,7 @@ function ProductsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
 
             {/* Product 1 - Water Supply Systems */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+            <div className="group bg-white rounded-2xl min-w-0 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden">
                 <img
                   src="/attached_assets/Water-supply-min-1_1755115058874.jpg"
@@ -261,7 +261,7 @@ function ProductsPage() {
               <div className="p-5 relative">
                 <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
                 <div className="mt-3">
-                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300 min-w-0 break-words [overflow-wrap:anywhere]">
                     {t("aboutUs.waterSupplySystems")}
                   </h3>
                   <a
@@ -278,7 +278,7 @@ function ProductsPage() {
             </div>
 
             {/* Product 2 - Sewerage Systems */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+            <div className="group bg-white rounded-2xl min-w-0 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden">
                 <img
                   src="/attached_assets/Konti-Hidroplast-Proizvodstvo-27-1_1755115099243.jpg"
@@ -290,7 +290,7 @@ function ProductsPage() {
               <div className="p-5 relative">
                 <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
                 <div className="mt-3">
-                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300 min-w-0 break-words [overflow-wrap:anywhere]">
                     {t("aboutUs.sewerageSystems")}
                   </h3>
                   <a
@@ -307,7 +307,7 @@ function ProductsPage() {
             </div>
 
             {/* Product 3 - Gas Pipeline System */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+            <div className="group bg-white rounded-2xl min-w-0 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden">
                 <img
                   src="/attached_assets/GAS-PIPELINE-SYSTEM-min-1_1755115129403.jpg"
@@ -319,7 +319,7 @@ function ProductsPage() {
               <div className="p-5 relative">
                 <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
                 <div className="mt-3">
-                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300 min-w-0 break-words [overflow-wrap:anywhere]">
                     {t("aboutUs.gasPipelineSystem")}
                   </h3>
                   <a
@@ -336,7 +336,7 @@ function ProductsPage() {
             </div>
 
             {/* Product 4 - Cable Protection */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+            <div className="group bg-white rounded-2xl min-w-0 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden">
                 <img
                   src="/attached_assets/CABLE-PROTECTION-min-1_1755115210995.jpg"
@@ -348,7 +348,7 @@ function ProductsPage() {
               <div className="p-5 relative">
                 <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
                 <div className="mt-3">
-                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300 min-w-0 break-words [overflow-wrap:anywhere]">
                     {t("aboutUs.cableProtection")}
                   </h3>
                   <a
@@ -365,7 +365,7 @@ function ProductsPage() {
             </div>
 
             {/* Product 5 - GFK-Rohre / GRP Pipes */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+            <div className="group bg-white rounded-2xl min-w-0 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
                 <img
                   src="/attached_assets/superlit-ctp-boru.jpg"
@@ -377,7 +377,7 @@ function ProductsPage() {
               <div className="p-5 relative">
                 <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
                 <div className="mt-3">
-                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300 min-w-0 break-words [overflow-wrap:anywhere]">
                     {t("productsPage.ctpBoru")}
                   </h3>
                   <a
@@ -394,7 +394,7 @@ function ProductsPage() {
             </div>
 
             {/* Product 6 - Fittings */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+            <div className="group bg-white rounded-2xl min-w-0 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
                 <img
                   src="/attached_assets/superlit-website-new-fittings-removebg-preview.png"
@@ -406,7 +406,7 @@ function ProductsPage() {
               <div className="p-5 relative">
                 <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
                 <div className="mt-3">
-                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300 min-w-0 break-words [overflow-wrap:anywhere]">
                     {t("productsPage.fittings")}
                   </h3>
                   <a
@@ -423,7 +423,7 @@ function ProductsPage() {
             </div>
 
             {/* Product 7 - GRP Couplings */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+            <div className="group bg-white rounded-2xl min-w-0 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
                 <img
                   src="/attached_assets/manson-removebg-preview.png"
@@ -435,7 +435,7 @@ function ProductsPage() {
               <div className="p-5 relative">
                 <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
                 <div className="mt-3">
-                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300 min-w-0 break-words [overflow-wrap:anywhere]">
                     {t("productsPage.ctpMansons")}
                   </h3>
                   <a
@@ -452,7 +452,7 @@ function ProductsPage() {
             </div>
 
             {/* Product 8 - CTP Kayar Manşon (Sliding Sleeve) */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+            <div className="group bg-white rounded-2xl min-w-0 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
                 <img
                   src="/attached_assets/kayar-manson-001-tr.webp"
@@ -464,7 +464,7 @@ function ProductsPage() {
               <div className="p-5 relative">
                 <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
                 <div className="mt-3">
-                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300 min-w-0 break-words [overflow-wrap:anywhere]">
                     {t("productsPage.ctpKayarManson")}
                   </h3>
                   <a
@@ -481,7 +481,7 @@ function ProductsPage() {
             </div>
 
             {/* Product 9 - GFK Jacking-Kupplung */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+            <div className="group bg-white rounded-2xl min-w-0 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
                 <img
                   src="/attached_assets/jacking-jpeg2.webp"
@@ -493,7 +493,7 @@ function ProductsPage() {
               <div className="p-5 relative">
                 <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
                 <div className="mt-3">
-                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300 min-w-0 break-words [overflow-wrap:anywhere]">
                     GFK Jacking-Kupplung
                   </h3>
                   <a
@@ -510,7 +510,7 @@ function ProductsPage() {
             </div>
 
             {/* Product 10 - GRP Manholes */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+            <div className="group bg-white rounded-2xl min-w-0 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
                 <img
                   src="/attached_assets/superlit-manhole-removebg-preview.png"
@@ -522,7 +522,7 @@ function ProductsPage() {
               <div className="p-5 relative">
                 <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
                 <div className="mt-3">
-                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300 min-w-0 break-words [overflow-wrap:anywhere]">
                     {t("productsPage.ctpManholes")}
                   </h3>
                   <a
@@ -539,7 +539,7 @@ function ProductsPage() {
             </div>
 
             {/* Product 11 - GRP Tanks */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+            <div className="group bg-white rounded-2xl min-w-0 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
                 <img
                   src="/attached_assets/superlit-tank-rm-bg.png"
@@ -551,7 +551,7 @@ function ProductsPage() {
               <div className="p-5 relative">
                 <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
                 <div className="mt-3">
-                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300 min-w-0 break-words [overflow-wrap:anywhere]">
                     {t("productsPage.ctpTank")}
                   </h3>
                   <a
@@ -568,7 +568,7 @@ function ProductsPage() {
             </div>
 
             {/* Product 12 - Special Applications */}
-            <div className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
+            <div className="group bg-white rounded-2xl min-w-0 overflow-hidden shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-1 border border-gray-100">
               <div className="h-48 relative overflow-hidden bg-gray-50 flex items-center justify-center">
                 <img
                   src="/attached_assets/superlit-special-applications-removebg-preview.png"
@@ -580,7 +580,7 @@ function ProductsPage() {
               <div className="p-5 relative">
                 <div className="absolute top-4 left-5 w-10 h-0.5 bg-[#1c2d56] rounded-full group-hover:w-14 transition-all duration-300" />
                 <div className="mt-3">
-                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300">
+                  <h3 className="text-base font-bold text-gray-900 mb-4 uppercase tracking-wide leading-tight group-hover:text-[#1c2d56] transition-colors duration-300 min-w-0 break-words [overflow-wrap:anywhere]">
                     {t("productsPage.specialApplications")}
                   </h3>
                   <a

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -58,36 +58,25 @@ const triggerFileDownload = async (url: string, fileName?: string) => {
   }
 };
 
-// Brochures data organized by category (static)
-const brochureCategories = [
-  {
-    id: "statistics",
-    title: "URBAN ROHR CATALOGS",
-    brochures: [
-      {
-        title: "URBAN ROHR CATALOGS (DE)",
-        image: URBAN_ROHR_CATALOGS,
-        downloadUrl: URBAN_ROHR_CATALOGS_DE_PDF,
-      },
-    ],
-  },
-  // {
-  //   id: "cable-protection",
-  //   title: "Cable Protection",
-  //   brochures: [
-  //     {
-  //       title: "KONTI KAN DUCT",
-  //       image:
-  //         "https://konti-hidroplast.com.mk/wp-content/uploads/2024/10/konti-kan-dakt-en.jpg",
-  //       downloadUrl:
-  //         "https://konti-hidroplast.com.mk/wp-content/uploads/2024/12/konti-kan-dakt-en.pdf",
-  //     },
-  //   ],
-  // },
-];
-
 function BrochuresPage() {
   const { t } = useLanguage();
+
+  const brochureCategories = useMemo(
+    () => [
+      {
+        id: "statistics",
+        title: t("brochures.urbanRohrCatalogsCategory"),
+        brochures: [
+          {
+            title: t("brochures.urbanRohrCatalogsItemDe"),
+            image: URBAN_ROHR_CATALOGS,
+            downloadUrl: URBAN_ROHR_CATALOGS_DE_PDF,
+          },
+        ],
+      },
+    ],
+    [t],
+  );
   const [, setLocation] = useLocation();
   const { data: companyInfo } = useCompanyInfo();
   const { isAuthenticated } = useAuth();
@@ -195,7 +184,7 @@ function BrochuresPage() {
             <div className="flex items-center justify-center mb-8">
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
               <h2 className="text-4xl font-bold mx-8 text-[#1c2d56]">
-                Product Brochures
+                {t("brochures.productBrochures")}
               </h2>
               <div className="flex-1 max-w-32 h-0.5 bg-red-600"></div>
             </div>

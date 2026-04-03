@@ -1587,6 +1587,8 @@ const translations = {
     "brochures.noBrochuresAvailable": "No brochures available for",
     "brochures.switchLanguages": "Switch languages or check back later for updated content.",
     "brochures.noPdfAvailable": "No PDF Available",
+    "brochures.urbanRohrCatalogsCategory": "URBAN ROHR CATALOGS",
+    "brochures.urbanRohrCatalogsItemDe": "URBAN ROHR CATALOGS (DE)",
 
     // Certificates Page
     "certificates.title": "Certificates & Standards",
@@ -3409,6 +3411,8 @@ const translations = {
     "brochures.noBrochuresAvailable": "Нема достапни брошури за",
     "brochures.switchLanguages": "Смени јазик или провери повторно подоцна за ажурирана содржина.",
     "brochures.noPdfAvailable": "Нема достапен PDF",
+    "brochures.urbanRohrCatalogsCategory": "URBAN ROHR CATALOGS",
+    "brochures.urbanRohrCatalogsItemDe": "URBAN ROHR CATALOGS (DE)",
 
     // Certificates Page
     "certificates.title": "Сертификати и стандарди",
@@ -5246,10 +5250,12 @@ const translations = {
     
     // Brochures Page
     "brochures.currentLanguage": "Aktuelle Sprache:",
-    "brochures.productBrochures": "Produktbroschüren",
+    "brochures.productBrochures": "Produktkatalog",
     "brochures.noBrochuresAvailable": "Keine Broschüren verfügbar für",
     "brochures.switchLanguages": "Wechseln Sie die Sprache oder schauen Sie später wieder vorbei für aktualisierte Inhalte.",
     "brochures.noPdfAvailable": "Kein PDF verfügbar",
+    "brochures.urbanRohrCatalogsCategory": "Urban Rohr Produktkataloge",
+    "brochures.urbanRohrCatalogsItemDe": "Urban Rohr Produktkataloge (DE)",
 
     // Certificates Page
     "certificates.title": "Zertifikate & Standards",

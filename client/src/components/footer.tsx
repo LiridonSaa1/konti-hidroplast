@@ -12,7 +12,7 @@ interface QuickLink {
 }
 
 export function Footer() {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const { data: companyInfo } = useCompanyInfo();
   const [, setLocation] = useLocation();
   
@@ -24,13 +24,6 @@ export function Footer() {
     { labelKey: "footer.privacyPolicy", path: "/privacy-policy" },
     { labelKey: "footer.Impressum", path: "/impressum" },
   ];
-
-  const getStaticDescription = () => {
-    if (language === 'de') {
-      return "Urban Rohr GmbH – Ihr Partner für Rohrsysteme.\nMit über 20 Jahren Erfahrung, 9.000+ Produkten und 1.000+ realisierten Projekten in 16 Ländern stehen wir für Qualität und Verlässlichkeit. Von PE, PP, Guss und PVC bis zu Speziallösungen für Gas, Wasser und Industrie – Urban Rohr GmbH garantiert Innovation, Service und Erfolg für jedes Projekt.";
-    }
-    return "Export-oriented Macedonian company for production of PE and PP pipes. Founded in 1975, we are committed to delivering unmatched European standards for pipeline precision.";
-  };
 
   const handleNavigation = (path: string, isContact: boolean = false) => {
     console.log('Footer navigation clicked:', { path, isContact });
@@ -73,12 +66,17 @@ export function Footer() {
               data-testid="footer-logo"
             />
 
-            <p
-              className="text-gray-300 mb-6 max-w-md"
+            <div
+              className="text-gray-300 mb-6 max-w-md space-y-4"
               data-testid="footer-description"
             >
-              {getStaticDescription()}
-            </p>
+              {t("footer.description")
+                .split("\n\n")
+                .filter((block) => block.trim().length > 0)
+                .map((paragraph, i) => (
+                  <p key={i}>{paragraph.trim()}</p>
+                ))}
+            </div>
               {/* <div className="flex space-x-4" data-testid="footer-social">
                 {companyInfo.socialLinkedIn && (
                   <a
