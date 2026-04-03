@@ -243,7 +243,12 @@ if (SITE_ACCESS_ENABLED) {
 
 app.use((req, res, next) => {
   const requestedPath = decodeURIComponent(req.path || "");
-  if (requestedPath.endsWith(`/${BLOCKED_PDF_FILENAME}`) || requestedPath === `/${BLOCKED_PDF_FILENAME}`) {
+  const isBlockedPdfPath =
+    requestedPath.endsWith(`/${BLOCKED_PDF_FILENAME}`) ||
+    requestedPath === `/${BLOCKED_PDF_FILENAME}`;
+  const isAttachedAssetRequest = requestedPath.startsWith("/attached_assets/");
+
+  if (isBlockedPdfPath && !isAttachedAssetRequest) {
     res.status(404).end();
     return;
   }

@@ -10,7 +10,21 @@ import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Public assets should be referenced via absolute paths, not imported from public/
 const URBAN_ROHR_CATALOGS = "/attached_assets/URBAN.png";
+const URBAN_ROHR_SUPERLIT_DE_PDF =
+  "/attached_assets/Superlit _URBAN_DE - per WEB - e perfundume.pdf";
 const URBAN_ROHR_CATALOGS_DE_PDF = "/attached_assets/DE - Katallogu per WEB - PDF.pdf";
+
+type StaticDownloadFile = {
+  fileName: string;
+  url: string;
+};
+
+type StaticBrochure = {
+  title: string;
+  image: string;
+  downloadFiles?: StaticDownloadFile[];
+  downloadUrl?: string;
+};
 
 const sanitizeFileName = (value: string) =>
   value
@@ -71,6 +85,16 @@ function BrochuresPage() {
             title: t("brochures.urbanRohrCatalogsItemDe"),
             image: URBAN_ROHR_CATALOGS,
             downloadUrl: URBAN_ROHR_CATALOGS_DE_PDF,
+            downloadFiles: [
+              {
+                fileName: "Superlit _URBAN_DE - per WEB - e perfundume.pdf",
+                url: URBAN_ROHR_SUPERLIT_DE_PDF,
+              },
+              {
+                fileName: "DE - Katallogu per WEB - PDF.pdf",
+                url: URBAN_ROHR_CATALOGS_DE_PDF,
+              },
+            ],
           },
         ],
       },
@@ -112,7 +136,7 @@ function BrochuresPage() {
     setActiveTab(brochureCategories[prevIndex].id);
   };
 
-  const handleDownloadClick = (brochure: any) => {
+  const handleDownloadClick = (brochure: StaticBrochure) => {
     if (isAuthenticated) {
       const key = brochure.title || brochure.downloadUrl || "";
 
@@ -129,9 +153,16 @@ function BrochuresPage() {
       }
     }
 
-    if (brochure.downloadUrl) {
-      // Trigger a browser download instead of opening the PDF preview.
-      void triggerFileDownload(brochure.downloadUrl, brochure.title);
+    const filesToDownload =
+      brochure.downloadFiles && brochure.downloadFiles.length > 0
+        ? brochure.downloadFiles
+        : brochure.downloadUrl
+          ? [{ fileName: `${brochure.title}.pdf`, url: brochure.downloadUrl }]
+          : [];
+
+    // Trigger all configured files for this brochure with a single click.
+    for (const file of filesToDownload) {
+      void triggerFileDownload(file.url, file.fileName);
     }
   };
 
