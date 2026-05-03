@@ -60,7 +60,7 @@ export function HeroSection() {
           </div>
         ) : (
           <video
-            src="https://res.cloudinary.com/dq9evtw8g/video/upload/v1759933307/Konti_Hidroplast_-_Corporate_2024_-_Konti_Hidroplast_720p_h264_youtube_qo8lem.mp4"
+            src="/attached_assets/urban-rohr-hero.mp4"
             className="w-full h-full object-cover"
             autoPlay
             muted

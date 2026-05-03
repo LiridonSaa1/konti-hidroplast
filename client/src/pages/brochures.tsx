@@ -13,6 +13,7 @@ const URBAN_ROHR_CATALOGS = "/attached_assets/URBAN.png";
 const URBAN_ROHR_SUPERLIT_DE_PDF =
   "/attached_assets/Superlit _URBAN_DE - per WEB -  e perfundume.pdf";
 const URBAN_ROHR_CATALOGS_DE_PDF = "/attached_assets/DE - Katallogu per WEB - PDF.pdf";
+const URBAN_ROHR_GFK_PDF = "/attached_assets/Urban-Rohr-GFK-Anwendungen.pdf";
 
 type StaticDownloadFile = {
   fileName: string;
@@ -93,6 +94,22 @@ function BrochuresPage() {
               {
                 fileName: "DE - Katallogu per WEB - PDF.pdf",
                 url: URBAN_ROHR_CATALOGS_DE_PDF,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "gfk-anwendungen",
+        title: t("brochures.gfkAnwendungenCategory"),
+        brochures: [
+          {
+            title: t("brochures.gfkAnwendungenItemDe"),
+            image: URBAN_ROHR_CATALOGS,
+            downloadFiles: [
+              {
+                fileName: "Urban Rohr - GFK Anwendungen.pdf",
+                url: URBAN_ROHR_GFK_PDF,
               },
             ],
           },

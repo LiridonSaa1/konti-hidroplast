@@ -1589,6 +1589,8 @@ const translations = {
     "brochures.noPdfAvailable": "No PDF Available",
     "brochures.urbanRohrCatalogsCategory": "URBAN ROHR CATALOGS",
     "brochures.urbanRohrCatalogsItemDe": "URBAN ROHR CATALOGS (DE)",
+    "brochures.gfkAnwendungenCategory": "GFK ANWENDUNGEN",
+    "brochures.gfkAnwendungenItemDe": "GFK Anwendungen (DE)",
 
     // Certificates Page
     "certificates.title": "Certificates & Standards",
@@ -3413,6 +3415,8 @@ const translations = {
     "brochures.noPdfAvailable": "Нема достапен PDF",
     "brochures.urbanRohrCatalogsCategory": "URBAN ROHR CATALOGS",
     "brochures.urbanRohrCatalogsItemDe": "URBAN ROHR CATALOGS (DE)",
+    "brochures.gfkAnwendungenCategory": "GFK ANWENDUNGEN",
+    "brochures.gfkAnwendungenItemDe": "GFK Anwendungen (DE)",
 
     // Certificates Page
     "certificates.title": "Сертификати и стандарди",
@@ -5256,6 +5260,8 @@ const translations = {
     "brochures.noPdfAvailable": "Kein PDF verfügbar",
     "brochures.urbanRohrCatalogsCategory": "Urban Rohr Produktkataloge",
     "brochures.urbanRohrCatalogsItemDe": "Urban Rohr Produktkataloge (DE)",
+    "brochures.gfkAnwendungenCategory": "GFK Anwendungen",
+    "brochures.gfkAnwendungenItemDe": "GFK Anwendungen (DE)",
 
     // Certificates Page
     "certificates.title": "Zertifikate & Standards",

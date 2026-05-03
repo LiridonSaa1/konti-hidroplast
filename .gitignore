@@ -31,3 +31,7 @@ pids
 
 # Block specific PDF from being tracked/deployed
 DE - Katallogu per WEB - PDF.pdf
+
+# Large binary assets (upload directly to server)
+attached_assets/*.mp4
+attached_assets/*.pdf
