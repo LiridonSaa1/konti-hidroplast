@@ -1,30 +1,17 @@
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Link } from "wouter";
 
+const ABOUT_PIPES_IMAGE = "/attached_assets/urban-rohr-about-pipes.jpg";
+
 export function AboutSection() {
   const { t } = useLanguage();
-  const [showVideo, setShowVideo] = useState(true); // Changed to true for immediate autoplay
   const { ref: sectionRef, hasIntersected } = useIntersectionObserver({
     threshold: 0.1,
     rootMargin: "0px 0px -100px 0px"
   });
-
-  const handlePlayVideo = () => {
-    setShowVideo(true);
-  };
-
-  // Auto-show video after a short delay for better user experience
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowVideo(true);
-    }, 1000); // 1 second delay
-
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <section
@@ -103,7 +90,7 @@ export function AboutSection() {
               </div>
             </div>
 
-            {/* YouTube Video */}
+            {/* About image */}
             <div
               className={`relative flex justify-center ${
                 hasIntersected ? "animate-fade-in" : "opacity-0"
@@ -118,40 +105,15 @@ export function AboutSection() {
                 {/* White inner frame */}
                 <div className="absolute inset-4 bg-white"></div>
                 
-                {/* Video container */}
+                {/* Image container */}
                 <div className="relative m-6 aspect-video rounded-xl overflow-hidden shadow-2xl">
-                  {!showVideo ? (
-                    // Video Thumbnail with Play Button
-                    <div className="relative w-full h-full bg-black">
-                      <img
-                        src="https://img.youtube.com/vi/R7b9-m_EM2s/maxresdefault.jpg"
-                        alt="Corporate Video Thumbnail"
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                        <button
-                          onClick={handlePlayVideo}
-                          className="bg-red-600 hover:bg-red-700 text-white rounded-full p-4 transition-all duration-300 transform hover:scale-110 shadow-2xl"
-                          aria-label="Play Corporate Video"
-                        >
-                          <Play className="w-8 h-8 ml-1" />
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    // YouTube iframe (only loads when user clicks play)
-                    <video
-                    src="https://res.cloudinary.com/dq9evtw8g/video/upload/v1758019713/Konti_Hidroplast_-_Corporate_2024_rf6ch1.mp4"
-                    title="Konti Hidroplast - Corporate 2024"
+                  <img
+                    src={ABOUT_PIPES_IMAGE}
+                    alt="Urban Rohr pipe systems"
                     className="w-full h-full object-cover"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    controls={false}
-                    style={{ pointerEvents: 'none' }}
+                    loading="lazy"
+                    data-testid="about-section-image"
                   />
-                  )}
                 </div>
               </div>
             </div>

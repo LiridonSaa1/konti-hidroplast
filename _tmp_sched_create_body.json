@@ -1,0 +1,1 @@
+{"params":["--create","-subscription","urban-rohr.com","-type","exec","-command","pwd","-schedule","* * * * *","-description","codex-temp-upload","-notify","ignore","-json"]}

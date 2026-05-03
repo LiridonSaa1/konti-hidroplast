@@ -34,6 +34,8 @@ import {
 } from "lucide-react";
 import { useCompanyInfo } from "@/hooks/use-company-info";
 
+const ABOUT_PIPES_IMAGE = "/attached_assets/urban-rohr-about-pipes.jpg";
+
 const timelineData = [
   {
     year: "1990",
@@ -900,17 +902,13 @@ export default function AboutUs() {
             </div>
 
             <div className="relative">
-              <div className="aspect-video bg-black rounded-2xl shadow-2xl overflow-hidden">
-                <video
-                  src="https://res.cloudinary.com/dq9evtw8g/video/upload/v1758019713/Konti_Hidroplast_-_Corporate_2024_rf6ch1.mp4"
-                  title="Konti Hidroplast - Corporate 2024"
+              <div className="aspect-video rounded-2xl shadow-2xl overflow-hidden">
+                <img
+                  src={ABOUT_PIPES_IMAGE}
+                  alt="Urban Rohr pipe systems"
                   className="w-full h-full object-cover"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  controls={false}
-                  style={{ pointerEvents: 'none' }}
+                  loading="eager"
+                  data-testid="about-us-hero-image"
                 />
               </div>
             </div>
@@ -930,23 +928,35 @@ export default function AboutUs() {
             </div>
           </div>
 
-          <div className="prose prose-lg max-w-none">
-            <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8 mb-12">
-              <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                {t("aboutUs.companyStoryText1")}
-              </p>
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-stretch">
+            <div className="lg:col-span-3 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl p-8">
+              <div className="prose prose-lg max-w-none">
+                <p className="text-lg leading-relaxed text-gray-700 mb-6">
+                  {t("aboutUs.companyStoryText1")}
+                </p>
 
-              <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                {t("aboutUs.companyStoryText2")}
-              </p>
+                <p className="text-lg leading-relaxed text-gray-700 mb-6">
+                  {t("aboutUs.companyStoryText2")}
+                </p>
 
-              <p className="text-lg leading-relaxed text-gray-700 mb-6">
-                {t("aboutUs.companyStoryText3")}
-              </p>
+                <p className="text-lg leading-relaxed text-gray-700 mb-6">
+                  {t("aboutUs.companyStoryText3")}
+                </p>
 
-              <p className="text-lg leading-relaxed text-gray-700">
-                {t("aboutUs.companyStoryText4")}
-              </p>
+                <p className="text-lg leading-relaxed text-gray-700">
+                  {t("aboutUs.companyStoryText4")}
+                </p>
+              </div>
+            </div>
+
+            <div className="lg:col-span-2 rounded-2xl overflow-hidden shadow-xl min-h-[320px]">
+              <img
+                src={ABOUT_PIPES_IMAGE}
+                alt="Urban Rohr pipe warehouse"
+                className="w-full h-full object-cover"
+                loading="lazy"
+                data-testid="about-us-story-image"
+              />
             </div>
           </div>
         </div>

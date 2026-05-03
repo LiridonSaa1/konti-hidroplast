@@ -11,9 +11,8 @@ import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 // Public assets should be referenced via absolute paths, not imported from public/
 const URBAN_ROHR_CATALOGS = "/attached_assets/URBAN.png";
 const URBAN_ROHR_SUPERLIT_DE_PDF =
-  "/attached_assets/Superlit _URBAN_DE - per WEB -  e perfundume.pdf";
-const URBAN_ROHR_CATALOGS_DE_PDF = "/attached_assets/DE - Katallogu per WEB - PDF.pdf";
-const URBAN_ROHR_GFK_PDF = "/attached_assets/Urban-Rohr-GFK-Anwendungen.pdf";
+  "/attached_assets/Urban-Rohr-GFK-Anwendungen.pdf";
+const URBAN_ROHR_CATALOGS_DE_PDF = "/attached_assets/Urban-Rohr-PE-PP-Anwendungen.pdf";
 
 type StaticDownloadFile = {
   fileName: string;
@@ -25,6 +24,12 @@ type StaticBrochure = {
   image: string;
   downloadFiles?: StaticDownloadFile[];
   downloadUrl?: string;
+};
+
+type StaticBrochureCategory = {
+  id: string;
+  title: string;
+  brochures: StaticBrochure[];
 };
 
 const sanitizeFileName = (value: string) =>
@@ -76,7 +81,7 @@ const triggerFileDownload = async (url: string, fileName?: string) => {
 function BrochuresPage() {
   const { t } = useLanguage();
 
-  const brochureCategories = useMemo(
+  const brochureCategories = useMemo<StaticBrochureCategory[]>(
     () => [
       {
         id: "statistics",
@@ -88,28 +93,12 @@ function BrochuresPage() {
             downloadUrl: URBAN_ROHR_CATALOGS_DE_PDF,
             downloadFiles: [
               {
-                fileName: "Superlit _URBAN_DE - per WEB -  e perfundume.pdf",
+                fileName: "Urban Rohr - GFK Anwendungen.pdf",
                 url: URBAN_ROHR_SUPERLIT_DE_PDF,
               },
               {
-                fileName: "DE - Katallogu per WEB - PDF.pdf",
+                fileName: "Urban Rohr - PE-PP Anwendungen.pdf",
                 url: URBAN_ROHR_CATALOGS_DE_PDF,
-              },
-            ],
-          },
-        ],
-      },
-      {
-        id: "gfk-anwendungen",
-        title: t("brochures.gfkAnwendungenCategory"),
-        brochures: [
-          {
-            title: t("brochures.gfkAnwendungenItemDe"),
-            image: URBAN_ROHR_CATALOGS,
-            downloadFiles: [
-              {
-                fileName: "Urban Rohr - GFK Anwendungen.pdf",
-                url: URBAN_ROHR_GFK_PDF,
               },
             ],
           },
