@@ -10,19 +10,11 @@ import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Public assets should be referenced via absolute paths, not imported from public/
 const URBAN_ROHR_CATALOGS = "/attached_assets/URBAN.png";
-const URBAN_ROHR_SUPERLIT_DE_PDF =
-  "/attached_assets/Urban-Rohr-GFK-Anwendungen.pdf";
-const URBAN_ROHR_CATALOGS_DE_PDF = "/attached_assets/Urban-Rohr-PE-PP-Anwendungen.pdf";
-
-type StaticDownloadFile = {
-  fileName: string;
-  url: string;
-};
+const URBAN_ROHR_CATALOGS_ZIP = "/api/brochures/urban-rohr-catalogs.zip";
 
 type StaticBrochure = {
   title: string;
   image: string;
-  downloadFiles?: StaticDownloadFile[];
   downloadUrl?: string;
 };
 
@@ -90,17 +82,7 @@ function BrochuresPage() {
           {
             title: t("brochures.urbanRohrCatalogsItemDe"),
             image: URBAN_ROHR_CATALOGS,
-            downloadUrl: URBAN_ROHR_CATALOGS_DE_PDF,
-            downloadFiles: [
-              {
-                fileName: "Urban Rohr - GFK Anwendungen.pdf",
-                url: URBAN_ROHR_SUPERLIT_DE_PDF,
-              },
-              {
-                fileName: "Urban Rohr - PE-PP Anwendungen.pdf",
-                url: URBAN_ROHR_CATALOGS_DE_PDF,
-              },
-            ],
+            downloadUrl: URBAN_ROHR_CATALOGS_ZIP,
           },
         ],
       },
@@ -159,16 +141,8 @@ function BrochuresPage() {
       }
     }
 
-    const filesToDownload =
-      brochure.downloadFiles && brochure.downloadFiles.length > 0
-        ? brochure.downloadFiles
-        : brochure.downloadUrl
-          ? [{ fileName: `${brochure.title}.pdf`, url: brochure.downloadUrl }]
-          : [];
-
-    // Trigger all configured files for this brochure with a single click.
-    for (const file of filesToDownload) {
-      void triggerFileDownload(file.url, file.fileName);
+    if (brochure.downloadUrl) {
+      void triggerFileDownload(brochure.downloadUrl, `${brochure.title}.zip`);
     }
   };
 

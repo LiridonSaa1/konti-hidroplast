@@ -5,6 +5,7 @@ import multer from "multer";
 import path from "path";
 import { promises as fs } from "fs";
 import fsSync from "fs";
+import zlib from "zlib";
 import bcrypt from "bcryptjs";
 import { storage } from "./storage";
 import { translationService } from "./services/translationService";
@@ -55,6 +56,117 @@ const getCurrentDir = () => {
 };
 
 const currentDir = getCurrentDir();
+
+type ZipSourceFile = {
+  filePath: string;
+  archiveName: string;
+};
+
+const crcTable = new Uint32Array(256);
+for (let i = 0; i < crcTable.length; i++) {
+  let c = i;
+  for (let j = 0; j < 8; j++) {
+    c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+  }
+  crcTable[i] = c >>> 0;
+}
+
+function getCrc32(buffer: Buffer) {
+  let crc = 0xffffffff;
+  for (let i = 0; i < buffer.length; i++) {
+    const byte = buffer[i];
+    crc = crcTable[(crc ^ byte) & 0xff] ^ (crc >>> 8);
+  }
+  return (crc ^ 0xffffffff) >>> 0;
+}
+
+function getDosDateTime(date = new Date()) {
+  const year = Math.max(date.getFullYear(), 1980);
+  const dosTime =
+    (date.getHours() << 11) |
+    (date.getMinutes() << 5) |
+    Math.floor(date.getSeconds() / 2);
+  const dosDate =
+    ((year - 1980) << 9) |
+    ((date.getMonth() + 1) << 5) |
+    date.getDate();
+
+  return { dosDate, dosTime };
+}
+
+async function createZipArchive(files: ZipSourceFile[]) {
+  const localParts: Buffer[] = [];
+  const centralParts: Buffer[] = [];
+  let offset = 0;
+  const { dosDate, dosTime } = getDosDateTime();
+
+  for (const file of files) {
+    const source = await fs.readFile(file.filePath);
+    const compressed = zlib.deflateRawSync(source);
+    const fileName = Buffer.from(file.archiveName, "utf8");
+    const crc32 = getCrc32(source);
+
+    const localHeader = Buffer.alloc(30);
+    localHeader.writeUInt32LE(0x04034b50, 0);
+    localHeader.writeUInt16LE(20, 4);
+    localHeader.writeUInt16LE(0x0800, 6);
+    localHeader.writeUInt16LE(8, 8);
+    localHeader.writeUInt16LE(dosTime, 10);
+    localHeader.writeUInt16LE(dosDate, 12);
+    localHeader.writeUInt32LE(crc32, 14);
+    localHeader.writeUInt32LE(compressed.length, 18);
+    localHeader.writeUInt32LE(source.length, 22);
+    localHeader.writeUInt16LE(fileName.length, 26);
+    localHeader.writeUInt16LE(0, 28);
+
+    localParts.push(localHeader, fileName, compressed);
+
+    const centralHeader = Buffer.alloc(46);
+    centralHeader.writeUInt32LE(0x02014b50, 0);
+    centralHeader.writeUInt16LE(20, 4);
+    centralHeader.writeUInt16LE(20, 6);
+    centralHeader.writeUInt16LE(0x0800, 8);
+    centralHeader.writeUInt16LE(8, 10);
+    centralHeader.writeUInt16LE(dosTime, 12);
+    centralHeader.writeUInt16LE(dosDate, 14);
+    centralHeader.writeUInt32LE(crc32, 16);
+    centralHeader.writeUInt32LE(compressed.length, 20);
+    centralHeader.writeUInt32LE(source.length, 24);
+    centralHeader.writeUInt16LE(fileName.length, 28);
+    centralHeader.writeUInt16LE(0, 30);
+    centralHeader.writeUInt16LE(0, 32);
+    centralHeader.writeUInt16LE(0, 34);
+    centralHeader.writeUInt16LE(0, 36);
+    centralHeader.writeUInt32LE(0, 38);
+    centralHeader.writeUInt32LE(offset, 42);
+    centralParts.push(centralHeader, fileName);
+
+    offset += localHeader.length + fileName.length + compressed.length;
+  }
+
+  const centralDirectory = Buffer.concat(centralParts);
+  const endRecord = Buffer.alloc(22);
+  endRecord.writeUInt32LE(0x06054b50, 0);
+  endRecord.writeUInt16LE(0, 4);
+  endRecord.writeUInt16LE(0, 6);
+  endRecord.writeUInt16LE(files.length, 8);
+  endRecord.writeUInt16LE(files.length, 10);
+  endRecord.writeUInt32LE(centralDirectory.length, 12);
+  endRecord.writeUInt32LE(offset, 16);
+  endRecord.writeUInt16LE(0, 20);
+
+  return Buffer.concat([...localParts, centralDirectory, endRecord]);
+}
+
+function resolveAttachedAsset(fileName: string) {
+  const candidates = [
+    path.resolve(currentDir, "..", "attached_assets", fileName),
+    path.resolve(currentDir, "..", "dist", "public", "attached_assets", fileName),
+    path.resolve(currentDir, "..", "client", "public", "attached_assets", fileName),
+  ];
+
+  return candidates.find((candidate) => fsSync.existsSync(candidate));
+}
 
 // Ensure upload directory exists
 async function ensureUploadDir() {
@@ -157,6 +269,57 @@ function requireAuth(req: any, res: any, next: any) {
 export async function registerRoutes(app: Express): Promise<Server> {
   // Ensure upload directory exists
   await ensureUploadDir();
+
+  app.get("/api/brochures/urban-rohr-catalogs.zip", async (_req, res) => {
+    const brochureFiles = [
+      {
+        sourceName: "Urban-Rohr-GFK-Anwendungen.pdf",
+        archiveName: "Urban Rohr - GFK Anwendungen.pdf",
+      },
+      {
+        sourceName: "Urban-Rohr-PE-PP-Anwendungen.pdf",
+        archiveName: "Urban Rohr - PE-PP Anwendungen.pdf",
+      },
+    ];
+
+    const resolvedFiles = brochureFiles.map((file) => ({
+      filePath: resolveAttachedAsset(file.sourceName),
+      archiveName: file.archiveName,
+      sourceName: file.sourceName,
+    }));
+
+    const missingFiles = resolvedFiles.filter((file) => !file.filePath);
+    if (missingFiles.length > 0) {
+      console.error(
+        "Missing Urban Rohr brochure assets:",
+        missingFiles.map((file) => file.sourceName),
+      );
+      return res.status(404).json({
+        error: "Brochure zip files are not available",
+        missingFiles: missingFiles.map((file) => file.sourceName),
+      });
+    }
+
+    try {
+      const zip = await createZipArchive(
+        resolvedFiles.map((file) => ({
+          filePath: file.filePath!,
+          archiveName: file.archiveName,
+        })),
+      );
+
+      res.setHeader("Content-Type", "application/zip");
+      res.setHeader(
+        "Content-Disposition",
+        'attachment; filename="urban-rohr-catalogs.zip"',
+      );
+      res.setHeader("Content-Length", zip.length.toString());
+      res.send(zip);
+    } catch (error) {
+      console.error("Failed to create Urban Rohr brochure zip:", error);
+      res.status(500).json({ error: "Failed to create brochure zip" });
+    }
+  });
 
   // Determine if we're in production mode
   const isProduction = process.env.NODE_ENV === 'production';
