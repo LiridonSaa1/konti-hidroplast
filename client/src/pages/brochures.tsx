@@ -10,7 +10,7 @@ import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Public assets should be referenced via absolute paths, not imported from public/
 const URBAN_ROHR_CATALOGS = "/attached_assets/URBAN.png";
-const URBAN_ROHR_CATALOGS_ZIP = "/api/brochures/urban-rohr-catalogs.zip";
+const URBAN_ROHR_CATALOGS_ZIP = "/attached_assets/Urban%20Rohr%20GmbH%20-%20Kataloge.zip";
 
 type StaticBrochure = {
   title: string;
