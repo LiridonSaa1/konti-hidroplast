@@ -35,6 +35,7 @@ import {
 import { useCompanyInfo } from "@/hooks/use-company-info";
 
 const ABOUT_PIPES_IMAGE = "/attached_assets/urban-rohr-about-pipes.jpg";
+const ABOUT_FUTURE_LOGO_IMAGE = "/attached_assets/urban-rohr-logo-about.jpg";
 
 const timelineData = [
   {
@@ -1122,13 +1123,15 @@ export default function AboutUs() {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 {/* Photo Section */}
                 <div className="flex justify-center lg:justify-start">
-                  <div className="relative">
-                    {/* Main photo container */}
-                    <div className="w-80 h-80 bg-white rounded-2xl p-4 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
-                      <div className="w-full h-full bg-gray-200 rounded-xl flex items-center justify-center overflow-hidden">
+                  <div className="relative w-full max-w-xl">
+                    {/* Main logo container */}
+                    <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                      <div className="aspect-[851/454] w-full bg-white rounded-xl flex items-center justify-center overflow-hidden">
                         <img
-                          src="https://res.cloudinary.com/dq9evtw8g/image/upload/v1765193146/Logo_PDF_page-0001_kspf2o.jpg"
-                          className="w-full h-full object-cover rounded-xl"
+                          src={ABOUT_FUTURE_LOGO_IMAGE}
+                          alt="Urban Rohr logo"
+                          className="w-full h-full object-contain rounded-xl"
+                          loading="lazy"
                         />
                       </div>
                     </div>
