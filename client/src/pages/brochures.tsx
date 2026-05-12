@@ -49,7 +49,7 @@ const triggerFileDownload = async (url: string, fileName?: string) => {
   };
 
   if (resolvedOrigin === window.location.origin) {
-    downloadViaAnchor(resolvedUrl, suggestedName);
+    downloadViaAnchor(resolvedUrl);
     return;
   }
 
