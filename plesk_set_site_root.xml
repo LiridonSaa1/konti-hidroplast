@@ -26,6 +26,10 @@
 </IfModule>
 ]]></value>
             </property>
+            <property>
+              <name>www_root</name>
+              <value>/httpdocs</value>
+            </property>
           </vrt_hst>
         </hosting>
       </values>

@@ -14,6 +14,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { resolveApiUrl } from "@/lib/api";
 import type { Brochure, InsertBrochure, BrochureCategory } from "@shared/schema";
 import { TranslationHelper } from "./TranslationHelper";
 import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
@@ -339,7 +340,7 @@ export function EnhancedBrochuresManager() {
         uploadFormData.append('file', primaryEntry.pdfFile);
 
         try {
-          const uploadResponse = await fetch('/api/upload', {
+          const uploadResponse = await fetch(resolveApiUrl('/api/upload'), {
             method: 'POST',
             body: uploadFormData,
           });
@@ -366,7 +367,7 @@ export function EnhancedBrochuresManager() {
         uploadFormData.append('file', primaryEntry.imageFile);
 
         try {
-          const uploadResponse = await fetch('/api/upload', {
+          const uploadResponse = await fetch(resolveApiUrl('/api/upload'), {
             method: 'POST',
             body: uploadFormData,
           });
@@ -466,7 +467,7 @@ export function EnhancedBrochuresManager() {
           const uploadFormData = new FormData();
           uploadFormData.append('file', entry.pdfFile);
 
-          const uploadResponse = await fetch('/api/upload', {
+          const uploadResponse = await fetch(resolveApiUrl('/api/upload'), {
             method: 'POST',
             body: uploadFormData,
           });
@@ -484,7 +485,7 @@ export function EnhancedBrochuresManager() {
           const uploadFormData = new FormData();
           uploadFormData.append('file', entry.imageFile);
 
-          const uploadResponse = await fetch('/api/upload', {
+          const uploadResponse = await fetch(resolveApiUrl('/api/upload'), {
             method: 'POST',
             body: uploadFormData,
           });

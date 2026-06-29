@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from '@/hooks/use-toast';
+import { resolveApiUrl } from '@/lib/api';
 
 interface User {
   id: string;
@@ -43,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // API request helper with auth
   const apiRequestWithAuth = async (url: string, options: RequestInit = {}) => {
     const token = getStoredToken();
-    const response = await fetch(url, {
+    const response = await fetch(resolveApiUrl(url), {
       ...options,
       headers: {
         'Content-Type': 'application/json',
@@ -70,7 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginMutation = useMutation({
     mutationFn: async ({ username, password }: { username: string; password: string }) => {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch(resolveApiUrl('/api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

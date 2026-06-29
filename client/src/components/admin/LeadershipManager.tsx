@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { insertCompanyInfoSchema, type CompanyInfo, type InsertCompanyInfo, type Position } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
+import { resolveApiUrl } from "@/lib/api";
 import { TranslatableFieldEditor } from "./TranslatableFieldEditor";
 import { useAuth } from "@/contexts/AuthContext";
 import React from "react";
@@ -220,7 +221,7 @@ export function LeadershipManager() {
     formData.append('file', file);
     
     try {
-      const response = await fetch('/api/upload', {
+      const response = await fetch(resolveApiUrl('/api/upload'), {
         method: 'POST',
         body: formData,
       });
@@ -706,7 +707,7 @@ export function LeadershipManager() {
                 console.log("Token from localStorage:", token);
                 
                 try {
-                  const response = await fetch('/api/auth/me', {
+                  const response = await fetch(resolveApiUrl('/api/auth/me'), {
                     headers: {
                       'Authorization': `Bearer ${token}`,
                       'Content-Type': 'application/json'
@@ -731,7 +732,7 @@ export function LeadershipManager() {
                 console.log("Token for company-info test:", token);
                 
                 try {
-                  const response = await fetch('/api/admin/company-info', {
+                  const response = await fetch(resolveApiUrl('/api/admin/company-info'), {
                     method: 'GET',
                     headers: {
                       'Authorization': `Bearer ${token}`,
@@ -773,7 +774,7 @@ export function LeadershipManager() {
                 console.log("Test data to submit:", testData);
                 
                 try {
-                  const response = await fetch('/api/admin/company-info', {
+                  const response = await fetch(resolveApiUrl('/api/admin/company-info'), {
                     method: 'POST',
                     headers: {
                       'Authorization': `Bearer ${token}`,

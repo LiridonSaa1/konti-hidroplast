@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Download, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { resolveApiUrl } from "@/lib/api";
 
 interface BrochureDownloadFormProps {
   isOpen: boolean;
@@ -81,7 +82,7 @@ export function BrochureDownloadForm({ isOpen, onClose, onSuccess, brochure }: B
 
       console.log('Sending download data:', downloadData);
 
-      const response = await fetch("/api/brochure-downloads", {
+      const response = await fetch(resolveApiUrl("/api/brochure-downloads"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

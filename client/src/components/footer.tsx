@@ -168,9 +168,14 @@ export function Footer() {
                     href="https://www.google.com/maps/search/?api=1&query=Karlsdorfer%20Stra%C3%9Fe%2056%2C%2088069%20Tettnang"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 mt-2 hover:text-white focus:text-white"
+                    className="flex items-start gap-2 mt-2 hover:text-white focus:text-white"
                   >
-                    <MapPin className="text-gray-300  mt-1 flex-shrink-0 w-5 h-5" /> Karlsdorfer Straße 56,88069, Tettnang
+                    <MapPin className="text-gray-300 mt-1 flex-shrink-0 w-5 h-5" />
+                    <span>
+                      Karlsdorfer Straße 56,
+                      <br />
+                      88069 Tettnang
+                    </span>
                   </a>
                   <a
                     href="tel:+4975429396210"

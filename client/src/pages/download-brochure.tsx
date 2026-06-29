@@ -4,6 +4,7 @@ import { Download, AlertCircle, CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { resolveApiUrl } from "@/lib/api";
 
 interface DownloadParams {
   hash: string;
@@ -97,7 +98,7 @@ function DownloadBrochurePage() {
         }
 
         // Validate hash with server
-        const response = await fetch("/api/validate-download-link", {
+        const response = await fetch(resolveApiUrl("/api/validate-download-link"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -128,7 +129,7 @@ function DownloadBrochurePage() {
 
     try {
       // Get the actual PDF URL from the server
-      const response = await fetch("/api/get-brochure-url", {
+      const response = await fetch(resolveApiUrl("/api/get-brochure-url"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -143,7 +144,7 @@ function DownloadBrochurePage() {
         const { pdfUrl } = await response.json();
         
         // Track the actual download
-        await fetch("/api/track-actual-download", {
+        await fetch(resolveApiUrl("/api/track-actual-download"), {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

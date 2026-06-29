@@ -11,6 +11,7 @@ import { MapPin, Phone, Share2, ExternalLink } from "lucide-react";
 import { FaLinkedin, FaFacebook, FaInstagram } from "react-icons/fa";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { sendContactEmail } from "@/lib/contactEmail";
+import { resolveApiUrl } from "@/lib/api";
 
 interface ContactFormData {
   fullName: string;
@@ -80,7 +81,7 @@ export function ContactSection() {
 
     try {
       // Submit form data to API (store in backend)
-      const response = await fetch("/api/contact", {
+      const response = await fetch(resolveApiUrl("/api/contact"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

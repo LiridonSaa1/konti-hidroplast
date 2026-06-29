@@ -13,6 +13,11 @@ const LIVE_PUBLIC_DIRS = [
   '/var/www/vhosts/urban-rohr.com/httpdocs/dist/public',
   '/var/www/vhosts/urban-rohr.com/upbeat-chandrasekhar.84-46-246-41.plesk.page/httpdocs/dist/public',
 ];
+const LIVE_HTTPDOCS_DIRS = [
+  '/var/www/vhosts/urban-rohr.com/httpdocs',
+  '/var/www/vhosts/urban-rohr.com/upbeat-chandrasekhar.84-46-246-41.plesk.page/httpdocs',
+];
+const SERVER_RUNTIME_FILES = ['_passenger.cjs', 'package.json', '.htaccess'];
 
 // Function to copy directory recursively
 function copyDir(src, dest) {
@@ -45,6 +50,61 @@ function mirrorLiveBuildOutput(sourceDir) {
       copyDir(sourceDir, targetDir);
       console.log(`Mirrored build output to ${targetDir}.`);
     }
+  }
+}
+
+function restartPassenger(httpdocsDir) {
+  const restartPath = path.join(httpdocsDir, 'tmp', 'restart.txt');
+  fs.mkdirSync(path.dirname(restartPath), { recursive: true });
+  fs.writeFileSync(restartPath, `restart ${new Date().toISOString()}\n`);
+  console.log(`Restarted Passenger via ${restartPath}`);
+}
+
+function syncLiveServerDeployment(projectRoot) {
+  for (const targetDir of LIVE_HTTPDOCS_DIRS) {
+    if (path.resolve(targetDir) === path.resolve(projectRoot)) {
+      continue;
+    }
+
+    if (!fs.existsSync(targetDir)) {
+      continue;
+    }
+
+    console.log(`Syncing server deployment to ${targetDir}...`);
+
+    const distDir = path.join(projectRoot, 'dist');
+    if (fs.existsSync(distDir)) {
+      copyDir(distDir, path.join(targetDir, 'dist'));
+    }
+
+    for (const file of SERVER_RUNTIME_FILES) {
+      const src = path.join(projectRoot, file);
+      if (fs.existsSync(src)) {
+        fs.copyFileSync(src, path.join(targetDir, file));
+      }
+    }
+
+    const srcModules = path.join(projectRoot, 'node_modules');
+    const destModules = path.join(targetDir, 'node_modules');
+    if (fs.existsSync(srcModules) && !fs.existsSync(destModules)) {
+      fs.symlinkSync(srcModules, destModules, 'dir');
+      console.log(`Linked node_modules into ${targetDir}`);
+    }
+
+    restartPassenger(targetDir);
+  }
+}
+
+function tryConfigureProductionApiProxy() {
+  const scriptPath = path.join(__dirname, 'scripts', 'configure-production-api.sh');
+  if (!fs.existsSync(scriptPath)) {
+    return;
+  }
+
+  try {
+    execSync(`sh "${scriptPath}"`, { stdio: 'inherit', env: childEnv });
+  } catch (error) {
+    console.warn('Could not configure nginx API proxy:', error.message);
   }
 }
 
@@ -84,6 +144,9 @@ try {
   }
 
   mirrorLiveBuildOutput(path.join(__dirname, 'dist', 'public'));
+  syncLiveServerDeployment(__dirname);
+  tryConfigureProductionApiProxy();
+  restartPassenger(__dirname);
   
   console.log('Build completed successfully!');
 } catch (error) {

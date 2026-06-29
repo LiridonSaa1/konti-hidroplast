@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import { resolveApiUrl } from "@/lib/api";
 
 interface FileUploadProps {
   value: string;
@@ -68,13 +69,13 @@ export function FileUpload({
 
       // Check if server is reachable first
       try {
-        const healthCheck = await fetch("/api/health", { method: "GET" });
+        const healthCheck = await fetch(resolveApiUrl("/api/health"), { method: "GET" });
         console.log('Server health check status:', healthCheck.status);
       } catch (healthError) {
         console.warn('Server health check failed:', healthError);
       }
 
-      const response = await fetch("/api/upload", {
+      const response = await fetch(resolveApiUrl("/api/upload"), {
         method: "POST",
         headers,
         body: formData,

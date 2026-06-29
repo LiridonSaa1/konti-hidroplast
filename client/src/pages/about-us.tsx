@@ -797,16 +797,16 @@ export default function AboutUs() {
         return translations.en[field];
       }
       
-      // Fallback to Macedonian if English not available
-      if (translations.mk && translations.mk[field]) {
-        console.log(`Using Macedonian fallback for ${field}:`, translations.mk[field]);
-        return translations.mk[field];
-      }
-      
-      // Fallback to German if Macedonian not available
+      // Fallback to German if English not available
       if (translations.de && translations.de[field]) {
         console.log(`Using German fallback for ${field}:`, translations.de[field]);
         return translations.de[field];
+      }
+      
+      // Fallback to Macedonian as last resort
+      if (translations.mk && translations.mk[field]) {
+        console.log(`Using Macedonian fallback for ${field}:`, translations.mk[field]);
+        return translations.mk[field];
       }
     }
 
