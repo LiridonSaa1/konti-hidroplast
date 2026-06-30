@@ -1,4 +1,13 @@
-const STATIC_ONLY_HOSTS = new Set([
+/**
+ * Public marketing domains (urban-rohr.com / .de) serve static files only.
+ * The Node/Passenger API runs on the Plesk deployment subdomain.
+ * When the app is opened on a public domain, /api/* is routed there.
+ *
+ * On the deployment subdomain itself (or in local dev), /api/* stays same-origin.
+ *
+ * Override the API host with VITE_API_ORIGIN at build time if needed.
+ */
+const PUBLIC_SITE_HOSTS = new Set([
   "urban-rohr.com",
   "www.urban-rohr.com",
   "urban-rohr.de",
@@ -8,30 +17,26 @@ const STATIC_ONLY_HOSTS = new Set([
 const DEFAULT_NODE_API_ORIGIN =
   "https://upbeat-chandrasekhar.84-46-246-41.plesk.page";
 
-/**
- * Resolves relative API paths for domains that serve static files only.
- * Falls back to the Node/Passenger deployment origin when same-origin /api
- * is unavailable (e.g. urban-rohr.com document root is dist/public).
- */
+function getNodeApiOrigin(): string {
+  const configured = import.meta.env.VITE_API_ORIGIN as string | undefined;
+  return (configured || DEFAULT_NODE_API_ORIGIN).replace(/\/$/, "");
+}
+
 export function resolveApiUrl(url: string): string {
   if (!url.startsWith("/api/")) {
     return url;
-  }
-
-  const configuredOrigin = import.meta.env.VITE_API_ORIGIN as string | undefined;
-  if (configuredOrigin) {
-    return `${configuredOrigin.replace(/\/$/, "")}${url}`;
   }
 
   if (typeof window === "undefined") {
     return url;
   }
 
-  if (!import.meta.env.PROD || !STATIC_ONLY_HOSTS.has(window.location.hostname)) {
+  // Local dev and the Node deployment host use same-origin API routes.
+  if (!import.meta.env.PROD || !PUBLIC_SITE_HOSTS.has(window.location.hostname)) {
     return url;
   }
 
-  return `${DEFAULT_NODE_API_ORIGIN}${url}`;
+  return `${getNodeApiOrigin()}${url}`;
 }
 
 export const apiUrl = resolveApiUrl;

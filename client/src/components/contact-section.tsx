@@ -83,6 +83,7 @@ export function ContactSection() {
       // Submit form data to API (store in backend)
       const response = await fetch(resolveApiUrl("/api/contact"), {
         method: "POST",
+        credentials: "omit",
         headers: {
           "Content-Type": "application/json",
         },

@@ -143,6 +143,13 @@ try {
     console.log('uploads directory not found, skipping...');
   }
 
+  const rootHtaccess = path.join(__dirname, '.htaccess');
+  const publicHtaccess = path.join(__dirname, 'dist', 'public', '.htaccess');
+  if (fs.existsSync(rootHtaccess)) {
+    fs.copyFileSync(rootHtaccess, publicHtaccess);
+    console.log('Copied .htaccess to dist/public');
+  }
+
   mirrorLiveBuildOutput(path.join(__dirname, 'dist', 'public'));
   syncLiveServerDeployment(__dirname);
   tryConfigureProductionApiProxy();
